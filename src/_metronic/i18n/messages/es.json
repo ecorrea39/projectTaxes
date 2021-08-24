@@ -11,12 +11,12 @@
   "AUTH.GENERAL.SUBMIT_BUTTON": "Enviar",
   "AUTH.GENERAL.NO_ACCOUNT": "No tienes una cuenta?",
   "AUTH.GENERAL.SIGNUP_BUTTON": "Regístrate",
-  "AUTH.GENERAL.FORGOT_BUTTON": "Se te olvidó tu contraseña",
+  "AUTH.GENERAL.FORGOT_BUTTON": "¿Se te olvidó tu contraseña?",
   "AUTH.GENERAL.BACK_BUTTON": "Espalda",
   "AUTH.GENERAL.PRIVACY": "Intimidad",
   "AUTH.GENERAL.LEGAL": "Legal",
   "AUTH.GENERAL.CONTACT": "Contacto",
-  "AUTH.LOGIN.TITLE": "Crear una cuenta",
+  "AUTH.LOGIN.TITLE": "Autenticación de usuarios",
   "AUTH.LOGIN.BUTTON": "Registrarse",
   "AUTH.FORGOT.TITLE": "Contraseña olvidada?",
   "AUTH.FORGOT.DESC": "Ingrese su correo electrónico para restablecer su contraseña",
@@ -65,5 +65,10 @@
   "ECOMMERCE.CUSTOMERS.UPDATE_STATUS.TITLE": "Status has been updated for selected customers",
   "ECOMMERCE.CUSTOMERS.UPDATE_STATUS.MESSAGE": "Selected customers status have successfully been updated",
   "ECOMMERCE.CUSTOMERS.EDIT.UPDATE_MESSAGE": "Customer has been updated",
-  "ECOMMERCE.CUSTOMERS.EDIT.ADD_MESSAGE": "Customer has been created"
+  "ECOMMERCE.CUSTOMERS.EDIT.ADD_MESSAGE": "Customer has been created",
+
+  "AUTH.LOGIN.DESCRIPTION": "Registrar, consultar, declarar, pagar y estar solvente con los deberes y obligaciones del INCES",
+  "AUTH.LOGIN.ASK": "¿No tienes una cuenta aún?",
+  "AUTH.LOGIN.SIGNUP": "Regístrate",
+  "AUTH.LOGIN.SIGNIN": "Ingresar"
 }

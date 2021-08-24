@@ -100,7 +100,7 @@ function Login(props) {
           <FormattedMessage id="AUTH.LOGIN.TITLE" />
         </h3>
         <p className="text-muted font-weight-bold">
-          Enter your username and password
+          <FormattedMessage id="AUTH.LOGIN.DESCRIPTION" />
         </p>
       </div>
       {/* end::Head */}
@@ -117,8 +117,8 @@ function Login(props) {
         ) : (
           <div className="mb-10 alert alert-custom alert-light-info alert-dismissible">
             <div className="alert-text ">
-              Use account <strong>admin@demo.com</strong> and password{" "}
-              <strong>demo</strong> to continue.
+              Destinado para el mensaje de
+              <strong> error</strong>.
             </div>
           </div>
         )}
@@ -169,7 +169,7 @@ function Login(props) {
             disabled={formik.isSubmitting}
             className={`btn btn-primary font-weight-bold px-9 py-4 my-3`}
           >
-            <span>Sign In</span>
+            <span><FormattedMessage id="AUTH.LOGIN.SIGNIN" /></span>
             {loading && <span className="ml-3 spinner spinner-white"></span>}
           </button>
         </div>
