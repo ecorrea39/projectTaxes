@@ -9,40 +9,26 @@ import { DropdownTopbarItemToggler } from "../../../../_partials/dropdowns";
 
 const languages = [
   {
-    lang: "en",
-    name: "English",
-    flag: toAbsoluteUrl("/media/svg/flags/226-united-states.svg"),
+    "lang": "es",
+    "name": "Español",
+    "flag": toAbsoluteUrl("/media/svg/flags/139-venezuela.svg"),
   },
   {
-    lang: "zh",
-    name: "Mandarin",
-    flag: toAbsoluteUrl("/media/svg/flags/015-china.svg"),
-  },
-  {
-    lang: "es",
-    name: "Spanish",
-    flag: toAbsoluteUrl("/media/svg/flags/128-spain.svg"),
-  },
-  {
-    lang: "ja",
-    name: "Japanese",
-    flag: toAbsoluteUrl("/media/svg/flags/063-japan.svg"),
-  },
-  {
-    lang: "de",
-    name: "German",
-    flag: toAbsoluteUrl("/media/svg/flags/162-germany.svg"),
-  },
-  {
-    lang: "fr",
-    name: "French",
-    flag: toAbsoluteUrl("/media/svg/flags/195-france.svg"),
+    "lang": "en",
+    "name": "English",
+    "flag": toAbsoluteUrl("/media/svg/flags/226-united-states.svg"),
   },
 ];
 
 export function LanguageSelectorDropdown() {
   const lang = useLang();
-  const currentLanguage = languages.find((x) => x.lang === lang);
+  // const currentLanguage = languages.find((x) => x.lang === lang);
+  const currentLanguage = {
+    "lang": "es",
+    "name": "Español",
+    "flag": toAbsoluteUrl("/media/svg/flags/139-venezuela.svg"),
+  };
+
   return (
     <Dropdown drop="down" alignRight>
       <Dropdown.Toggle
@@ -52,7 +38,7 @@ export function LanguageSelectorDropdown() {
         <OverlayTrigger
           placement="bottom"
           overlay={
-            <Tooltip id="language-panel-tooltip">Select Language</Tooltip>
+            <Tooltip id="language-panel-tooltip">Selecciona el idioma</Tooltip>
           }
         >
           <div className="btn btn-icon btn-clean btn-dropdown btn-lg mr-1">

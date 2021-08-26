@@ -19,9 +19,9 @@ export function Routes() {
 
   let isAuthorized = false;
 
-  // if (authToken) {
-  //   isAuthorized = true;
-  // }
+  if (authToken) {
+    isAuthorized = true;
+  }
 
   return (
     <Switch>

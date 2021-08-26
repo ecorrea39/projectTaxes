@@ -5,9 +5,7 @@ import * as Yup from "yup";
 import { connect } from "react-redux";
 import { FormattedMessage, injectIntl } from "react-intl";
 import * as auth from "../_redux/authRedux";
-// import {login, LOGIN_URL} from "../_redux/authCrud";
-import {login, API_URL} from "../security/AuthFunctions";
-import axios from "axios";
+import {login} from "../security/AuthFunctions";
 import MTCaptcha from "../../MtCaptcha/MTCaptcha"
 
 /*
@@ -28,6 +26,7 @@ const initialValues = {
 function Login(props) {
   const { intl } = props;
   const [loading, setLoading] = useState(false);
+
   const LoginSchema = Yup.object().shape({
     email: Yup.string()
       .email("Wrong email format")
@@ -73,40 +72,39 @@ function Login(props) {
     validationSchema: LoginSchema,
     onSubmit: (values, { setStatus, setSubmitting }) => {
       enableLoading();
-      setTimeout(() => {
 
-        login(values.email, values.password)
-          .then(res => {
-            console.log("loginRes", res);
-            disableLoading();
+      // login(values.email, values.password)
+      login('v103802128', '!Q2w3e4r5')
+        .then(res => {
+          console.log("loginRes", res);
+          disableLoading();
 
-            const attr = res.data.data.attributes;
-            const data = res.data.data;
+          const attr = res.data.data.attributes;
+          const data = res.data.data;
 
-            localStorage.setItem('authToken', attr.authorization.token);
-            localStorage.setItem('expires_in', attr.authorization.expires_in);
-            localStorage.setItem('rif', data.id);
-            localStorage.setItem('name', attr.name);
-            localStorage.setItem('surname', attr.surname);
-            localStorage.setItem('mail', attr.mail);
-            localStorage.setItem('phone_number_mobile', attr.phone_number_mobile);
-            localStorage.setItem('groups', attr.groups);
+          localStorage.setItem('authToken', attr.authorization.token);
+          localStorage.setItem('expires_in', attr.authorization.expires_in);
+          localStorage.setItem('rif', data.id);
+          localStorage.setItem('name', attr.name);
+          localStorage.setItem('surname', attr.surname);
+          localStorage.setItem('mail', attr.mail);
+          localStorage.setItem('phone_number_mobile', attr.phone_number_mobile);
+          localStorage.setItem('groups', attr.groups);
 
-            props.login(attr.authorization.token);
-            // window.location.href = '/dashboard';
-          })
-          .catch(() => {
-            setStatus(
-              intl.formatMessage({
-                id: "AUTH.VALIDATION.INVALID_LOGIN",
-              })
-            );
-          })
-          .finally(() => {
-            disableLoading();
-            setSubmitting(false);
-          });
-      }, 1000);
+          window.location.href = '/dashboard';
+        })
+        .catch(() => {
+          setStatus(
+            intl.formatMessage({
+              id: "AUTH.VALIDATION.INVALID_LOGIN",
+            })
+          );
+        })
+        .finally(() => {
+          disableLoading();
+          setSubmitting(false);
+        });
+
     },
   });
 
