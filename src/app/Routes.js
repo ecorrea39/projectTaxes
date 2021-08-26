@@ -14,12 +14,14 @@ import { Logout, AuthPage } from "./modules/Auth";
 import ErrorsPage from "./modules/ErrorsExamples/ErrorsPage";
 
 export function Routes() {
-  const { isAuthorized } = useSelector(
-    ({ auth }) => ({
-      isAuthorized: auth.user != null,
-    }),
-    shallowEqual
-  );
+
+  const authToken = localStorage.getItem('authToken');
+
+  let isAuthorized = false;
+
+  // if (authToken) {
+  //   isAuthorized = true;
+  // }
 
   return (
     <Switch>

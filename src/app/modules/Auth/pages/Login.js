@@ -5,7 +5,10 @@ import * as Yup from "yup";
 import { connect } from "react-redux";
 import { FormattedMessage, injectIntl } from "react-intl";
 import * as auth from "../_redux/authRedux";
-import { login } from "../_redux/authCrud";
+// import {login, LOGIN_URL} from "../_redux/authCrud";
+import {login, API_URL} from "../security/AuthFunctions";
+import axios from "axios";
+import MTCaptcha from "../../MtCaptcha/MTCaptcha"
 
 /*
   INTL (i18n) docs:
@@ -71,11 +74,26 @@ function Login(props) {
     onSubmit: (values, { setStatus, setSubmitting }) => {
       enableLoading();
       setTimeout(() => {
+
         login(values.email, values.password)
-          .then(({ data: { authToken } }) => {
+          .then(res => {
+            console.log("loginRes", res);
             disableLoading();
 
-            props.login(authToken);
+            const attr = res.data.data.attributes;
+            const data = res.data.data;
+
+            localStorage.setItem('authToken', attr.authorization.token);
+            localStorage.setItem('expires_in', attr.authorization.expires_in);
+            localStorage.setItem('rif', data.id);
+            localStorage.setItem('name', attr.name);
+            localStorage.setItem('surname', attr.surname);
+            localStorage.setItem('mail', attr.mail);
+            localStorage.setItem('phone_number_mobile', attr.phone_number_mobile);
+            localStorage.setItem('groups', attr.groups);
+
+            props.login(attr.authorization.token);
+            // window.location.href = '/dashboard';
           })
           .catch(() => {
             setStatus(
@@ -155,6 +173,11 @@ function Login(props) {
             </div>
           ) : null}
         </div>
+
+        <div className="form-group fv-plugins-icon-container">
+          <MTCaptcha />
+        </div>
+
         <div className="form-group d-flex flex-wrap justify-content-between align-items-center">
           <Link
             to="/auth/forgot-password"

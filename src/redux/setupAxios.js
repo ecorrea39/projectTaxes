@@ -1,9 +1,8 @@
-export default function setupAxios(axios, store) {
+export default function setupAxios(axios) {
   axios.interceptors.request.use(
     config => {
-      const {
-        auth: { authToken }
-      } = store.getState();
+
+      const authToken = localStorage.getItem('authToken');
 
       if (authToken) {
         config.headers.Authorization = `Bearer ${authToken}`;
