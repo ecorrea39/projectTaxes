@@ -43,17 +43,21 @@ export function login(user, pass) {
         txt = 'Error al registrar usuario';
     }
 
-    alert("txt:" + txt);
-    return err.json();
+    const jsonRespuesta = {
+      "status": 400,
+      "txt": txt
+    }
+
+    return jsonRespuesta;
   });
 }
 
 export function register(email, fullname, username, password) {
-  return axios.post(REGISTER_URL, { email, fullname, username, password });
+  return axios.post(REGISTER_URL, {email, fullname, username, password});
 }
 
 export function requestPassword(email) {
-  return axios.post(REQUEST_PASSWORD_URL, { email });
+  return axios.post(REQUEST_PASSWORD_URL, {email});
 }
 
 export function getUserByToken() {

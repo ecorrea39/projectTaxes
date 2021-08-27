@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -73,25 +73,30 @@ function Login(props) {
     onSubmit: (values, { setStatus, setSubmitting }) => {
       enableLoading();
 
-      // login(values.email, values.password)
-      login('v103802128', '!Q2w3e4r5')
+      login(values.email, values.password)
         .then(res => {
           console.log("loginRes", res);
           disableLoading();
 
-          const attr = res.data.data.attributes;
-          const data = res.data.data;
+          if (res.status == 200) {
+            const attr = res.data.data.attributes;
+            const data = res.data.data;
 
-          localStorage.setItem('authToken', attr.authorization.token);
-          localStorage.setItem('expires_in', attr.authorization.expires_in);
-          localStorage.setItem('rif', data.id);
-          localStorage.setItem('name', attr.name);
-          localStorage.setItem('surname', attr.surname);
-          localStorage.setItem('mail', attr.mail);
-          localStorage.setItem('phone_number_mobile', attr.phone_number_mobile);
-          localStorage.setItem('groups', attr.groups);
+            localStorage.setItem('authToken', attr.authorization.token);
+            localStorage.setItem('expires_in', attr.authorization.expires_in);
+            localStorage.setItem('rif', data.id);
+            localStorage.setItem('name', attr.name);
+            localStorage.setItem('surname', attr.surname);
+            localStorage.setItem('mail', attr.mail);
+            localStorage.setItem('phone_number_mobile', attr.phone_number_mobile);
+            localStorage.setItem('groups', attr.groups);
 
-          window.location.href = '/dashboard';
+            window.location.href = '/dashboard';
+          } else {
+            setStatus(
+              res.txt
+            );
+          }
         })
         .catch(() => {
           setStatus(
@@ -131,12 +136,7 @@ function Login(props) {
             <div className="alert-text font-weight-bold">{formik.status}</div>
           </div>
         ) : (
-          <div className="mb-10 alert alert-custom alert-light-info alert-dismissible">
-            <div className="alert-text ">
-              Destinado para el mensaje de
-              <strong> error</strong>.
-            </div>
-          </div>
+          <Fragment />
         )}
 
         <div className="form-group fv-plugins-icon-container">
