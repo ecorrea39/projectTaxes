@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
+import React, {useState} from "react";
 import { Link, Switch, Redirect } from "react-router-dom";
 import { toAbsoluteUrl } from "../../../../_metronic/_helpers";
 import { ContentRoute } from "../../../../_metronic/layout";
@@ -8,8 +8,15 @@ import Registration from "./Registration";
 import ForgotPassword from "./ForgotPassword";
 import "../../../../_metronic/_assets/sass/pages/login/classic/login-1.scss";
 import { FormattedMessage, injectIntl } from "react-intl";
+import AuthHeader from "./AuthHeader";
 
 export function AuthPage() {
+  const [mostrarHeader, setMostrarHeader] = useState(true);
+
+  const headerHandler = (mostrar) => {
+    setMostrarHeader(mostrar);
+  }
+
   return (
     <>
       <div className="d-flex flex-column flex-root">
@@ -77,18 +84,20 @@ export function AuthPage() {
           {/*begin::Content*/}
           <div className="d-flex flex-column flex-row-fluid position-relative p-7 overflow-hidden">
             {/*begin::Content header*/}
-            <div className="position-absolute top-0 right-0 text-right mt-5 mb-15 mb-lg-0 flex-column-auto justify-content-center py-5 px-10">
-              <span className="font-weight-bold text-dark-50">
-                <FormattedMessage id="AUTH.LOGIN.ASK" />
-              </span>
-              <Link
-                to="/auth/registration"
-                className="font-weight-bold ml-2"
-                id="kt_login_signup"
-              >
-                <FormattedMessage id="AUTH.LOGIN.SIGNUP" />
-              </Link>
-            </div>
+            {/*<div className="position-absolute top-0 right-0 text-right mt-5 mb-15 mb-lg-0 flex-column-auto justify-content-center py-5 px-10">*/}
+            {/*  <span className="font-weight-bold text-dark-50">*/}
+            {/*    <FormattedMessage id="AUTH.LOGIN.ASK" />*/}
+            {/*  </span>*/}
+            {/*  <Link*/}
+            {/*    to="/auth/registration"*/}
+            {/*    className="font-weight-bold ml-2"*/}
+            {/*    id="kt_login_signup"*/}
+            {/*  >*/}
+            {/*    <FormattedMessage id="AUTH.LOGIN.SIGNUP" />*/}
+            {/*  </Link>*/}
+            {/*</div>*/}
+
+            {mostrarHeader && <AuthHeader />}
             {/*end::Content header*/}
 
             {/* begin::Content body */}
@@ -97,7 +106,10 @@ export function AuthPage() {
                 <ContentRoute path="/auth/login" component={Login} />
                 <ContentRoute
                   path="/auth/registration"
-                  component={Registration}
+                  // component={Registration}
+                  render={(props) => (
+                    <Registration {...props} mostrarHeader={headerHandler} />
+                  )}
                 />
                 <ContentRoute
                   path="/auth/forgot-password"

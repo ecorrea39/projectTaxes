@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import { useFormik } from "formik";
-import { connect } from "react-redux";
+import React, {useState, useEffect} from "react";
+import {useHistory} from "react-router-dom";
+import {useFormik} from "formik";
+import {connect} from "react-redux";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
-import { FormattedMessage, injectIntl } from "react-intl";
+import {Link} from "react-router-dom";
+import {FormattedMessage, injectIntl} from "react-intl";
 import * as auth from "../_redux/authRedux";
-import { register } from "../_redux/authCrud";
+import {register} from "../_redux/authCrud";
 
 const initialValues = {
   fullname: "",
@@ -17,7 +18,19 @@ const initialValues = {
 };
 
 function Registration(props) {
-  const { intl } = props;
+
+  const history = useHistory();
+
+  useEffect(() => {
+    props.mostrarHeader(false);
+  }, []);
+
+  const mostrarAuthPageHeader = () => {
+    props.mostrarHeader(true);
+    history.replace('auth/login');
+  }
+
+  const {intl} = props;
   const [loading, setLoading] = useState(false);
   const RegistrationSchema = Yup.object().shape({
     fullname: Yup.string()
@@ -94,11 +107,11 @@ function Registration(props) {
   const formik = useFormik({
     initialValues,
     validationSchema: RegistrationSchema,
-    onSubmit: (values, { setStatus, setSubmitting }) => {
+    onSubmit: (values, {setStatus, setSubmitting}) => {
       setSubmitting(true);
       enableLoading();
       register(values.email, values.fullname, values.username, values.password)
-        .then(({ data: { authToken } }) => {
+        .then(({data: {authToken}}) => {
           props.register(authToken);
           disableLoading();
           setSubmitting(false);
@@ -116,10 +129,10 @@ function Registration(props) {
   });
 
   return (
-    <div className="login-form login-signin" style={{ display: "block" }}>
+    <div className="login-form login-signin" style={{display: "block"}}>
       <div className="text-center mb-10 mb-lg-20">
         <h3 className="font-size-h1">
-          <FormattedMessage id="AUTH.REGISTER.TITLE" />
+          <FormattedMessage id="AUTH.REGISTER.TITLE"/>
         </h3>
         <p className="text-muted font-weight-bold">
           Enter your details to create your account
@@ -253,7 +266,7 @@ function Registration(props) {
             >
               I agree the Terms & Conditions
             </Link>
-            <span />
+            <span/>
           </label>
           {formik.touched.acceptTerms && formik.errors.acceptTerms ? (
             <div className="fv-plugins-message-container">
@@ -276,14 +289,23 @@ function Registration(props) {
             {loading && <span className="ml-3 spinner spinner-white"></span>}
           </button>
 
-          <Link to="/auth/login">
-            <button
-              type="button"
-              className="btn btn-light-primary font-weight-bold px-9 py-4 my-3 mx-4"
-            >
-              Cancel
-            </button>
-          </Link>
+          {/*<Link to="/auth/login">*/}
+          {/*  <button*/}
+          {/*    type="button"*/}
+          {/*    className="btn btn-light-primary font-weight-bold px-9 py-4 my-3 mx-4"*/}
+          {/*  >*/}
+          {/*    Cancel*/}
+          {/*  </button>*/}
+          {/*</Link>*/}
+
+          <button
+            type="button"
+            className="btn btn-light-primary font-weight-bold px-9 py-4 my-3 mx-4"
+            onClick={mostrarAuthPageHeader}
+          >
+            Cancel
+          </button>
+
         </div>
       </form>
     </div>
