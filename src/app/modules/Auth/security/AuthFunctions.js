@@ -7,16 +7,13 @@ export const REQUEST_PASSWORD_URL = "api/auth/forgot-password";
 export const ME_URL = `${process.env.REACT_APP_API_URL}/auth/me`;
 
 export function login(user, pass) {
-  // return axios.post(LOGIN_URL, { email, password });
 
-  const userTemporal = 'v103802128';
-  const passTemporal = '!Q2w3e4r5';
   const mtcaptcha = document.querySelector('[name="mtcaptcha-verifiedtoken"]').value;
 
   const axiosConfig = {
     headers: {
       Accept: 'application/vnd.api+json',
-      Authorization: `Basic ${btoa(`${userTemporal}:${passTemporal}:${mtcaptcha}`)}`
+      Authorization: `Basic ${btoa(`${user}:${pass}:${mtcaptcha}`)}`
     }
   };
 

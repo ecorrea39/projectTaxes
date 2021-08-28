@@ -19,8 +19,8 @@ import MTCaptcha from "../../MtCaptcha/MTCaptcha"
 */
 
 const initialValues = {
-  email: "admin@demo.com",
-  password: "demo",
+  user: "v103802128",
+  password: "!Q2w3e4r5",
 };
 
 function Login(props) {
@@ -28,18 +28,20 @@ function Login(props) {
   const [loading, setLoading] = useState(false);
 
   const LoginSchema = Yup.object().shape({
-    email: Yup.string()
-      .email("Wrong email format")
-      .min(3, "Minimum 3 symbols")
-      .max(50, "Maximum 50 symbols")
+
+    user: Yup
+      .string()
+      // .number().positive()
+      .min(7, "Mínimo 7 dígitos")
+      .max(10, "Máximo 10 dígitos")
       .required(
         intl.formatMessage({
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
         })
       ),
     password: Yup.string()
-      .min(3, "Minimum 3 symbols")
-      .max(50, "Maximum 50 symbols")
+      .min(8, "Mínimo 8 caracteres")
+      .max(25, "Máximo 25 caracteres")
       .required(
         intl.formatMessage({
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
@@ -73,7 +75,7 @@ function Login(props) {
     onSubmit: (values, { setStatus, setSubmitting }) => {
       enableLoading();
 
-      login(values.email, values.password)
+      login(values.user, values.password)
         .then(res => {
           console.log("loginRes", res);
           disableLoading();
@@ -141,17 +143,17 @@ function Login(props) {
 
         <div className="form-group fv-plugins-icon-container">
           <input
-            placeholder="Email"
-            type="email"
+            placeholder="Rif"
+            type="text"
             className={`form-control form-control-solid h-auto py-5 px-6 ${getInputClasses(
-              "email"
+              "user"
             )}`}
-            name="email"
-            {...formik.getFieldProps("email")}
+            name="user"
+            {...formik.getFieldProps("user")}
           />
-          {formik.touched.email && formik.errors.email ? (
+          {formik.touched.user && formik.errors.user ? (
             <div className="fv-plugins-message-container">
-              <div className="fv-help-block">{formik.errors.email}</div>
+              <div className="fv-help-block">{formik.errors.user}</div>
             </div>
           ) : null}
         </div>
