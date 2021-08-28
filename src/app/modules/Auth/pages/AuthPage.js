@@ -50,7 +50,7 @@ export function AuthPage() {
                   Bienvenido a inces
                 </h3>
                 <p className="font-weight-lighter text-white opacity-80">
-                  Instituto Nacional de Capacitación y Educación Socialista.
+                  Registrar, consultar, declarar, pagar y estar solvente con los deberes y obligaciones del INCES
                 </p>
               </div>
               {/* end:: Aside content */}

@@ -1,12 +1,13 @@
-import React, { useState, Fragment } from "react";
-import { Link } from "react-router-dom";
-import { useFormik } from "formik";
+import React, {useState, Fragment} from "react";
+import {Link} from "react-router-dom";
+import {useFormik} from "formik";
 import * as Yup from "yup";
-import { connect } from "react-redux";
-import { FormattedMessage, injectIntl } from "react-intl";
+import {connect} from "react-redux";
+import {FormattedMessage, injectIntl} from "react-intl";
 import * as auth from "../_redux/authRedux";
 import {login} from "../security/AuthFunctions";
-import MTCaptcha from "../../MtCaptcha/MTCaptcha"
+import MTCaptcha from "../../MtCaptcha/MTCaptcha";
+import {Button, Form, InputGroup, Col, Row} from "react-bootstrap";
 
 /*
   INTL (i18n) docs:
@@ -19,21 +20,26 @@ import MTCaptcha from "../../MtCaptcha/MTCaptcha"
 */
 
 const initialValues = {
-  user: "v103802128",
+  tipo: "",
+  user: "103802128",
   password: "!Q2w3e4r5",
 };
 
 function Login(props) {
-  const { intl } = props;
+  const {intl} = props;
   const [loading, setLoading] = useState(false);
 
   const LoginSchema = Yup.object().shape({
 
+    tipo :Yup.string()
+      .required(
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.REQUIRED_FIELD",
+        })
+      ),
     user: Yup
-      .string()
-      // .number().positive()
-      .min(7, "Mínimo 7 dígitos")
-      .max(10, "Máximo 10 dígitos")
+      .number().positive('Debe ser un número positivo')
+      .test('len', 'Debe ser un número de 7 a 9 dígitos', val => !val || (val && (val.toString().length >= 7 && val.toString().length <= 9)))
       .required(
         intl.formatMessage({
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
@@ -72,10 +78,12 @@ function Login(props) {
   const formik = useFormik({
     initialValues,
     validationSchema: LoginSchema,
-    onSubmit: (values, { setStatus, setSubmitting }) => {
+    onSubmit: (values, {setStatus, setSubmitting}) => {
       enableLoading();
 
-      login(values.user, values.password)
+      console.log("values", values);
+
+      login(values.tipo+values.user, values.password)
         .then(res => {
           console.log("loginRes", res);
           disableLoading();
@@ -111,7 +119,6 @@ function Login(props) {
           disableLoading();
           setSubmitting(false);
         });
-
     },
   });
 
@@ -120,11 +127,11 @@ function Login(props) {
       {/* begin::Head */}
       <div className="text-center mb-10 mb-lg-20">
         <h3 className="font-size-h1">
-          <FormattedMessage id="AUTH.LOGIN.TITLE" />
+          <FormattedMessage id="AUTH.LOGIN.TITLE"/>
         </h3>
-        <p className="text-muted font-weight-bold">
-          <FormattedMessage id="AUTH.LOGIN.DESCRIPTION" />
-        </p>
+        {/*<p className="text-muted font-weight-bold">*/}
+        {/*  <FormattedMessage id="AUTH.LOGIN.DESCRIPTION"/>*/}
+        {/*</p>*/}
       </div>
       {/* end::Head */}
 
@@ -138,8 +145,31 @@ function Login(props) {
             <div className="alert-text font-weight-bold">{formik.status}</div>
           </div>
         ) : (
-          <Fragment />
+          <Fragment/>
         )}
+
+        <Form.Group as={Col} controlId="tipo">
+          {/*<Form.Label>State</Form.Label>*/}
+          <Form.Control as="select"
+           onChange={formik.handleChange}
+           onBlur={formik.handleBlur}
+           value={formik.values.email}
+          >
+            <option value=""></option>
+            <option value="C">C</option>
+            <option value="E">E</option>
+            <option value="G">G</option>
+            <option value="J">J</option>
+            <option value="P">P</option>
+            <option value="V">V</option>
+          </Form.Control>
+
+          {formik.touched.tipo && formik.errors.tipo ? (
+            <div className="fv-plugins-message-container">
+              <div className="fv-help-block">{formik.errors.tipo}</div>
+            </div>
+          ) : null}
+        </Form.Group>
 
         <div className="form-group fv-plugins-icon-container">
           <input
@@ -175,7 +205,7 @@ function Login(props) {
         </div>
 
         <div className="form-group fv-plugins-icon-container">
-          <MTCaptcha />
+          <MTCaptcha/>
         </div>
 
         <div className="form-group d-flex flex-wrap justify-content-between align-items-center">
@@ -184,7 +214,7 @@ function Login(props) {
             className="text-dark-50 text-hover-primary my-3 mr-2"
             id="kt_login_forgot"
           >
-            <FormattedMessage id="AUTH.GENERAL.FORGOT_BUTTON" />
+            <FormattedMessage id="AUTH.GENERAL.FORGOT_BUTTON"/>
           </Link>
           <button
             id="kt_login_signin_submit"
@@ -192,7 +222,7 @@ function Login(props) {
             disabled={formik.isSubmitting}
             className={`btn btn-primary font-weight-bold px-9 py-4 my-3`}
           >
-            <span><FormattedMessage id="AUTH.LOGIN.SIGNIN" /></span>
+            <span><FormattedMessage id="AUTH.LOGIN.SIGNIN"/></span>
             {loading && <span className="ml-3 spinner spinner-white"></span>}
           </button>
         </div>
