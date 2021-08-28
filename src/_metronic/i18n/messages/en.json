@@ -31,7 +31,7 @@
   "AUTH.INPUT.USERNAME": "Username",
   "AUTH.VALIDATION.INVALID": "{name} is not valid",
   "AUTH.VALIDATION.REQUIRED": "{name} is required",
-  "AUTH.VALIDATION.MIN_LENGTH": "{name}} minimum length is {{min}",
+  "AUTH.VALIDATION.MIN_LENGTH": "Minimum length is {min}",
   "AUTH.VALIDATION.AGREEMENT_REQUIRED": "Accepting terms & conditions are required",
   "AUTH.VALIDATION.NOT_FOUND": "The requested {name} is not found",
   "AUTH.VALIDATION.INVALID_LOGIN": "The login detail is incorrect",
@@ -69,5 +69,9 @@
   "AUTH.LOGIN.DESCRIPTION": "Registrar, consultar, declarar, pagar y estar solvente con los deberes y obligaciones del INCES",
   "AUTH.LOGIN.ASK": "Don't have an account yet?",
   "AUTH.LOGIN.SIGNUP": "Sign up!",
-  "AUTH.LOGIN.SIGNIN": "Sign in"
+  "AUTH.LOGIN.SIGNIN": "Sign in",
+  "AUTH.VALIDATION.POSITIVE": "It must be a positive number",
+  "AUTH.VALIDATION.RANGELEN": "Debe estar entre {min} y {max} caracteres",
+  "AUTH.VALIDATION.MAX_LENGTH": "Máximo {max} caracteres",
+  "AUTH.LOGIN.WELCOME": "Welcome to inces"
 }

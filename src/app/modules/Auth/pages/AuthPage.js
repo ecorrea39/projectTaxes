@@ -47,10 +47,10 @@ export function AuthPage() {
               {/* start:: Aside content */}
               <div className="flex-column-fluid d-flex flex-column justify-content-center">
                 <h3 className="font-size-h1 mb-5 text-white">
-                  Bienvenido a inces
+                  <FormattedMessage id="AUTH.LOGIN.WELCOME"/>
                 </h3>
                 <p className="font-weight-lighter text-white opacity-80">
-                  Registrar, consultar, declarar, pagar y estar solvente con los deberes y obligaciones del INCES
+                  <FormattedMessage id="AUTH.LOGIN.DESCRIPTION"/>
                 </p>
               </div>
               {/* end:: Aside content */}

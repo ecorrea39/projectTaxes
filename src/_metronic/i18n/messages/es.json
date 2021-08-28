@@ -30,8 +30,8 @@
   "AUTH.INPUT.CONFIRM_PASSWORD": "Confirm Password",
   "AUTH.INPUT.USERNAME": "Usuario",
   "AUTH.VALIDATION.INVALID": "{name} is not valid",
-  "AUTH.VALIDATION.REQUIRED": "{name} is required",
-  "AUTH.VALIDATION.MIN_LENGTH": "{name}} minimum length is {{min}",
+  "AUTH.VALIDATION.REQUIRED": "{name} es requerido",
+  "AUTH.VALIDATION.MIN_LENGTH": "Mínimo {min} caracteres",
   "AUTH.VALIDATION.AGREEMENT_REQUIRED": "Accepting terms & conditions are required",
   "AUTH.VALIDATION.NOT_FOUND": "The requested {name} is not found",
   "AUTH.VALIDATION.INVALID_LOGIN": "Credenciales incorrectas",
@@ -69,5 +69,9 @@
   "AUTH.LOGIN.DESCRIPTION": "Registrar, consultar, declarar, pagar y estar solvente con los deberes y obligaciones del INCES",
   "AUTH.LOGIN.ASK": "¿No tienes una cuenta aún?",
   "AUTH.LOGIN.SIGNUP": "Regístrate",
-  "AUTH.LOGIN.SIGNIN": "Ingresar"
+  "AUTH.LOGIN.SIGNIN": "Ingresar",
+  "AUTH.VALIDATION.POSITIVE": "El número debe ser positivo",
+  "AUTH.VALIDATION.RANGELEN": "Debe estar entre {min} y {max} caracteres",
+  "AUTH.VALIDATION.MAX_LENGTH": "Mínimo {max} caracteres",
+  "AUTH.LOGIN.WELCOME": "Bienvenidos a inces"
 }

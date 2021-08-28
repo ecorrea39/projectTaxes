@@ -38,16 +38,33 @@ function Login(props) {
         })
       ),
     user: Yup
-      .number().positive('Debe ser un número positivo')
-      .test('len', 'Debe ser un número de 7 a 9 dígitos', val => !val || (val && (val.toString().length >= 7 && val.toString().length <= 9)))
+      .number().positive(
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.POSITIVE",
+        })
+      )
+      .test('len',
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.RANGELEN",
+        }, {min: 7, max: 9})
+        , val => !val || (val && (val.toString().length >= 7 && val.toString().length <= 9)))
       .required(
         intl.formatMessage({
-          id: "AUTH.VALIDATION.REQUIRED_FIELD",
-        })
+          id: "AUTH.VALIDATION.REQUIRED",
+        },
+          {name: 'RIF'})
       ),
     password: Yup.string()
-      .min(8, "Mínimo 8 caracteres")
-      .max(25, "Máximo 25 caracteres")
+      .min(8,
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.MIN_LENGTH",
+        }, {min: 8})
+        )
+      .max(25,
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.MAX_LENGTH",
+        }, {max: 25})
+        )
       .required(
         intl.formatMessage({
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
