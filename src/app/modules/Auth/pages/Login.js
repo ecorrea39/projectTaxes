@@ -1,4 +1,4 @@
-import React, {useState, Fragment} from "react";
+import React, {useState, Fragment, useContext} from "react";
 import {Link} from "react-router-dom";
 import {useFormik} from "formik";
 import * as Yup from "yup";
@@ -8,6 +8,8 @@ import * as auth from "../_redux/authRedux";
 import {login} from "../security/AuthFunctions";
 import MTCaptcha from "../../MtCaptcha/MTCaptcha";
 import {Button, Form, InputGroup, Col, Row} from "react-bootstrap";
+import AuthContext from "../../../store/auth-context";
+
 
 /*
   INTL (i18n) docs:
@@ -20,7 +22,7 @@ import {Button, Form, InputGroup, Col, Row} from "react-bootstrap";
 */
 
 const initialValues = {
-  tipo: "",
+  tipo: "V",
   user: "103802128",
   password: "!Q2w3e4r5",
 };
@@ -29,9 +31,11 @@ function Login(props) {
   const {intl} = props;
   const [loading, setLoading] = useState(false);
 
+  const authCtx = useContext(AuthContext);
+
   const LoginSchema = Yup.object().shape({
 
-    tipo :Yup.string()
+    tipo: Yup.string()
       .required(
         intl.formatMessage({
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
@@ -50,8 +54,8 @@ function Login(props) {
         , val => !val || (val && (val.toString().length >= 7 && val.toString().length <= 9)))
       .required(
         intl.formatMessage({
-          id: "AUTH.VALIDATION.REQUIRED",
-        },
+            id: "AUTH.VALIDATION.REQUIRED",
+          },
           {name: 'RIF'})
       ),
     password: Yup.string()
@@ -59,12 +63,12 @@ function Login(props) {
         intl.formatMessage({
           id: "AUTH.VALIDATION.MIN_LENGTH",
         }, {min: 8})
-        )
+      )
       .max(25,
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
         }, {max: 25})
-        )
+      )
       .required(
         intl.formatMessage({
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
@@ -100,7 +104,7 @@ function Login(props) {
 
       console.log("values", values);
 
-      login(values.tipo+values.user, values.password)
+      login(values.tipo + values.user, values.password)
         .then(res => {
           console.log("loginRes", res);
           disableLoading();
@@ -118,7 +122,8 @@ function Login(props) {
             localStorage.setItem('phone_number_mobile', attr.phone_number_mobile);
             localStorage.setItem('groups', attr.groups);
 
-            window.location.href = '/dashboard';
+            // window.location.href = '/dashboard';
+            authCtx.login(attr.authorization.token);
           } else {
             setStatus(
               res.txt
@@ -168,9 +173,9 @@ function Login(props) {
         <Form.Group as={Col} controlId="tipo">
           {/*<Form.Label>State</Form.Label>*/}
           <Form.Control as="select"
-           onChange={formik.handleChange}
-           onBlur={formik.handleBlur}
-           value={formik.values.email}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.email}
           >
             <option value=""></option>
             <option value="C">C</option>

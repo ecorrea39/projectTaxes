@@ -7,20 +7,25 @@
 
 import React from "react";
 import { Redirect, Switch, Route } from "react-router-dom";
-import { shallowEqual, useSelector } from "react-redux";
 import { Layout } from "../_metronic/layout";
 import BasePage from "./BasePage";
 import { Logout, AuthPage } from "./modules/Auth";
 import ErrorsPage from "./modules/ErrorsExamples/ErrorsPage";
 
+import {useContext} from "react";
+import AuthContext from "./store/auth-context";
+
 export function Routes() {
 
-  const authToken = localStorage.getItem('authToken');
+  const authCtx = useContext(AuthContext);
+  let isAuthorized = authCtx.isLoggedIn;
 
-  let isAuthorized = false;
+  if (!isAuthorized) {
+    const authToken = localStorage.getItem('authToken');
 
-  if (authToken) {
-    isAuthorized = true;
+    if (authToken) {
+      isAuthorized = true;
+    }
   }
 
   return (

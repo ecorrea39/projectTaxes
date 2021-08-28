@@ -1,7 +1,10 @@
 import React, {useEffect, Fragment} from 'react';
-import {Redirect, Route} from "react-router-dom";
+import {useContext} from "react";
+import AuthContext from "../../../store/auth-context";
 
 const Logout = () => {
+
+  const authCtx = useContext(AuthContext);
 
   useEffect(() => {
 
@@ -14,12 +17,13 @@ const Logout = () => {
     localStorage.removeItem('phone_number_mobile');
     localStorage.removeItem('groups');
 
-    window.location.href = '/';
+    // window.location.href = '/';
+    authCtx.logout();
 
   }, []);
 
   return (
-    <Fragment />
+    <Fragment/>
   );
 }
 

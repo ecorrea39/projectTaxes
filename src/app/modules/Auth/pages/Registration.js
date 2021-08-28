@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-import {useHistory} from "react-router-dom";
 import {useFormik} from "formik";
 import {connect} from "react-redux";
 import * as Yup from "yup";
@@ -19,16 +18,13 @@ const initialValues = {
 
 function Registration(props) {
 
-  const history = useHistory();
-
   useEffect(() => {
     props.mostrarHeader(false);
   }, []);
 
   const mostrarAuthPageHeader = () => {
     props.mostrarHeader(true);
-    // history.replace('auth/login');
-    window.location.href = '/';
+    // window.location.href = '/';
   }
 
   const {intl} = props;
