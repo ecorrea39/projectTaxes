@@ -295,13 +295,22 @@ function Registration(props) {
           {/*  </button>*/}
           {/*</Link>*/}
 
-          <button
-            type="button"
-            className="btn btn-light-primary font-weight-bold px-9 py-4 my-3 mx-4"
-            onClick={mostrarAuthPageHeader}
-          >
-            Cancel
-          </button>
+          {/*<button*/}
+          {/*  type="button"*/}
+          {/*  className="btn btn-light-primary font-weight-bold px-9 py-4 my-3 mx-4"*/}
+          {/*  onClick={mostrarAuthPageHeader}*/}
+          {/*>*/}
+          {/*  Cancel*/}
+          {/*</button>*/}
+
+          <Link to="/auth/login" onClick={mostrarAuthPageHeader}>
+            <button
+              type="button"
+              className="btn btn-light-primary font-weight-bold px-9 py-4 my-3 mx-4"
+            >
+              Cancel
+            </button>
+          </Link>
 
         </div>
       </form>
