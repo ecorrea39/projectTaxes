@@ -17,8 +17,9 @@ const Logout = () => {
     localStorage.removeItem('phone_number_mobile');
     localStorage.removeItem('groups');
 
-    // window.location.href = '/';
-    authCtx.logout();
+    // NO borrar este código comentado
+    // authCtx.logout();
+    window.location.href = '/';
 
   }, []);
 

@@ -23,8 +23,9 @@ function Registration(props) {
   }, []);
 
   const mostrarAuthPageHeader = () => {
-    props.mostrarHeader(true);
-    // window.location.href = '/';
+    // NO borrar este código comentado
+    // props.mostrarHeader(true);
+    window.location.href = '/';
   }
 
   const {intl} = props;
