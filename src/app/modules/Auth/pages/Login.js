@@ -22,7 +22,7 @@ import AuthContext from "../../../store/auth-context";
 */
 
 const initialValues = {
-  tipo: "V",
+  tipo: "",
   user: "103802128",
   password: "!Q2w3e4r5",
 };
@@ -177,7 +177,11 @@ function Login(props) {
                         onBlur={formik.handleBlur}
                         value={formik.values.email}
           >
-            <option value=""></option>
+
+            <FormattedMessage id='AUTH.GENERAL.IDENTIFICATIONTYPE'>
+              {(message) => <option value="">{message}</option>}
+            </FormattedMessage>
+
             <option value="C">C</option>
             <option value="E">E</option>
             <option value="G">G</option>

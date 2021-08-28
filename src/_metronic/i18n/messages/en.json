@@ -73,5 +73,6 @@
   "AUTH.VALIDATION.POSITIVE": "It must be a positive number",
   "AUTH.VALIDATION.RANGELEN": "Debe estar entre {min} y {max} caracteres",
   "AUTH.VALIDATION.MAX_LENGTH": "Máximo {max} caracteres",
-  "AUTH.LOGIN.WELCOME": "Welcome to inces"
+  "AUTH.LOGIN.WELCOME": "Welcome to inces",
+  "AUTH.GENERAL.IDENTIFICATIONTYPE": "Seleccione el tipo de Identificación"
 }
