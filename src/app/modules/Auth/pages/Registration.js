@@ -27,7 +27,8 @@ function Registration(props) {
 
   const mostrarAuthPageHeader = () => {
     props.mostrarHeader(true);
-    history.replace('auth/login');
+    // history.replace('auth/login');
+    window.location.href = '/';
   }
 
   const {intl} = props;
