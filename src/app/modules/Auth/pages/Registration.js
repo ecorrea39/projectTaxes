@@ -6,11 +6,12 @@ import {Link} from "react-router-dom";
 import {FormattedMessage, injectIntl} from "react-intl";
 import * as auth from "../_redux/authRedux";
 import {register} from "../_redux/authCrud";
+import {Col, Form} from "react-bootstrap";
 
 const initialValues = {
-  fullname: "",
+  tipo: "",
+  user: "",
   email: "",
-  username: "",
   password: "",
   changepassword: "",
   acceptTerms: false,
@@ -31,34 +32,61 @@ function Registration(props) {
   const {intl} = props;
   const [loading, setLoading] = useState(false);
   const RegistrationSchema = Yup.object().shape({
-    fullname: Yup.string()
-      .min(3, "Minimum 3 symbols")
-      .max(50, "Maximum 50 symbols")
+    tipo: Yup.string()
       .required(
         intl.formatMessage({
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
         })
+      ),
+    user: Yup
+      .number().positive(
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.POSITIVE",
+        })
+      )
+      .test('len',
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.RANGELEN",
+        }, {min: 7, max: 9})
+        , val => !val || (val && (val.toString().length >= 7 && val.toString().length <= 9)))
+      .required(
+        intl.formatMessage({
+            id: "AUTH.VALIDATION.REQUIRED",
+          },
+          {name: 'RIF'})
       ),
     email: Yup.string()
-      .email("Wrong email format")
-      .min(3, "Minimum 3 symbols")
-      .max(50, "Maximum 50 symbols")
-      .required(
+      .email(
         intl.formatMessage({
-          id: "AUTH.VALIDATION.REQUIRED_FIELD",
+          id: "AUTH.VALIDATION.WRONG_EMAIL_FORMAT",
         })
-      ),
-    username: Yup.string()
-      .min(3, "Minimum 3 symbols")
-      .max(50, "Maximum 50 symbols")
+      )
+      .min(7,
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.MIN_LENGTH",
+        }, {min: 7})
+      )
+      .max(50,
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.MAX_LENGTH",
+        }, {max: 50})
+      )
       .required(
         intl.formatMessage({
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
         })
       ),
     password: Yup.string()
-      .min(3, "Minimum 3 symbols")
-      .max(50, "Maximum 50 symbols")
+      .min(8,
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.MIN_LENGTH",
+        }, {min: 8})
+      )
+      .max(25,
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.MAX_LENGTH",
+        }, {max: 25})
+      )
       .required(
         intl.formatMessage({
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
@@ -74,11 +102,15 @@ function Registration(props) {
         is: (val) => (val && val.length > 0 ? true : false),
         then: Yup.string().oneOf(
           [Yup.ref("password")],
-          "Password and Confirm Password didn't match"
+          intl.formatMessage({
+            id: "AUTH.VALIDATION.PASSWORD_MATCH",
+          })
         ),
       }),
     acceptTerms: Yup.bool().required(
-      "You must accept the terms and conditions"
+      intl.formatMessage({
+        id: "AUTH.VALIDATION.AGREEMENT_REQUIRED",
+      })
     ),
   });
 
@@ -108,7 +140,7 @@ function Registration(props) {
     onSubmit: (values, {setStatus, setSubmitting}) => {
       setSubmitting(true);
       enableLoading();
-      register(values.email, values.fullname, values.username, values.password)
+      register(values.tipo + values.user, values.email, values.password)
         .then(({data: {authToken}}) => {
           props.register(authToken);
           disableLoading();
@@ -133,7 +165,7 @@ function Registration(props) {
           <FormattedMessage id="AUTH.REGISTER.TITLE"/>
         </h3>
         <p className="text-muted font-weight-bold">
-          Enter your details to create your account
+          <FormattedMessage id="AUTH.REGISTER.DESC"/>
         </p>
       </div>
 
@@ -150,24 +182,53 @@ function Registration(props) {
         )}
         {/* end: Alert */}
 
-        {/* begin: Fullname */}
+        {/* begin: tipo */}
+        <Form.Group as={Col} controlId="tipo">
+          {/*<Form.Label>State</Form.Label>*/}
+          <Form.Control as="select"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.email}
+          >
+
+            <FormattedMessage id='AUTH.GENERAL.IDENTIFICATIONTYPE'>
+              {(message) => <option value="">{message}</option>}
+            </FormattedMessage>
+
+            <option value="C">C</option>
+            <option value="E">E</option>
+            <option value="G">G</option>
+            <option value="J">J</option>
+            <option value="P">P</option>
+            <option value="V">V</option>
+          </Form.Control>
+
+          {formik.touched.tipo && formik.errors.tipo ? (
+            <div className="fv-plugins-message-container">
+              <div className="fv-help-block">{formik.errors.tipo}</div>
+            </div>
+          ) : null}
+        </Form.Group>
+        {/* end: tipo */}
+
+        {/* begin: user */}
         <div className="form-group fv-plugins-icon-container">
           <input
-            placeholder="Full name"
+            placeholder="rif"
             type="text"
             className={`form-control form-control-solid h-auto py-5 px-6 ${getInputClasses(
-              "fullname"
+              "user"
             )}`}
-            name="fullname"
-            {...formik.getFieldProps("fullname")}
+            name="user"
+            {...formik.getFieldProps("user")}
           />
-          {formik.touched.fullname && formik.errors.fullname ? (
+          {formik.touched.user && formik.errors.user ? (
             <div className="fv-plugins-message-container">
-              <div className="fv-help-block">{formik.errors.fullname}</div>
+              <div className="fv-help-block">{formik.errors.user}</div>
             </div>
           ) : null}
         </div>
-        {/* end: Fullname */}
+        {/* end: user */}
 
         {/* begin: Email */}
         <div className="form-group fv-plugins-icon-container">
@@ -187,25 +248,6 @@ function Registration(props) {
           ) : null}
         </div>
         {/* end: Email */}
-
-        {/* begin: Username */}
-        <div className="form-group fv-plugins-icon-container">
-          <input
-            placeholder="User name"
-            type="text"
-            className={`form-control form-control-solid h-auto py-5 px-6 ${getInputClasses(
-              "username"
-            )}`}
-            name="username"
-            {...formik.getFieldProps("username")}
-          />
-          {formik.touched.username && formik.errors.username ? (
-            <div className="fv-plugins-message-container">
-              <div className="fv-help-block">{formik.errors.username}</div>
-            </div>
-          ) : null}
-        </div>
-        {/* end: Username */}
 
         {/* begin: Password */}
         <div className="form-group fv-plugins-icon-container">
@@ -229,7 +271,7 @@ function Registration(props) {
         {/* begin: Confirm Password */}
         <div className="form-group fv-plugins-icon-container">
           <input
-            placeholder="Confirm Password"
+            placeholder="Re Password"
             type="password"
             className={`form-control form-control-solid h-auto py-5 px-6 ${getInputClasses(
               "changepassword"
@@ -262,7 +304,7 @@ function Registration(props) {
               className="mr-1"
               rel="noopener noreferrer"
             >
-              I agree the Terms & Conditions
+              <FormattedMessage id="AUTH.GENERAL.AGREEMENT"/>
             </Link>
             <span/>
           </label>
@@ -283,7 +325,7 @@ function Registration(props) {
             }
             className="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-4"
           >
-            <span>Submit</span>
+            <span><FormattedMessage id="GENERAL.BUTTON.ACCEPT"/></span>
             {loading && <span className="ml-3 spinner spinner-white"></span>}
           </button>
 
@@ -309,7 +351,7 @@ function Registration(props) {
               type="button"
               className="btn btn-light-primary font-weight-bold px-9 py-4 my-3 mx-4"
             >
-              Cancel
+              <FormattedMessage id="GENERAL.BUTTON.CANCEL"/>
             </button>
           </Link>
 

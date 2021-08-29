@@ -74,5 +74,10 @@
   "AUTH.VALIDATION.RANGELEN": "Debe estar entre {min} y {max} caracteres",
   "AUTH.VALIDATION.MAX_LENGTH": "Máximo {max} caracteres",
   "AUTH.LOGIN.WELCOME": "Welcome to inces",
-  "AUTH.GENERAL.IDENTIFICATIONTYPE": "Seleccione el tipo de Identificación"
+  "AUTH.GENERAL.IDENTIFICATIONTYPE": "Seleccione el tipo de Identificación",
+  "AUTH.VALIDATION.WRONG_EMAIL_FORMAT": "Formato de correo inválido",
+  "AUTH.VALIDATION.PASSWORD_MATCH": "Password and Confirm Password didn't match",
+  "AUTH.GENERAL.AGREEMENT": "I agree the Terms & Conditions",
+  "GENERAL.BUTTON.ACCEPT": "Accept",
+  "GENERAL.BUTTON.CANCEL": "Cancel"
 }

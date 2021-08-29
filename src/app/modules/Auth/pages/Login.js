@@ -199,7 +199,7 @@ function Login(props) {
 
         <div className="form-group fv-plugins-icon-container">
           <input
-            placeholder="Rif"
+            placeholder="rif"
             type="text"
             className={`form-control form-control-solid h-auto py-5 px-6 ${getInputClasses(
               "user"

@@ -21,8 +21,8 @@
   "AUTH.FORGOT.TITLE": "Contraseña olvidada?",
   "AUTH.FORGOT.DESC": "Ingrese su correo electrónico para restablecer su contraseña",
   "AUTH.FORGOT.SUCCESS": "Your account has been successfully reset.",
-  "AUTH.REGISTER.TITLE": "Sign Up",
-  "AUTH.REGISTER.DESC": "Enter your details to create your account",
+  "AUTH.REGISTER.TITLE": "Registro",
+  "AUTH.REGISTER.DESC": "Ingrese sus datos para crear la cuenta",
   "AUTH.REGISTER.SUCCESS": "Your account has been successfuly registered.",
   "AUTH.INPUT.EMAIL": "Email",
   "AUTH.INPUT.FULLNAME": "Fullname",
@@ -32,7 +32,7 @@
   "AUTH.VALIDATION.INVALID": "{name} is not valid",
   "AUTH.VALIDATION.REQUIRED": "{name} es requerido",
   "AUTH.VALIDATION.MIN_LENGTH": "Mínimo {min} caracteres",
-  "AUTH.VALIDATION.AGREEMENT_REQUIRED": "Accepting terms & conditions are required",
+  "AUTH.VALIDATION.AGREEMENT_REQUIRED": "Debe aceptar los terminos y condiciones",
   "AUTH.VALIDATION.NOT_FOUND": "The requested {name} is not found",
   "AUTH.VALIDATION.INVALID_LOGIN": "Credenciales incorrectas",
   "AUTH.VALIDATION.REQUIRED_FIELD": "Campo requerido",
@@ -74,5 +74,10 @@
   "AUTH.VALIDATION.RANGELEN": "Debe estar entre {min} y {max} caracteres",
   "AUTH.VALIDATION.MAX_LENGTH": "Mínimo {max} caracteres",
   "AUTH.LOGIN.WELCOME": "Bienvenidos a inces",
-  "AUTH.GENERAL.IDENTIFICATIONTYPE": "Seleccione el tipo de Identificación"
+  "AUTH.GENERAL.IDENTIFICATIONTYPE": "Seleccione el tipo de Identificación",
+  "AUTH.VALIDATION.WRONG_EMAIL_FORMAT": "Formato de correo inválido",
+  "AUTH.VALIDATION.PASSWORD_MATCH": "El password y su confirmación no coinciden",
+  "AUTH.GENERAL.AGREEMENT": "Estoy de acuerdo con los términos y condiciones",
+  "GENERAL.BUTTON.ACCEPT": "Aceptar",
+  "GENERAL.BUTTON.CANCEL": "Cancelar"
 }
