@@ -21,7 +21,6 @@ function Registration(props) {
 
   const history = useHistory();
 
-
   useEffect(() => {
     props.mostrarHeader(false);
   }, []);
@@ -30,6 +29,19 @@ function Registration(props) {
     // NO borrar este código comentado
     // props.mostrarHeader(true);
     window.location.href = '/';
+  }
+
+  const customHandleChange = (event) => {
+    const value = event.currentTarget.value;
+
+    if (value == '') {
+      formik.setFieldValue('user', value);
+    } else {
+      const regex = /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/;
+      if (regex.test(value.toString())) {
+        formik.setFieldValue('user', value);
+      }
+    }
   }
 
   const {intl} = props;
@@ -227,7 +239,9 @@ function Registration(props) {
               "user"
             )}`}
             name="user"
-            {...formik.getFieldProps("user")}
+            onChange={customHandleChange}
+            value={formik.values.user}
+            onBlur={formik.handleBlur}
           />
           {formik.touched.user && formik.errors.user ? (
             <div className="fv-plugins-message-container">
