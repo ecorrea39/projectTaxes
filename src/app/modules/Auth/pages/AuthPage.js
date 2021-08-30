@@ -109,7 +109,7 @@ export function AuthPage() {
                 <ContentRoute
                   path="/auth/user-verification-request"
                   render={(props) => (
-                    <UserVerificationRequest />
+                    <UserVerificationRequest {...props} mostrarHeader={headerHandler} />
                   )}
                 />
 

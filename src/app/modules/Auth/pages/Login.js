@@ -33,6 +33,19 @@ function Login(props) {
 
   const authCtx = useContext(AuthContext);
 
+  const customHandleChange = (event) => {
+    const value = event.currentTarget.value;
+
+    if (value == '') {
+      formik.setFieldValue('user', value);
+    } else {
+      const regex = /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/;
+      if (regex.test(value.toString())) {
+        formik.setFieldValue('user', value);
+      }
+    }
+  }
+
   const LoginSchema = Yup.object().shape({
 
     tipo: Yup.string()
@@ -205,7 +218,9 @@ function Login(props) {
               "user"
             )}`}
             name="user"
-            {...formik.getFieldProps("user")}
+            onChange={customHandleChange}
+            value={formik.values.user}
+            onBlur={formik.handleBlur}
           />
           {formik.touched.user && formik.errors.user ? (
             <div className="fv-plugins-message-container">

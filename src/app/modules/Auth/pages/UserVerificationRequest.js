@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import {Form, Container, Row, Col, Card, Button} from "react-bootstrap";
 import {toAbsoluteUrl} from "../../../../_metronic/_helpers";
 import {useFormik} from "formik";
@@ -16,6 +16,10 @@ const UserVerificationRequest = (props) => {
   const [loading, setLoading] = useState(false);
 
   const intl = useIntl();
+
+  useEffect(() => {
+    props.mostrarHeader(false);
+  }, []);
 
   const customHandleChange = (event) => {
     const value = event.currentTarget.value;
