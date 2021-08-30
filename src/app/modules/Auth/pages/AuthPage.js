@@ -9,6 +9,7 @@ import ForgotPassword from "./ForgotPassword";
 import "../../../../_metronic/_assets/sass/pages/login/classic/login-1.scss";
 import { FormattedMessage, injectIntl } from "react-intl";
 import AuthHeader from "./AuthHeader";
+import UserVerificationRequest from "./UserVerificationRequest";
 
 export function AuthPage() {
   const [mostrarHeader, setMostrarHeader] = useState(true);
@@ -104,6 +105,14 @@ export function AuthPage() {
             <div className="d-flex flex-column-fluid flex-center mt-30 mt-lg-0">
               <Switch>
                 <ContentRoute path="/auth/login" component={Login} />
+
+                <ContentRoute
+                  path="/auth/user-verification-request"
+                  render={(props) => (
+                    <UserVerificationRequest />
+                  )}
+                />
+
                 <ContentRoute
                   path="/auth/registration"
                   // component={Registration}

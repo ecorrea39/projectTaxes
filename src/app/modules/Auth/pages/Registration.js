@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import {useFormik} from "formik";
 import {connect} from "react-redux";
 import * as Yup from "yup";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {FormattedMessage, injectIntl} from "react-intl";
 import * as auth from "../_redux/authRedux";
 import {Col, Form} from "react-bootstrap";
@@ -18,6 +18,9 @@ const initialValues = {
 };
 
 function Registration(props) {
+
+  const history = useHistory();
+
 
   useEffect(() => {
     props.mostrarHeader(false);
@@ -138,23 +141,27 @@ function Registration(props) {
     initialValues,
     validationSchema: RegistrationSchema,
     onSubmit: (values, {setStatus, setSubmitting}) => {
-      setSubmitting(true);
-      enableLoading();
-      register(values.tipo + values.user, values.email, values.password)
-        .then(res => {
-          console.log("llamadaRegister", res);
-          disableLoading();
-          setSubmitting(false);
-        })
-        .catch(() => {
-          setSubmitting(false);
-          setStatus(
-            intl.formatMessage({
-              id: "AUTH.VALIDATION.INVALID_LOGIN",
-            })
-          );
-          disableLoading();
-        });
+
+      history.replace('/auth/user-verification-request');
+
+      // setSubmitting(true);
+      // enableLoading();
+
+      // register(values.tipo + values.user, values.email, values.password)
+      //   .then(res => {
+      //     console.log("llamadaRegister", res);
+      //     disableLoading();
+      //     setSubmitting(false);
+      //   })
+      //   .catch(() => {
+      //     setSubmitting(false);
+      //     setStatus(
+      //       intl.formatMessage({
+      //         id: "AUTH.VALIDATION.INVALID_LOGIN",
+      //       })
+      //     );
+      //     disableLoading();
+      //   });
     },
   });
 
