@@ -49,8 +49,47 @@ export function login(user, pass) {
   });
 }
 
-export function register(email, fullname, username, password) {
-  return axios.post(REGISTER_URL, {email, fullname, username, password});
+export function register(user, email, password) {
+
+  const data = {
+    jsonapi: { version: '1.0' },
+    data: {
+      type: 'newUser',
+      id: user,
+      attributes: {
+        uid: user,
+        mail: email,
+        pass: password
+      }
+    }
+  };
+  const axiosConfig = {
+    headers: {
+      'Content-Type': 'application/vnd.api+json',
+      Accept: 'application/vnd.api+json'
+    }
+  };
+
+  axios.post(`${API_URL}users/`, data, axiosConfig).then(function (res) {
+
+    console.log("registerRes", res);
+  }).catch((err) => {
+    let txt = '';
+    switch (err.response.status) {
+      case 409:
+        txt = 'El usuario ya se encuentra registrado';
+        break;
+      default:
+        txt = 'Error al registrar usuario';
+    }
+
+    const jsonRespuesta = {
+      "status": 400,
+      "txt": txt
+    }
+
+    return jsonRespuesta;
+  });
 }
 
 export function requestPassword(email) {

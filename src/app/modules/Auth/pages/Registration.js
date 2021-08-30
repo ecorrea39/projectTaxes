@@ -5,8 +5,8 @@ import * as Yup from "yup";
 import {Link} from "react-router-dom";
 import {FormattedMessage, injectIntl} from "react-intl";
 import * as auth from "../_redux/authRedux";
-import {register} from "../_redux/authCrud";
 import {Col, Form} from "react-bootstrap";
+import {register} from "../security/AuthFunctions";
 
 const initialValues = {
   tipo: "",
@@ -141,8 +141,8 @@ function Registration(props) {
       setSubmitting(true);
       enableLoading();
       register(values.tipo + values.user, values.email, values.password)
-        .then(({data: {authToken}}) => {
-          props.register(authToken);
+        .then(res => {
+          console.log("llamadaRegister", res);
           disableLoading();
           setSubmitting(false);
         })
