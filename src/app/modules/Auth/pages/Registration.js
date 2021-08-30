@@ -188,7 +188,7 @@ function Registration(props) {
           <Form.Control as="select"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        value={formik.values.email}
+                        value={formik.values.tipo}
           >
 
             <FormattedMessage id='AUTH.GENERAL.IDENTIFICATIONTYPE'>
