@@ -158,12 +158,12 @@ const UserVerificationRequest = (props) => {
           <Card.Title>
             Ingrese el código enviado a su correo
           </Card.Title>
-          <Card.Text>
+          <Card.Body>
             <Container>
               <Row>
                 <Col md={12}>
                   <Form.Group as={Col} controlId="user">
-                    <Form.Control size="lg" type="text" readOnly={true}
+                    <Form.Control size="lg" type="text" readOnly
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.user}
@@ -194,7 +194,7 @@ const UserVerificationRequest = (props) => {
 
               <br/>
 
-              <Row text>
+              <Row>
                 <Col md={12}>
                   <Button variant="secondary" size="lg" block
                           type="submit"
@@ -210,7 +210,7 @@ const UserVerificationRequest = (props) => {
             </Container>
 
 
-          </Card.Text>
+          </Card.Body>
         </Card.Body>
       </Card>
     </Fragment>
