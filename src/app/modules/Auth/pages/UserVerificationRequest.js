@@ -159,57 +159,60 @@ const UserVerificationRequest = (props) => {
             Ingrese el código enviado a su correo
           </Card.Title>
           <Card.Body>
-            <Container>
-              <Row>
-                <Col md={12}>
-                  <Form.Group as={Col} controlId="user">
-                    <Form.Control size="lg" type="text" readOnly
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                  value={formik.values.user}
-                    />
-                  </Form.Group>
-                </Col>
-              </Row>
+            <form
+              onSubmit={formik.handleSubmit}
+              className="form fv-plugins-bootstrap fv-plugins-framework"
+            >
+              <Container>
+                <Row>
+                  <Col md={12}>
+                    <Form.Group as={Col} controlId="user">
+                      <Form.Control size="lg" type="text" readOnly
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.user}
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
 
-              <br/>
+                <br/>
 
-              <Row>
-                <Col md={12}>
-                  <Form.Group as={Col} controlId="verification_code">
-                    <Form.Control size="lg" type="text" placeholder="Código de Verificación"
-                                  onChange={customHandleChange}
-                                  onBlur={formik.handleBlur}
-                                  value={formik.values.verification_code}
-                    />
+                <Row>
+                  <Col md={12}>
+                    <Form.Group as={Col} controlId="verification_code">
+                      <Form.Control size="lg" type="text" placeholder="Código de Verificación"
+                                    onChange={customHandleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.verification_code}
+                      />
 
-                    {formik.touched.verification_code && formik.errors.verification_code ? (
-                      <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.verification_code}</div>
-                      </div>
-                    ) : null}
-                  </Form.Group>
-                </Col>
-              </Row>
+                      {formik.touched.verification_code && formik.errors.verification_code ? (
+                        <div className="fv-plugins-message-container">
+                          <div className="fv-help-block">{formik.errors.verification_code}</div>
+                        </div>
+                      ) : null}
+                    </Form.Group>
+                  </Col>
+                </Row>
 
-              <br/>
+                <br/>
 
-              <Row>
-                <Col md={12}>
-                  <Button variant="secondary" size="lg" block
-                          type="submit"
-                          disabled={
-                            formik.isSubmitting ||
-                            !formik.isValid
-                          }
-                  >
-                    Aceptar
-                  </Button>
-                </Col>
-              </Row>
-            </Container>
-
-
+                <Row>
+                  <Col md={12}>
+                    <Button variant="secondary" size="lg" block
+                            type="submit"
+                            disabled={
+                              formik.isSubmitting ||
+                              !formik.isValid
+                            }
+                    >
+                      Aceptar
+                    </Button>
+                  </Col>
+                </Row>
+              </Container>
+            </form>
           </Card.Body>
         </Card.Body>
       </Card>
