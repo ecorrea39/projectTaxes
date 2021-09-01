@@ -6,7 +6,7 @@ import {Link, useHistory} from "react-router-dom";
 import {FormattedMessage, injectIntl} from "react-intl";
 import * as auth from "../_redux/authRedux";
 import {Col, Form} from "react-bootstrap";
-import {register} from "../security/AuthFunctions";
+import axios from "axios";
 
 const initialValues = {
   tipo: "",
@@ -19,10 +19,20 @@ const initialValues = {
 
 function Registration(props) {
 
+  const API_URL = `${process.env.REACT_APP_API_URL}`;
   const history = useHistory();
 
   useEffect(() => {
     props.mostrarHeader(false);
+
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('expires_in');
+    localStorage.removeItem('rif');
+    localStorage.removeItem('name');
+    localStorage.removeItem('surname');
+    localStorage.removeItem('mail');
+    localStorage.removeItem('phone_number_mobile');
+    localStorage.removeItem('groups');
   }, []);
 
   const mostrarAuthPageHeader = () => {
@@ -154,26 +164,64 @@ function Registration(props) {
     validationSchema: RegistrationSchema,
     onSubmit: (values, {setStatus, setSubmitting}) => {
 
-      history.replace('/auth/user-verification-request');
+      setSubmitting(true);
+      enableLoading();
 
-      // setSubmitting(true);
-      // enableLoading();
+      const data = {
+        jsonapi: {version: '1.0'},
+        data: {
+          type: 'newUser',
+          id: values.tipo + values.user,
+          attributes: {
+            uid: values.tipo + values.user,
+            mail: values.email,
+            pass: values.password
+          }
+        }
+      };
+      const axiosConfig = {
+        headers: {
+          'Content-Type': 'application/vnd.api+json',
+          Accept: 'application/vnd.api+json'
+        }
+      };
 
-      // register(values.tipo + values.user, values.email, values.password)
-      //   .then(res => {
-      //     console.log("llamadaRegister", res);
-      //     disableLoading();
-      //     setSubmitting(false);
-      //   })
-      //   .catch(() => {
-      //     setSubmitting(false);
-      //     setStatus(
-      //       intl.formatMessage({
-      //         id: "AUTH.VALIDATION.INVALID_LOGIN",
-      //       })
-      //     );
-      //     disableLoading();
-      //   });
+      axios.post(`${API_URL}users/`, data, axiosConfig).then(function (res) {
+
+        console.log("registerRes", res);
+        disableLoading();
+        setSubmitting(false);
+
+        history.push({
+          pathname: '/auth/user-verification-request',
+          search: '?user=' + formik.values.user,  // query string
+          // state: {  // location state
+          //   user: '123',
+          // },
+        });
+
+      }).catch((err) => {
+        console.log("err", err);
+
+        setSubmitting(false);
+        disableLoading();
+
+        let txt = '';
+        switch (err.response.status) {
+          case 409:
+            txt = 'El usuario ya se encuentra registrado';
+            break;
+          default:
+            txt = 'Error al registrar usuario';
+        }
+
+        const jsonRespuesta = {
+          "status": 400,
+          "txt": txt
+        }
+
+        alert(txt);
+      });
     },
   });
 

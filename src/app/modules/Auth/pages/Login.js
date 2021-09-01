@@ -5,11 +5,10 @@ import * as Yup from "yup";
 import {connect} from "react-redux";
 import {FormattedMessage, injectIntl} from "react-intl";
 import * as auth from "../_redux/authRedux";
-import {login} from "../security/AuthFunctions";
 import MTCaptcha from "../../MtCaptcha/MTCaptcha";
 import {Button, Form, InputGroup, Col, Row} from "react-bootstrap";
 import AuthContext from "../../../store/auth-context";
-
+import axios from "axios";
 
 /*
   INTL (i18n) docs:
@@ -23,8 +22,8 @@ import AuthContext from "../../../store/auth-context";
 
 const initialValues = {
   tipo: "",
-  user: "103802128",
-  password: "!Q2w3e4r5",
+  user: "123123120",
+  password: "inces123.",
 };
 
 function Login(props) {
@@ -32,6 +31,8 @@ function Login(props) {
   const [loading, setLoading] = useState(false);
 
   const authCtx = useContext(AuthContext);
+
+  const API_URL = `${process.env.REACT_APP_API_URL}`;
 
   const customHandleChange = (event) => {
     const value = event.currentTarget.value;
@@ -117,39 +118,59 @@ function Login(props) {
 
       console.log("values", values);
 
-      login(values.tipo + values.user, values.password)
-        .then(res => {
-          console.log("loginRes", res);
-          disableLoading();
+      const mtcaptcha = document.querySelector('[name="mtcaptcha-verifiedtoken"]').value;
 
-          if (res.status == 200) {
-            const attr = res.data.data.attributes;
-            const data = res.data.data;
+      const axiosConfig = {
+        headers: {
+          Accept: 'application/vnd.api+json',
+          Authorization: `Basic ${btoa(`${values.tipo + values.user}:${values.password}:${mtcaptcha}`)}`
+        }
+      };
 
-            localStorage.setItem('authToken', attr.authorization.token);
-            localStorage.setItem('expires_in', attr.authorization.expires_in);
-            localStorage.setItem('rif', data.id);
-            localStorage.setItem('name', attr.name);
-            localStorage.setItem('surname', attr.surname);
-            localStorage.setItem('mail', attr.mail);
-            localStorage.setItem('phone_number_mobile', attr.phone_number_mobile);
-            localStorage.setItem('groups', attr.groups);
+      axios.get(`${API_URL}users/authentication/`, axiosConfig).then((res) => {
 
-            // window.location.href = '/dashboard';
-            authCtx.login(attr.authorization.token);
-          } else {
-            setStatus(
-              res.txt
-            );
-          }
-        })
-        .catch(() => {
-          setStatus(
-            intl.formatMessage({
-              id: "AUTH.VALIDATION.INVALID_LOGIN",
-            })
-          );
-        })
+        console.log("loginRes", res);
+
+        const attr = res.data.data.attributes;
+        const data = res.data.data;
+
+        localStorage.setItem('authToken', attr.authorization.token);
+        localStorage.setItem('expires_in', attr.authorization.expires_in);
+        localStorage.setItem('rif', data.id);
+        localStorage.setItem('name', attr.name);
+        localStorage.setItem('surname', attr.surname);
+        localStorage.setItem('mail', attr.mail);
+        localStorage.setItem('phone_number_mobile', attr.phone_number_mobile);
+        localStorage.setItem('groups', attr.groups);
+
+        // window.location.href = '/dashboard';
+        authCtx.login(attr.authorization.token);
+
+      }).catch((err) => {
+        console.log("errorEnConsulta", err);
+
+        let txt = '';
+        switch (err.response.status) {
+          case 423:
+            txt = 'Actualización de contraseña requerida';
+            break;
+          case 401:
+            txt = 'Credenciales inválidas';
+            break;
+          case 424:
+            txt = 'Desafío captcha usado. Por favor resuélvalo nuevamente';
+            setTimeout(() => {
+              window.location.href = '/signin';
+            }, 3000);
+            break;
+          default:
+            txt = 'Error al registrar usuario';
+        }
+
+        setStatus(
+          txt
+        );
+      })
         .finally(() => {
           disableLoading();
           setSubmitting(false);

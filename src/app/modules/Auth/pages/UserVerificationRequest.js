@@ -3,8 +3,8 @@ import {Form, Container, Row, Col, Card, Button} from "react-bootstrap";
 import {toAbsoluteUrl} from "../../../../_metronic/_helpers";
 import {useFormik} from "formik";
 import * as Yup from "yup";
+import {useLocation} from "react-router-dom"
 import {FormattedMessage, injectIntl, useIntl} from "react-intl";
-import {login} from "../security/AuthFunctions";
 
 const initialValues = {
   user: "11223344",
@@ -14,6 +14,8 @@ const initialValues = {
 const UserVerificationRequest = (props) => {
 
   const [loading, setLoading] = useState(false);
+
+  const location = useLocation();
 
   const intl = useIntl();
 
@@ -45,8 +47,8 @@ const UserVerificationRequest = (props) => {
       .test('len',
         intl.formatMessage({
           id: "AUTH.VALIDATION.RANGELEN",
-        }, {min: 7, max: 9})
-        , val => !val || (val && (val.toString().length >= 7 && val.toString().length <= 9)))
+        }, {min: 5, max: 9})
+        , val => !val || (val && (val.toString().length >= 5 && val.toString().length <= 9)))
       .required(
         intl.formatMessage({
             id: "AUTH.VALIDATION.REQUIRED",
@@ -100,11 +102,12 @@ const UserVerificationRequest = (props) => {
       setSubmitting(true);
       enableLoading();
 
+      console.log("values", formik.values);
+      console.log("location.search", location.search);
+      alert(formik.values.verification_code);
+
       disableLoading();
       setSubmitting(false);
-
-      console.log("values", formik.values);
-      alert(formik.values.verification_code);
 
       // login(values.tipo + values.user, values.password)
       //   .then(res => {
@@ -193,7 +196,13 @@ const UserVerificationRequest = (props) => {
 
               <Row text>
                 <Col md={12}>
-                  <Button variant="secondary" size="lg" block>
+                  <Button variant="secondary" size="lg" block
+                          type="submit"
+                          disabled={
+                            formik.isSubmitting ||
+                            !formik.isValid
+                          }
+                  >
                     Aceptar
                   </Button>
                 </Col>
