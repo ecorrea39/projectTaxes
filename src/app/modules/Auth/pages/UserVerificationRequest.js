@@ -5,6 +5,7 @@ import {useFormik} from "formik";
 import * as Yup from "yup";
 import {useLocation} from "react-router-dom"
 import {FormattedMessage, injectIntl, useIntl} from "react-intl";
+import queryString from 'query-string';
 
 const initialValues = {
   user: "11223344",
@@ -104,7 +105,11 @@ const UserVerificationRequest = (props) => {
 
       console.log("values", formik.values);
       console.log("location.search", location.search);
-      alert(formik.values.verification_code);
+
+      const value = queryString.parse(location.search);
+      const user = value.user;
+      console.log('user::::', user);
+      console.log('formik.values.verification_code', formik.values.verification_code);
 
       disableLoading();
       setSubmitting(false);

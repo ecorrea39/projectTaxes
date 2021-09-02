@@ -195,32 +195,35 @@ function Registration(props) {
         history.push({
           pathname: '/auth/user-verification-request',
           search: '?user=' + formik.values.user,  // query string
-          // state: {  // location state
-          //   user: '123',
-          // },
         });
 
       }).catch((err) => {
         console.log("err", err);
 
-        setSubmitting(false);
-        disableLoading();
+        if (err.response !== undefined && err.response !== null) {
+          setSubmitting(false);
+          disableLoading();
 
-        let txt = '';
-        switch (err.response.status) {
-          case 409:
-            txt = 'El usuario ya se encuentra registrado';
-            break;
-          default:
-            txt = 'Error al registrar usuario';
+          let txt = '';
+          switch (err.response.status) {
+            case 409:
+              txt = 'El usuario ya se encuentra registrado';
+              break;
+            default:
+              txt = 'Error al registrar usuario';
+          }
+
+          const jsonRespuesta = {
+            "status": 400,
+            "txt": txt
+          }
+
+          alert(txt);
+        } else {
+          setSubmitting(false);
+          alert('Error de comunicación en el proceso de Registro');
+          disableLoading();
         }
-
-        const jsonRespuesta = {
-          "status": 400,
-          "txt": txt
-        }
-
-        alert(txt);
       });
     },
   });

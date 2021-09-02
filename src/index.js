@@ -25,7 +25,6 @@ import {
   MetronicSubheaderProvider,
 } from "./_metronic/layout";
 import { MetronicI18nProvider } from "./_metronic/i18n";
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 /**
  * Base URL of the website.
