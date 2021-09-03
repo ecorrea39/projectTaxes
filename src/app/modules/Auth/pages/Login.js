@@ -216,12 +216,13 @@ function Login(props) {
               {(message) => <option value="">{message}</option>}
             </FormattedMessage>
 
-            <option value="C">C</option>
-            <option value="E">E</option>
-            <option value="G">G</option>
-            <option value="J">J</option>
-            <option value="P">P</option>
-            <option value="V">V</option>
+            <option value="j">J</option>
+            <option value="v">V</option>
+            <option value="c">C</option>
+            <option value="e">E</option>
+            <option value="g">G</option>
+            <option value="p">P</option>
+
           </Form.Control>
 
           {formik.touched.tipo && formik.errors.tipo ? (

@@ -45,23 +45,6 @@ const UserVerificationRequest = (props) => {
 
   const LoginSchema = Yup.object().shape({
 
-    user: Yup
-      .number().positive(
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.POSITIVE",
-        })
-      )
-      .test('len',
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.RANGELEN",
-        }, {min: 5, max: 9})
-        , val => !val || (val && (val.toString().length >= 5 && val.toString().length <= 9)))
-      .required(
-        intl.formatMessage({
-            id: "AUTH.VALIDATION.REQUIRED",
-          },
-          {name: 'RIF'})
-      ),
     verification_code: Yup
       .number().positive(
         intl.formatMessage({
@@ -137,6 +120,7 @@ const UserVerificationRequest = (props) => {
         }
       };
 
+      console.log('data', data);
 
       axios.post(`${API_URL}users/${rif}`, data, axiosConfig).then(function (res) {
         console.log("res", res);
@@ -146,7 +130,9 @@ const UserVerificationRequest = (props) => {
 
         alert('Bienvenido al Sistema Inces');
 
-        history.replace('/auth/login');
+        // history.replace('/auth/login');
+
+        window.location.href = '/';
 
       }).catch((err) => {
         console.log("err", err);
