@@ -131,6 +131,9 @@ function Login(props) {
 
         console.log("loginRes", res);
 
+        disableLoading();
+        setSubmitting(false);
+
         const attr = res.data.data.attributes;
         const data = res.data.data;
 
@@ -148,6 +151,9 @@ function Login(props) {
 
       }).catch((err) => {
         console.log("errorEnConsulta", err);
+
+        disableLoading();
+        setSubmitting(false);
 
         let txt = '';
         switch (err.response.status) {
@@ -170,11 +176,7 @@ function Login(props) {
         setStatus(
           txt
         );
-      })
-        .finally(() => {
-          disableLoading();
-          setSubmitting(false);
-        });
+      });
     },
   });
 
