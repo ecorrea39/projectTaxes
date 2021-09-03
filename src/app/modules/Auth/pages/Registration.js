@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import {useFormik} from "formik";
 import {connect} from "react-redux";
 import * as Yup from "yup";
@@ -22,6 +22,8 @@ function Registration(props) {
   const API_URL = `${process.env.REACT_APP_API_URL}`;
   const history = useHistory();
 
+  props.mostrarHeader(false);
+
   useEffect(() => {
     props.mostrarHeader(false);
 
@@ -36,7 +38,7 @@ function Registration(props) {
   }, []);
 
   const mostrarAuthPageHeader = () => {
-    // NO borrar este código comentado
+    // NO borrar este código comentado porque demuestra que el problema es un bug en el MtCaptcha que obliga la recarga total
     // props.mostrarHeader(true);
     window.location.href = '/';
   }
@@ -44,7 +46,7 @@ function Registration(props) {
   const customHandleChange = (event) => {
     const value = event.currentTarget.value;
 
-    if (value == '') {
+    if (value === '') {
       formik.setFieldValue('user', value);
     } else {
       const regex = /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/;
@@ -189,6 +191,7 @@ function Registration(props) {
       axios.post(`${API_URL}users/`, data, axiosConfig).then(function (res) {
 
         console.log("registerRes", res);
+
         disableLoading();
         setSubmitting(false);
 
@@ -200,9 +203,10 @@ function Registration(props) {
       }).catch((err) => {
         console.log("err", err);
 
+        disableLoading();
+        setSubmitting(false);
+
         if (err.response !== undefined && err.response !== null) {
-          setSubmitting(false);
-          disableLoading();
 
           let txt = '';
           switch (err.response.status) {
@@ -213,16 +217,9 @@ function Registration(props) {
               txt = 'Error al registrar usuario';
           }
 
-          const jsonRespuesta = {
-            "status": 400,
-            "txt": txt
-          }
-
           alert(txt);
         } else {
-          setSubmitting(false);
           alert('Error de comunicación en el proceso de Registro');
-          disableLoading();
         }
       });
     },

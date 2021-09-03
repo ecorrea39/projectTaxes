@@ -1,28 +1,34 @@
-import React, {Fragment, useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState, useRef} from "react";
 import {Form, Container, Row, Col, Card, Button} from "react-bootstrap";
 import {toAbsoluteUrl} from "../../../../_metronic/_helpers";
 import {useFormik} from "formik";
 import * as Yup from "yup";
-import {useLocation} from "react-router-dom"
+import {useLocation, useHistory} from "react-router-dom"
 import {FormattedMessage, injectIntl, useIntl} from "react-intl";
 import queryString from 'query-string';
+import axios from "axios";
 
-const initialValues = {
-  user: "11223344",
-  verification_code: ""
-};
 
 const UserVerificationRequest = (props) => {
 
   const [loading, setLoading] = useState(false);
 
-  const location = useLocation();
-
   const intl = useIntl();
 
-  useEffect(() => {
-    props.mostrarHeader(false);
-  }, []);
+  const API_URL = `${process.env.REACT_APP_API_URL}`;
+  const history = useHistory();
+
+
+  const location = useLocation();
+  const value = queryString.parse(location.search);
+  const user = value.user;
+
+  const initialValues = {
+    user: user,
+    verification_code: ""
+  };
+
+  props.mostrarHeader(false);
 
   const customHandleChange = (event) => {
     const value = event.currentTarget.value;
@@ -106,51 +112,71 @@ const UserVerificationRequest = (props) => {
       console.log("values", formik.values);
       console.log("location.search", location.search);
 
-      const value = queryString.parse(location.search);
-      const user = value.user;
+
       console.log('user::::', user);
       console.log('formik.values.verification_code', formik.values.verification_code);
 
-      disableLoading();
-      setSubmitting(false);
 
-      // login(values.tipo + values.user, values.password)
-      //   .then(res => {
-      //     console.log("loginRes", res);
-      //     disableLoading();
-      //
-      //     if (res.status == 200) {
-      //       const attr = res.data.data.attributes;
-      //       const data = res.data.data;
-      //
-      //       localStorage.setItem('authToken', attr.authorization.token);
-      //       localStorage.setItem('expires_in', attr.authorization.expires_in);
-      //       localStorage.setItem('rif', data.id);
-      //       localStorage.setItem('name', attr.name);
-      //       localStorage.setItem('surname', attr.surname);
-      //       localStorage.setItem('mail', attr.mail);
-      //       localStorage.setItem('phone_number_mobile', attr.phone_number_mobile);
-      //       localStorage.setItem('groups', attr.groups);
-      //
-      //       // window.location.href = '/dashboard';
-      //       authCtx.login(attr.authorization.token);
-      //     } else {
-      //       setStatus(
-      //         res.txt
-      //       );
-      //     }
-      //   })
-      //   .catch(() => {
-      //     setStatus(
-      //       intl.formatMessage({
-      //         id: "AUTH.VALIDATION.INVALID_LOGIN",
-      //       })
-      //     );
-      //   })
-      //   .finally(() => {
-      //     disableLoading();
-      //     setSubmitting(false);
-      //   });
+      const rif = user;
+      const data = {
+        jsonapi: {version: '1.0'},
+        data: {
+          type: 'action',
+          id: rif,
+          attributes: {
+            action: 'user_verification_request',
+            verification_code: formik.values.verification_code
+          }
+        }
+      };
+
+      const axiosConfig = {
+        headers: {
+          'Content-Type': 'application/vnd.api+json',
+          Accept: 'application/vnd.api+json'
+        }
+      };
+
+
+      axios.post(`${API_URL}users/${rif}`, data, axiosConfig).then(function (res) {
+        console.log("res", res);
+
+        disableLoading();
+        setSubmitting(false);
+
+        alert('Bienvenido al Sistema Inces');
+
+        history.replace('/auth/login');
+
+      }).catch((err) => {
+        console.log("err", err);
+
+        disableLoading();
+        setSubmitting(false);
+
+        if (err.response !== undefined && err.response !== null) {
+          let txt = '';
+          switch (err.response.status) {
+            case 401:
+              txt = 'Código de validación incorecto';
+              break;
+            case 404:
+              txt = 'Usuario no registrado';
+              break;
+            case 406:
+              txt = 'El usuario ya se encuentra registrado';
+              break;
+            default:
+              txt = 'Error al registrar usuario';
+
+              alert(txt);
+          }
+
+        } else {
+
+          alert('Error de comunicación en el proceso de Registro');
+        }
+      });
     },
   });
 
