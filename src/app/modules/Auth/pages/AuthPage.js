@@ -10,6 +10,7 @@ import "../../../../_metronic/_assets/sass/pages/login/classic/login-1.scss";
 import { FormattedMessage, injectIntl } from "react-intl";
 import AuthHeader from "./AuthHeader";
 import UserVerificationRequest from "./UserVerificationRequest";
+import VerificationCodeRequest from "./VerificationCodeRequest";
 
 export function AuthPage() {
   const [mostrarHeader, setMostrarHeader] = useState(true);
@@ -110,6 +111,13 @@ export function AuthPage() {
                   path="/auth/user-verification-request"
                   render={(props) => (
                     <UserVerificationRequest {...props} mostrarHeader={headerHandler} />
+                  )}
+                />
+
+                <ContentRoute
+                  path="/auth/verification-code-request"
+                  render={(props) => (
+                    <VerificationCodeRequest {...props} mostrarHeader={headerHandler} />
                   )}
                 />
 

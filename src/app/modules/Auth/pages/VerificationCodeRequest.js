@@ -3,13 +3,13 @@ import {Form, Container, Row, Col, Card, Button} from "react-bootstrap";
 import {toAbsoluteUrl} from "../../../../_metronic/_helpers";
 import {useFormik} from "formik";
 import * as Yup from "yup";
-import {useLocation, useHistory} from "react-router-dom"
+import {useLocation, useHistory, Link} from "react-router-dom"
 import {FormattedMessage, injectIntl, useIntl} from "react-intl";
 import queryString from 'query-string';
 import axios from "axios";
 
 
-const UserVerificationRequest = (props) => {
+const VerificationCodeRequest = (props) => {
 
   const [loading, setLoading] = useState(false);
 
@@ -25,7 +25,8 @@ const UserVerificationRequest = (props) => {
 
   const initialValues = {
     user: user,
-    verification_code: ""
+    verification_code: "",
+    password: ""
   };
 
   props.mostrarHeader(false);
@@ -41,6 +42,10 @@ const UserVerificationRequest = (props) => {
         formik.setFieldValue('verification_code', value);
       }
     }
+  }
+
+  const regresar = (event) => {
+    window.location.href = '/';
   }
 
   const LoginSchema = Yup.object().shape({
@@ -61,6 +66,22 @@ const UserVerificationRequest = (props) => {
             id: "AUTH.VALIDATION.REQUIRED",
           },
           {name: 'Código de Verificación'})
+      ),
+    password: Yup.string()
+      .min(8,
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.MIN_LENGTH",
+        }, {min: 8})
+      )
+      .max(25,
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.MAX_LENGTH",
+        }, {max: 25})
+      )
+      .required(
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.REQUIRED_FIELD",
+        })
       ),
   });
 
@@ -101,14 +122,18 @@ const UserVerificationRequest = (props) => {
 
 
       const rif = user;
+      const verificationCode = formik.values.verification_code;
+      const password = formik.values.password;
+
       const data = {
-        jsonapi: {version: '1.0'},
+        jsonapi: { version: '1.0' },
         data: {
           type: 'action',
           id: rif,
           attributes: {
-            action: 'user_verification_request',
-            verification_code: formik.values.verification_code
+            action: 'password_reset_request',
+            pass: password,
+            verification_code: verificationCode
           }
         }
       };
@@ -123,14 +148,13 @@ const UserVerificationRequest = (props) => {
       console.log('data', data);
 
       axios.post(`${API_URL}users/${rif}`, data, axiosConfig).then(function (res) {
+
         console.log("res", res);
 
         disableLoading();
         setSubmitting(false);
 
         alert('Bienvenido al Sistema Inces');
-
-        // history.replace('/auth/login');
 
         window.location.href = '/';
 
@@ -154,7 +178,6 @@ const UserVerificationRequest = (props) => {
               break;
             default:
               txt = 'Error al registrar usuario';
-
           }
 
           alert(txt);
@@ -169,7 +192,7 @@ const UserVerificationRequest = (props) => {
   return (
     <Fragment>
       <Card bg="primary" text="white">
-        <Card.Img src={toAbsoluteUrl("/media/logos/bannerElectronica.jpg")}/>
+        <Card.Img src={toAbsoluteUrl("/media/logos/Luthier.jpg")}/>
         <Card.Body>
           <Card.Title>
             Ingrese el código enviado a su correo
@@ -192,8 +215,6 @@ const UserVerificationRequest = (props) => {
                   </Col>
                 </Row>
 
-                <br/>
-
                 <Row>
                   <Col md={12}>
                     <Form.Group as={Col} controlId="verification_code">
@@ -212,10 +233,28 @@ const UserVerificationRequest = (props) => {
                   </Col>
                 </Row>
 
-                <br/>
-
                 <Row>
                   <Col md={12}>
+                    <Form.Group as={Col} controlId="password">
+                      <Form.Control size="lg" type="password" placeholder="Password"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.password}
+                      />
+
+                      {formik.touched.password && formik.errors.password ? (
+                        <div className="fv-plugins-message-container">
+                          <div className="fv-help-block">{formik.errors.password}</div>
+                        </div>
+                      ) : null}
+                    </Form.Group>
+                  </Col>
+                </Row>
+
+                <br/>
+                
+                <Row>
+                  <Col md={6}>
                     <Button variant="secondary" size="lg" block
                             type="submit"
                             disabled={
@@ -224,6 +263,14 @@ const UserVerificationRequest = (props) => {
                             }
                     >
                       Aceptar
+                    </Button>
+                  </Col>
+                  <Col md={6}>
+                    <Button variant="default" size="lg" block
+                            type="button"
+                            onClick={regresar}
+                    >
+                      Cancelar
                     </Button>
                   </Col>
                 </Row>
@@ -236,4 +283,4 @@ const UserVerificationRequest = (props) => {
   );
 }
 
-export default UserVerificationRequest;
+export default VerificationCodeRequest;
