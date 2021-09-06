@@ -105,7 +105,7 @@ export function UserProfileDropdown() {
                   Mi Perfil
                 </div>
                 <div className="text-muted">
-                  Configuraciones de la cuenta**
+                  Configuraciones de la cuenta
                   {/*<span className="label label-light-danger label-inline font-weight-bold">*/}
                   {/*  update*/}
                   {/*</span>*/}
