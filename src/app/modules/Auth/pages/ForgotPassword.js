@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import { useFormik } from "formik";
-import { connect } from "react-redux";
+import {useFormik} from "formik";
+import {connect} from "react-redux";
 import {Link, Redirect, useHistory} from "react-router-dom";
 import * as Yup from "yup";
 import {FormattedMessage, injectIntl} from "react-intl";
@@ -42,7 +42,11 @@ function ForgotPassword(props) {
     }
   }
 
-  const { intl } = props;
+  const regresar = () => {
+    window.location.href = '/';
+  };
+
+  const {intl} = props;
   const [loading, setLoading] = useState(false);
   const [isRequested, setIsRequested] = useState(false);
   const ForgotPasswordSchema = Yup.object().shape({
@@ -86,7 +90,7 @@ function ForgotPassword(props) {
   const formik = useFormik({
     initialValues,
     validationSchema: ForgotPasswordSchema,
-    onSubmit: (values, { setStatus, setSubmitting }) => {
+    onSubmit: (values, {setStatus, setSubmitting}) => {
 
 
       setSubmitting(true);
@@ -95,7 +99,7 @@ function ForgotPassword(props) {
 
       const rif = values.tipo + values.user;
       const data = {
-        jsonapi: { version: '1.0' },
+        jsonapi: {version: '1.0'},
         data: {
           type: 'action',
           id: rif,
@@ -155,9 +159,9 @@ function ForgotPassword(props) {
 
   return (
     <>
-      {isRequested && <Redirect to="/auth" />}
+      {isRequested && <Redirect to="/auth"/>}
       {!isRequested && (
-        <div className="login-form login-forgot" style={{ display: "block" }}>
+        <div className="login-form login-forgot" style={{display: "block"}}>
           <div className="text-center mb-10 mb-lg-20">
             <h3 className="font-size-h1">¿Olvidaste tu contraseña?</h3>
             <div className="text-muted font-weight-bold">
@@ -240,14 +244,13 @@ function ForgotPassword(props) {
                 {loading && <span className="ml-3 spinner spinner-white"></span>}
               </button>
 
-              <Link to="/auth/login">
-                <button
-                  type="button"
-                  className="btn btn-light-primary font-weight-bold px-9 py-4 my-3 mx-4"
-                >
-                  <FormattedMessage id="GENERAL.BUTTON.CANCEL"/>
-                </button>
-              </Link>
+              <button
+                type="button"
+                className="btn btn-light-primary font-weight-bold px-9 py-4 my-3 mx-4"
+                onClick={regresar}
+              >
+                <FormattedMessage id="GENERAL.BUTTON.CANCEL"/>
+              </button>
             </div>
           </form>
         </div>
