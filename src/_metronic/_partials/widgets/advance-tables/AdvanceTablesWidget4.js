@@ -9,12 +9,12 @@ export function AdvanceTablesWidget4({ className }) {
         {/* Head */}
         <div className="card-header border-0 py-5">
           <h3 className="card-title align-items-start flex-column">
-            <span className="card-label font-weight-bolder text-dark">Agents Stats</span>
-            <span className="text-muted mt-3 font-weight-bold font-size-sm">More than 400+ new members</span>
+            <span className="card-label font-weight-bolder text-dark">Estado de cuenta</span>
+            <span className="text-muted mt-3 font-weight-bold font-size-sm">Estado de cuenta de la entidad</span>
           </h3>
           <div className="card-toolbar">
-            <a href="#" className="btn btn-info font-weight-bolder font-size-sm mr-3">New Report</a>
-            <a href="#" className="btn btn-danger font-weight-bolder font-size-sm">Create</a>
+            <a href="#" className="btn btn-info font-weight-bolder font-size-sm mr-3">Reporte</a>
+            {/*<a href="#" className="btn btn-danger font-weight-bolder font-size-sm">Create</a>*/}
           </div>
         </div>
         {/* Body */}

@@ -12,7 +12,7 @@ export function ListsWidget9({ className }) {
           <h3 className="card-title align-items-start flex-column">
             <span className="font-weight-bolder text-dark">My Activity</span>
             <span className="text-muted mt-3 font-weight-bold font-size-sm">
-              890,344 Sales
+              890,344 Salesss
             </span>
           </h3>
           <div className="card-toolbar">
