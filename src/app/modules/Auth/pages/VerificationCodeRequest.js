@@ -252,7 +252,7 @@ const VerificationCodeRequest = (props) => {
                 </Row>
 
                 <br/>
-                
+
                 <Row>
                   <Col md={6}>
                     <Button variant="secondary" size="lg" block

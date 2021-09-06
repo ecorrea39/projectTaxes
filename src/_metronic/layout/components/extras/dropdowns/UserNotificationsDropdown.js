@@ -52,7 +52,7 @@ export function UserNotificationsDropdown() {
               placement="bottom"
               overlay={
                 <Tooltip id="user-notification-tooltip">
-                  User Notifications
+                  Notificaciones
                 </Tooltip>
               }
             >

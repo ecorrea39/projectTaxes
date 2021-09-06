@@ -37,7 +37,7 @@ export function UserProfileDropdown() {
           }
         >
           <span className="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1">
-            Hola**,
+            Hola,
           </span>{" "}
           <span className="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">
             {user.name}
@@ -102,7 +102,7 @@ export function UserProfileDropdown() {
               </div>
               <div className="navi-text">
                 <div className="font-weight-bold cursor-pointer">
-                  Mi Perfil**
+                  Mi Perfil
                 </div>
                 <div className="text-muted">
                   Configuraciones de la cuenta**
@@ -156,7 +156,7 @@ export function UserProfileDropdown() {
               to="/logout"
               className="btn btn-light-primary font-weight-bold"
             >
-              Salir**
+              Salir
             </Link>
             {/*<a href="#" className="btn btn-clean font-weight-bold">*/}
             {/*  Upgrade Plan*/}
