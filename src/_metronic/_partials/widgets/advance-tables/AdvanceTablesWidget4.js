@@ -36,13 +36,13 @@ export function AdvanceTablesWidget4({ className }) {
                 <tr>
                   <td className="pl-0 py-8">
                     <div className="d-flex align-items-center">
-                      <div className="symbol symbol-50 symbol-light mr-4">
-                          <span className="symbol-label">
-                            <span className="svg-icon h-75 align-self-end">
-                              <SVG src={toAbsoluteUrl("/media/svg/avatars/001-boy.svg")}/>
-                            </span>
-                          </span>
-                      </div>
+                      {/*<div className="symbol symbol-50 symbol-light mr-4">*/}
+                      {/*    <span className="symbol-label">*/}
+                      {/*      <span className="svg-icon h-75 align-self-end">*/}
+                      {/*        <SVG src={toAbsoluteUrl("/media/svg/avatars/001-boy.svg")}/>*/}
+                      {/*      </span>*/}
+                      {/*    </span>*/}
+                      {/*</div>*/}
                       <div>
                         <a href="#" className="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">Brad
                           Simmons</a>
@@ -89,13 +89,13 @@ export function AdvanceTablesWidget4({ className }) {
                 <tr>
                   <td className="pl-0 py-0">
                     <div className="d-flex align-items-center">
-                      <div className="symbol symbol-50 symbol-light mr-4">
-                        <span className="symbol-label">
-                          <span className="svg-icon h-75 align-self-end">
-                            <SVG src={toAbsoluteUrl("/media/svg/avatars/018-girl-9.svg")}/>
-                          </span>
-                        </span>
-                      </div>
+                      {/*<div className="symbol symbol-50 symbol-light mr-4">*/}
+                      {/*  <span className="symbol-label">*/}
+                      {/*    <span className="svg-icon h-75 align-self-end">*/}
+                      {/*      <SVG src={toAbsoluteUrl("/media/svg/avatars/018-girl-9.svg")}/>*/}
+                      {/*    </span>*/}
+                      {/*  </span>*/}
+                      {/*</div>*/}
                       <div>
                         <a href="#" className="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">Jessie
                           Clarcson</a>
@@ -142,13 +142,13 @@ export function AdvanceTablesWidget4({ className }) {
                 <tr>
                   <td className="pl-0 py-8">
                     <div className="d-flex align-items-center">
-                      <div className="symbol symbol-50 symbol-light mr-4">
-                        <span className="symbol-label">
-                          <span className="svg-icon h-75 align-self-end">
-                            <SVG src={toAbsoluteUrl("/media/svg/avatars/047-girl-25.svg")}/>
-                          </span>
-                        </span>
-                      </div>
+                      {/*<div className="symbol symbol-50 symbol-light mr-4">*/}
+                      {/*  <span className="symbol-label">*/}
+                      {/*    <span className="svg-icon h-75 align-self-end">*/}
+                      {/*      <SVG src={toAbsoluteUrl("/media/svg/avatars/047-girl-25.svg")}/>*/}
+                      {/*    </span>*/}
+                      {/*  </span>*/}
+                      {/*</div>*/}
                       <div>
                         <a href="#" className="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">
                           Lebron Wayde
@@ -196,13 +196,13 @@ export function AdvanceTablesWidget4({ className }) {
                 <tr>
                   <td className="pl-0 py-0 ">
                     <div className="d-flex align-items-center">
-                      <div className="symbol symbol-50 symbol-light mr-4">
-                        <span className="symbol-label">
-                          <span className="svg-icon h-75 align-self-end">
-                            <SVG src={toAbsoluteUrl("/media/svg/avatars/014-girl-7.svg")}/>
-                          </span>
-                        </span>
-                      </div>
+                      {/*<div className="symbol symbol-50 symbol-light mr-4">*/}
+                      {/*  <span className="symbol-label">*/}
+                      {/*    <span className="svg-icon h-75 align-self-end">*/}
+                      {/*      <SVG src={toAbsoluteUrl("/media/svg/avatars/014-girl-7.svg")}/>*/}
+                      {/*    </span>*/}
+                      {/*  </span>*/}
+                      {/*</div>*/}
                       <div>
                         <a href="#" className="text-dark font-weight-bolder text-hover-primary mb-1 font-size-lg">
                           Natali Trump
