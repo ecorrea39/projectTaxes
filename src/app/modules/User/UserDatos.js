@@ -13,13 +13,13 @@ const UserDatos = (props) => {
   const intl = useIntl();
 
   const initialValues = {
-    razonSocial: "razonSocial",
-    nombreComercial: "nombreComercial",
-    claseDeEmpresa: "claseDeEmpresa",
-    actividadEconomica: "actividadEconomica",
-    estatus: "estatus",
-    numeroPatronal: "numeroPatronal",
-    numeroDeTrabajadores: "numeroDeTrabajadores"
+    razonSocial: "",
+    nombreComercial: "",
+    claseDeEmpresa: "",
+    actividadEconomica: "",
+    estatus: "",
+    numeroPatronal: "",
+    numeroDeTrabajadores: ""
   };
 
   const LoginSchema = Yup.object().shape({
@@ -297,7 +297,7 @@ const UserDatos = (props) => {
                 <Row>
                   <Col md={6}>
                     <Form.Group as={Col} controlId="numeroPatronal">
-                      <Form.Control size="lg" type="text" placeholder="Numero Patronal"
+                      <Form.Control size="lg" type="text" placeholder="Número Patronal"
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.numeroPatronal}
