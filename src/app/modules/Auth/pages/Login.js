@@ -155,27 +155,31 @@ function Login(props) {
         disableLoading();
         setSubmitting(false);
 
-        let txt = '';
-        switch (err.response.status) {
-          case 423:
-            txt = 'Actualización de contraseña requerida';
-            break;
-          case 401:
-            txt = 'Credenciales inválidas';
-            break;
-          case 424:
-            txt = 'Desafío captcha usado. Por favor resuélvalo nuevamente';
-            setTimeout(() => {
-              window.location.href = '/signin';
-            }, 3000);
-            break;
-          default:
-            txt = 'Error al registrar usuario';
-        }
+        if (err.response !== undefined && err.response !== null) {
+          let txt = '';
+          switch (err.response.status) {
+            case 423:
+              txt = 'Actualización de contraseña requerida';
+              break;
+            case 401:
+              txt = 'Credenciales inválidas';
+              break;
+            case 424:
+              txt = 'Desafío captcha usado. Por favor resuélvalo nuevamente';
+              setTimeout(() => {
+                window.location.href = '/signin';
+              }, 3000);
+              break;
+            default:
+              txt = 'Error al registrar usuario';
+          }
 
-        setStatus(
-          txt
-        );
+          setStatus(
+            txt
+          );
+        } else {
+          alert('Error de comunicación en el proceso de Registro');
+        }
       });
     },
   });
