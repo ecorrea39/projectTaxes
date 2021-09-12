@@ -182,7 +182,7 @@ const VerificationCodeRequest = (props) => {
 
           alert(txt);
         } else {
-          alert('Error de comunicación en el proceso de Registro');
+          alert('Error de comunicación en el proceso de verificación de código');
         }
       });
     },

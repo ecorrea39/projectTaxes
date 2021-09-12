@@ -151,7 +151,7 @@ function ForgotPassword(props) {
 
           setStatus(txt);
         } else {
-          setStatus('Error de comunicación en el proceso de Registro');
+          setStatus('Error de comunicación en el proceso de recuperación de contraseña');
         }
       });
     },

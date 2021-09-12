@@ -178,7 +178,7 @@ function Login(props) {
             txt
           );
         } else {
-          alert('Error de comunicación en el proceso de Registro');
+          alert('Error de comunicación en el proceso de Inicio de Sesión');
         }
       });
     },

@@ -42,7 +42,7 @@ export function Topbar() {
 
   return (
     <div className="topbar">
-      {layoutProps.viewSearchDisplay && <SearchDropdown />}
+      {/*{layoutProps.viewSearchDisplay && <SearchDropdown />}*/}
 
       {layoutProps.viewNotificationsDisplay && <UserNotificationsDropdown />}
 
