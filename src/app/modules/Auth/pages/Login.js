@@ -22,7 +22,7 @@ import axios from "axios";
 
 const initialValues = {
   tipo: "",
-  user: "123123120",
+  user: "333333332",
   password: "inces123.",
 };
 
