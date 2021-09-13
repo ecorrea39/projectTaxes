@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
+import React, {useState} from "react";
 import { Link, Switch, Redirect } from "react-router-dom";
 import { toAbsoluteUrl } from "../../../../_metronic/_helpers";
 import { ContentRoute } from "../../../../_metronic/layout";
@@ -7,8 +7,18 @@ import Login from "./Login";
 import Registration from "./Registration";
 import ForgotPassword from "./ForgotPassword";
 import "../../../../_metronic/_assets/sass/pages/login/classic/login-1.scss";
+import { FormattedMessage, injectIntl } from "react-intl";
+import AuthHeader from "./AuthHeader";
+import UserVerificationRequest from "./UserVerificationRequest";
+import VerificationCodeRequest from "./VerificationCodeRequest";
 
 export function AuthPage() {
+  const [mostrarHeader, setMostrarHeader] = useState(true);
+
+  const headerHandler = (mostrar) => {
+    setMostrarHeader(mostrar);
+  }
+
   return (
     <>
       <div className="d-flex flex-column flex-root">
@@ -21,7 +31,7 @@ export function AuthPage() {
           <div
             className="login-aside d-flex flex-row-auto bgi-size-cover bgi-no-repeat p-10 p-lg-10"
             style={{
-              backgroundImage: `url(${toAbsoluteUrl("/media/bg/bg-4.jpg")})`,
+              backgroundImage: `url(${toAbsoluteUrl("/media/bg/bg-5.jpg")})`,
             }}
           >
             {/*begin: Aside Container*/}
@@ -31,7 +41,7 @@ export function AuthPage() {
                 <img
                   alt="Logo"
                   className="max-h-70px"
-                  src={toAbsoluteUrl("/media/logos/logo-letter-1.png")}
+                  src={toAbsoluteUrl("/media/logos/incesTransparente.png")}
                 />
               </Link>
               {/* end:: Aside header */}
@@ -39,11 +49,10 @@ export function AuthPage() {
               {/* start:: Aside content */}
               <div className="flex-column-fluid d-flex flex-column justify-content-center">
                 <h3 className="font-size-h1 mb-5 text-white">
-                  Welcome to Metronic!
+                  <FormattedMessage id="AUTH.LOGIN.WELCOME"/>
                 </h3>
                 <p className="font-weight-lighter text-white opacity-80">
-                  The ultimate Bootstrap & React 16 admin theme framework for
-                  next generation web apps.
+                  <FormattedMessage id="AUTH.LOGIN.DESCRIPTION"/>
                 </p>
               </div>
               {/* end:: Aside content */}
@@ -51,18 +60,21 @@ export function AuthPage() {
               {/* start:: Aside footer for desktop */}
               <div className="d-none flex-column-auto d-lg-flex justify-content-between mt-10">
                 <div className="opacity-70 font-weight-bold	text-white">
-                  &copy; 2020 Metronic
+                  &copy; 2021 inces
                 </div>
                 <div className="d-flex">
-                  <Link to="/terms" className="text-white">
-                    Privacy
+                  <Link to={{ pathname: "https://inces.gob.ve/" }} target="_blank">
+                    HomePage
                   </Link>
-                  <Link to="/terms" className="text-white ml-10">
-                    Legal
-                  </Link>
-                  <Link to="/terms" className="text-white ml-10">
-                    Contact
-                  </Link>
+                  {/*<Link to="/terms" className="text-white">*/}
+                  {/*  Privacy*/}
+                  {/*</Link>*/}
+                  {/*<Link to="/terms" className="text-white ml-10">*/}
+                  {/*  Legal*/}
+                  {/*</Link>*/}
+                  {/*<Link to="/terms" className="text-white ml-10">*/}
+                  {/*  Contact*/}
+                  {/*</Link>*/}
                 </div>
               </div>
               {/* end:: Aside footer for desktop */}
@@ -74,27 +86,47 @@ export function AuthPage() {
           {/*begin::Content*/}
           <div className="d-flex flex-column flex-row-fluid position-relative p-7 overflow-hidden">
             {/*begin::Content header*/}
-            <div className="position-absolute top-0 right-0 text-right mt-5 mb-15 mb-lg-0 flex-column-auto justify-content-center py-5 px-10">
-              <span className="font-weight-bold text-dark-50">
-                Don't have an account yet?
-              </span>
-              <Link
-                to="/auth/registration"
-                className="font-weight-bold ml-2"
-                id="kt_login_signup"
-              >
-                Sign Up!
-              </Link>
-            </div>
+            {/*<div className="position-absolute top-0 right-0 text-right mt-5 mb-15 mb-lg-0 flex-column-auto justify-content-center py-5 px-10">*/}
+            {/*  <span className="font-weight-bold text-dark-50">*/}
+            {/*    <FormattedMessage id="AUTH.LOGIN.ASK" />*/}
+            {/*  </span>*/}
+            {/*  <Link*/}
+            {/*    to="/auth/registration"*/}
+            {/*    className="font-weight-bold ml-2"*/}
+            {/*    id="kt_login_signup"*/}
+            {/*  >*/}
+            {/*    <FormattedMessage id="AUTH.LOGIN.SIGNUP" />*/}
+            {/*  </Link>*/}
+            {/*</div>*/}
+
+            {mostrarHeader && <AuthHeader />}
             {/*end::Content header*/}
 
             {/* begin::Content body */}
             <div className="d-flex flex-column-fluid flex-center mt-30 mt-lg-0">
               <Switch>
                 <ContentRoute path="/auth/login" component={Login} />
+
+                <ContentRoute
+                  path="/auth/user-verification-request"
+                  render={(props) => (
+                    <UserVerificationRequest {...props} mostrarHeader={headerHandler} />
+                  )}
+                />
+
+                <ContentRoute
+                  path="/auth/verification-code-request"
+                  render={(props) => (
+                    <VerificationCodeRequest {...props} mostrarHeader={headerHandler} />
+                  )}
+                />
+
                 <ContentRoute
                   path="/auth/registration"
-                  component={Registration}
+                  // component={Registration}
+                  render={(props) => (
+                    <Registration {...props} mostrarHeader={headerHandler} />
+                  )}
                 />
                 <ContentRoute
                   path="/auth/forgot-password"
@@ -109,23 +141,23 @@ export function AuthPage() {
             {/* begin::Mobile footer */}
             <div className="d-flex d-lg-none flex-column-auto flex-column flex-sm-row justify-content-between align-items-center mt-5 p-5">
               <div className="text-dark-50 font-weight-bold order-2 order-sm-1 my-2">
-                &copy; 2020 Metronic
+                &copy; 2021 inces
               </div>
               <div className="d-flex order-1 order-sm-2 my-2">
-                <Link to="/terms" className="text-dark-75 text-hover-primary">
-                  Privacy
-                </Link>
+                {/*<Link to="/terms" className="text-dark-75 text-hover-primary">*/}
+                {/*  Privacy*/}
+                {/*</Link>*/}
+                {/*<Link*/}
+                {/*  to="/terms"*/}
+                {/*  className="text-dark-75 text-hover-primary ml-4"*/}
+                {/*>*/}
+                {/*  Legal*/}
+                {/*</Link>*/}
                 <Link
                   to="/terms"
                   className="text-dark-75 text-hover-primary ml-4"
                 >
-                  Legal
-                </Link>
-                <Link
-                  to="/terms"
-                  className="text-dark-75 text-hover-primary ml-4"
-                >
-                  Contact
+                  Contacto
                 </Link>
               </div>
             </div>

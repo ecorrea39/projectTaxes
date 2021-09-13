@@ -1,21 +1,31 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import {Redirect} from "react-router-dom";
-import {LayoutSplashScreen} from "../../../../_metronic/layout";
-import * as auth from "../_redux/authRedux";
+import React, {useEffect, Fragment} from 'react';
+import {useContext} from "react";
+import AuthContext from "../../../store/auth-context";
 
-class Logout extends Component {
-  componentDidMount() {
-    this.props.logout();
-  }
+const Logout = () => {
 
-  render() {
-    const { hasAuthToken } = this.props;
-    return hasAuthToken ? <LayoutSplashScreen /> : <Redirect to="/auth/login" />;
-  }
+  const authCtx = useContext(AuthContext);
+
+  useEffect(() => {
+
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('expires_in');
+    localStorage.removeItem('rif');
+    localStorage.removeItem('name');
+    localStorage.removeItem('surname');
+    localStorage.removeItem('mail');
+    localStorage.removeItem('phone_number_mobile');
+    localStorage.removeItem('groups');
+
+    // NO borrar este código comentado
+    // authCtx.logout();
+    window.location.href = '/';
+
+  }, []);
+
+  return (
+    <Fragment/>
+  );
 }
 
-export default connect(
-  ({ auth }) => ({ hasAuthToken: Boolean(auth.authToken) }),
-  auth.actions
-)(Logout);
+export default Logout

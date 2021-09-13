@@ -52,7 +52,7 @@ export function UserNotificationsDropdown() {
               placement="bottom"
               overlay={
                 <Tooltip id="user-notification-tooltip">
-                  User Notifications
+                  Notificaciones
                 </Tooltip>
               }
             >
@@ -79,9 +79,9 @@ export function UserNotificationsDropdown() {
                 style={{ backgroundImage: `url(${bgImage})` }}
               >
                 <h4 className="d-flex flex-center rounded-top">
-                  <span className="text-white">User Notifications</span>
+                  <span className="text-white">Notificaciones</span>
                   <span className="btn btn-text btn-success btn-sm font-weight-bold btn-font-md ml-2">
-                    23 new
+                    8 Nuevos
                   </span>
                 </h4>
 
@@ -98,29 +98,29 @@ export function UserNotificationsDropdown() {
                           key === "Alerts" ? "active" : ""
                         }`}
                       >
-                        Alerts
+                        Alertas
                       </Nav.Link>
                     </Nav.Item>
-                    <Nav.Item as="li">
-                      <Nav.Link
-                        eventKey="Events"
-                        className={`nav-link show ${
-                          key === "Events" ? "active" : ""
-                        }`}
-                      >
-                        Events
-                      </Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item as="li">
-                      <Nav.Link
-                        eventKey="Logs"
-                        className={`nav-link show ${
-                          key === "Logs" ? "active" : ""
-                        }`}
-                      >
-                        Logs
-                      </Nav.Link>
-                    </Nav.Item>
+                    {/*<Nav.Item as="li">*/}
+                    {/*  <Nav.Link*/}
+                    {/*    eventKey="Events"*/}
+                    {/*    className={`nav-link show ${*/}
+                    {/*      key === "Events" ? "active" : ""*/}
+                    {/*    }`}*/}
+                    {/*  >*/}
+                    {/*    Events*/}
+                    {/*  </Nav.Link>*/}
+                    {/*</Nav.Item>*/}
+                    {/*<Nav.Item as="li">*/}
+                    {/*  <Nav.Link*/}
+                    {/*    eventKey="Logs"*/}
+                    {/*    className={`nav-link show ${*/}
+                    {/*      key === "Logs" ? "active" : ""*/}
+                    {/*    }`}*/}
+                    {/*  >*/}
+                    {/*    Logs*/}
+                    {/*  </Nav.Link>*/}
+                    {/*</Nav.Item>*/}
                   </Nav>
 
                   <Tab.Content className="tab-content">
@@ -146,10 +146,10 @@ export function UserNotificationsDropdown() {
                               href="#"
                               className="text-dark text-hover-primary mb-1 font-size-lg"
                             >
-                              Briviba SaaS
+                              Multa por retraso 1
                             </a>
                             <span className="text-muted">
-                              PHP, SQLite, Artisan CLIмм
+                              Fecha límite 5/09/2021
                             </span>
                           </div>
                         </div>
@@ -169,10 +169,10 @@ export function UserNotificationsDropdown() {
                               href="#"
                               className="text-dark-75 text-hover-primary mb-1 font-size-lg"
                             >
-                              Briviba SaaS
+                              Multa por retraso 2
                             </a>
                             <span className="text-muted">
-                              PHP, SQLite, Artisan CLIмм
+                              Fecha límite 5/09/2021
                             </span>
                           </div>
                         </div>
@@ -192,10 +192,10 @@ export function UserNotificationsDropdown() {
                               href="#"
                               className="text-dark text-hover-primary mb-1 font-size-lg"
                             >
-                              Briviba SaaS
+                              Multa por retraso 3
                             </a>
                             <span className="text-muted">
-                              PHP, SQLite, Artisan CLIмм
+                              Fecha límite 5/09/2021
                             </span>
                           </div>
                         </div>
@@ -215,10 +215,10 @@ export function UserNotificationsDropdown() {
                               href="#"
                               className="text-dark text-hover-primary mb-1 font-size-lg"
                             >
-                              Briviba SaaS
+                              Multa por retraso 4
                             </a>
                             <span className="text-muted">
-                              PHP, SQLite, Artisan CLIмм
+                              Fecha límite 5/09/2021
                             </span>
                           </div>
                         </div>
@@ -238,10 +238,10 @@ export function UserNotificationsDropdown() {
                               href="#"
                               className="text-dark text-hover-primary mb-1 font-size-lg"
                             >
-                              Briviba SaaS
+                              Multa por retraso 5
                             </a>
                             <span className="text-muted">
-                              PHP, SQLite, Artisan CLIмм
+                              Fecha límite 5/09/2021
                             </span>
                           </div>
                         </div>
@@ -261,10 +261,10 @@ export function UserNotificationsDropdown() {
                               href="#"
                               className="text-dark text-hover-primary mb-1 font-size-lg"
                             >
-                              Briviba SaaS
+                              Multa por retraso 6
                             </a>
                             <span className="text-muted">
-                              PHP, SQLite, Artisan CLIмм
+                              Fecha límite 5/09/2021
                             </span>
                           </div>
                         </div>
@@ -284,10 +284,10 @@ export function UserNotificationsDropdown() {
                               href="#"
                               className="text-dark text-hover-primary mb-1 font-size-lg"
                             >
-                              Briviba SaaS
+                              Multa por retraso 7
                             </a>
                             <span className="text-muted">
-                              PHP, SQLite, Artisan CLIмм
+                              Fecha límite 5/09/2021
                             </span>
                           </div>
                         </div>

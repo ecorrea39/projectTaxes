@@ -77,14 +77,14 @@ export function getInitLayoutConfig() {
         theme: "light", // light|dark
         fixed: {
           desktop: true,
-          mobile: true,
+          mobile: false,
         },
       },
       menu: {
         self: {
-          display: true,
-          layout: "default", // tab/default
-          "root-arrow": false,
+          display: false,
+          layout: "tab", // tab/default
+          "root-arrow": true,
           "icon-style": "duotone", // duotone, line, bold, solid
         },
         desktop: {
@@ -104,7 +104,7 @@ export function getInitLayoutConfig() {
       },
     },
     subheader: {
-      display: true,
+      display: false,
       displayDesc: false,
       displayDaterangepicker: true,
       layout: "subheader-v1",

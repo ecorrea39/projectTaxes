@@ -28,29 +28,305 @@ export function AsideMenuList({ layoutProps }) {
             <span className="svg-icon menu-icon">
               <SVG src={toAbsoluteUrl("/media/svg/icons/Design/Layers.svg")} />
             </span>
-            <span className="menu-text">Dashboard</span>
+            <span className="menu-text">Home</span>
           </NavLink>
         </li>
         {/*end::1 Level*/}
 
         {/*begin::1 Level*/}
+        {/*<li*/}
+        {/*  className={`menu-item ${getMenuItemActive("/builder", false)}`}*/}
+        {/*  aria-haspopup="true"*/}
+        {/*>*/}
+        {/*  <NavLink className="menu-link" to="/builder">*/}
+        {/*    <span className="svg-icon menu-icon">*/}
+        {/*      <SVG src={toAbsoluteUrl("/media/svg/icons/Home/Library.svg")} />*/}
+        {/*    </span>*/}
+        {/*    <span className="menu-text">Layout Builder</span>*/}
+        {/*  </NavLink>*/}
+        {/*</li>*/}
+        {/*end::1 Level*/}
+
+
+
+
+
+
+
+
+
+        {/* Tributos */}
+        {/* begin::section */}
+        <li className="menu-section ">
+          <h4 className="menu-text">Tributos</h4>
+          <i className="menu-icon flaticon-more-v2"></i>
+        </li>
+        {/* end:: section */}
+
+        {/* eCommerce */}
+        {/*begin::1 Level*/}
         <li
-          className={`menu-item ${getMenuItemActive("/builder", false)}`}
+          className={`menu-item menu-item-submenu ${getMenuItemActive(
+            "/e-commerce",
+            true
+          )}`}
+          aria-haspopup="true"
+          data-menu-toggle="hover"
+        >
+          <NavLink className="menu-link menu-toggle" to="/e-commerce">
+            <span className="svg-icon menu-icon">
+              <SVG src={toAbsoluteUrl("/media/svg/icons/Shopping/Bag2.svg")} />
+            </span>
+            <span className="menu-text">Operaciones</span>
+          </NavLink>
+          <div className="menu-submenu">
+            <i className="menu-arrow" />
+            <ul className="menu-subnav">
+              <li className="menu-item menu-item-parent" aria-haspopup="true">
+                <span className="menu-link">
+                  <span className="menu-text">Operaciones</span>
+                </span>
+              </li>
+              {/*begin::2 Level*/}
+              <li
+                className={`menu-item ${getMenuItemActive(
+                  "/e-commerce/customers"
+                )}`}
+                aria-haspopup="true"
+              >
+                <NavLink className="menu-link" to="/e-commerce/customers">
+                  <i className="menu-bullet menu-bullet-dot">
+                    <span />
+                  </i>
+                  <span className="menu-text">Entidad de trabajo</span>
+                </NavLink>
+              </li>
+              {/*end::2 Level*/}
+              {/*begin::2 Level*/}
+              <li
+                className={`menu-item ${getMenuItemActive(
+                  "/e-commerce/products"
+                )}`}
+                aria-haspopup="true"
+              >
+                <NavLink className="menu-link" to="/e-commerce/products">
+                  <i className="menu-bullet menu-bullet-dot">
+                    <span />
+                  </i>
+                  <span className="menu-text">Estado de cuenta</span>
+                </NavLink>
+              </li>
+              {/*end::2 Level*/}
+              {/*begin::2 Level*/}
+              <li
+                className={`menu-item ${getMenuItemActive(
+                  "/e-commerce/products"
+                )}`}
+                aria-haspopup="true"
+              >
+                <NavLink className="menu-link" to="/e-commerce/products">
+                  <i className="menu-bullet menu-bullet-dot">
+                    <span />
+                  </i>
+                  <span className="menu-text">Reportar pago</span>
+                </NavLink>
+              </li>
+              {/*end::2 Level*/}
+            </ul>
+          </div>
+        </li>
+        {/*end::1 Level*/}
+
+
+
+
+
+        {/* Reportes */}
+        {/* begin::section */}
+        <li className="menu-section ">
+          <h4 className="menu-text">Reportes</h4>
+          <i className="menu-icon flaticon-more-v2"></i>
+        </li>
+        {/* end:: section */}
+
+        {/* eCommerce */}
+        {/*begin::1 Level*/}
+        <li
+          className={`menu-item menu-item-submenu ${getMenuItemActive(
+            "/e-commerce",
+            true
+          )}`}
+          aria-haspopup="true"
+          data-menu-toggle="hover"
+        >
+          <NavLink className="menu-link menu-toggle" to="/e-commerce">
+            <span className="svg-icon menu-icon">
+              <SVG src={toAbsoluteUrl("/media/svg/icons/Shopping/Bag2.svg")} />
+            </span>
+            <span className="menu-text">Consultas</span>
+          </NavLink>
+          <div className="menu-submenu">
+            <i className="menu-arrow" />
+            <ul className="menu-subnav">
+              <li className="menu-item menu-item-parent" aria-haspopup="true">
+                <span className="menu-link">
+                  <span className="menu-text">Consultas</span>
+                </span>
+              </li>
+              {/*begin::2 Level*/}
+              <li
+                className={`menu-item ${getMenuItemActive(
+                  "/e-commerce/products"
+                )}`}
+                aria-haspopup="true"
+              >
+                <NavLink className="menu-link" to="/e-commerce/products">
+                  <i className="menu-bullet menu-bullet-dot">
+                    <span />
+                  </i>
+                  <span className="menu-text">Contribuyentes</span>
+                </NavLink>
+              </li>
+              {/*end::2 Level*/}
+              {/*begin::2 Level*/}
+              <li
+                className={`menu-item ${getMenuItemActive(
+                  "/e-commerce/customers"
+                )}`}
+                aria-haspopup="true"
+              >
+                <NavLink className="menu-link" to="/e-commerce/customers">
+                  <i className="menu-bullet menu-bullet-dot">
+                    <span />
+                  </i>
+                  <span className="menu-text">Solvencias</span>
+                </NavLink>
+              </li>
+              {/*end::2 Level*/}
+              {/*begin::2 Level*/}
+              <li
+                className={`menu-item ${getMenuItemActive(
+                  "/e-commerce/products"
+                )}`}
+                aria-haspopup="true"
+              >
+                <NavLink className="menu-link" to="/e-commerce/products">
+                  <i className="menu-bullet menu-bullet-dot">
+                    <span />
+                  </i>
+                  <span className="menu-text">Pago</span>
+                </NavLink>
+              </li>
+              {/*end::2 Level*/}
+            </ul>
+          </div>
+        </li>
+        {/*end::1 Level*/}
+
+
+
+
+
+        {/* Configuraciones */}
+        {/* begin::section */}
+        <li className="menu-section ">
+          <h4 className="menu-text">Configuraciones</h4>
+          <i className="menu-icon flaticon-more-v2"></i>
+        </li>
+        {/* end:: section */}
+
+        {/* eCommerce */}
+        {/*begin::1 Level*/}
+        <li
+          className={`menu-item menu-item-submenu ${getMenuItemActive(
+            "/e-commerce",
+            true
+          )}`}
+          aria-haspopup="true"
+          data-menu-toggle="hover"
+        >
+          <NavLink className="menu-link menu-toggle" to="/e-commerce">
+            <span className="svg-icon menu-icon">
+              <SVG src={toAbsoluteUrl("/media/svg/icons/Shopping/Bag2.svg")} />
+            </span>
+            <span className="menu-text">Usuario</span>
+          </NavLink>
+          <div className="menu-submenu">
+            <i className="menu-arrow" />
+            <ul className="menu-subnav">
+              <li className="menu-item menu-item-parent" aria-haspopup="true">
+                <span className="menu-link">
+                  <span className="menu-text">Usuario</span>
+                </span>
+              </li>
+              {/*begin::2 Level*/}
+              <li
+                className={`menu-item ${getMenuItemActive(
+                  "/user-datos"
+                )}`}
+                aria-haspopup="true"
+              >
+                <NavLink className="menu-link" to="/user-datos">
+                  <i className="menu-bullet menu-bullet-dot">
+                    <span />
+                  </i>
+                  <span className="menu-text">Modificar perfil</span>
+                </NavLink>
+              </li>
+              {/*end::2 Level*/}
+              {/*begin::2 Level*/}
+              <li
+                className={`menu-item ${getMenuItemActive(
+                  "/e-commerce/products"
+                )}`}
+                aria-haspopup="true"
+              >
+                <NavLink className="menu-link" to="/e-commerce/products">
+                  <i className="menu-bullet menu-bullet-dot">
+                    <span />
+                  </i>
+                  <span className="menu-text">Cambiar clave</span>
+                </NavLink>
+              </li>
+              {/*end::2 Level*/}
+            </ul>
+          </div>
+        </li>
+        {/*end::1 Level*/}
+
+
+
+
+
+
+
+        {/*begin::1 Level*/}
+        <li
+          className={`menu-item ${getMenuItemActive("/logout", false)}`}
           aria-haspopup="true"
         >
-          <NavLink className="menu-link" to="/builder">
+          <NavLink className="menu-link" to="/logout">
             <span className="svg-icon menu-icon">
-              <SVG src={toAbsoluteUrl("/media/svg/icons/Home/Library.svg")} />
+              <SVG
+                src={toAbsoluteUrl(
+                  "/media/svg/icons/Navigation/Arrow-to-right.svg"
+                )}
+              />
             </span>
-            <span className="menu-text">Layout Builder</span>
+            <span className="menu-text">Salir</span>
           </NavLink>
         </li>
         {/*end::1 Level*/}
 
+
+
+
+
+
         {/* Components */}
         {/* begin::section */}
         <li className="menu-section ">
-          <h4 className="menu-text">Components</h4>
+          <h4 className="menu-text">Biblioteca de Componentes</h4>
           <i className="menu-icon flaticon-more-v2"></i>
         </li>
         {/* end:: section */}
@@ -1581,95 +1857,11 @@ export function AsideMenuList({ layoutProps }) {
         </li>
         {/*end::1 Level*/}
 
-        {/* Applications */}
-        {/* begin::section */}
-        <li className="menu-section ">
-          <h4 className="menu-text">Applications</h4>
-          <i className="menu-icon flaticon-more-v2"></i>
-        </li>
-        {/* end:: section */}
-
-        {/* eCommerce */}
-        {/*begin::1 Level*/}
-        <li
-          className={`menu-item menu-item-submenu ${getMenuItemActive(
-            "/e-commerce",
-            true
-          )}`}
-          aria-haspopup="true"
-          data-menu-toggle="hover"
-        >
-          <NavLink className="menu-link menu-toggle" to="/e-commerce">
-            <span className="svg-icon menu-icon">
-              <SVG src={toAbsoluteUrl("/media/svg/icons/Shopping/Bag2.svg")} />
-            </span>
-            <span className="menu-text">eCommerce</span>
-          </NavLink>
-          <div className="menu-submenu">
-            <i className="menu-arrow" />
-            <ul className="menu-subnav">
-              <li className="menu-item menu-item-parent" aria-haspopup="true">
-                <span className="menu-link">
-                  <span className="menu-text">eCommerce</span>
-                </span>
-              </li>
-              {/*begin::2 Level*/}
-              <li
-                className={`menu-item ${getMenuItemActive(
-                  "/e-commerce/customers"
-                )}`}
-                aria-haspopup="true"
-              >
-                <NavLink className="menu-link" to="/e-commerce/customers">
-                  <i className="menu-bullet menu-bullet-dot">
-                    <span />
-                  </i>
-                  <span className="menu-text">Customers</span>
-                </NavLink>
-              </li>
-              {/*end::2 Level*/}
-              {/*begin::2 Level*/}
-              <li
-                className={`menu-item ${getMenuItemActive(
-                  "/e-commerce/products"
-                )}`}
-                aria-haspopup="true"
-              >
-                <NavLink className="menu-link" to="/e-commerce/products">
-                  <i className="menu-bullet menu-bullet-dot">
-                    <span />
-                  </i>
-                  <span className="menu-text">Products</span>
-                </NavLink>
-              </li>
-              {/*end::2 Level*/}
-            </ul>
-          </div>
-        </li>
-        {/*end::1 Level*/}
-
-        {/*begin::1 Level*/}
-        <li
-          className={`menu-item ${getMenuItemActive("/user-profile", false)}`}
-          aria-haspopup="true"
-        >
-          <NavLink className="menu-link" to="/user-profile">
-            <span className="svg-icon menu-icon">
-              <SVG
-                src={toAbsoluteUrl(
-                  "/media/svg/icons/Communication/Add-user.svg"
-                )}
-              />
-            </span>
-            <span className="menu-text">User Profile</span>
-          </NavLink>
-        </li>
-        {/*end::1 Level*/}
 
         {/* Custom */}
         {/* begin::section */}
         <li className="menu-section ">
-          <h4 className="menu-text">Custom</h4>
+          <h4 className="menu-text">Páginas</h4>
           <i className="menu-icon flaticon-more-v2"></i>
         </li>
         {/* end:: section */}

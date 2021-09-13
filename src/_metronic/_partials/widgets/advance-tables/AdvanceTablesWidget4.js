@@ -9,12 +9,12 @@ export function AdvanceTablesWidget4({ className }) {
         {/* Head */}
         <div className="card-header border-0 py-5">
           <h3 className="card-title align-items-start flex-column">
-            <span className="card-label font-weight-bolder text-dark">Agents Stats</span>
-            <span className="text-muted mt-3 font-weight-bold font-size-sm">More than 400+ new members</span>
+            <span className="card-label font-weight-bolder text-dark">Estado de cuenta</span>
+            <span className="text-muted mt-3 font-weight-bold font-size-sm">Estado de cuenta del contribuyente</span>
           </h3>
           <div className="card-toolbar">
-            <a href="#" className="btn btn-info font-weight-bolder font-size-sm mr-3">New Report</a>
-            <a href="#" className="btn btn-danger font-weight-bolder font-size-sm">Create</a>
+            <a href="#" className="btn btn-info font-weight-bolder font-size-sm mr-3">Reporte</a>
+            {/*<a href="#" className="btn btn-danger font-weight-bolder font-size-sm">Create</a>*/}
           </div>
         </div>
         {/* Body */}
@@ -24,11 +24,11 @@ export function AdvanceTablesWidget4({ className }) {
               <table className="table table-head-custom table-head-bg table-borderless table-vertical-center">
                 <thead>
                 <tr className="text-left text-uppercase">
-                  <th className="pl-7" style={{minWidth: "250px"}}><span className="text-dark-75">products</span></th>
-                  <th style={{minWidth: "100px"}}>earnings</th>
-                  <th style={{minWidth: "100px"}}></th>
-                  <th style={{minWidth: "100px"}}>company</th>
-                  <th style={{minWidth: "130px"}}>rating</th>
+                  <th className="pl-7" style={{minWidth: "250px"}}><span className="text-dark-75">Contribuyente</span></th>
+                  <th style={{minWidth: "100px"}}>Declarado</th>
+                  <th style={{minWidth: "100px"}}>Intereses</th>
+                  <th style={{minWidth: "100px"}}>Concepto</th>
+                  <th style={{minWidth: "130px"}}>Trabajadores</th>
                   <th style={{minWidth: "80px"}}/>
                 </tr>
                 </thead>
@@ -36,13 +36,13 @@ export function AdvanceTablesWidget4({ className }) {
                 <tr>
                   <td className="pl-0 py-8">
                     <div className="d-flex align-items-center">
-                      <div className="symbol symbol-50 symbol-light mr-4">
-                          <span className="symbol-label">
-                            <span className="svg-icon h-75 align-self-end">
-                              <SVG src={toAbsoluteUrl("/media/svg/avatars/001-boy.svg")}/>
-                            </span>
-                          </span>
-                      </div>
+                      {/*<div className="symbol symbol-50 symbol-light mr-4">*/}
+                      {/*    <span className="symbol-label">*/}
+                      {/*      <span className="svg-icon h-75 align-self-end">*/}
+                      {/*        <SVG src={toAbsoluteUrl("/media/svg/avatars/001-boy.svg")}/>*/}
+                      {/*      </span>*/}
+                      {/*    </span>*/}
+                      {/*</div>*/}
                       <div>
                         <a href="#" className="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">Brad
                           Simmons</a>
@@ -75,25 +75,27 @@ export function AdvanceTablesWidget4({ className }) {
                       </span>
                   </td>
                   <td>
-                    <img src={toAbsoluteUrl("/media/logos/stars.png")} alt="image" style={{width: "5.5rem"}}/>
-                    <span className="text-muted font-weight-bold d-block font-size-sm">
-                        Best Rated
+                      <span className="text-dark-75 font-weight-bolder d-block font-size-lg">
+                        3
+                      </span>
+                    <span className="text-muted font-weight-bold">
+                        Web, UI/UX Design
                       </span>
                   </td>
                   <td className="pr-0 text-right">
-                    <a href="#" className="btn btn-light-success font-weight-bolder font-size-sm">View Offer</a>
+                    <a href="#" className="btn btn-light-success font-weight-bolder font-size-sm">Detalle</a>
                   </td>
                 </tr>
                 <tr>
                   <td className="pl-0 py-0">
                     <div className="d-flex align-items-center">
-                      <div className="symbol symbol-50 symbol-light mr-4">
-                        <span className="symbol-label">
-                          <span className="svg-icon h-75 align-self-end">
-                            <SVG src={toAbsoluteUrl("/media/svg/avatars/018-girl-9.svg")}/>
-                          </span>
-                        </span>
-                      </div>
+                      {/*<div className="symbol symbol-50 symbol-light mr-4">*/}
+                      {/*  <span className="symbol-label">*/}
+                      {/*    <span className="svg-icon h-75 align-self-end">*/}
+                      {/*      <SVG src={toAbsoluteUrl("/media/svg/avatars/018-girl-9.svg")}/>*/}
+                      {/*    </span>*/}
+                      {/*  </span>*/}
+                      {/*</div>*/}
                       <div>
                         <a href="#" className="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">Jessie
                           Clarcson</a>
@@ -126,25 +128,27 @@ export function AdvanceTablesWidget4({ className }) {
                     </span>
                   </td>
                   <td>
-                    <img src={toAbsoluteUrl("/media/logos/stars.png")} alt="image" style={{width: "5.5rem"}}/>
-                    <span className="text-muted font-weight-bold d-block font-size-sm">
-                      Above Avarage
-                    </span>
+                      <span className="text-dark-75 font-weight-bolder d-block font-size-lg">
+                        29
+                      </span>
+                    <span className="text-muted font-weight-bold">
+                        Web, UI/UX Design
+                      </span>
                   </td>
                   <td className="pr-0 text-right">
-                    <a href="#" className="btn btn-light-success font-weight-bolder font-size-sm">View Offer</a>
+                    <a href="#" className="btn btn-light-success font-weight-bolder font-size-sm">Detalle</a>
                   </td>
                 </tr>
                 <tr>
                   <td className="pl-0 py-8">
                     <div className="d-flex align-items-center">
-                      <div className="symbol symbol-50 symbol-light mr-4">
-                        <span className="symbol-label">
-                          <span className="svg-icon h-75 align-self-end">
-                            <SVG src={toAbsoluteUrl("/media/svg/avatars/047-girl-25.svg")}/>
-                          </span>
-                        </span>
-                      </div>
+                      {/*<div className="symbol symbol-50 symbol-light mr-4">*/}
+                      {/*  <span className="symbol-label">*/}
+                      {/*    <span className="svg-icon h-75 align-self-end">*/}
+                      {/*      <SVG src={toAbsoluteUrl("/media/svg/avatars/047-girl-25.svg")}/>*/}
+                      {/*    </span>*/}
+                      {/*  </span>*/}
+                      {/*</div>*/}
                       <div>
                         <a href="#" className="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">
                           Lebron Wayde
@@ -178,25 +182,27 @@ export function AdvanceTablesWidget4({ className }) {
                     </span>
                   </td>
                   <td>
-                    <img src={toAbsoluteUrl("/media/logos/stars.png")} alt="image" style={{width: "5.5rem"}}/>
-                    <span className="text-muted font-weight-bold d-block font-size-sm">
-                      Best Rated
-                    </span>
+                      <span className="text-dark-75 font-weight-bolder d-block font-size-lg">
+                        8
+                      </span>
+                    <span className="text-muted font-weight-bold">
+                        Web, UI/UX Design
+                      </span>
                   </td>
                   <td className="pr-0 text-right">
-                    <a href="#" className="btn btn-light-success font-weight-bolder font-size-sm">View Offer</a>
+                    <a href="#" className="btn btn-light-success font-weight-bolder font-size-sm">Detalle</a>
                   </td>
                 </tr>
                 <tr>
                   <td className="pl-0 py-0 ">
                     <div className="d-flex align-items-center">
-                      <div className="symbol symbol-50 symbol-light mr-4">
-                        <span className="symbol-label">
-                          <span className="svg-icon h-75 align-self-end">
-                            <SVG src={toAbsoluteUrl("/media/svg/avatars/014-girl-7.svg")}/>
-                          </span>
-                        </span>
-                      </div>
+                      {/*<div className="symbol symbol-50 symbol-light mr-4">*/}
+                      {/*  <span className="symbol-label">*/}
+                      {/*    <span className="svg-icon h-75 align-self-end">*/}
+                      {/*      <SVG src={toAbsoluteUrl("/media/svg/avatars/014-girl-7.svg")}/>*/}
+                      {/*    </span>*/}
+                      {/*  </span>*/}
+                      {/*</div>*/}
                       <div>
                         <a href="#" className="text-dark font-weight-bolder text-hover-primary mb-1 font-size-lg">
                           Natali Trump
@@ -230,16 +236,15 @@ export function AdvanceTablesWidget4({ className }) {
                     </span>
                   </td>
                   <td>
-                    <img src={toAbsoluteUrl("/media/logos/stars.png")} alt="image" style={{width: "5.5rem"}}/>
-                    <span className="text-muted font-weight-bold d-block font-size-sm">
-                      Avarage
-                    </span>
+                      <span className="text-dark-75 font-weight-bolder d-block font-size-lg">
+                        98
+                      </span>
+                    <span className="text-muted font-weight-bold">
+                        Web, UI/UX Design
+                      </span>
                   </td>
                   <td className="pr-0 text-right">
-                    <a href="#" className="btn btn-light-success font-weight-bolder font-size-sm"
-                       style={{width: "7rem"}}>
-                      View Offer
-                    </a>
+                    <a href="#" className="btn btn-light-success font-weight-bolder font-size-sm">Detalle</a>
                   </td>
                 </tr>
                 </tbody>

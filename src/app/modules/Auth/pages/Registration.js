@@ -1,53 +1,119 @@
-import React, { useState } from "react";
-import { useFormik } from "formik";
-import { connect } from "react-redux";
+import React, {useState, useEffect, useRef} from "react";
+import {useFormik} from "formik";
+import {connect} from "react-redux";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
-import { FormattedMessage, injectIntl } from "react-intl";
+import {Link, useHistory} from "react-router-dom";
+import {FormattedMessage, injectIntl} from "react-intl";
 import * as auth from "../_redux/authRedux";
-import { register } from "../_redux/authCrud";
+import {Col, Form} from "react-bootstrap";
+import axios from "axios";
 
 const initialValues = {
-  fullname: "",
+  tipo: "",
+  user: "",
   email: "",
-  username: "",
   password: "",
   changepassword: "",
   acceptTerms: false,
 };
 
 function Registration(props) {
-  const { intl } = props;
+
+  const API_URL = `${process.env.REACT_APP_API_URL}`;
+  const history = useHistory();
+
+  props.mostrarHeader(false);
+
+  useEffect(() => {
+    props.mostrarHeader(false);
+
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('expires_in');
+    localStorage.removeItem('rif');
+    localStorage.removeItem('name');
+    localStorage.removeItem('surname');
+    localStorage.removeItem('mail');
+    localStorage.removeItem('phone_number_mobile');
+    localStorage.removeItem('groups');
+  }, []);
+
+  const mostrarAuthPageHeader = () => {
+    // NO borrar este código comentado porque demuestra que el problema es un bug en el MtCaptcha que obliga la recarga total
+    // props.mostrarHeader(true);
+    window.location.href = '/';
+  }
+
+  const customHandleChange = (event) => {
+    const value = event.currentTarget.value;
+
+    if (value === '') {
+      formik.setFieldValue('user', value);
+    } else {
+      const regex = /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/;
+      if (regex.test(value.toString())) {
+        formik.setFieldValue('user', value);
+      }
+    }
+  }
+
+  const {intl} = props;
   const [loading, setLoading] = useState(false);
   const RegistrationSchema = Yup.object().shape({
-    fullname: Yup.string()
-      .min(3, "Minimum 3 symbols")
-      .max(50, "Maximum 50 symbols")
+    tipo: Yup.string()
       .required(
         intl.formatMessage({
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
         })
+      ),
+    user: Yup
+      .number().positive(
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.POSITIVE",
+        })
+      )
+      .test('len',
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.RANGELEN",
+        }, {min: 7, max: 9})
+        , val => !val || (val && (val.toString().length >= 7 && val.toString().length <= 9)))
+      .required(
+        intl.formatMessage({
+            id: "AUTH.VALIDATION.REQUIRED",
+          },
+          {name: 'RIF'})
       ),
     email: Yup.string()
-      .email("Wrong email format")
-      .min(3, "Minimum 3 symbols")
-      .max(50, "Maximum 50 symbols")
-      .required(
+      .email(
         intl.formatMessage({
-          id: "AUTH.VALIDATION.REQUIRED_FIELD",
+          id: "AUTH.VALIDATION.WRONG_EMAIL_FORMAT",
         })
-      ),
-    username: Yup.string()
-      .min(3, "Minimum 3 symbols")
-      .max(50, "Maximum 50 symbols")
+      )
+      .min(7,
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.MIN_LENGTH",
+        }, {min: 7})
+      )
+      .max(50,
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.MAX_LENGTH",
+        }, {max: 50})
+      )
       .required(
         intl.formatMessage({
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
         })
       ),
     password: Yup.string()
-      .min(3, "Minimum 3 symbols")
-      .max(50, "Maximum 50 symbols")
+      .min(8,
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.MIN_LENGTH",
+        }, {min: 8})
+      )
+      .max(25,
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.MAX_LENGTH",
+        }, {max: 25})
+      )
       .required(
         intl.formatMessage({
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
@@ -63,11 +129,15 @@ function Registration(props) {
         is: (val) => (val && val.length > 0 ? true : false),
         then: Yup.string().oneOf(
           [Yup.ref("password")],
-          "Password and Confirm Password didn't match"
+          intl.formatMessage({
+            id: "AUTH.VALIDATION.PASSWORD_MATCH",
+          })
         ),
       }),
     acceptTerms: Yup.bool().required(
-      "You must accept the terms and conditions"
+      intl.formatMessage({
+        id: "AUTH.VALIDATION.AGREEMENT_REQUIRED",
+      })
     ),
   });
 
@@ -94,35 +164,75 @@ function Registration(props) {
   const formik = useFormik({
     initialValues,
     validationSchema: RegistrationSchema,
-    onSubmit: (values, { setStatus, setSubmitting }) => {
+    onSubmit: (values, {setStatus, setSubmitting}) => {
+
       setSubmitting(true);
       enableLoading();
-      register(values.email, values.fullname, values.username, values.password)
-        .then(({ data: { authToken } }) => {
-          props.register(authToken);
-          disableLoading();
-          setSubmitting(false);
-        })
-        .catch(() => {
-          setSubmitting(false);
-          setStatus(
-            intl.formatMessage({
-              id: "AUTH.VALIDATION.INVALID_LOGIN",
-            })
-          );
-          disableLoading();
+
+      const data = {
+        jsonapi: {version: '1.0'},
+        data: {
+          type: 'newUser',
+          id: values.tipo + values.user,
+          attributes: {
+            uid: values.tipo + values.user,
+            mail: values.email,
+            pass: values.password
+          }
+        }
+      };
+      const axiosConfig = {
+        headers: {
+          'Content-Type': 'application/vnd.api+json',
+          Accept: 'application/vnd.api+json'
+        }
+      };
+
+      axios.post(`${API_URL}users/`, data, axiosConfig).then(function (res) {
+
+        console.log("registerRes", res);
+
+        disableLoading();
+        setSubmitting(false);
+
+        history.push({
+          pathname: '/auth/user-verification-request',
+          search: '?user=' + formik.values.tipo + formik.values.user,  // query string
         });
+
+      }).catch((err) => {
+        console.log("err", err);
+
+        disableLoading();
+        setSubmitting(false);
+
+        if (err.response !== undefined && err.response !== null) {
+
+          let txt = '';
+          switch (err.response.status) {
+            case 409:
+              txt = 'El usuario ya se encuentra registrado';
+              break;
+            default:
+              txt = 'Error al registrar usuario';
+          }
+
+          alert(txt);
+        } else {
+          alert('Error de comunicación en el proceso de Registro');
+        }
+      });
     },
   });
 
   return (
-    <div className="login-form login-signin" style={{ display: "block" }}>
+    <div className="login-form login-signin" style={{display: "block"}}>
       <div className="text-center mb-10 mb-lg-20">
         <h3 className="font-size-h1">
-          <FormattedMessage id="AUTH.REGISTER.TITLE" />
+          <FormattedMessage id="AUTH.REGISTER.TITLE"/>
         </h3>
         <p className="text-muted font-weight-bold">
-          Enter your details to create your account
+          <FormattedMessage id="AUTH.REGISTER.DESC"/>
         </p>
       </div>
 
@@ -139,24 +249,56 @@ function Registration(props) {
         )}
         {/* end: Alert */}
 
-        {/* begin: Fullname */}
+        {/* begin: tipo */}
+        <Form.Group as={Col} controlId="tipo">
+          {/*<Form.Label>State</Form.Label>*/}
+          <Form.Control as="select"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.tipo}
+          >
+
+            <FormattedMessage id='AUTH.GENERAL.IDENTIFICATIONTYPE'>
+              {(message) => <option value="">{message}</option>}
+            </FormattedMessage>
+
+            <option value="j">J</option>
+            <option value="v">V</option>
+            <option value="c">C</option>
+            <option value="e">E</option>
+            <option value="g">G</option>
+            <option value="p">P</option>
+
+          </Form.Control>
+
+          {formik.touched.tipo && formik.errors.tipo ? (
+            <div className="fv-plugins-message-container">
+              <div className="fv-help-block">{formik.errors.tipo}</div>
+            </div>
+          ) : null}
+        </Form.Group>
+        {/* end: tipo */}
+
+        {/* begin: user */}
         <div className="form-group fv-plugins-icon-container">
           <input
-            placeholder="Full name"
+            placeholder="rif"
             type="text"
             className={`form-control form-control-solid h-auto py-5 px-6 ${getInputClasses(
-              "fullname"
+              "user"
             )}`}
-            name="fullname"
-            {...formik.getFieldProps("fullname")}
+            name="user"
+            onChange={customHandleChange}
+            value={formik.values.user}
+            onBlur={formik.handleBlur}
           />
-          {formik.touched.fullname && formik.errors.fullname ? (
+          {formik.touched.user && formik.errors.user ? (
             <div className="fv-plugins-message-container">
-              <div className="fv-help-block">{formik.errors.fullname}</div>
+              <div className="fv-help-block">{formik.errors.user}</div>
             </div>
           ) : null}
         </div>
-        {/* end: Fullname */}
+        {/* end: user */}
 
         {/* begin: Email */}
         <div className="form-group fv-plugins-icon-container">
@@ -176,25 +318,6 @@ function Registration(props) {
           ) : null}
         </div>
         {/* end: Email */}
-
-        {/* begin: Username */}
-        <div className="form-group fv-plugins-icon-container">
-          <input
-            placeholder="User name"
-            type="text"
-            className={`form-control form-control-solid h-auto py-5 px-6 ${getInputClasses(
-              "username"
-            )}`}
-            name="username"
-            {...formik.getFieldProps("username")}
-          />
-          {formik.touched.username && formik.errors.username ? (
-            <div className="fv-plugins-message-container">
-              <div className="fv-help-block">{formik.errors.username}</div>
-            </div>
-          ) : null}
-        </div>
-        {/* end: Username */}
 
         {/* begin: Password */}
         <div className="form-group fv-plugins-icon-container">
@@ -218,7 +341,7 @@ function Registration(props) {
         {/* begin: Confirm Password */}
         <div className="form-group fv-plugins-icon-container">
           <input
-            placeholder="Confirm Password"
+            placeholder="Re Password"
             type="password"
             className={`form-control form-control-solid h-auto py-5 px-6 ${getInputClasses(
               "changepassword"
@@ -251,9 +374,9 @@ function Registration(props) {
               className="mr-1"
               rel="noopener noreferrer"
             >
-              I agree the Terms & Conditions
+              <FormattedMessage id="AUTH.GENERAL.AGREEMENT"/>
             </Link>
-            <span />
+            <span/>
           </label>
           {formik.touched.acceptTerms && formik.errors.acceptTerms ? (
             <div className="fv-plugins-message-container">
@@ -272,18 +395,36 @@ function Registration(props) {
             }
             className="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-4"
           >
-            <span>Submit</span>
+            <span><FormattedMessage id="GENERAL.BUTTON.ACCEPT"/></span>
             {loading && <span className="ml-3 spinner spinner-white"></span>}
           </button>
 
-          <Link to="/auth/login">
+          {/*<Link to="/auth/login">*/}
+          {/*  <button*/}
+          {/*    type="button"*/}
+          {/*    className="btn btn-light-primary font-weight-bold px-9 py-4 my-3 mx-4"*/}
+          {/*  >*/}
+          {/*    Cancel*/}
+          {/*  </button>*/}
+          {/*</Link>*/}
+
+          {/*<button*/}
+          {/*  type="button"*/}
+          {/*  className="btn btn-light-primary font-weight-bold px-9 py-4 my-3 mx-4"*/}
+          {/*  onClick={mostrarAuthPageHeader}*/}
+          {/*>*/}
+          {/*  Cancel*/}
+          {/*</button>*/}
+
+          <Link to="/auth/login" onClick={mostrarAuthPageHeader}>
             <button
               type="button"
               className="btn btn-light-primary font-weight-bold px-9 py-4 my-3 mx-4"
             >
-              Cancel
+              <FormattedMessage id="GENERAL.BUTTON.CANCEL"/>
             </button>
           </Link>
+
         </div>
       </form>
     </div>

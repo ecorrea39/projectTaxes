@@ -47,7 +47,7 @@ export function MixedWidget14({ className }) {
     <div className={`card card-custom ${className}`}>
       {/* Header */}
       <div className="card-header border-0 pt-5">
-        <h3 className="card-title font-weight-bolder ">Action Needed</h3>
+        <h3 className="card-title font-weight-bolder ">% Pagado este mes</h3>
         <div className="card-toolbar">
           <Dropdown className="dropdown-inline" drop="down" alignRight>
             <Dropdown.Toggle
@@ -68,10 +68,10 @@ export function MixedWidget14({ className }) {
         </div>
         <div className="pt-5">
           <p className="text-center font-weight-normal font-size-lg pb-7">
-            Notes: Current sprint requires stakeholders<br/>
-            to approve newly amended policies
+            Porcentaje de tributos pagados<br/>
+            en el mes actual
           </p>
-          <a href="#" className="btn btn-success btn-shadow-hover font-weight-bolder w-100 py-3">Generate Report</a>
+          <a href="#" className="btn btn-success btn-shadow-hover font-weight-bolder w-100 py-3">Generar reporte</a>
         </div>
       </div>
     </div>
