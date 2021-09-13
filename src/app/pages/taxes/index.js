@@ -2,7 +2,7 @@ import React from 'react'
 import TaxesModule from '../../modules/Taxes/TaxesModules';
 import {TaxesState} from "../../context/taxes/taxesState";
 
-const Taxes = () => {
+const TaxesPage = () => {
   return (
     <TaxesState>
       <TaxesModule />
@@ -10,4 +10,4 @@ const Taxes = () => {
   )
 }
 
-export default Taxes;
+export default TaxesPage;
