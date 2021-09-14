@@ -4,8 +4,7 @@ import TaxesContext from './taxesContext';
 export const TaxesState = ({ children }) => {
 
     const valuesContext = {
-        loading, setLoading,
-        cards, setCards
+        
     }
 
     return (
