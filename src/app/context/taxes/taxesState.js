@@ -13,6 +13,10 @@ export const TaxesState = ({ children }) => {
     const [anos, setAnos] = useState([]);
 
     const [trimestres, setTrimestres] = useState([]);
+    
+    const [formDatataPayment, setFormDtaPayment] = useState({});
+
+    const [userData, setUserData] = useState({});
 
     useEffect(() => {
         getBancos();
@@ -39,7 +43,7 @@ export const TaxesState = ({ children }) => {
             let arreglo = [];
             let concepto_pago = [];
             arreglo = respuesta.data.data;
-            arreglo.map((x, i) =>{
+            arreglo.map((x, i) => {
                 concepto_pago.push(
                     {
                         "id": arreglo[i].id,
@@ -88,12 +92,21 @@ export const TaxesState = ({ children }) => {
 
     }
 
-    const submitPayment = async () => {
+    const getUserData = async (rif) => {
+        try {
+            const respuesta = await clientAxios.get(`/users/${rif}`);
+            setUserData(respuesta.data.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
+    const submitPayment = async () => {
+        setStepTaxes(stepTaxes+1);
     }
 
     const submitDeclaration = async () => {
-
+        setStepTaxes(stepTaxes+1);
     }
 
     const valuesContext = {
@@ -104,7 +117,11 @@ export const TaxesState = ({ children }) => {
         trimestres,
         setStepTaxes,
         submitPayment,
-        submitDeclaration
+        submitDeclaration,
+        formDatataPayment,
+        userData,
+        setFormDtaPayment,
+        getUserData
     }
 
     return (
