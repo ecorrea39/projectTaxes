@@ -1,12 +1,13 @@
 import React, { useContext } from "react";
 import TaxesContext from "../../context/taxes/taxesContext";
 import FormPayment from "./formPayment";
+import FormStatementTaxes from "./formStatementTaxes"
 import TitleFormTaxes from "./titleFormTaxes";
 
 function TaxesModule() {
 
   const { stepTaxes } = useContext(TaxesContext);
-  const title = stepTaxes == 1 ? "Información del pago" : "Información del pago";
+  const title = stepTaxes == 1 ? "Declaración de tributos" : "Información del pago";
 
   return (
     <div className="row">
@@ -19,7 +20,12 @@ function TaxesModule() {
           {/* Body */}
           <div className="card-body d-flex flex-column">
             {
-              stepTaxes == 1 && <FormPayment />
+              stepTaxes == 1 && <FormStatementTaxes />
+            }
+          </div>
+          <div className="card-body d-flex flex-column">
+            {
+              stepTaxes == 2 && <FormPayment />
             }
           </div>
         </div>

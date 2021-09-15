@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 import {FormattedMessage, injectIntl} from "react-intl";
 import * as auth from "../_redux/authRedux";
 import MTCaptcha from "../../MtCaptcha/MTCaptcha";
-import {Button, Form, InputGroup, Col, Row} from "react-bootstrap";
+import {Form, Col} from "react-bootstrap";
 import AuthContext from "../../../store/auth-context";
 import axios from "axios";
 
@@ -37,7 +37,7 @@ function Login(props) {
   const customHandleChange = (event) => {
     const value = event.currentTarget.value;
 
-    if (value == '') {
+    if (value === '') {
       formik.setFieldValue('user', value);
     } else {
       const regex = /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/;

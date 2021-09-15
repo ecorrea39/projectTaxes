@@ -6,8 +6,6 @@ import "react-app-polyfill/ie11";
 import "react-app-polyfill/stable";
 import React from "react";
 import ReactDOM from "react-dom";
-import axios from "axios";
-import * as _redux from "./redux";
 import store, { persistor } from "./redux/store";
 import App from "./app/App";
 import "./index.scss"; // Standard version

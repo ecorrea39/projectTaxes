@@ -14,3 +14,22 @@ export const SchemaPayment = Yup.object({
     intereses: Yup.string(),
     multa: Yup.string(),
 });
+
+export const SchemaDeclaration = Yup.object({
+    concepto_pago: Yup.string()
+        .required('- Campo obligatorio -'),
+    ano_declaracion: Yup.string()
+        .required('- Campo obligatorio -'),
+    trimestre: Yup.string()
+        .required('- Campo obligatorio -'),
+    ntrabajadores: Yup.string()
+        .required('- Campo obligatorio -'),
+    monto_pagado: Yup.string()
+        .required('- Campo obligatorio -'),
+    monto_tributo: Yup.string()
+        .required('- Campo obligatorio -'),
+    terms: Yup.string()
+        .required('- Campo obligatorio -'),
+    fecha_emision: Yup.string()
+        .required('- Campo obligatorio -'),
+});
