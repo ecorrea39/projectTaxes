@@ -13,4 +13,6 @@ export const SchemaPayment = Yup.object({
         .required('- Campo obligatorio -'),
     intereses: Yup.string(),
     multa: Yup.string(),
+    fecha_pago: Yup.string(),
+    cuenta: Yup.string()
 });

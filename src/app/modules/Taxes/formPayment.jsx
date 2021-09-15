@@ -9,9 +9,10 @@ import BaseSelect from "../Forms/BaseSelect";
 
 function FormPayment({ step }) {
 
-    const { bancos, submitPayment } = useContext(TaxesContext);
+    const { bancos, submitPayment, setFormDtaPayment } = useContext(TaxesContext);
 
-    const handleSubmit = async (values, actions) => {
+    const handleSubmit = async (values) => {
+        setFormDtaPayment(values);
         let response = await submitPayment();
     }
 
@@ -48,8 +49,8 @@ function FormPayment({ step }) {
                                         name="modo_pago"
                                     >
                                         <option value="" disabled>. . .</option>
-                                        <option value="1">Transferencia Electrónica</option>
-                                        <option value="2">Depósito en Taquilla</option>
+                                        <option value="Transferencia Electrónica">Transferencia Electrónica</option>
+                                        <option value="Depósito en Taquilla">Depósito en Taquilla</option>
                                     </Field>
                                 </Col>
                                 <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
@@ -74,16 +75,6 @@ function FormPayment({ step }) {
                                             ))
                                         }
                                     </Field>
-                                </Col>
-                                <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
-                                    <label htmlFor="monto" className="font-weight-bold">
-                                        Monto (Bs).
-                                    </label>
-                                    <Field
-                                        id="monto"
-                                        name="monto"
-                                        component={BaseInput}
-                                    />
                                 </Col>
                                 <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
                                     <label htmlFor="monto" className="font-weight-bold">

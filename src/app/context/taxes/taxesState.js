@@ -8,6 +8,10 @@ export const TaxesState = ({ children }) => {
 
     const [bancos, setBancos] = useState([]);
 
+    const [formDatataPayment, setFormDtaPayment] = useState({});
+
+    const [userData, setUserData] = useState({});
+
     useEffect(() => {
         getBancos();
     },[]);
@@ -23,15 +27,28 @@ export const TaxesState = ({ children }) => {
 
     }
 
-    const submitPayment = async () => {
+    const getUserData = async (rif) => {
+        try {
+            const respuesta = await clientAxios.get(`/users/${rif}`);
+            setUserData(respuesta.data.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
+    const submitPayment = async () => {
+        setStepTaxes(stepTaxes+1);
     }
 
     const valuesContext = {
         stepTaxes,
         bancos,
+        formDatataPayment,
+        userData,
+        setFormDtaPayment,
         setStepTaxes,
-        submitPayment
+        submitPayment,
+        getUserData
     }
 
     return (
