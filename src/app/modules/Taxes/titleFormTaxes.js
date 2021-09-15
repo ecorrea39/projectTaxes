@@ -4,7 +4,7 @@ function TitleFormTaxes({title}) {
 
   return (
     <>
-        <h3 className="card-title font-weight-bolder ">{title}</h3>
+        <h3 className="font-weight-bolder ">{title}</h3>
     </>
   );
 }
