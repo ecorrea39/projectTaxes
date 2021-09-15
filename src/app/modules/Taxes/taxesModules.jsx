@@ -20,12 +20,7 @@ function TaxesModule() {
           {/* Body */}
           <div className="card-body d-flex flex-column">
             {
-              stepTaxes === 1 && <FormStatementTaxes />
-            }
-          </div>
-          <div className="card-body d-flex flex-column">
-            {
-              stepTaxes === 2 && <FormPayment />
+              stepTaxes === 1 ? <FormStatementTaxes /> : stepTaxes === 2 ? <FormPayment /> : <></>
             }
           </div>
         </div>
