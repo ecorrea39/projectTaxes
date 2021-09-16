@@ -15,6 +15,7 @@ export const SchemaPayment = Yup.object({
     multa: Yup.string(),
 });
 
+/*
 export const SchemaDeclaration = Yup.object({
     concepto_pago: Yup.string()
         .required('- Campo obligatorio -'),
@@ -33,9 +34,9 @@ export const SchemaDeclaration = Yup.object({
         .required('- Campo obligatorio -'),
     fecha_emision: Yup.date()
         .required('- Campo obligatorio -'),
-});
+});*/
 
-export const SchemaDeclarationII= Yup.object({
+export const SchemaDeclaration= Yup.object({
     rif: Yup.string(),
     concepto_pago_name: Yup.string(),
     ntrabajadores_liquidados: Yup.string(),

@@ -8,6 +8,7 @@ export const initialValuesPayment = {
     multa: ""
 }
 
+/*
 export const initialValuesDeclaration = {
     rif: "",
     concepto_pago: "",
@@ -23,9 +24,9 @@ export const initialValuesDeclaration = {
     fecha_emision: "",
     estatus: "1"
 
-}
+}*/
 
-export const initialValuesDeclarationII = {
+export const initialValuesDeclaration = {
     rif: "",
     concepto_pago_name: "",
     ntrabajadores_liquidados: "0",

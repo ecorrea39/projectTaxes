@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { FieldArray, Field, Form, Formik } from "formik";
 import { Button, Col, Row, Card } from "react-bootstrap";
-import { initialValuesDeclarationII } from "./initialValues";
-import { SchemaDeclarationII } from "./validateSchemas";
+import { initialValuesDeclaration } from "./initialValues";
+import { SchemaDeclaration } from "./validateSchemas";
 import BaseInput from "../Forms/BaseInputs";
 import TaxesContext from "../../context/taxes/taxesContext";
 import BaseSelect from "../Forms/BaseSelect";
@@ -16,13 +16,24 @@ function FormStatementTaxes({ step }) {
         let response = await submitDeclaration();
     };
 
+    const style_card = {
+        borderRadius: "5px",
+        boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)",
+        padding: "20px 35px 20px 35px"
+    }
+
+    const mostrarCampos = (i) => {
+        console.warn('i ', i);
+    }
+
+
     const estatus = ['eliminada', 'creada', 'sustitutiva 1', 'sustitutiva 2', 'pagada', 'definitiva'];
 
     return (
         <>
             <Formik
-                initialValues={initialValuesDeclarationII}
-                validationSchema={SchemaDeclarationII}
+                initialValues={initialValuesDeclaration}
+                validationSchema={SchemaDeclaration}
                 onSubmit={handleSubmit}
             >
                 {
@@ -54,18 +65,14 @@ function FormStatementTaxes({ step }) {
                                     <>
                                         {formik.values.declaraciones.map((r, index) => {
                                             return (
-                                                <Card style={{
-                                                    "border-radius": "5px",
-                                                    "box-shadow": "0 4px 15px 0 rgba(0, 0, 0, 0.15)",
-                                                    "padding": "20px 35px 20px 35px",
-                                                }}>
+                                                <Card style={style_card}>
                                                     <Row className="mt-12 mb-12">
                                                         <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
                                                             <label htmlFor="concepto-pago" className="font-weight-bold">
                                                                 Concepto de pago
                                                             </label>
                                                             <Field
-                                                                id={`declaraciones[${index}].concepto_pago`}
+                                                                id="concepto_pago"
                                                                 name={`declaraciones[${index}].concepto_pago`}
                                                                 type="select"
                                                                 component={BaseSelect}
@@ -87,7 +94,7 @@ function FormStatementTaxes({ step }) {
                                                             </Button>
                                                         </Col>
                                                     </Row>
-                                                    <div style={{"display":"none"}}>
+                                                    <div id="prueba" style={{"display":"none"}}>
                                                     <Row className="mt-12 mb-12">
                                                         <Col xs="12">
                                                             <h5>Información de la declaración</h5>
@@ -205,7 +212,7 @@ function FormStatementTaxes({ step }) {
                                     </>
                                 )}
                             </FieldArray>
-                            <Row style={{"padding-top":"3%"}}>
+                            <Row style={{"paddingTop":"3%"}}>
                                 <Col xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
                                     <Button variant="outline-danger" size="lg" className="w-100">Cancelar</Button>
                                 </Col>

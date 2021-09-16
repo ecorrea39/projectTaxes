@@ -47,19 +47,20 @@ export const TaxesState = ({ children }) => {
         try {
             const respuesta = await clientAxios.get('/payment_concepts/');
             let arreglo = [];
-            let concepto_pago = [];
+            let lista = [];
             arreglo = respuesta.data.data;
             arreglo.map((x, i) => {
-                concepto_pago.push(
+                lista.push(
                     {
                         "id": arreglo[i].id,
                         "name": arreglo[i].attributes.name,
                     }
                 )
             });
-            concepto_pago.sort((a, b) => a.name < b.name ? -1 : +(a.name > b.name));
-            concepto_pago = concepto_pago.filter(x => x.name === 'Aporte patronal 2%' || x.name === 'Aporte de los trabajadores 0,5%');
-            setConceptos(concepto_pago)
+            lista.sort((a, b) => a.name < b.name ? -1 : +(a.name > b.name));
+            lista = lista.filter(x => x.id < 3);
+
+            setConceptos(lista)
 
         } catch (error) {
             console.log(error)
