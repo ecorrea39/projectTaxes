@@ -7,7 +7,7 @@ import TitleFormTaxes from "./titleFormTaxes";
 function TaxesModule() {
 
   const { stepTaxes } = useContext(TaxesContext);
-  const title = stepTaxes === 1 ? "Declaración de tributos" : "Información del pago";
+  const title = stepTaxes === 1 ? "Declaración | Reporte de Pagos" : "Información del pago";
 
   return (
     <div className="row">
