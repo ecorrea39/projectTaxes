@@ -22,14 +22,15 @@ export const SchemaDeclaration = Yup.object({
         .required('- Campo obligatorio -'),
     trimestre: Yup.string()
         .required('- Campo obligatorio -'),
-    ntrabajadores: Yup.string()
+    ntrabajadores: Yup.number()
+        .min(0)
         .required('- Campo obligatorio -'),
     monto_pagado: Yup.string()
         .required('- Campo obligatorio -'),
     monto_tributo: Yup.string()
         .required('- Campo obligatorio -'),
-    terms: Yup.string()
+    terms: Yup.boolean()
         .required('- Campo obligatorio -'),
-    fecha_emision: Yup.string()
+    fecha_emision: Yup.date()
         .required('- Campo obligatorio -'),
 });

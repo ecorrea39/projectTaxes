@@ -7,13 +7,16 @@ import BaseInput from "../Forms/BaseInputs";
 import TaxesContext from "../../context/taxes/taxesContext";
 import BaseSelect from "../Forms/BaseSelect";
 
-function FormStatementTaxes({step}) {
+function FormStatementTaxes({ step }) {
 
-    const {conceptos, anos, trimestres, submitDeclaration} = useContext(TaxesContext);
+    const { conceptos, anos, trimestres, formatoFechaFutura, setFormDataDeclaration, submitDeclaration } = useContext(TaxesContext);
 
-    const handleSubmit = async (values, actions) => {
+    const handleSubmit = async (values) => {
+        setFormDataDeclaration(values);
         let response = await submitDeclaration();
-    }
+    };
+
+    const estatus = ['eliminada', 'creada', 'sustitutiva 1', 'sustitutiva 2', 'pagada', 'definitiva'];
 
     return (
         <>
@@ -26,15 +29,16 @@ function FormStatementTaxes({step}) {
                     formik => (
                         <Form>
                             <Row className="mt-12 mb-12">
-                                <Col xs="11" sm="5" md="5" lg="5" xl="5" xxl="5">
+                                <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
                                     <label htmlFor="concepto-pago" className="font-weight-bold">
                                         Concepto de pago
                                     </label>
+
                                     <Field
-                                        type="select"
-                                        component={BaseSelect}
                                         id="concepto-pago"
                                         name="concepto_pago"
+                                        type="select"
+                                        component={BaseSelect}
                                     >
                                         <option value="" disabled>seleccione</option>
                                         {
@@ -44,18 +48,19 @@ function FormStatementTaxes({step}) {
                                         }
                                     </Field>
                                 </Col>
-                                <Col xs="1" sm="1" md="1" lg="1" xl="1" xxl="1">
-                                    <Button variant="danger" title="eliminar" size="lg" className="w-100"
-                                            style={{ color: "white", background: "silver" }}>
-                                    </Button>
+                                <Col xs="2" >
+                                    {" "}
+                                <Button variant="danger" title="eliminar" size="md" className="circle"
+                                        style={{ color: "white" }}>
+                                </Button>
                                 </Col>
                             </Row>
                             <Row>
-                                <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
-                                    <Button variant="success" size="lg" className="w-100">Nueva declaración</Button>
+                                <Col xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
+                                    <Button variant="outline-info" size="md" className="w-100">Nueva declaración</Button>
                                 </Col>
-                                <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
-                                    <Button variant="success" size="lg" className="w-100">Declaración sustitutiva</Button>
+                                <Col xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
+                                    <Button variant="outline-info" size="md" className="w-100">Declaración sustitutiva</Button>
                                 </Col>
                             </Row>
                             <Row className="mt-12 mb-12">
@@ -89,7 +94,6 @@ function FormStatementTaxes({step}) {
                                         }
                                     </Field>
                                 </Col>
-
                                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4">
                                     <label htmlFor="trimestre" className="font-weight-bold">
                                         Trimestre
@@ -118,8 +122,6 @@ function FormStatementTaxes({step}) {
                                         component={BaseInput}
                                     />
                                 </Col>
-                            </Row>
-                            <Row className="mt-4 mb-4">
                                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4">
                                     <label htmlFor="monto_pagado" className="font-weight-bold">
                                         Pago nómina trimestral
@@ -139,6 +141,7 @@ function FormStatementTaxes({step}) {
                                         name="fecha_emision"
                                         component={BaseInput}
                                         type="date"
+                                        max={formatoFechaFutura}
                                     />
                                 </Col>
                                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4">
@@ -153,11 +156,27 @@ function FormStatementTaxes({step}) {
                                     />
                                 </Col>
                             </Row>
+                            <Row className="mt-3 mb-3">
+                                <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4">
+                                    <Field
+                                        id="terms"
+                                        name="terms"
+                                        type="checkbox"
+                                        component={BaseInput}
+                                    />
+                                    <label htmlFor="terms">
+                                        <input type="checkbox" />
+                                        Declaro bajo fe de juramento, que la información aquí suministrada es fiel y exacta y
+                                        estará sometida a control posterior, so pena de incurrir en suministrar información incompleta, falso-forjado
+                                        ó errónea conforme a los parámetros previstos en el Código Orgánico Tributario.
+                                    </label>
+                                </Col>
+                            </Row>
                             <Row>
-                                <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
+                                <Col xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
                                     <Button variant="outline-danger" size="lg" className="w-100">Cancelar</Button>
                                 </Col>
-                                <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
+                                <Col xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
                                     <Button type="submit" variant="success" size="lg" className="w-100">Declarar</Button>
                                 </Col>
                             </Row>

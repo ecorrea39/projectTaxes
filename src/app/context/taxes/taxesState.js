@@ -1,6 +1,7 @@
 import React, { useEffect, useState} from 'react';
 import clientAxios from '../../config/configAxios';
 import TaxesContext from './taxesContext';
+import odb from './../../helpers/odb';
 
 export const TaxesState = ({ children }) => {
 
@@ -13,8 +14,12 @@ export const TaxesState = ({ children }) => {
     const [anos, setAnos] = useState([]);
 
     const [trimestres, setTrimestres] = useState([]);
+
+    const [formatoFechaFutura, setFormatoFechaFutura] = useState();
     
     const [formDatataPayment, setFormDtaPayment] = useState({});
+
+    const [formDataDeclaration, setFormDataDeclaration] = useState({});
 
     const [userData, setUserData] = useState({});
 
@@ -23,6 +28,7 @@ export const TaxesState = ({ children }) => {
         getConceptos();
         getAnos();
         getTrimestres();
+        getFechaFutura();
     },[]);
 
     const getBancos = async () => {
@@ -101,11 +107,46 @@ export const TaxesState = ({ children }) => {
         }
     }
 
+    const getFechaFutura = () => {
+        const fecha = new Date();
+        const year = fecha.getFullYear();
+        let month = fecha.getMonth() + 1;
+        let day = fecha.getDate();
+        if (month < 10) month = '0' + month.toString();
+        if (day < 10) day = '0' + day.toString();
+        setFormatoFechaFutura(year + '-' + month + '-' + day);
+    }
+
     const submitPayment = async () => {
         setStepTaxes(stepTaxes+1);
     }
 
     const submitDeclaration = async () => {
+
+        const axiosConfig = {
+            headers: {
+                Accept: 'application/vnd.api+json',
+                'Content-Type': 'application/vnd.api+json',
+                Authorization: 'Bearer ' + odb.get('authToken')
+            }
+        };
+
+        const data = {
+            jsonapi: { version: '1.0' },
+            data: {
+                type: "saveTributeDeclaration",
+                id: odb.get('rif'),
+                attributes: formDataDeclaration
+            }
+        };
+
+        console.log('axiosConfig ', axiosConfig);
+        console.log('data ', data);
+
+        //const respuesta = await clientAxios.post('/tribute_declaration/', data, axiosConfig);
+
+        //console.log('respuesta ', respuesta)
+
         setStepTaxes(stepTaxes+1);
     }
 
@@ -119,9 +160,11 @@ export const TaxesState = ({ children }) => {
         submitPayment,
         submitDeclaration,
         formDatataPayment,
+        setFormDataDeclaration,
         userData,
         setFormDtaPayment,
-        getUserData
+        getUserData,
+        formatoFechaFutura
     }
 
     return (
