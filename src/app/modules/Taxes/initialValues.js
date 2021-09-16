@@ -24,3 +24,21 @@ export const initialValuesDeclaration = {
     estatus: "1"
 
 }
+
+export const initialValuesDeclarationII = {
+    rif: "",
+    concepto_pago_name: "",
+    ntrabajadores_liquidados: "0",
+    declaraciones: [{
+        concepto_pago: "",
+        ano_declaracion: "",
+        trimestre: "",
+        ntrabajadores: "",
+        monto_pagado: "",
+        monto_tributo: "0",
+        terms: "",
+        fecha_emision: "",
+    }],
+    sustitutiva: "1",
+    estatus: "1"
+}
