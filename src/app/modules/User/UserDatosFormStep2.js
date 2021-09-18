@@ -25,7 +25,9 @@ const UserDatosFormStep2 = (props) => {
     oficina: "",
     ndoc: "",
     ntomo: "",
-    nfolio: ""
+    nfolio: "",
+    nprotocolo: "",
+    fecha_protocolizacion:""
   };
 
   const oficinas = listaOficinas();
@@ -115,6 +117,29 @@ const UserDatosFormStep2 = (props) => {
           },
           {name: 'Número de Folio'})
       ),
+    nprotocolo: Yup
+      .number().positive(
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.POSITIVE",
+        })
+      )
+      .test('len',
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.RANGELEN",
+        }, {min: 1, max: 9})
+        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 9)))
+      .required(
+        intl.formatMessage({
+            id: "AUTH.VALIDATION.REQUIRED",
+          },
+          {name: 'Número de Folio'})
+      ),
+    fecha_protocolizacion: Yup.string()
+      .required(
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.REQUIRED_FIELD",
+        })
+      ),
   });
 
   const enableLoading = () => {
@@ -142,7 +167,7 @@ const UserDatosFormStep2 = (props) => {
   });
 
   return(
-    <Card bg="primary" text="white">
+    <Card bg="default" text="success">
       <Card.Body>
         <Card.Title>
           Datos Mercantiles
@@ -179,7 +204,7 @@ const UserDatosFormStep2 = (props) => {
 
                 <Col md={6}>
                   <Form.Group as={Col} controlId="ndoc">
-                    <Form.Control size="lg" type="text" placeholder="Numero Del Documento"
+                    <Form.Control size="lg" type="text" placeholder="Número Del Documento"
                                   onChange={customHandleChangeNumeroDelDocumento}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.ndoc}
@@ -199,7 +224,7 @@ const UserDatosFormStep2 = (props) => {
               <Row>
                 <Col md={6}>
                   <Form.Group as={Col} controlId="ntomo">
-                    <Form.Control size="lg" type="text" placeholder="Numero De Tomo"
+                    <Form.Control size="lg" type="text" placeholder="Número De Tomo"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.ntomo}
@@ -215,7 +240,7 @@ const UserDatosFormStep2 = (props) => {
 
                 <Col md={6}>
                   <Form.Group as={Col} controlId="nfolio">
-                    <Form.Control size="lg" type="text" placeholder="Numero Del Folio"
+                    <Form.Control size="lg" type="text" placeholder="Número Del Folio"
                                   onChange={customHandleChangeNumeroDelFolio}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.nfolio}
@@ -224,6 +249,42 @@ const UserDatosFormStep2 = (props) => {
                     {formik.touched.nfolio && formik.errors.nfolio ? (
                       <div className="fv-plugins-message-container">
                         <div className="fv-help-block">{formik.errors.nfolio}</div>
+                      </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <br />
+
+              <Row>
+                <Col md={6}>
+                  <Form.Group as={Col} controlId="nprotocolo">
+                    <Form.Control size="lg" type="text" placeholder="Número De Protocolo"
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  value={formik.values.nprotocolo}
+                    />
+
+                    {formik.touched.nprotocolo && formik.errors.nprotocolo ? (
+                      <div className="fv-plugins-message-container">
+                        <div className="fv-help-block">{formik.errors.nprotocolo}</div>
+                      </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
+
+                <Col md={6}>
+                  <Form.Group as={Col} controlId="fecha_protocolizacion">
+                    <Form.Control size="lg" type="date" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" placeholder="dd-mm-yyyy"
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  value={formik.values.fecha_protocolizacion}
+                    />
+
+                    {formik.touched.fecha_protocolizacion && formik.errors.fecha_protocolizacion ? (
+                      <div className="fv-plugins-message-container">
+                        <div className="fv-help-block">{formik.errors.fecha_protocolizacion}</div>
                       </div>
                     ) : null}
                   </Form.Group>

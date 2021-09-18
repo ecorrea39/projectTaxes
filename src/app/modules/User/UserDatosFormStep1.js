@@ -844,7 +844,7 @@ const UserDatosFormStep1 = (props) => {
   });
 
   return (
-    <Card bg="primary" text="white">
+    <Card bg="default" text="success">
       <Card.Body>
         <Card.Title>
           Datos de la Empresa
