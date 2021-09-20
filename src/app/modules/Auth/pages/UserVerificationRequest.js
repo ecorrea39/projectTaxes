@@ -33,7 +33,7 @@ const UserVerificationRequest = (props) => {
   const customHandleChange = (event) => {
     const value = event.currentTarget.value;
 
-    if (value == '') {
+    if (value === '') {
       formik.setFieldValue('verification_code', value);
     } else {
       const regex = /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/;

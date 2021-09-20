@@ -122,7 +122,7 @@ export const TaxesState = ({ children }) => {
         setStepTaxes(stepTaxes+1);
     }
 
-    const submitDeclaration = async () => {
+    const submitDeclaration = async (v) => {
 
         const axiosConfig = {
             headers: {
@@ -137,16 +137,16 @@ export const TaxesState = ({ children }) => {
             data: {
                 type: "saveTributeDeclaration",
                 id: odb.get('rif'),
-                attributes: formDataDeclaration
+                attributes: v
             }
         };
 
         console.log('axiosConfig ', axiosConfig);
         console.log('data ', data);
 
-        //const respuesta = await clientAxios.post('/tribute_declaration/', data, axiosConfig);
+        const respuesta = await clientAxios.post('/tribute_declaration/', data, axiosConfig);
 
-        //console.log('respuesta ', respuesta)
+        console.log('respuesta ', respuesta)
 
         setStepTaxes(stepTaxes+1);
     }

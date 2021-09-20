@@ -27,9 +27,6 @@ export const initialValuesDeclaration = {
 }*/
 
 export const initialValuesDeclaration = {
-    rif: "",
-    concepto_pago_name: "",
-    ntrabajadores_liquidados: "0",
     declaraciones: [{
         concepto_pago: "",
         ano_declaracion: "",
@@ -39,7 +36,8 @@ export const initialValuesDeclaration = {
         monto_tributo: "0",
         terms: "",
         fecha_emision: "",
+        ntrabajadores_liquidados: "0",
+        sustitutiva: "1",
+        estatus: "1"
     }],
-    sustitutiva: "1",
-    estatus: "1"
 }

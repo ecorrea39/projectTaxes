@@ -37,11 +37,6 @@ export const SchemaDeclaration = Yup.object({
 });*/
 
 export const SchemaDeclaration= Yup.object({
-    rif: Yup.string(),
-    concepto_pago_name: Yup.string(),
-    ntrabajadores_liquidados: Yup.string(),
-    sustitutiva: Yup.string(),
-    estatus: Yup.string(),
     declaraciones: Yup.array().of(
         Yup.object().shape({
             concepto_pago: Yup.string()
@@ -59,6 +54,9 @@ export const SchemaDeclaration= Yup.object({
                 .required('- Campo obligatorio -'),
             terms: Yup.boolean()
                 .required('- Campo obligatorio -'),
+            ntrabajadores_liquidados: Yup.string(),
+            sustitutiva: Yup.string(),
+            estatus: Yup.string(),
             fecha_emision: Yup.date()
                 .when('concepto_pago', {
                     is: "2" || 2,
