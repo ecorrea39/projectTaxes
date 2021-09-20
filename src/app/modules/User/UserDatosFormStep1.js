@@ -695,22 +695,21 @@ const UserDatosFormStep1 = (props) => {
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
         })
       ),
-    npatronal: Yup
-      .number().positive(
+    npatronal: Yup.string()
+      .min(8,
         intl.formatMessage({
-          id: "AUTH.VALIDATION.POSITIVE",
-        })
+          id: "AUTH.VALIDATION.MIN_LENGTH",
+        }, {min: 1})
       )
-      .test('len',
+      .max(25,
         intl.formatMessage({
-          id: "AUTH.VALIDATION.RANGELEN",
-        }, {min: 1, max: 9})
-        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 9)))
+          id: "AUTH.VALIDATION.MAX_LENGTH",
+        }, {max: 25})
+      )
       .required(
         intl.formatMessage({
-            id: "AUTH.VALIDATION.REQUIRED",
-          },
-          {name: 'Código de Verificación'})
+          id: "AUTH.VALIDATION.REQUIRED_FIELD",
+        })
       ),
     ntrabajadores: Yup
       .number().positive(
@@ -753,6 +752,12 @@ const UserDatosFormStep1 = (props) => {
       const rif = localStorage.getItem('rif');
       const token = localStorage.getItem('authToken');
 
+      console.log("rif", rif);
+      console.log("authToken", token);
+
+      setSubmitting(false);
+      disableLoading();
+
       const axiosConfig = {
         headers: {
           Accept: 'application/vnd.api+json',
@@ -770,7 +775,8 @@ const UserDatosFormStep1 = (props) => {
         }
       };
 
-      axios.patch(`${API_URL}users/${rif}`, data, axiosConfig)
+
+      axios.patch(`${API_URL}users/${rif}/datosempresa`, data, axiosConfig)
         .then(function (res) {
 
           setSubmitting(false);
@@ -784,59 +790,52 @@ const UserDatosFormStep1 = (props) => {
           console.log("resFormStep1", res);
           alert('Guardado exitosamente');
 
-          // if(stepForm == 5 ) {
-          //   toastTop = $f7.toast.create({
-          //     text: 'Datos guardados con éxito',
-          //     position: 'top',
-          //     horizontalPosition: 'center',
-          //     closeTimeout: 2000
-          //   });
-          //
-          //   toastTop.open();
-          //
-          //   if (parciales) {
-          //     console.log('fechacontitucion ', fechacontitucion);
-          //     if(validateMulta(new Date(fechacontitucion), new Date(formData.fecha_registro_inces)) > 45) {
-          //       //procesar acto administrativo de la multa
-          //       toastTop = $f7.toast.create({
-          //         text: 'Se cargo multa según Artículo 35 del COT',
-          //         position: 'top',
-          //         horizontalPosition: 'center',
-          //         closeTimeout: 2000
-          //       });
-          //       toastTop.open();
-          //     }
-          //   };
-          //
-          //   let arreglo = odb.get('groups');
-          //   if(!arreglo.find(x => x === 'contribuyentes')) {
-          //     arreglo.shift();
-          //     arreglo.push('contribuyentes');
-          //     odb.set('groups', arreglo);
+
+
+
+
+
+
+          // if (parciales) {
+          //   console.log('fechacontitucion ', fechacontitucion);
+          //   if (validateMulta(new Date(fechacontitucion), new Date(formData.fecha_registro_inces)) > 45) {
+          //     //procesar acto administrativo de la multa
+          //     toastTop = $f7.toast.create({
+          //       text: 'Se cargo multa según Artículo 35 del COT',
+          //       position: 'top',
+          //       horizontalPosition: 'center',
+          //       closeTimeout: 2000
+          //     });
+          //     toastTop.open();
           //   }
-          //
-          //   setTimeout(() => {
-          //     window.location.href = '/dashboard';
-          //     $update();
-          //   }, 2000);
-          //
-          // } else {
-          //   showStepContinuar();
           // }
+          // ;
+          //
+          // let arreglo = odb.get('groups');
+          // if (!arreglo.find(x => x === 'contribuyentes')) {
+          //   arreglo.shift();
+          //   arreglo.push('contribuyentes');
+          //   odb.set('groups', arreglo);
+          // }
+          //
+          // setTimeout(() => {
+          //   window.location.href = '/dashboard';
+          //   $update();
+          // }, 2000);
+
+
+
+
+
 
 
         }).catch((err) => {
+
         console.log("errUserDatosFormStep1", err);
         setSubmitting(false);
         disableLoading();
 
-        const responseText = err.response
-          ? err.response.status === 409
-            ? 'El usuario ya se encuentra registrado'
-            : 'Error al registrar datos'
-          : 'Error al registrar datos';
-
-        alert(responseText);
+        alert("Error al guardar los Datos de la Empresa");
       });
 
 

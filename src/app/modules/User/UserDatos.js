@@ -15,13 +15,13 @@ const UserDatos = (props) => {
 
       <br/>
 
-      {/*<UserDatosFormStep1 />*/}
+      <UserDatosFormStep1 />
 
       {/*<UserDatosFormStep2 />*/}
 
       {/*<UserDatosFormStep3 />*/}
 
-      <UserDatosFormStep4 />
+      {/*<UserDatosFormStep4 />*/}
 
     </Fragment>
   );
