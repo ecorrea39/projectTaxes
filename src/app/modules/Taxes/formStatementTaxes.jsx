@@ -13,6 +13,7 @@ function FormStatementTaxes({ step }) {
     const { conceptos, anos, trimestres, formatoFechaFutura, setFormDataDeclaration, submitDeclaration } = useContext(TaxesContext);
 
     const handleSubmit = async (values) => {
+        console.log('values ', values)
         setFormDataDeclaration(values);
         let response = await submitDeclaration(values);
     };
@@ -61,7 +62,7 @@ function FormStatementTaxes({ step }) {
                             </Row>
                             <Row className="mt-12 mb-12">
                                 <Col xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
-                                    <Button onClick={()=> {formik.values.declaraciones.push(declaracion); console.log('declaraciones ', formik.values.declaraciones)}} variant="outline-info" size="md" className="w-100">Nueva declaración</Button>
+                                    <Button onClick={()=> {formik.values.declaraciones.push(declaracion)}} variant="outline-info" size="md" className="w-100">Nueva declaración</Button>
                                 </Col>
                                 <Col xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
                                     <Button variant="outline-info" size="md" className="w-100">Declaración sustitutiva</Button>
@@ -159,7 +160,7 @@ function FormStatementTaxes({ step }) {
                                                             </label>
                                                             <Field
                                                                 id="ntrabajadores"
-                                                                name={`declaraciones[{index}].ntrabajadores`}
+                                                                name="declaraciones[{index}].ntrabajadores"
                                                                 component={BaseInput}
                                                             />
                                                         </Col>

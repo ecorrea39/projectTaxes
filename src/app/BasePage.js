@@ -22,6 +22,9 @@ const UserProfilepage = lazy(() =>
 const UserDatospage = lazy(() =>
   import("./modules/User/UserDatos")
 );
+const AccountStatusPage = lazy(() =>
+    import("./modules/AccountStatus/FormAccountStatus")
+);
 
 export default function BasePage() {
   // useEffect(() => {
@@ -38,6 +41,7 @@ export default function BasePage() {
         }
         <ContentRoute path="/dashboard" component={DashboardPage} />
         <Route exact path="/tributos" component={TaxesPage}  />
+        <Route exact path="/estado-cuentas" component={AccountStatusPage} />
         <ContentRoute path="/builder" component={BuilderPage} />
         <ContentRoute path="/my-page" component={MyPage} />
         <Route path="/google-material" component={GoogleMaterialPage} />
