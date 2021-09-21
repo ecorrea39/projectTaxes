@@ -621,31 +621,31 @@ const UserDatosFormStep1 = (props) => {
   const estatus = listaEstatus();
 
   const initialValues = {
-    razon: "",
-    nombrecomercial: "",
-    clase: "",
-    actividadeconomica: "",
+    razonSocial: "",
+    nombreComercial: "",
+    claseDeEmpresa: "",
+    actividadEconomica: "",
     estatus: "",
-    npatronal: "",
-    ntrabajadores: ""
+    numeroPatronal: "",
+    numeroDeTrabajadores: ""
   };
 
   const customHandleChangeNumeroDeTrabajadores = (event) => {
     const value = event.currentTarget.value;
 
     if (value === '') {
-      formik.setFieldValue('ntrabajadores', value);
+      formik.setFieldValue('numeroDeTrabajadores', value);
     } else {
       const regex = /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/;
       if (regex.test(value.toString())) {
-        formik.setFieldValue('ntrabajadores', value);
+        formik.setFieldValue('numeroDeTrabajadores', value);
       }
     }
   }
 
   const LoginSchema = Yup.object().shape({
 
-    razon: Yup.string()
+    razonSocial: Yup.string()
       .min(8,
         intl.formatMessage({
           id: "AUTH.VALIDATION.MIN_LENGTH",
@@ -661,7 +661,7 @@ const UserDatosFormStep1 = (props) => {
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
         })
       ),
-    nombrecomercial: Yup.string()
+    nombreComercial: Yup.string()
       .min(8,
         intl.formatMessage({
           id: "AUTH.VALIDATION.MIN_LENGTH",
@@ -677,13 +677,13 @@ const UserDatosFormStep1 = (props) => {
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
         })
       ),
-    clase: Yup.string()
+    claseDeEmpresa: Yup.string()
       .required(
         intl.formatMessage({
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
         })
       ),
-    actividadeconomica: Yup.string()
+    actividadEconomica: Yup.string()
       .required(
         intl.formatMessage({
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
@@ -695,11 +695,11 @@ const UserDatosFormStep1 = (props) => {
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
         })
       ),
-    npatronal: Yup.string()
+    numeroPatronal: Yup.string()
       .min(8,
         intl.formatMessage({
           id: "AUTH.VALIDATION.MIN_LENGTH",
-        }, {min: 1})
+        }, {min: 8})
       )
       .max(25,
         intl.formatMessage({
@@ -711,7 +711,7 @@ const UserDatosFormStep1 = (props) => {
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
         })
       ),
-    ntrabajadores: Yup
+    numeroDeTrabajadores: Yup
       .number().positive(
         intl.formatMessage({
           id: "AUTH.VALIDATION.POSITIVE",
@@ -769,31 +769,26 @@ const UserDatosFormStep1 = (props) => {
       const data = {
         jsonapi: {version: '1.0'},
         data: {
-          type: "user",
+          type: "userEmpresa",
           id: rif,
           attributes: formik.values
         }
       };
 
-
-      axios.patch(`${API_URL}users/${rif}/datosempresa`, data, axiosConfig)
+      axios.post(`${API_URL}user_empresa/`, data, axiosConfig)
         .then(function (res) {
+          alert('Guardado');
 
           setSubmitting(false);
           disableLoading();
 
-          const attr = res.data.data.attributes;
+          // const attr = res.data.data.attributes;
 
-          localStorage.set('name', attr.name);
-          localStorage.set('surname', attr.surname);
+          // localStorage.set('name', attr.name);
+          // localStorage.set('surname', attr.surname);
 
           console.log("resFormStep1", res);
           alert('Guardado exitosamente');
-
-
-
-
-
 
 
           // if (parciales) {
@@ -824,11 +819,6 @@ const UserDatosFormStep1 = (props) => {
           // }, 2000);
 
 
-
-
-
-
-
         }).catch((err) => {
 
         console.log("errUserDatosFormStep1", err);
@@ -856,32 +846,32 @@ const UserDatosFormStep1 = (props) => {
             <Container>
               <Row>
                 <Col md={6}>
-                  <Form.Group as={Col} controlId="razon">
-                    <Form.Control size="lg" type="text" placeholder="Razon Social"
+                  <Form.Group as={Col} controlId="razonSocial">
+                    <Form.Control size="lg" type="text" placeholder="Razón Social"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.razon}
+                                  value={formik.values.razonSocial}
                     />
 
-                    {formik.touched.razon && formik.errors.razon ? (
+                    {formik.touched.razonSocial && formik.errors.razonSocial ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.razon}</div>
+                        <div className="fv-help-block">{formik.errors.razonSocial}</div>
                       </div>
                     ) : null}
                   </Form.Group>
                 </Col>
 
                 <Col md={6}>
-                  <Form.Group as={Col} controlId="nombrecomercial">
+                  <Form.Group as={Col} controlId="nombreComercial">
                     <Form.Control size="lg" type="text" placeholder="Nombre Comercial"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.nombrecomercial}
+                                  value={formik.values.nombreComercial}
                     />
 
-                    {formik.touched.nombrecomercial && formik.errors.nombrecomercial ? (
+                    {formik.touched.nombreComercial && formik.errors.nombreComercial ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.nombrecomercial}</div>
+                        <div className="fv-help-block">{formik.errors.nombreComercial}</div>
                       </div>
                     ) : null}
                   </Form.Group>
@@ -890,16 +880,14 @@ const UserDatosFormStep1 = (props) => {
 
               <Row>
                 <Col md={6}>
-                  <Form.Group controlId="clase">
+                  <Form.Group controlId="claseDeEmpresa">
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.clase}
+                                  value={formik.values.claseDeEmpresa}
                     >
 
-                      <FormattedMessage id='AUTH.GENERAL.IDENTIFICATIONTYPE'>
-                        {(message) => <option value="">{message}</option>}
-                      </FormattedMessage>
+                      Seleccine la Clase de Empresa
 
                       {clasesEmpresa.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
@@ -907,25 +895,23 @@ const UserDatosFormStep1 = (props) => {
 
                     </Form.Control>
 
-                    {formik.touched.clase && formik.errors.clase ? (
+                    {formik.touched.claseDeEmpresa && formik.errors.claseDeEmpresa ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.clase}</div>
+                        <div className="fv-help-block">{formik.errors.claseDeEmpresa}</div>
                       </div>
                     ) : null}
                   </Form.Group>
                 </Col>
 
                 <Col md={6}>
-                  <Form.Group controlId="actividadeconomica">
+                  <Form.Group controlId="actividadEconomica">
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.actividadeconomica}
+                                  value={formik.values.actividadEconomica}
                     >
 
-                      <FormattedMessage id='AUTH.GENERAL.IDENTIFICATIONTYPE'>
-                        {(message) => <option value="">{message}</option>}
-                      </FormattedMessage>
+                      Seleccione la Actividad Económica
 
                       {actividades.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
@@ -933,9 +919,9 @@ const UserDatosFormStep1 = (props) => {
 
                     </Form.Control>
 
-                    {formik.touched.actividadeconomica && formik.errors.actividadeconomica ? (
+                    {formik.touched.actividadEconomica && formik.errors.actividadEconomica ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.actividadeconomica}</div>
+                        <div className="fv-help-block">{formik.errors.actividadEconomica}</div>
                       </div>
                     ) : null}
                   </Form.Group>
@@ -951,9 +937,7 @@ const UserDatosFormStep1 = (props) => {
                                   value={formik.values.estatus}
                     >
 
-                      <FormattedMessage id='AUTH.GENERAL.IDENTIFICATIONTYPE'>
-                        {(message) => <option value="">{message}</option>}
-                      </FormattedMessage>
+                      Seleccione el Estatus
 
                       {estatus.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
@@ -982,32 +966,32 @@ const UserDatosFormStep1 = (props) => {
 
               <Row>
                 <Col md={6}>
-                  <Form.Group as={Col} controlId="npatronal">
+                  <Form.Group as={Col} controlId="numeroPatronal">
                     <Form.Control size="lg" type="text" placeholder="Número Patronal"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.npatronal}
+                                  value={formik.values.numeroPatronal}
                     />
 
-                    {formik.touched.npatronal && formik.errors.npatronal ? (
+                    {formik.touched.numeroPatronal && formik.errors.numeroPatronal ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.npatronal}</div>
+                        <div className="fv-help-block">{formik.errors.numeroPatronal}</div>
                       </div>
                     ) : null}
                   </Form.Group>
                 </Col>
 
                 <Col md={6}>
-                  <Form.Group as={Col} controlId="ntrabajadores">
+                  <Form.Group as={Col} controlId="numeroDeTrabajadores">
                     <Form.Control size="lg" type="text" placeholder="Número de Trabajadores"
                                   onChange={customHandleChangeNumeroDeTrabajadores}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.ntrabajadores}
+                                  value={formik.values.numeroDeTrabajadores}
                     />
 
-                    {formik.touched.ntrabajadores && formik.errors.ntrabajadores ? (
+                    {formik.touched.numeroDeTrabajadores && formik.errors.numeroDeTrabajadores ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.ntrabajadores}</div>
+                        <div className="fv-help-block">{formik.errors.numeroDeTrabajadores}</div>
                       </div>
                     ) : null}
                   </Form.Group>
