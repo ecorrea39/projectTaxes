@@ -5,26 +5,10 @@ export const initialValuesPayment = {
     monto: "",
     monto_tributo: "",
     intereses: "",
-    multa: ""
+    multa: "",
+    conceptos: [],
+    conceptosAPagar:[]
 }
-
-/*
-export const initialValuesDeclaration = {
-    rif: "",
-    concepto_pago: "",
-    concepto_pago_name: "",
-    ano_declaracion: "",
-    trimestre: "",
-    ntrabajadores: "",
-    ntrabajadores_liquidados: "0",
-    monto_pagado: "",
-    monto_tributo: "0",
-    terms: "",
-    sustitutiva: "1",
-    fecha_emision: "",
-    estatus: "1"
-
-}*/
 
 export const initialValuesDeclaration = {
     declaraciones: [{
