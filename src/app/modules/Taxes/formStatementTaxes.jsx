@@ -38,7 +38,7 @@ function FormStatementTaxes({ step }) {
         "estatus": "1"
     }
 
-    const estatus = ['eliminada', 'creada', 'sustitutiva 1', 'sustitutiva 2', 'pagada', 'definitiva'];
+    const estatus = ['eliminada', 'creada', 'definitiva', 'pagada' ];
 
     return (
         <>

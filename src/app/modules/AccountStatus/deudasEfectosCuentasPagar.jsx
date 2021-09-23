@@ -6,7 +6,6 @@ function DeudasEfectosCuentasPagar({ className }) {
     return (
         <>
             <div className={`card card-custom ${className}`}>
-                {/* Head */}
                 <div className="card-header border-0 py-5">
                     <h3 className="card-title align-items-start flex-column">
                         <span className="card-label font-weight-bolder text-dark">Deudas</span>
@@ -17,7 +16,6 @@ function DeudasEfectosCuentasPagar({ className }) {
                         {/*<a href="#" className="btn btn-danger font-weight-bolder font-size-sm">Create</a>*/}
                     </div>
                 </div>
-                {/* Body */}
                 <div className="card-body pt-0 pb-3">
                     <div className="tab-content">
                         <div className="table-responsive">
@@ -26,7 +24,7 @@ function DeudasEfectosCuentasPagar({ className }) {
                                 <thead>
                                 <tr className="text-left text-uppercase">
                                     <th style={{minWidth: "200px"}}>Concepto documento</th>
-                                    <th style={{minWidth: "250px"}}>Componentes</th>
+                                    <th style={{minWidth: "230px"}}>Componentes</th>
                                     <th style={{minWidth: "100px"}}>Fecha notificación</th>
                                     <th style={{minWidth: "50px"}}>Número giro</th>
                                     <th style={{minWidth: "50px"}}>Valor MMV</th>
@@ -97,52 +95,12 @@ function DeudasEfectosCuentasPagar({ className }) {
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                 </tr>
-
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-
-            {/*
-            <h4>Efectos y Cuentas por Pagar</h4>
-            <Table striped bordered hover size="md">
-                <thead>
-                <tr>
-                    <th>Concepto del documento</th>
-                    <th>Componentes</th>
-                    <th>Número documento</th>
-                    <th>Fecha notificación</th>
-                    <th>Número giro</th>
-                    <th>Valor MMV</th>
-                    <th>Número veces MMV</th>
-                    <th>Monto</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <th>Resolución</th>
-                    <th>Incumplimiento deberes formales</th>
-                    <th></th>
-                    <th>21-09-2021</th>
-                    <th></th>
-                    <th></th>
-                    <th>50,00</th>
-                    <th>150.000,00</th>
-                </tr>
-                <tr>
-                    <th>Resolución</th>
-                    <th>Sanción por acta</th>
-                    <th>AMD-20210901-123456</th>
-                    <th>01-09-2021</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th>625.000,00</th>
-                </tr>
-                </tbody>
-            </Table>*/}
         </>
     );
 }

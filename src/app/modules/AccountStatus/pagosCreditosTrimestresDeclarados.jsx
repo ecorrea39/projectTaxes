@@ -1,9 +1,7 @@
 import React from "react";
 import { Card, Tab, Table, Tabs } from "react-bootstrap";
 
-function PagosCreditosEfectosCuentasPagar({className}) {
-
-    console.log('classname', className)
+function PagosCreditosTrimestresDeclarados({className}) {
 
     return (
         <>
@@ -12,7 +10,7 @@ function PagosCreditosEfectosCuentasPagar({className}) {
                 <div className="card-header border-0 py-5">
                     <h3 className="card-title align-items-start flex-column">
                         <span className="card-label font-weight-bolder text-dark">Pagos y créditos</span>
-                        <span className="text-muted mt-3 font-weight-bold font-size-sm">Efectos y cuentas por pagar</span>
+                        <span className="text-muted mt-3 font-weight-bold font-size-sm">Trimestres declarados</span>
                     </h3>
                     <div className="card-toolbar">
                         {/*<a href="#" className="btn btn-info font-weight-bolder font-size-sm mr-3">Reporte</a>*/}
@@ -27,29 +25,29 @@ function PagosCreditosEfectosCuentasPagar({className}) {
                                 className="table table-head-custom table-head-bg table-borderless table-vertical-center">
                                 <thead>
                                 <tr className="text-left text-uppercase">
-                                    <th style={{minWidth: "180px"}}>Concepto documento</th>
-                                    <th style={{minWidth: "180px"}}>Componentes</th>
-                                    <th style={{minWidth: "50px"}}>Número giro</th>
+                                    <th style={{minWidth: "150px"}}>Concepto</th>
+                                    <th style={{minWidth: "50px"}}>Año</th>
+                                    <th style={{minWidth: "50px"}}>Trim.</th>
                                     <th style={{minWidth: "100px"}}>Fecha</th>
                                     <th style={{minWidth: "100px"}}>Banco</th>
-                                    <th style={{minWidth: "50px"}}>Referencia</th>
+                                    <th style={{minWidth: "100px"}}>Referencia</th>
                                     <th style={{minWidth: "100px"}}>Monto pagado</th>
-                                    <th style={{minWidth: "100px"}}>Clave de pago</th>
+                                    <th style={{minWidth: "50px"}}>Clave de pago</th>
                                 </tr>
                                 </thead>
 
                                 <tbody>
                                 <tr>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Resolución</span>
-                                        <span className="text-muted font-weight-bold">ADM-20210901-123456</span>
-                                    </td>
-                                    <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Incumplimiento deberes formales</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Aporte patronal 2%</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg"></span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">2021</span>
+                                        <span className="text-muted font-weight-bold"></span>
+                                    </td>
+                                    <td>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">1</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
@@ -57,7 +55,7 @@ function PagosCreditosEfectosCuentasPagar({className}) {
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Banco de venezuela</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Banco de Venezuela</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
@@ -65,25 +63,25 @@ function PagosCreditosEfectosCuentasPagar({className}) {
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">150.000,00</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">125.325,42</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Sanción por acta</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Tributo</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Resolución</span>
-                                        <span className="text-muted font-weight-bold">ADM-20210901-123456</span>
-                                    </td>
-                                    <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Incumplimiento deberes formales</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Aporte de los trabajadores 0,5%</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg"></span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">2021</span>
+                                        <span className="text-muted font-weight-bold"></span>
+                                    </td>
+                                    <td>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">1</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
@@ -91,7 +89,7 @@ function PagosCreditosEfectosCuentasPagar({className}) {
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Banco de venezuela</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Banco Banesco</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
@@ -99,11 +97,11 @@ function PagosCreditosEfectosCuentasPagar({className}) {
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">150.000,00</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">125.325,42</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Sanción por acta</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Tributo</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                 </tr>
@@ -117,4 +115,4 @@ function PagosCreditosEfectosCuentasPagar({className}) {
     );
 }
 
-export default PagosCreditosEfectosCuentasPagar;
+export default PagosCreditosTrimestresDeclarados;

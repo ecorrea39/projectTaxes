@@ -5,6 +5,7 @@ import { BuilderPage } from "./pages/BuilderPage";
 import { MyPage } from "./pages/MyPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import TaxesPage from "./pages/taxes";
+import AccountStatusPage from "./pages/accountStatus";
 import { UserDatos } from "./modules/User/UserDatos";
 
 const GoogleMaterialPage = lazy(() =>
@@ -21,9 +22,6 @@ const UserProfilepage = lazy(() =>
 );
 const UserDatospage = lazy(() =>
   import("./modules/User/UserDatos")
-);
-const AccountStatusPage = lazy(() =>
-    import("./modules/AccountStatus/FormAccountStatus")
 );
 
 export default function BasePage() {

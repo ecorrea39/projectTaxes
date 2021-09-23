@@ -3,8 +3,6 @@ import { Card, Tab, Table, Tabs } from "react-bootstrap";
 
 function PagosCreditosSaldoCompensar({className}) {
 
-    console.log('classname', className)
-
     return (
         <>
             <div className={`card card-custom ${className}`}>
