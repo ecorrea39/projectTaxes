@@ -887,7 +887,7 @@ const UserDatosFormStep1 = (props) => {
                                   value={formik.values.clase_de_empresa}
                     >
 
-                      Seleccine la Clase de Empresa
+                      <option key="0" value="">Seleccine la Clase de Empresa</option>
 
                       {clasesEmpresa.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
@@ -911,7 +911,7 @@ const UserDatosFormStep1 = (props) => {
                                   value={formik.values.actividad_economica}
                     >
 
-                      Seleccione la Actividad Económica
+                      <option key="0" value="">Seleccione la Actividad Económica</option>
 
                       {actividades.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
@@ -937,7 +937,7 @@ const UserDatosFormStep1 = (props) => {
                                   value={formik.values.estatus}
                     >
 
-                      Seleccione el Estatus
+                      <option key="0" value="">Seleccione el Estatus</option>
 
                       {estatus.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
@@ -1022,6 +1022,11 @@ const UserDatosFormStep1 = (props) => {
                 <Col md={4}>
                   <Button variant="secondary" size="lg" block
                           type="button"
+                          onClick={formik.submitForm}
+                          disabled={
+                            formik.isSubmitting ||
+                            !formik.isValid
+                          }
                   >
                     Siguiente
                   </Button>
