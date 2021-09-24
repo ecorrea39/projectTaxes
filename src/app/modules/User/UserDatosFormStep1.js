@@ -1,43 +1,10 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import {FormattedMessage, useIntl} from "react-intl";
 import * as Yup from "yup";
 import {useFormik} from "formik";
 import axios from "axios";
 
-const listaClaseEmpresa = () => {
-
-  const array = [
-    {"id": "1", "name": "S.A."},
-    {"id": "2", "name": "S.R.L."},
-    {"id": "3", "name": "S.A.I.C.A."},
-    {"id": "4", "name": "C.A."},
-    {"id": "5", "name": "S.A.C.A."},
-    {"id": "6", "name": "CRL"},
-    {"id": "7", "name": "Firma Personal"},
-    {"id": "8", "name": "Sociedad Civil"},
-    {"id": "9", "name": "Sociedad en Comandita"},
-    {"id": "10", "name": "Persona Natural"},
-    {"id": "11", "name": "Cooperativas"},
-    {"id": "12", "name": "Sociedad en Nombre Colectivo"},
-    {"id": "13", "name": "Subsidiaria"},
-    {"id": "14", "name": "Empresa Extranjera con Sucursal en Venezuela"},
-    {"id": "15", "name": "Gobierno"},
-    {"id": "16", "name": "Sociedad en Comandita por Acciones"},
-    {"id": "17", "name": "Empresa sin Domicilio en Venezuela"},
-    {"id": "18", "name": "ETT"},
-    {"id": "19", "name": "Sucesión"},
-    {"id": "20", "name": "Empresa de Propiedad Social Directa Comunal"},
-    {"id": "21", "name": "Empresa de Propiedad Social InDirecta Comunal"},
-    {"id": "22", "name": "Unidad Productiva Familiar"},
-    {"id": "23", "name": "Grupo de Intercambio Solidario (Trueque)"},
-    {"id": "24", "name": "Empresas Conjuntas"},
-    {"id": "25", "name": "Alianzas Estrategicas"},
-    {"id": "26", "name": "Conglomerados"},
-    {"id": "27", "name": "Empresa Extranjera con Capital Nacional"}
-  ];
-  return array.sort((a, b) => a.name < b.name ? -1 : +(a.name > b.name));
-};
 
 const listaEstatus = () => {
   const array = [
@@ -612,13 +579,28 @@ const listaActividad = () => {
 const UserDatosFormStep1 = (props) => {
 
   const [loading, setLoading] = useState(false);
+  const [clasesEmpresa, setClasesEmpresa] = useState([]);
 
   const intl = useIntl();
   const API_URL = `${process.env.REACT_APP_API_URL}`;
 
-  const clasesEmpresa = listaClaseEmpresa();
   const actividades = listaActividad();
   const estatus = listaEstatus();
+
+  const token = localStorage.getItem('authToken');
+
+  const axiosConfig = {
+    headers: {
+      Accept: 'application/vnd.api+json',
+      'Content-Type': 'application/vnd.api+json',
+      Authorization: `Bearer ${token}`
+    }
+  };
+
+  useEffect(() => {
+
+    cargaDeClasesDeEmpresa();
+  }, []);
 
   const initialValues = {
     razon_social: "",
@@ -629,6 +611,45 @@ const UserDatosFormStep1 = (props) => {
     numero_patronal: "",
     numero_de_trabajadores: ""
   };
+
+  const cargaDeClasesDeEmpresa = () => {
+
+    enableLoading();
+
+    axios.get(`${API_URL}company_class/`, axiosConfig)
+      .then(function (res) {
+        console.log("resFormStep1", res);
+
+        const arrayData = Array.from(res.data.data);
+
+        let clasesEmpresaArray = arrayData.map(elemData => {
+          let id = elemData.id;
+          let elemDataName = elemData.attributes.name;
+
+          let rObj = {
+            "id": id,
+            "name": elemDataName
+          };
+
+          console.log("rObj", rObj);
+
+          return rObj;
+        });
+
+        clasesEmpresaArray.sort((a, b) => a.name < b.name ? -1 : 1);
+        setClasesEmpresa(clasesEmpresaArray);
+        console.log("clasesEmpresa::", clasesEmpresa);
+
+        disableLoading();
+
+      }).catch((err) => {
+
+      console.log("errUserDatosFormStep1", err);
+      disableLoading();
+
+      alert("Error al consultar los datos de las clases de empresa");
+    });
+  }
 
   const customHandleChangeNumeroDeTrabajadores = (event) => {
     const value = event.currentTarget.value;
@@ -750,21 +771,9 @@ const UserDatosFormStep1 = (props) => {
 
 
       const rif = localStorage.getItem('rif');
-      const token = localStorage.getItem('authToken');
 
       console.log("rif", rif);
       console.log("authToken", token);
-
-      setSubmitting(false);
-      disableLoading();
-
-      const axiosConfig = {
-        headers: {
-          Accept: 'application/vnd.api+json',
-          'Content-Type': 'application/vnd.api+json',
-          Authorization: `Bearer ${token}`
-        }
-      };
 
       const data = {
         jsonapi: {version: '1.0'},
@@ -777,19 +786,12 @@ const UserDatosFormStep1 = (props) => {
 
       axios.post(`${API_URL}user_empresa/`, data, axiosConfig)
         .then(function (res) {
-          alert('Guardado');
+          alert('Guardado exitosamente');
 
           setSubmitting(false);
           disableLoading();
 
-          // const attr = res.data.data.attributes;
-
-          // localStorage.set('name', attr.name);
-          // localStorage.set('surname', attr.surname);
-
           console.log("resFormStep1", res);
-          alert('Guardado exitosamente');
-
 
           // if (parciales) {
           //   console.log('fechacontitucion ', fechacontitucion);
