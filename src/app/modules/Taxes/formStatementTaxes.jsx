@@ -31,6 +31,8 @@ function FormStatementTaxes({ step }) {
         "ntrabajadores": "",
         "monto_pagado": "",
         "monto_tributo": "0",
+        "monto_multa": "",
+        "monto_intereses": "",
         "terms": "",
         "fecha_emision": "",
         "ntrabajadores_liquidados": "0",
@@ -82,7 +84,7 @@ function FormStatementTaxes({ step }) {
                                                             </label>
                                                             <Field
                                                                 id="concepto_pago"
-                                                                name={`declaraciones[{index}].concepto_pago`}
+                                                                name={`declaraciones[${index}].concepto_pago`}
                                                                 type="select"
                                                                 component={BaseSelect}
                                                             >
@@ -124,7 +126,7 @@ function FormStatementTaxes({ step }) {
                                                             </label>
                                                             <Field
                                                                 id="ano_declatacion"
-                                                                name={`declaraciones[{index}].ano_declaracion`}
+                                                                name={`declaraciones[${index}].ano_declaracion`}
                                                                 type="select"
                                                                 component={BaseSelect}
                                                             >
@@ -142,7 +144,7 @@ function FormStatementTaxes({ step }) {
                                                             </label>
                                                             <Field
                                                                 id="trimestre"
-                                                                name={`declaraciones[{index}].trimestre`}
+                                                                name={`declaraciones[${index}].trimestre`}
                                                                 type="select"
                                                                 component={BaseSelect}
                                                             >
@@ -160,7 +162,7 @@ function FormStatementTaxes({ step }) {
                                                             </label>
                                                             <Field
                                                                 id="ntrabajadores"
-                                                                name="declaraciones[{index}].ntrabajadores"
+                                                                name={`declaraciones[${index}].ntrabajadores`}
                                                                 component={BaseInput}
                                                             />
                                                         </Col>
@@ -170,7 +172,7 @@ function FormStatementTaxes({ step }) {
                                                             </label>
                                                             <Field
                                                                 id="monto_pagado"
-                                                                name={`declaraciones[{index}].monto_pagado`}
+                                                                name={`declaraciones[${index}].monto_pagado`}
                                                                 component={BaseInput}
                                                             />
                                                         </Col>
@@ -180,7 +182,7 @@ function FormStatementTaxes({ step }) {
                                                             </label>
                                                             <Field
                                                                 id="fecha_emision"
-                                                                name={`declaraciones[{index}].fecha_emision`}
+                                                                name={`declaraciones[${index}].fecha_emision`}
                                                                 component={BaseInput}
                                                                 type="date"
                                                                 max={formatoFechaFutura}
@@ -192,7 +194,29 @@ function FormStatementTaxes({ step }) {
                                                             </label>
                                                             <Field
                                                                 id="monto_tributo"
-                                                                name={`declaraciones[{index}].monto_tributo`}
+                                                                name={`declaraciones[${index}].monto_tributo`}
+                                                                component={BaseInput}
+                                                                disabled
+                                                            />
+                                                        </Col>
+                                                        <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4">
+                                                            <label htmlFor="monto_intereses" className="font-weight-bold">
+                                                                Monto intereses
+                                                            </label>
+                                                            <Field
+                                                                id="monto_intereses"
+                                                                name={`declaraciones[${index}].monto_intereses`}
+                                                                component={BaseInput}
+                                                                disabled
+                                                            />
+                                                        </Col>
+                                                        <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4">
+                                                            <label htmlFor="monto_multa" className="font-weight-bold">
+                                                                Monto multa
+                                                            </label>
+                                                            <Field
+                                                                id="monto_multa"
+                                                                name={`declaraciones[${index}].monto_multa`}
                                                                 component={BaseInput}
                                                                 disabled
                                                             />
@@ -203,7 +227,7 @@ function FormStatementTaxes({ step }) {
                                                             <label htmlFor="terms">
                                                                 <Field
                                                                     id="terms"
-                                                                    name={`declaraciones[{index}].terms`}
+                                                                    name={`declaraciones[${index}].terms`}
                                                                     type="checkbox"
                                                                     component={BaseInput}
                                                                 />
@@ -224,7 +248,8 @@ function FormStatementTaxes({ step }) {
                                     <Button variant="outline-danger" size="lg" className="w-100">Cancelar</Button>
                                 </Col>
                                 <Col xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
-                                    <Button type="submit" variant="success" size="lg" className="w-100">Declarar</Button>
+                                    <Button type="submit" onClick={()=>console.log(formik.errors, formik.values)}
+                                            variant="success" size="lg" className="w-100">Declarar</Button>
                                 </Col>
                             </Row>
                         </Form>

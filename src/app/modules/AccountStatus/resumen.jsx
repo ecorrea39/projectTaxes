@@ -30,37 +30,44 @@ function Resumen({className}) {
                 <div className="card-body d-flex flex-column p-0">
                     <div id="kt_mixed_widget_6_chart" style={{height: "15px"}}/>
                     <div className="card-spacer bg-white card-rounded flex-grow-1">
-                        {/* begin::Row */}
                         <div className="row m-0">
-                            <div className="col px-4 py-4 mr-4">
+                            <div className="col px-6 py-6">
                                 <div className="font-size-sm text-muted font-weight-bold">
-                                    Trimestres declarados
+                                    <SVG src={toAbsoluteUrl("/media/svg/icons/Layout/Layout-arrange.svg")} />
+                                    Total deuda trimestres declarados
                                 </div>
                                 <div className="font-size-h4 font-weight-bolder">{FormatNumber(deudaTrim)}</div>
                             </div>
-                            <div className="col px-4 py-4 mr-4">
+                            <div className="col px-6 py-6">
                                 <div className="font-size-sm text-muted font-weight-bold">
-                                    Efectos y cuentas por pagar
+                                    <SVG src={toAbsoluteUrl("/media/svg/icons/Layout/Layout-4-blocks.svg")} />
+                                    Total deuda efectos y cuentas por pagar
                                 </div>
                                 <div className="font-size-h4 font-weight-bolder">{FormatNumber(deudaCxP)}</div>
-                            </div>
-                            <div className="col px-4 py-4 mr-4">
-                                <div className="font-size-sm text-muted font-weight-bold">
-                                    Saldo pagados
-                                </div>
-                                <div className="font-size-h4 font-weight-bolder">{FormatNumber(pagos)}</div>
                             </div>
                         </div>
                         <div className="row m-0">
                             <div className="col px-6 py-6">
                                 <div className="font-size-sm text-muted font-weight-bold">
-                                    Crédito fiscal | Saldo temporal
+                                    <SVG src={toAbsoluteUrl("/media/svg/icons/Layout/Layout-4-blocks.svg")} />
+                                    Total saldos pagados
+                                </div>
+                                <div className="font-size-h4 font-weight-bolder">{FormatNumber(pagos)}</div>
+                            </div>
+                            <div className="col px-6 py-6"></div>
+                        </div>
+                        <div className="row m-0">
+                            <div className="col px-6 py-6">
+                                <div className="font-size-sm text-muted font-weight-bold">
+                                    <SVG src={toAbsoluteUrl("/media/svg/icons/Layout/Layout-4-blocks.svg")} />
+                                    Total crédito fiscal | Saldo temporal
                                 </div>
                                 <div className="font-size-h4 font-weight-bolder">{FormatNumber(creditoFisTemp)}</div>
                             </div>
                             <div className="col px-6 py-6">
                                 <div className="font-size-sm text-muted font-weight-bold">
-                                    Crédito fiscal | Saldo aprobado
+                                    <SVG src={toAbsoluteUrl("/media/svg/icons/Layout/Layout-4-blocks.svg")} />
+                                    Total crédito fiscal | Saldo aprobado
                                 </div>
                                 <div className="font-size-h4 font-weight-bolder">{FormatNumber(creditoFisAprob)}</div>
                             </div>

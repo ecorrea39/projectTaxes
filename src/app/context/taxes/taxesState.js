@@ -132,12 +132,15 @@ export const TaxesState = ({ children }) => {
             }
         };
 
+        //const arrayData = Array.from(v.declaraciones);
+        //console.log('arrayData ', arrayData)
+
         const data = {
             jsonapi: { version: '1.0' },
             data: {
                 type: "saveTributeDeclaration",
                 id: odb.get('rif'),
-                attributes: v
+                attributes: v.declaraciones
             }
         };
 

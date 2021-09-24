@@ -11,70 +11,41 @@ export const AccountStatusState = ({ children }) => {
     const [creditoFisTemp, setCreditoFisTemp] = useState();
     const [creditoFisAprob, setCreditoFisAprob] = useState();
 
+    const [detalleTrim, setDetalleTrim] = useState([]);
+    setDetalleTrim([]);
+
+    const rif = odb.get('rif');
+
     useEffect(() => {
-        getTotalDeudaTrimestresDeclarados();
-        getTotalDeudaEfectosCuentasPagar();
-        getTotalPagos();
-        getTotalCreditoFiscalSaldoTemporal();
-        getTotalCreditoFiscalSaldoAprobado();
+        getResumen();
     },[]);
 
-    const getTotalDeudaTrimestresDeclarados = async () => {
+    const getResumen = async () => {
 
         try {
-            const respuesta = await clientAxios.get('/balance/deuda_trimestre/');
-            setDeudaTrim(respuesta.data.data[0][0].attributes['monto']);
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const getTotalDeudaEfectosCuentasPagar = async () => {
-
-        try {
-            //const respuesta = await clientAxios.get('/balance/deuda_trimestre/');
-            //setDeudaCxP(respuesta.data.data[0][0].attributes['monto']);
+            const respuesta = await clientAxios.get('/balance/'+{rif});
+            setDeudaTrim(respuesta.data.data[0].attributes.total);
             setDeudaCxP(0.00);
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const getTotalPagos = async () => {
-
-        try {
-            //const respuesta = await clientAxios.get('/balance/deuda_trimestre/');
-            //setDeudaCxP(respuesta.data.data[0][0].attributes['monto']);
             setPagos(0.00);
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const getTotalCreditoFiscalSaldoTemporal = async () => {
-
-        try {
-            //const respuesta = await clientAxios.get('/balance/deuda_trimestre/');
-            //setDeudaCxP(respuesta.data.data[0][0].attributes['monto']);
             setCreditoFisTemp(0.00);
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const getTotalCreditoFiscalSaldoAprobado = async () => {
-
-        try {
-            //const respuesta = await clientAxios.get('/balance/deuda_trimestre/');
-            //setDeudaCxP(respuesta.data.data[0][0].attributes['monto']);
             setCreditoFisAprob(0.00);
         } catch (error) {
             console.log(error)
         }
     }
 
+    const getDetalleDeudaTrimestresDeclarados = async () => {
+
+        try {
+            //const respuesta = await clientAxios.get('/balance/deuda_trimestre/');
+            setDetalleTrim([]);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const valuesContext = {
-        deudaTrim, deudaCxP, pagos, creditoFisTemp, creditoFisAprob
+        deudaTrim, deudaCxP, pagos, creditoFisTemp, creditoFisAprob, detalleTrim
     }
 
     return (
