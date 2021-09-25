@@ -5,7 +5,7 @@ import odb from './../../helpers/odb';
 
 export const TaxesState = ({ children }) => {
 
-    const [stepTaxes, setStepTaxes ] = useState(2);
+    const [stepTaxes, setStepTaxes ] = useState(1);
 
     const [bancos, setBancos] = useState([]);
 
@@ -23,12 +23,20 @@ export const TaxesState = ({ children }) => {
 
     const [userData, setUserData] = useState({});
 
+    const [arreglo, setArreglo] = useState([]);
+
+    const [historico, setHistorico] = useState([]);
+
+    const estatus = ['eliminada', 'creada', 'definitiva', 'pagada' ];
+
     useEffect(() => {
         getBancos();
         getConceptos();
         getAnos();
         getTrimestres();
+        getHistoricoDeclaraciones();
         getFechaFutura();
+        formatearfecha(new Date(), 'YMD');
     },[]);
 
     const getBancos = async () => {
@@ -63,10 +71,10 @@ export const TaxesState = ({ children }) => {
         } catch (error) {
             console.log(error)
         }
-
     }
 
     const getAnos = async () => {
+
         try {
             let fecha = new Date();
             let ano = Number(fecha.getFullYear());
@@ -79,10 +87,10 @@ export const TaxesState = ({ children }) => {
         } catch (error) {
             console.log(error)
         }
-
     }
 
     const getTrimestres = async () => {
+
         try {
             const array = [
                 { "id": "1", "name": "Trimestre 1"},
@@ -94,13 +102,56 @@ export const TaxesState = ({ children }) => {
         } catch (error) {
             console.log(error)
         }
-
     }
 
     const getUserData = async (rif) => {
+
         try {
             const respuesta = await clientAxios.get(`/users/${rif}`);
             setUserData(respuesta.data.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const getHistoricoDeclaraciones = async () => {
+
+        try {
+            const respuesta = await clientAxios.get(`/tribute_declaration/${odb.get('rif')}`);
+            setArreglo(respuesta.data.data);
+
+            arreglo.map((x, i) => {
+                historico.push(
+                    {
+                        "id": arreglo[i].id,
+                        "concepto_pago": arreglo[i].attributes.concepto_pago,
+                        "concepto_pago_name": arreglo[i].attributes['concepto_pago_concepto.name'],
+                        "trimestre": arreglo[i].attributes.trimestre,
+                        "ano_declaracion": arreglo[i].attributes.ano_declaracion,
+                        "ntrabajadores": arreglo[i].attributes.ntrabajadores,
+                        "ntrabajadores_liquidados": arreglo[i].attributes.ntrabajadores_liquidados,
+                        "monto_pagado": new Intl.NumberFormat('en-US', {
+                            style: "currency",
+                            currency: "VES",
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        }).format(arreglo[i].attributes.monto_pagado),
+                        "monto_tributo": new Intl.NumberFormat('en-US', {
+                            style: "currency",
+                            currency: "VES",
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        }).format(arreglo[i].attributes.monto_tributo),
+                        "terms": arreglo[i].attributes.terms,
+                        "sustitutiva": arreglo[i].attributes.sustitutiva,
+                        "fecha_emision": arreglo[i].attributes.fecha_emision,
+                        "estatus": estatus[arreglo[i].attributes.estatus]
+                    }
+                )
+            })
+
+            console.log('historico ', historico);
+
         } catch (error) {
             console.log(error)
         }
@@ -116,40 +167,49 @@ export const TaxesState = ({ children }) => {
         setFormatoFechaFutura(year + '-' + month + '-' + day);
     }
 
+    const formatearfecha = (f, formato) => {
+        const ano = f.getFullYear();
+        const mes = ("0" + (f.getMonth()+1)).substr(-2);
+        const dia = ("0" + f.getDate()).substr(-2);
+
+        let fecha;
+
+        if(formato === 'DMY') fecha = `${dia}-${mes}-${ano}`
+        else if(formato === 'YMD') fecha = `${ano}-${mes}-${dia}`;
+
+        return fecha;
+    }
+
     const submitPayment = async () => {
         setStepTaxes(stepTaxes+1);
     }
 
-    const submitDeclaration = async (v) => {
+    const submitDeclaration = async (valores) => {
 
-        const axiosConfig = {
-            headers: {
-                Accept: 'application/vnd.api+json',
-                'Content-Type': 'application/vnd.api+json',
-                Authorization: 'Bearer ' + odb.get('authToken')
+        try {
+            const axiosConfig = {
+                headers: {
+                    Accept: 'application/vnd.api+json',
+                    'Content-Type': 'application/vnd.api+json',
+                    Authorization: 'Bearer ' + odb.get('authToken')
+                }
             }
-        };
 
-        //const arrayData = Array.from(v.declaraciones);
-        //console.log('arrayData ', arrayData)
-
-        const data = {
-            jsonapi: { version: '1.0' },
-            data: {
-                type: "saveTributeDeclaration",
-                id: odb.get('rif'),
-                attributes: v.declaraciones
+            const data = {
+                jsonapi: { version: '1.0' },
+                data: {
+                    type: "saveTributeDeclaration",
+                    id: odb.get('rif'),
+                    attributes: valores.declaraciones
+                }
             }
-        };
 
-        console.log('axiosConfig ', axiosConfig);
-        console.log('data ', data);
-
-        const respuesta = await clientAxios.post('/tribute_declaration/', data, axiosConfig);
-
-        console.log('respuesta ', respuesta)
-
-        setStepTaxes(stepTaxes+1);
+            const respuesta = await clientAxios.post('/tribute_declaration/', data, axiosConfig);
+            //console.log('respuesta ', respuesta)
+            setStepTaxes(stepTaxes+1);
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     const valuesContext = {
@@ -166,7 +226,10 @@ export const TaxesState = ({ children }) => {
         userData,
         setFormDtaPayment,
         getUserData,
-        formatoFechaFutura
+        formatoFechaFutura,
+        historico,
+        estatus,
+        formatearfecha
     }
 
     return (

@@ -12,7 +12,6 @@ export const AccountStatusState = ({ children }) => {
     const [creditoFisAprob, setCreditoFisAprob] = useState();
 
     const [detalleTrim, setDetalleTrim] = useState([]);
-    setDetalleTrim([]);
 
     const rif = odb.get('rif');
 

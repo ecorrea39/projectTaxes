@@ -5,8 +5,7 @@ export const SchemaPayment = Yup.object({
         .required('- Campo obligatorio -'),
     modo_pago: Yup.string()
         .required('- Campo obligatorio -'),
-    banco: Yup.string()
-       ,
+    banco: Yup.string(),
     monto: Yup.string()
         .required('- Campo obligatorio -'),
     monto_tributo: Yup.string()
@@ -32,6 +31,7 @@ export const SchemaDeclaration= Yup.object({
             monto_tributo: Yup.string(),
             monto_multa: Yup.string(),
             monto_intereses: Yup.string(),
+            fecha_declaracion: Yup.date(),
             terms: Yup.boolean()
                 .required('- Campo obligatorio -'),
             ntrabajadores_liquidados: Yup.string(),
@@ -39,8 +39,8 @@ export const SchemaDeclaration= Yup.object({
             estatus: Yup.string(),
             fecha_emision: Yup.date()
                 .when('concepto_pago', {
-                    is: "2" || 2,
-                    then: Yup.string().required("Esto es porque el conceptos es 2")
+                    is: 2,
+                    then: Yup.string().required('- Campo obligatorio -')
                 })
                 
         })
