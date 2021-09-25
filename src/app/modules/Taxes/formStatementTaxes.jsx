@@ -115,7 +115,7 @@ function FormStatementTaxes({ step }) {
                                                     </Row>
 
                                                     <Row className="mt-4 mb-4">
-                                                        <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
+                                                        <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6" className="mb-6">
                                                             <label htmlFor="ano_declaracion" className="font-weight-bold">
                                                                 Año
                                                             </label>
@@ -133,7 +133,7 @@ function FormStatementTaxes({ step }) {
                                                                 }
                                                             </Field>
                                                         </Col>
-                                                        <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
+                                                        <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6" className="mb-6">
                                                             <label htmlFor="trimestre" className="font-weight-bold">
                                                                 Trimestre
                                                             </label>
@@ -151,7 +151,7 @@ function FormStatementTaxes({ step }) {
                                                                 }
                                                             </Field>
                                                         </Col>
-                                                        <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
+                                                        <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6" className="mb-6">
                                                             <label htmlFor="ntrabajadores" className="font-weight-bold">
                                                                 Cantidad trabajadores en nómina
                                                             </label>
@@ -161,7 +161,7 @@ function FormStatementTaxes({ step }) {
                                                                 component={BaseInput}
                                                             />
                                                         </Col>
-                                                        <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
+                                                        <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6" className="mb-6">
                                                             <label htmlFor="monto_pagado" className="font-weight-bold">
                                                                 Pago nómina trimestral
                                                             </label>
