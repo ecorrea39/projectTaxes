@@ -5,7 +5,9 @@ export const initialValuesPayment = {
     monto: "",
     monto_tributo: "",
     intereses: "",
-    multa: ""
+    multa: "",
+    conceptos: [],
+    conceptosAPagar:[]
 }
 
 export const initialValuesDeclaration = {
