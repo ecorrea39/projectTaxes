@@ -26,11 +26,26 @@ const UserDatosFormStep1 = (props) => {
     }
   };
 
+  let _this = this;
   useEffect(() => {
 
-    cargaDeClasesDeEmpresa();
-    cargaDeEstatus();
+    alert("1");
+    cargaDeClasesDeEmpresa().then((resolvedValue) => {
+      console.log("resolvedValue", resolvedValue);
+      console.log("clasesEmpresa", clasesEmpresa);
+      alert("listo");
+      cargaDeEstatus();
+      console.log("cargaDeClasesDeEmpresaExitoso", resolvedValue);
+    }, (error) => {
+      console.log("cargaDeClasesDeEmpresaFallido", error);
+    });
+    alert("2");
+
+    // cargaDeClasesDeEmpresa();
+
+
     cargaDeActividadesEconomicas();
+    alert("3");
   }, []);
 
   const initialValues = {
@@ -43,47 +58,136 @@ const UserDatosFormStep1 = (props) => {
     numero_de_trabajadores: ""
   };
 
-  const cargaDeClasesDeEmpresa = () => {
 
-    enableLoading();
+  // const cargaDeClasesDeEmpresa = new Promise((resolve, reject) => {
+  //
+  //   enableLoading();
+  //
+  //   axios.get(`${API_URL}company_class/`, axiosConfig)
+  //     .then(function (res) {
+  //       console.log("resFormStep1_company_class", res);
+  //
+  //       const arrayData = Array.from(res.data.data);
+  //
+  //       let clasesEmpresaArray = arrayData.map(elemData => {
+  //         let id = elemData.id;
+  //         let elemDataName = elemData.attributes.name;
+  //
+  //         let rObj = {
+  //           "id": id,
+  //           "name": elemDataName
+  //         };
+  //
+  //         console.log("rObj", rObj);
+  //
+  //         return rObj;
+  //       });
+  //
+  //       clasesEmpresaArray.sort((a, b) => a.name < b.name ? -1 : 1);
+  //       setClasesEmpresa(clasesEmpresaArray);
+  //       console.log("clasesEmpresa::", clasesEmpresa);
+  //
+  //       disableLoading();
+  //       resolve('Clases de Empresa cargado Exitosamente');
+  //
+  //     }).catch((err) => {
+  //
+  //     console.log("errUserDatosFormStep1ClasesDeEmpresas", err);
+  //     disableLoading();
+  //
+  //     reject(new Error('Error al consultar los datos de las clases de empresa'));
+  //   });
+  // });
 
-    axios.get(`${API_URL}company_class/`, axiosConfig)
-      .then(function (res) {
-        console.log("resFormStep1_company_class", res);
+  const cargaDeClasesDeEmpresa = (_this) => {
 
-        const arrayData = Array.from(res.data.data);
+    let p = new Promise(function (resolve, reject) {
+      enableLoading();
 
-        let clasesEmpresaArray = arrayData.map(elemData => {
-          let id = elemData.id;
-          let elemDataName = elemData.attributes.name;
+      axios.get(`${API_URL}company_class/`, axiosConfig)
+        .then(function (res) {
+          console.log("resFormStep1_company_class", res);
 
-          let rObj = {
-            "id": id,
-            "name": elemDataName
-          };
+          const arrayData = Array.from(res.data.data);
 
-          console.log("rObj", rObj);
+          let clasesEmpresaArray = arrayData.map(elemData => {
+            let id = elemData.id;
+            let elemDataName = elemData.attributes.name;
 
-          return rObj;
-        });
+            let rObj = {
+              "id": id,
+              "name": elemDataName
+            };
 
-        clasesEmpresaArray.sort((a, b) => a.name < b.name ? -1 : 1);
-        setClasesEmpresa(clasesEmpresaArray);
-        console.log("clasesEmpresa::", clasesEmpresa);
+            console.log("rObj", rObj);
 
+            return rObj;
+          });
+
+          clasesEmpresaArray.sort((a, b) => a.name < b.name ? -1 : 1);
+          console.log("clasesEmpresaArray", clasesEmpresaArray);
+          setClasesEmpresa(clasesEmpresaArray);
+          console.log("clasesEmpresa::", clasesEmpresa);
+
+          disableLoading();
+          resolve('Clases de Empresa cargado Exitosamente');
+
+        }).catch((err) => {
+
+        console.log("errUserDatosFormStep1ClasesDeEmpresas", err);
         disableLoading();
 
-      }).catch((err) => {
+        reject(new Error('Error al consultar los datos de las clases de empresa'));
+      });
+    })
 
-      console.log("errUserDatosFormStep1ClasesDeEmpresas", err);
-      disableLoading();
+    return p;
 
-      alert("Error al consultar los datos de las clases de empresa");
-    });
-  }
+  };
+
+  // const cargaDeClasesDeEmpresa = () => {
+  //
+  //   enableLoading();
+  //
+  //   axios.get(`${API_URL}company_class/`, axiosConfig)
+  //     .then(function (res) {
+  //       console.log("resFormStep1_company_class", res);
+  //
+  //       const arrayData = Array.from(res.data.data);
+  //
+  //       let clasesEmpresaArray = arrayData.map(elemData => {
+  //         let id = elemData.id;
+  //         let elemDataName = elemData.attributes.name;
+  //
+  //         let rObj = {
+  //           "id": id,
+  //           "name": elemDataName
+  //         };
+  //
+  //         console.log("rObj", rObj);
+  //
+  //         return rObj;
+  //       });
+  //
+  //       clasesEmpresaArray.sort((a, b) => a.name < b.name ? -1 : 1);
+  //       setClasesEmpresa(clasesEmpresaArray);
+  //       console.log("clasesEmpresa::", clasesEmpresa);
+  //
+  //       disableLoading();
+  //       return Promise.resolve(1);
+  //
+  //     }).catch((err) => {
+  //
+  //     console.log("errUserDatosFormStep1ClasesDeEmpresas", err);
+  //     disableLoading();
+  //
+  //     alert("Error al consultar los datos de las clases de empresa");
+  //     return Promise.resolve(1);
+  //   });
+  // }
 
   const cargaDeEstatus = () => {
-
+    alert("cargaDeEstatus");
     enableLoading();
 
     axios.get(`${API_URL}estatus/`, axiosConfig)
@@ -261,6 +365,7 @@ const UserDatosFormStep1 = (props) => {
   });
 
   const enableLoading = () => {
+    alert("enableLoadingDentro");
     setLoading(true);
   };
 
