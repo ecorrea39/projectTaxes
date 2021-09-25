@@ -52,7 +52,7 @@ function FormStatementTaxes({ step }) {
                 {
                     formik => (
                         <Form>
-                            <Row className="mt-12 mb-12">
+                            <Row className="mt-4 mb-4">
                                 <Col xs="12">
                                     <h3>Declaración de tributos</h3>
                                 </Col>
@@ -62,7 +62,7 @@ function FormStatementTaxes({ step }) {
                                     </span>
                                 </Col>
                             </Row>
-                            <Row className="mt-12 mb-12">
+                            <Row className="mt-4 mb-4">
                                 <Col xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
                                     <Button onClick={()=> {formik.values.declaraciones.push(declaracion)}} variant="outline-info" size="md" className="w-100">Nueva declaración</Button>
                                 </Col>
@@ -77,8 +77,8 @@ function FormStatementTaxes({ step }) {
                                         {formik.values.declaraciones.map((r, index) => {
                                             return (
                                                 <Card key={index} style={style_card}>
-                                                    <Row className="mt-12 mb-12">
-                                                        <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
+                                                    <Row className="mt-4 mb-4">
+                                                        <Col xs="12" sm="9" md="9" lg="9" xl="9" xxl="9">
                                                             <label htmlFor="concepto-pago" className="font-weight-bold">
                                                                 Concepto de pago
                                                             </label>
@@ -95,22 +95,18 @@ function FormStatementTaxes({ step }) {
                                                                     })
                                                                 }
                                                             </Field>
-                                                        </Col>
-                                                        <Col xs="2">
-                                                            <Button
-                                                            onClick={() => formik.values.declaraciones.splice(index, 1)}
-                                                                variant="danger" title="eliminar" size="md"
-                                                                className="circle"
-                                                                style={{color: "white"}}>
-                                                            </Button>
+                                                            <div>
+                                                                <a href="#" size="lg" className="btn btn-danger font-weight-bolder font-size-sm mr-3"
+                                                                   onClick={() => formik.values.declaraciones.splice(index, 1)}>Eliminar</a>
+                                                            </div>
                                                         </Col>
                                                     </Row>
-                                                    <Row className="mt-12 mb-12">
+                                                    <Row className="mt-4 mb-4">
                                                         <Col xs="12">
                                                             <h5>Información de la declaración</h5>
                                                         </Col>
                                                     </Row>
-                                                    <Row className="mt-12 mb-12">
+                                                    <Row className="mt-4 mb-4">
                                                         <Col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
                                                             <span>Selecciona la cantidad de trabajadores que posee para completar la Declaración
                                                                 y Reporte de pago de tributos
@@ -118,10 +114,9 @@ function FormStatementTaxes({ step }) {
                                                         </Col>
                                                     </Row>
 
-                                                    <Row className="mt-12 mb-12">
-                                                        <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4">
-                                                            <label htmlFor="ano_declaracion"
-                                                                   className="font-weight-bold">
+                                                    <Row className="mt-4 mb-4">
+                                                        <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
+                                                            <label htmlFor="ano_declaracion" className="font-weight-bold">
                                                                 Año
                                                             </label>
                                                             <Field
@@ -138,7 +133,7 @@ function FormStatementTaxes({ step }) {
                                                                 }
                                                             </Field>
                                                         </Col>
-                                                        <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4">
+                                                        <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
                                                             <label htmlFor="trimestre" className="font-weight-bold">
                                                                 Trimestre
                                                             </label>
@@ -156,7 +151,7 @@ function FormStatementTaxes({ step }) {
                                                                 }
                                                             </Field>
                                                         </Col>
-                                                        <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4">
+                                                        <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
                                                             <label htmlFor="ntrabajadores" className="font-weight-bold">
                                                                 Cantidad trabajadores en nómina
                                                             </label>
@@ -166,7 +161,7 @@ function FormStatementTaxes({ step }) {
                                                                 component={BaseInput}
                                                             />
                                                         </Col>
-                                                        <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4">
+                                                        <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
                                                             <label htmlFor="monto_pagado" className="font-weight-bold">
                                                                 Pago nómina trimestral
                                                             </label>
@@ -176,7 +171,7 @@ function FormStatementTaxes({ step }) {
                                                                 component={BaseInput}
                                                             />
                                                         </Col>
-                                                        <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4">
+                                                        <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
                                                             <label htmlFor="fecha_emision" className="font-weight-bold">
                                                                 Fecha de emisión de orden de pago
                                                             </label>
@@ -188,7 +183,7 @@ function FormStatementTaxes({ step }) {
                                                                 max={formatoFechaFutura}
                                                             />
                                                         </Col>
-                                                        <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4">
+                                                        <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
                                                             <label htmlFor="monto_tributo" className="font-weight-bold">
                                                                 Monto tributo
                                                             </label>
@@ -199,7 +194,7 @@ function FormStatementTaxes({ step }) {
                                                                 disabled
                                                             />
                                                         </Col>
-                                                        <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4">
+                                                        <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
                                                             <label htmlFor="monto_intereses" className="font-weight-bold">
                                                                 Monto intereses
                                                             </label>
@@ -210,7 +205,7 @@ function FormStatementTaxes({ step }) {
                                                                 disabled
                                                             />
                                                         </Col>
-                                                        <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4">
+                                                        <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
                                                             <label htmlFor="monto_multa" className="font-weight-bold">
                                                                 Monto multa
                                                             </label>
@@ -222,8 +217,8 @@ function FormStatementTaxes({ step }) {
                                                             />
                                                         </Col>
                                                     </Row>
-                                                    <Row className="mt-12 mb-12">
-                                                        <Col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
+                                                    <Row className="mt-4 mb-4">
+                                                        <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
                                                             <label htmlFor="terms">
                                                                 <Field
                                                                     id="terms"

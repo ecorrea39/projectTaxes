@@ -19,7 +19,7 @@ export const SchemaDeclaration= Yup.object({
     declaraciones: Yup.array().of(
         Yup.object().shape({
             concepto_pago: Yup.string()
-            .required('- Campo obligatorio -'),
+                .required('- Campo obligatorio -'),
             ano_declaracion: Yup.string()
                 .required('- Campo obligatorio -'),
             trimestre: Yup.string()
