@@ -193,7 +193,7 @@ const UserDatosFormStep2 = (props) => {
                       Seleccione la Oficina
 
                       {oficinas.map((elemento) =>
-                        <option value={elemento.id}>{elemento.name}</option>
+                        <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
                       )}
 
                     </Form.Control>
