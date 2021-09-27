@@ -8,6 +8,16 @@ import axios from "axios";
 
 const UserDatosFormStep1 = (props) => {
 
+  const [initialValues, setInitialValues] = useState({
+    razon_social: "",
+    nombre_comercial: "",
+    clase_de_empresa: "",
+    actividad_economica: "",
+    estatus: "",
+    numero_patronal: "",
+    numero_de_trabajadores: ""
+  });
+
   const [loading, setLoading] = useState(false);
   const [clasesEmpresa, setClasesEmpresa] = useState([]);
   const [estatus, setEstatus] = useState([]);
@@ -17,6 +27,7 @@ const UserDatosFormStep1 = (props) => {
   const API_URL = `${process.env.REACT_APP_API_URL}`;
 
   const token = localStorage.getItem('authToken');
+  const rif = localStorage.getItem('rif');
 
   const axiosConfig = {
     headers: {
@@ -28,7 +39,7 @@ const UserDatosFormStep1 = (props) => {
 
   useEffect(() => {
 
-    cargaDeClasesDeEmpresa().then((resolvedValueCargaDeClasesDeEmpresa) => {
+      cargaDeClasesDeEmpresa().then((resolvedValueCargaDeClasesDeEmpresa) => {
       console.log("resolvedValueCargaDeClasesDeEmpresa", resolvedValueCargaDeClasesDeEmpresa);
 
       cargaDeEstatus().then((resolvedValueCargaDeEstatus) => {
@@ -37,48 +48,34 @@ const UserDatosFormStep1 = (props) => {
         cargaDeActividadesEconomicas().then((resolvedValueCargaDeActividadesEconomicas) => {
           console.log("resolvedValueCargaDeActividadesEconomicas", resolvedValueCargaDeActividadesEconomicas);
 
+          axios.get(`${API_URL}user_company/${rif}/`, axiosConfig)
+            .then(function (res) {
+              console.log("get_user_company::", res);
 
+              if (res.data.data != null) {
 
+                let initialValuesJson = {
+                  "razon_social": res.data.data.attributes.razon_social,
+                  "nombre_comercial": res.data.data.attributes.nombre_comercial,
+                  "clase_de_empresa": res.data.data.attributes.clase_de_empresa,
+                  "actividad_economica": res.data.data.attributes.actividad_economica,
+                  "estatus": res.data.data.attributes.estatus,
+                  "numero_patronal": res.data.data.attributes.numero_patronal,
+                  "numero_de_trabajadores": res.data.data.attributes.numero_de_trabajadores
+                };
 
-          // axios.get(`${API_URL}company_class/`, axiosConfig)
-          //   .then(function (res) {
-          //     console.log("resFormStep1_company_class", res);
-          //
-          //     const arrayData = Array.from(res.data.data);
-          //
-          //     let clasesEmpresaArray = arrayData.map(elemData => {
-          //       let id = elemData.id;
-          //       let elemDataName = elemData.attributes.name;
-          //
-          //       let rObj = {
-          //         "id": id,
-          //         "name": elemDataName
-          //       };
-          //
-          //       console.log("rObjCargaDeClasesDeEmpresa", rObj);
-          //
-          //       return rObj;
-          //     });
-          //
-          //     clasesEmpresaArray.sort((a, b) => a.name < b.name ? -1 : 1);
-          //     console.log("clasesEmpresaArray", clasesEmpresaArray);
-          //     setClasesEmpresa(clasesEmpresaArray);
-          //     console.log("clasesEmpresa::", clasesEmpresa);
-          //
-          //     disableLoading();
-          //     resolve('Clases de Empresa cargado Exitosamente');
-          //
-          //   }).catch((err) => {
-          //
-          //   console.log("errUserDatosFormStep1ClasesDeEmpresas", err);
-          //   disableLoading();
-          //
-          //   reject(new Error('Error al consultar los datos de las clases de empresa'));
-          // });
+                setInitialValues(initialValuesJson);
 
+              }
 
+              disableLoading();
+            }).catch((err) => {
 
+            console.log("errGetUserCompany", err);
+            alert("Error buscando datos de la empresa del usuario")
+            disableLoading();
 
+          });
         }, (error) => {
           console.log("cargaDeActividadesEconomicasFallido", error);
           alert(error);
@@ -93,16 +90,6 @@ const UserDatosFormStep1 = (props) => {
     });
 
   }, []);
-
-  const initialValues = {
-    razon_social: "",
-    nombre_comercial: "",
-    clase_de_empresa: "",
-    actividad_economica: "",
-    estatus: "",
-    numero_patronal: "",
-    numero_de_trabajadores: ""
-  };
 
   const cargaDeClasesDeEmpresa = () => {
 
@@ -350,6 +337,7 @@ const UserDatosFormStep1 = (props) => {
 
   const formik = useFormik({
     initialValues,
+    enableReinitialize: true,
     validationSchema: LoginSchema,
     onSubmit: (values, {setStatus, setSubmitting}) => {
 
