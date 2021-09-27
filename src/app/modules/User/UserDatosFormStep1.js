@@ -370,6 +370,8 @@ const UserDatosFormStep1 = (props) => {
 
           console.log("resFormStep1", res);
 
+          props.cambiarFormularioActual(2);
+
           // if (parciales) {
           //   console.log('fechacontitucion ', fechacontitucion);
           //   if (validateMulta(new Date(fechacontitucion), new Date(formData.fecha_registro_inces)) > 45) {
@@ -578,7 +580,7 @@ const UserDatosFormStep1 = (props) => {
               <br/>
 
               <Row>
-                <Col md={4}>
+                <Col md={6}>
                   <Button variant="success" size="lg" block
                           type="submit"
                           disabled={
@@ -589,14 +591,8 @@ const UserDatosFormStep1 = (props) => {
                     Guardar
                   </Button>
                 </Col>
-                <Col md={4}>
-                  <Button variant="secondary" size="lg" block
-                          type="button"
-                  >
-                    Anterior
-                  </Button>
-                </Col>
-                <Col md={4}>
+
+                <Col md={6}>
                   <Button variant="secondary" size="lg" block
                           type="button"
                           onClick={formik.submitForm}

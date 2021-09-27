@@ -13,19 +13,23 @@ const UserDatos = (props) => {
 
   const [step, setStep] = useState(1);
 
+  const cambiarStep = (paso) => {
+    setStep(paso);
+  }
+
   return (
     <Fragment>
-      <UserDatosHeader formularioActual={step} />
+      <UserDatosHeader formularioActual={step} cambiarFormularioActual={cambiarStep} />
 
       <br/>
 
-      { step==1 && <UserDatosFormStep1 formularioActual={step} /> }
+      { step===1 && <UserDatosFormStep1 formularioActual={step} cambiarFormularioActual={cambiarStep} /> }
 
-      { step==2 && <UserDatosFormStep2 formularioActual={step} /> }
+      { step===2 && <UserDatosFormStep2 formularioActual={step} cambiarFormularioActual={cambiarStep} /> }
 
-      { step==3 && <UserDatosFormStep3 formularioActual={step} /> }
+      { step===3 && <UserDatosFormStep3 formularioActual={step} cambiarFormularioActual={cambiarStep} /> }
 
-      { step==4 && <UserDatosFormStep4 formularioActual={step} /> }
+      { step===4 && <UserDatosFormStep4 formularioActual={step} cambiarFormularioActual={cambiarStep} /> }
 
     </Fragment>
   );
