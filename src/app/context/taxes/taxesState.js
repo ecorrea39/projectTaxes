@@ -29,6 +29,8 @@ export const TaxesState = ({ children }) => {
 
     const estatus = ['eliminada', 'creada', 'definitiva', 'pagada' ];
 
+    const nrif = odb.get('rif');
+
     useEffect(() => {
         getBancos();
         getConceptos();
@@ -117,7 +119,7 @@ export const TaxesState = ({ children }) => {
     const getHistoricoDeclaraciones = async () => {
 
         try {
-            const respuesta = await clientAxios.get(`/tribute_declaration/${odb.get('rif')}`);
+            const respuesta = await clientAxios.get(`/tribute_declaration/${nrif}`);
             setArreglo(respuesta.data.data);
 
             arreglo.map((x, i) => {
@@ -180,6 +182,13 @@ export const TaxesState = ({ children }) => {
         return fecha;
     }
 
+    function formatNumber(number) {
+        return new Intl.NumberFormat("ES-ES", {
+            style: "currency",
+            currency: "VEF"
+        }).format(number)
+    }
+
     const submitPayment = async () => {
         setStepTaxes(stepTaxes+1);
     }
@@ -199,7 +208,7 @@ export const TaxesState = ({ children }) => {
                 jsonapi: { version: '1.0' },
                 data: {
                     type: "saveTributeDeclaration",
-                    id: odb.get('rif'),
+                    id: nrif,
                     attributes: valores.declaraciones
                 }
             }
@@ -229,7 +238,9 @@ export const TaxesState = ({ children }) => {
         formatoFechaFutura,
         historico,
         estatus,
-        formatearfecha
+        formatearfecha,
+        formatNumber,
+        nrif
     }
 
     return (

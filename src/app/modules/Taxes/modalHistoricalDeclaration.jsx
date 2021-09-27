@@ -8,11 +8,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 function ModalHistoricalDeclaration(props) {
 
-    const { estatus,  } = useContext(TaxesContext);
+    const { estatus, formatNumber } = useContext(TaxesContext);
 
     //const [show, setShow] = useState(false);
-
-
 
     const sustituirDeclaracion = (obj) => {
 
@@ -83,13 +81,6 @@ function ModalHistoricalDeclaration(props) {
         }
     ]
 
-    function FormatNumber(number) {
-        return new Intl.NumberFormat("ES-ES", {
-            style: "currency",
-            currency: "VEF"
-        }).format(number)
-    }
-
     return (
         <>
             <Modal {...props} size="xl" aria-labelledby="contained-modal-title-vcenter" centered>
@@ -154,7 +145,7 @@ function ModalHistoricalDeclaration(props) {
                                                             <span className="text-muted font-weight-bold"></span>
                                                         </td>
                                                         <td>
-                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{FormatNumber(s.monto_pagado)}</span>
+                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{formatNumber(s.monto_pagado)}</span>
                                                             <span className="text-muted font-weight-bold"></span>
                                                         </td>
                                                         <td>
@@ -162,15 +153,15 @@ function ModalHistoricalDeclaration(props) {
                                                             <span className="text-muted font-weight-bold"></span>
                                                         </td>
                                                         <td>
-                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{FormatNumber(s.monto_tributo)}</span>
+                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{formatNumber(s.monto_tributo)}</span>
                                                             <span className="text-muted font-weight-bold"></span>
                                                         </td>
                                                         <td>
-                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{FormatNumber(s.monto_intereses)}</span>
+                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{formatNumber(s.monto_intereses)}</span>
                                                             <span className="text-muted font-weight-bold"></span>
                                                         </td>
                                                         <td>
-                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{FormatNumber(s.monto_multa)}</span>
+                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{formatNumber(s.monto_multa)}</span>
                                                             <span className="text-muted font-weight-bold"></span>
                                                         </td>
                                                     </tr>
