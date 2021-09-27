@@ -363,6 +363,9 @@ const UserDatosFormStep1 = (props) => {
 
       axios.post(`${API_URL}user_company/`, data, axiosConfig)
         .then(function (res) {
+          localStorage.setItem('name', formik.values.razon_social);
+          localStorage.setItem('surname', formik.values.nombre_comercial);
+
           alert('Guardado exitosamente');
 
           setSubmitting(false);
