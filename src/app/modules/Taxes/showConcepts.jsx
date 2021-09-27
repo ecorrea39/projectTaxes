@@ -4,7 +4,7 @@ import {
     ActaReparo, ChequeDevuelto, ConvenioPago,
     CreditoFiscal, IncumplimientoDeberesFormales,
     IncumplimientoDeberesMateriales, InteresesMoratorios,
-    InteresesMoraXCobrar, MultasRecargos, SancionActaReparo
+    MultasPorcentuales, ResolucionAdministrativa, ResolucionCulminatoriaSumario
 } from "./inputsTypeConcept";
 
 function ShowConcept({concepts}) {
@@ -12,12 +12,12 @@ function ShowConcept({concepts}) {
     return (
         <Col>
             { concepts.includes("3") && <ActaReparo /> }
-            { concepts.includes("4") && <SancionActaReparo /> }
-            { concepts.includes("5") && <InteresesMoraXCobrar /> }
+            { concepts.includes("4") &&  true }
+            { concepts.includes("5") && <InteresesMoratorios /> }
             { concepts.includes("6") && <ChequeDevuelto /> }
             { concepts.includes("7") && <ConvenioPago /> }
-            { concepts.includes("8") && <MultasRecargos /> }
-            { concepts.includes("9") && <InteresesMoratorios /> }
+            { concepts.includes("8") && <MultasPorcentuales /> }
+            { concepts.includes("9") && true }
             { concepts.includes("10") && <IncumplimientoDeberesFormales /> }
             { concepts.includes("11") && <IncumplimientoDeberesMateriales /> }
             { concepts.includes("12") && <CreditoFiscal /> }
