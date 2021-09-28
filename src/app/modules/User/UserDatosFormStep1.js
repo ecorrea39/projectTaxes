@@ -355,7 +355,7 @@ const UserDatosFormStep1 = (props) => {
       const data = {
         jsonapi: {version: '1.0'},
         data: {
-          type: "userEmpresa",
+          type: "userCompany",
           id: rif,
           attributes: formik.values
         }

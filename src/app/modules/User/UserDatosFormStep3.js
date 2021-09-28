@@ -66,6 +66,10 @@ const UserDatosFormStep3 = (props) => {
     }
   }
 
+  const irAnterior = () => {
+    props.cambiarFormularioActual(2);
+  }
+
   const LoginSchema = Yup.object().shape({
 
     domicilioFiscal: Yup.string()
@@ -573,6 +577,7 @@ const UserDatosFormStep3 = (props) => {
                 <Col md={4}>
                   <Button variant="secondary" size="lg" block
                           type="button"
+                          onClick={irAnterior}
                   >
                     Anterior
                   </Button>
