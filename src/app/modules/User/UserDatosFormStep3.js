@@ -1,8 +1,9 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import {FormattedMessage, useIntl} from "react-intl";
 import {useFormik} from "formik";
 import * as Yup from "yup";
+import axios from "axios";
 
 const listaOficinas = () => {
   const array = [
@@ -17,12 +18,8 @@ const listaOficinas = () => {
 
 const UserDatosFormStep3 = (props) => {
 
-  const [loading, setLoading] = useState(false);
-
-  const intl = useIntl();
-
   const initialValues = {
-    domicilioFiscal: "",
+    domicilio_fiscal: "",
     estado: "",
     municipio: "",
     parroquia: "",
@@ -31,12 +28,95 @@ const UserDatosFormStep3 = (props) => {
     vialidad:"",
     edificacion:"",
     local:"",
-    codigoDeArea1:"",
-    telefono1:"",
-    codigoDeArea2:"",
-    telefono2:"",
-    correoElectronico:""
+    codigo_telefono_compania1:"",
+    numero_telefono_compania1:"",
+    codigo_telefono_compania2:"",
+    numero_telefono_compania2:"",
+    correo_empresa:""
   };
+
+  const [loading, setLoading] = useState(false);
+  const [estados, setEstados] = useState([]);
+
+  const intl = useIntl();
+  const API_URL = `${process.env.REACT_APP_API_URL}`;
+
+  const token = localStorage.getItem('authToken');
+  const rif = localStorage.getItem('rif');
+
+  const axiosConfig = {
+    headers: {
+      Accept: 'application/vnd.api+json',
+      'Content-Type': 'application/vnd.api+json',
+      Authorization: `Bearer ${token}`
+    }
+  };
+
+
+
+
+  useEffect(() => {
+
+    cargaDeEstados().then((resolvedValueEstados) => {
+      console.log("resolvedValueEstados", resolvedValueEstados);
+
+
+
+
+    }, (error) => {
+      console.log("cargaDeEstadosFallido", error);
+      alert(error);
+    });
+
+  }, []);
+
+  const cargaDeEstados = () => {
+
+    let p = new Promise(function (resolve, reject) {
+      enableLoading();
+
+      axios.get(`${API_URL}geographic_data_estados/`, axiosConfig)
+        .then(function (res) {
+          console.log("resFormStep3_datos_geograficos_estados", res);
+
+          const arrayData = Array.from(res.data.data);
+
+          let estadosArray = arrayData.map(elemData => {
+            let id = elemData.attributes.cod_estado;
+            let elemDataName = elemData.attributes.descripcion;
+
+            let rObj = {
+              "id": id,
+              "name": elemDataName
+            };
+
+            console.log("rObjCargaDeEstados", rObj);
+
+            return rObj;
+          });
+
+          estadosArray.sort((a, b) => a.name < b.name ? -1 : 1);
+          console.log("estadosArray", estadosArray);
+          setEstados(estadosArray);
+
+          disableLoading();
+          resolve('Estados cargado Exitosamente');
+
+        }).catch((err) => {
+
+        console.log("errUserDatosFormStep3Estados", err);
+        disableLoading();
+
+        reject(new Error('Error al consultar los datos de los estados'));
+      });
+    })
+
+    return p;
+
+  };
+
+
+
 
   const oficinas = listaOficinas();
 
@@ -44,11 +124,11 @@ const UserDatosFormStep3 = (props) => {
     const value = event.currentTarget.value;
 
     if (value === '') {
-      formik.setFieldValue('telefono1', value);
+      formik.setFieldValue('numero_telefono_compania1', value);
     } else {
       const regex = /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/;
       if (regex.test(value.toString())) {
-        formik.setFieldValue('telefono1', value);
+        formik.setFieldValue('numero_telefono_compania1', value);
       }
     }
   }
@@ -57,11 +137,11 @@ const UserDatosFormStep3 = (props) => {
     const value = event.currentTarget.value;
 
     if (value === '') {
-      formik.setFieldValue('telefono2', value);
+      formik.setFieldValue('numero_telefono_compania2', value);
     } else {
       const regex = /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/;
       if (regex.test(value.toString())) {
-        formik.setFieldValue('telefono2', value);
+        formik.setFieldValue('numero_telefono_compania2', value);
       }
     }
   }
@@ -72,7 +152,7 @@ const UserDatosFormStep3 = (props) => {
 
   const LoginSchema = Yup.object().shape({
 
-    domicilioFiscal: Yup.string()
+    domicilio_fiscal: Yup.string()
       .min(8,
         intl.formatMessage({
           id: "AUTH.VALIDATION.MIN_LENGTH",
@@ -167,19 +247,19 @@ const UserDatosFormStep3 = (props) => {
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
         })
       ),
-    codigoDeArea1: Yup.string()
+    codigo_telefono_compania1: Yup.string()
       .required(
         intl.formatMessage({
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
         })
       ),
-    codigoDeArea2: Yup.string()
+    codigo_telefono_compania2: Yup.string()
       .required(
         intl.formatMessage({
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
         })
       ),
-    telefono1: Yup
+    numero_telefono_compania1: Yup
       .number().positive(
         intl.formatMessage({
           id: "AUTH.VALIDATION.POSITIVE",
@@ -196,7 +276,7 @@ const UserDatosFormStep3 = (props) => {
           },
           {name: 'Número de Teléfono 1'})
       ),
-    telefono2: Yup
+    numero_telefono_compania2: Yup
       .number().positive(
         intl.formatMessage({
           id: "AUTH.VALIDATION.POSITIVE",
@@ -253,16 +333,16 @@ const UserDatosFormStep3 = (props) => {
             <Container>
               <Row>
                 <Col md={12}>
-                  <Form.Group as={Col} controlId="domicilioFiscal">
+                  <Form.Group as={Col} controlId="domicilio_fiscal">
                     <Form.Control size="lg" type="text" placeholder="Domicilio Fiscal"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.domicilioFiscal}
+                                  value={formik.values.domicilio_fiscal}
                     />
 
-                    {formik.touched.domicilioFiscal && formik.errors.domicilioFiscal ? (
+                    {formik.touched.domicilio_fiscal && formik.errors.domicilio_fiscal ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.domicilioFiscal}</div>
+                        <div className="fv-help-block">{formik.errors.domicilio_fiscal}</div>
                       </div>
                     ) : null}
                   </Form.Group>
@@ -279,9 +359,9 @@ const UserDatosFormStep3 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.estado}
                     >
-                      Seleccione el Estado
+                      <option key="0" value="">Seleccione el Estado</option>
 
-                      {oficinas.map((elemento) =>
+                      {estados.map((elemento) =>
                         <option value={elemento.id}>{elemento.name}</option>
                       )}
 
@@ -302,7 +382,7 @@ const UserDatosFormStep3 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.municipio}
                     >
-                      Seleccione el Municipio
+                      <option key="0" value="">Seleccione el Municipio</option>
 
                       {oficinas.map((elemento) =>
                         <option value={elemento.id}>{elemento.name}</option>
@@ -325,7 +405,7 @@ const UserDatosFormStep3 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.parroquia}
                     >
-                      Seleccione la Parroquia
+                      <option key="0" value="">Seleccione el Parroquia</option>
 
                       {oficinas.map((elemento) =>
                         <option value={elemento.id}>{elemento.name}</option>
@@ -462,11 +542,11 @@ const UserDatosFormStep3 = (props) => {
 
               <Row>
                 <Col md={2}>
-                  <Form.Group controlId="codigoDeArea1">
+                  <Form.Group controlId="codigo_telefono_compania1">
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.codigoDeArea1}
+                                  value={formik.values.codigo_telefono_compania1}
                     >
                       Seleccione el Código De Area
 
@@ -476,36 +556,36 @@ const UserDatosFormStep3 = (props) => {
 
                     </Form.Control>
 
-                    {formik.touched.codigoDeArea1 && formik.errors.codigoDeArea1 ? (
+                    {formik.touched.codigo_telefono_compania1 && formik.errors.codigo_telefono_compania1 ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.codigoDeArea1}</div>
+                        <div className="fv-help-block">{formik.errors.codigo_telefono_compania1}</div>
                       </div>
                     ) : null}
                   </Form.Group>
                 </Col>
 
                 <Col md={4}>
-                  <Form.Group as={Col} controlId="telefono1">
+                  <Form.Group as={Col} controlId="numero_telefono_compania1">
                     <Form.Control size="lg" type="text" placeholder="Telefono 1"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.telefono1}
+                                  value={formik.values.numero_telefono_compania1}
                     />
 
-                    {formik.touched.telefono1 && formik.errors.telefono1 ? (
+                    {formik.touched.numero_telefono_compania1 && formik.errors.numero_telefono_compania1 ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.telefono1}</div>
+                        <div className="fv-help-block">{formik.errors.numero_telefono_compania1}</div>
                       </div>
                     ) : null}
                   </Form.Group>
                 </Col>
 
                 <Col md={2}>
-                  <Form.Group controlId="codigoDeArea2">
+                  <Form.Group controlId="codigo_telefono_compania2">
                     <Form.Control as="select"
                                   onChange={customHandleChangeNumeroDeTelefono1}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.codigoDeArea2}
+                                  value={formik.values.codigo_telefono_compania2}
                     >
                       Seleccione el Código De Area
 
@@ -515,25 +595,25 @@ const UserDatosFormStep3 = (props) => {
 
                     </Form.Control>
 
-                    {formik.touched.codigoDeArea2 && formik.errors.codigoDeArea2 ? (
+                    {formik.touched.codigo_telefono_compania2 && formik.errors.codigo_telefono_compania2 ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.codigoDeArea2}</div>
+                        <div className="fv-help-block">{formik.errors.codigo_telefono_compania2}</div>
                       </div>
                     ) : null}
                   </Form.Group>
                 </Col>
 
                 <Col md={4}>
-                  <Form.Group as={Col} controlId="telefono2">
+                  <Form.Group as={Col} controlId="numero_telefono_compania2">
                     <Form.Control size="lg" type="text" placeholder="Telefono 2"
                                   onChange={customHandleChangeNumeroDeTelefono2}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.telefono2}
+                                  value={formik.values.numero_telefono_compania2}
                     />
 
-                    {formik.touched.telefono2 && formik.errors.telefono2 ? (
+                    {formik.touched.numero_telefono_compania2 && formik.errors.numero_telefono_compania2 ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.telefono2}</div>
+                        <div className="fv-help-block">{formik.errors.numero_telefono_compania2}</div>
                       </div>
                     ) : null}
                   </Form.Group>
@@ -544,16 +624,16 @@ const UserDatosFormStep3 = (props) => {
 
               <Row>
                 <Col md={12}>
-                  <Form.Group as={Col} controlId="correoElectronico">
+                  <Form.Group as={Col} controlId="correo_empresa">
                     <Form.Control size="lg" type="text" placeholder="Correo Electrónico"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.correoElectronico}
+                                  value={formik.values.correo_empresa}
                     />
 
-                    {formik.touched.correoElectronico && formik.errors.correoElectronico ? (
+                    {formik.touched.correo_empresa && formik.errors.correo_empresa ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.correoElectronico}</div>
+                        <div className="fv-help-block">{formik.errors.correo_empresa}</div>
                       </div>
                     ) : null}
                   </Form.Group>
