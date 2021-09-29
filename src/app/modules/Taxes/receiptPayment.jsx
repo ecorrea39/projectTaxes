@@ -7,11 +7,13 @@ import BaseInput from "../Forms/BaseInputs";
 
 export default function ReceiptPayment() {
 
-    const { formDatataPayment, bancos, getUserData } = useContext(TaxesContext);
+    const { formDataPayment, bancos, getUserData } = useContext(TaxesContext);
 
     const selectBanco = (b) => {
         let banco = bancos.find(element => element.id == b );
-        return banco.attributes.nom_banco;
+        let nombreBanco = banco.attributes.nom_banco;
+        let trunBanco = nombreBanco.length > 30 ? nombreBanco.slice(0,30) + "..." : nombreBanco;
+        return trunBanco;
     }
 
     useEffect(() => {
@@ -90,7 +92,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                            { selectBanco(formDatataPayment.banco) }
+                            { selectBanco(formDataPayment.banco) }
                         </span>
                     </div>
                 </Col>
@@ -100,7 +102,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                            {formDatataPayment.nreferencia}
+                            {formDataPayment.nroReferencia}
                         </span>
                     </div>
                 </Col>
@@ -110,7 +112,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                            {formDatataPayment.fecha}
+                            {formDataPayment.fechaPago}
                         </span>
                     </div>
                 </Col>
@@ -120,7 +122,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                            {formDatataPayment.nreferencia}
+                            {formDataPayment.nreferencia}
                         </span>
                     </div>
                 </Col>
@@ -130,7 +132,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                            {formDatataPayment.modo_pago}
+                            {formDataPayment.tipoTransaccion}
                         </span>
                     </div>
                 </Col>
@@ -140,7 +142,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                            {formDatataPayment.monto}
+                            {formDataPayment.monto}
                         </span>
                     </div>
                 </Col>

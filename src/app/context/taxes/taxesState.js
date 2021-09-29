@@ -17,7 +17,7 @@ export const TaxesState = ({ children }) => {
 
     const [formatoFechaFutura, setFormatoFechaFutura] = useState();
     
-    const [formDatataPayment, setFormDtaPayment] = useState({});
+    const [formDataPayment, setFormDataPayment] = useState({});
 
     const [formDataDeclaration, setFormDataDeclaration] = useState({});
 
@@ -158,10 +158,10 @@ export const TaxesState = ({ children }) => {
         setStepTaxes,
         submitPayment,
         submitDeclaration,
-        formDatataPayment,
+        formDataPayment,
         setFormDataDeclaration,
         userData,
-        setFormDtaPayment,
+        setFormDataPayment,
         getUserData,
         formatoFechaFutura
     }

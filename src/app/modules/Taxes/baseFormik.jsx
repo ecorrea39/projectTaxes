@@ -26,7 +26,6 @@ export const BaseFormik = ({conceptos,formik,bancos}) => {
             formik.setFieldValue("conceptos", [array]);
             formik.setFieldValue("monto_credito_fiscal", "" );
         }
-
     }
 
     const montoTributo = 10;
@@ -174,7 +173,7 @@ export const BaseFormik = ({conceptos,formik,bancos}) => {
             </Row>
             <Row>
                 <ShowConcept
-                    concepts={formik.values.conceptos}
+                    formik={formik}
                 />
             </Row>
             <Row className="mt-4 mb-4">

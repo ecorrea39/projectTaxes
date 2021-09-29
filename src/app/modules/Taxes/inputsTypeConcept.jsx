@@ -55,7 +55,7 @@ export const InteresesMoratorios = () => {
         <>
             <Row className="mt-4 mb-4">
                 <Col xs="12">
-                    <h5>Intereses Moratorios</h5>
+                    <h5>Intereses de Mora</h5>
                 </Col>
             </Row>
             <Row>
@@ -80,7 +80,7 @@ export const ChequeDevuelto = () => {
         <>
             <Row className="mt-4 mb-4">
                 <Col xs="12">
-                    <h5>Reposición Cheque Devuelto</h5>
+                    <h5>Cheque Devuelto</h5>
                 </Col>
             </Row>
             <Row>
@@ -147,7 +147,7 @@ export const ConvenioPago = () => {
         <>
             <Row className="mt-4 mb-4">
                 <Col xs="12">
-                    <h5>Giro por Convenio de Pago</h5>
+                    <h5>Convenio de Pago</h5>
                 </Col>
             </Row>
             <Row>
@@ -224,7 +224,7 @@ export const MultasPorcentuales = () => {
         <>
             <Row className="mt-4 mb-4">
                 <Col xs="12">
-                    <h5>Multas y Recargos</h5>
+                    <h5>Multas Porcentuales</h5>
                 </Col>
             </Row>
             <Row>

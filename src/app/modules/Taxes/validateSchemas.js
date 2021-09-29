@@ -14,10 +14,7 @@ export const SchemaPayment = Yup.object({
     tipoTransaccion: Yup.string()
         .required('- Campo obligatorio -'),
     monto_tributo: Yup.string()
-        .required('- Campo obligatorio -'),
-    intereses: Yup.string(),
-    multa: Yup.string(),
-    conceptos: Yup.array(),
+        .required('- Campo obligatorio -')
 });
 
 export const SchemaDeclaration= Yup.object({
