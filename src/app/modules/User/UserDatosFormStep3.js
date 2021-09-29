@@ -37,6 +37,7 @@ const UserDatosFormStep3 = (props) => {
 
   const [loading, setLoading] = useState(false);
   const [estados, setEstados] = useState([]);
+  const [municipiosTotales, setMunicipiosTotales] = useState([]);
   const [municipios, setMunicipios] = useState([]);
 
   const intl = useIntl();
@@ -151,6 +152,7 @@ const UserDatosFormStep3 = (props) => {
           municipiosArray.sort((a, b) => a.name < b.name ? -1 : 1);
           console.log("municipiosArray", municipiosArray);
           setMunicipios(municipiosArray);
+          setMunicipiosTotales(municipiosArray);
 
           disableLoading();
           resolve('Municipios cargado Exitosamente');
@@ -194,6 +196,30 @@ const UserDatosFormStep3 = (props) => {
         formik.setFieldValue('numero_telefono_compania2', value);
       }
     }
+  }
+
+  const handleChangeFiltrarMunicipios = (event) => {
+
+    console.log("event.target.value", event.target.value);
+
+    formik.values.estado = event.target.value;
+
+    setMunicipios(
+      municipiosTotales.filter((municipio) => {
+
+        if (event.target.value == "") {
+          return true;
+        } else {
+          let municipioArray = municipio.id.split('-');
+
+          if (municipioArray[1] == event.target.value) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      })
+    );
   }
 
   const irAnterior = () => {
@@ -405,14 +431,14 @@ const UserDatosFormStep3 = (props) => {
                 <Col md={4}>
                   <Form.Group controlId="estado">
                     <Form.Control as="select"
-                                  onChange={formik.handleChange}
+                                  onChange={handleChangeFiltrarMunicipios}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.estado}
                     >
                       <option key="0" value="">Seleccione el Estado</option>
 
                       {estados.map((elemento) =>
-                        <option value={elemento.id}>{elemento.name}</option>
+                        <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
                       )}
 
                     </Form.Control>
@@ -435,7 +461,7 @@ const UserDatosFormStep3 = (props) => {
                       <option key="0" value="">Seleccione el Municipio</option>
 
                       {municipios.map((elemento) =>
-                        <option value={elemento.id}>{elemento.name}</option>
+                        <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
                       )}
 
                     </Form.Control>
@@ -458,7 +484,7 @@ const UserDatosFormStep3 = (props) => {
                       <option key="0" value="">Seleccione el Parroquia</option>
 
                       {oficinas.map((elemento) =>
-                        <option value={elemento.id}>{elemento.name}</option>
+                        <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
                       )}
 
                     </Form.Control>
@@ -485,7 +511,7 @@ const UserDatosFormStep3 = (props) => {
                       Seleccione la Ciudad
 
                       {oficinas.map((elemento) =>
-                        <option value={elemento.id}>{elemento.name}</option>
+                        <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
                       )}
 
                     </Form.Control>
@@ -508,7 +534,7 @@ const UserDatosFormStep3 = (props) => {
                       Seleccione el Sector
 
                       {oficinas.map((elemento) =>
-                        <option value={elemento.id}>{elemento.name}</option>
+                        <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
                       )}
 
                     </Form.Control>
@@ -531,7 +557,7 @@ const UserDatosFormStep3 = (props) => {
                       Seleccione la Vialidad
 
                       {oficinas.map((elemento) =>
-                        <option value={elemento.id}>{elemento.name}</option>
+                        <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
                       )}
 
                     </Form.Control>
@@ -558,7 +584,7 @@ const UserDatosFormStep3 = (props) => {
                       Seleccione la Edificacion
 
                       {oficinas.map((elemento) =>
-                        <option value={elemento.id}>{elemento.name}</option>
+                        <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
                       )}
 
                     </Form.Control>
@@ -601,7 +627,7 @@ const UserDatosFormStep3 = (props) => {
                       Seleccione el Código De Area
 
                       {oficinas.map((elemento) =>
-                        <option value={elemento.id}>{elemento.name}</option>
+                        <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
                       )}
 
                     </Form.Control>
@@ -640,7 +666,7 @@ const UserDatosFormStep3 = (props) => {
                       Seleccione el Código De Area
 
                       {oficinas.map((elemento) =>
-                        <option value={elemento.id}>{elemento.name}</option>
+                        <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
                       )}
 
                     </Form.Control>
