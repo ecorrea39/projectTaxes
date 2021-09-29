@@ -63,9 +63,7 @@ function DeudasTrimestresDeclarados({className}) {
                         <span className="text-muted mt-3 font-weight-bold font-size-sm">Trimestres declarados</span>
                     </h3>
                     <div className="card-toolbar">
-                        <span className="card-label font-weight-bolder text-dark">{FormatNumber(deudaTrim)}</span>
-                        {/*<a href="#" className="btn btn-info font-weight-bolder font-size-sm mr-3">Reporte</a>*/}
-                        {/*<a href="#" className="btn btn-danger font-weight-bolder font-size-sm">Create</a>*/}
+                        <span className="text-muted mt-3 font-weight-bold font-size-sm">Total deuda: {FormatNumber(deudaTrim)} </span>
                     </div>
                 </div>
                 <div className="card-body pt-0 pb-3">
@@ -75,15 +73,13 @@ function DeudasTrimestresDeclarados({className}) {
                                 className="table table-head-custom table-head-bg table-borderless table-vertical-center">
                                 <thead>
                                 <tr className="text-left text-uppercase">
-                                    <th style={{minWidth: "150px"}}>Concepto</th>
+                                    <th style={{minWidth: "250px"}}>Concepto</th>
                                     <th style={{minWidth: "50px"}}>Año</th>
                                     <th style={{minWidth: "50px"}}>Trim.</th>
                                     <th style={{minWidth: "100px"}}>Fecha emisión</th>
                                     <th style={{minWidth: "100px"}}>Monto nómina</th>
                                     <th style={{minWidth: "50px"}}>Cant. Trab.</th>
-                                    <th style={{minWidth: "100px"}}>Monto trubuto</th>
-                                    <th style={{minWidth: "100px"}}>Monto intereses</th>
-                                    <th style={{minWidth: "100px"}}>Monto multa</th>
+                                    <th style={{minWidth: "100px"}}>Monto tr1buto</th>
                                 </tr>
                                 </thead>
 
@@ -126,16 +122,6 @@ function DeudasTrimestresDeclarados({className}) {
                                                 <td>
                                                     <span
                                                         className="text-dark-75 font-weight-bolder d-block font-size-sm">{FormatNumber(s.monto_tributo)}</span>
-                                                    <span className="text-muted font-weight-bold"></span>
-                                                </td>
-                                                <td>
-                                                    <span
-                                                        className="text-dark-75 font-weight-bolder d-block font-size-sm">{FormatNumber(s.monto_intereses)}</span>
-                                                    <span className="text-muted font-weight-bold"></span>
-                                                </td>
-                                                <td>
-                                                    <span
-                                                        className="text-dark-75 font-weight-bolder d-block font-size-sm">{FormatNumber(s.monto_multa)}</span>
                                                     <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                             </tr>

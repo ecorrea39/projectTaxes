@@ -12,9 +12,8 @@ export const AccountStatusState = ({ children }) => {
     const [creditoFisAprob, setCreditoFisAprob] = useState();
 
     const [detalleTrim, setDetalleTrim] = useState([]);
-    setDetalleTrim([]);
 
-    const rif = odb.get('rif');
+    const nrif = odb.get('rif');
 
     useEffect(() => {
         getResumen();
@@ -23,7 +22,7 @@ export const AccountStatusState = ({ children }) => {
     const getResumen = async () => {
 
         try {
-            const respuesta = await clientAxios.get('/balance/'+{rif});
+            const respuesta = await clientAxios.get(`/balance/${nrif}`);
             setDeudaTrim(respuesta.data.data[0].attributes.total);
             setDeudaCxP(0.00);
             setPagos(0.00);

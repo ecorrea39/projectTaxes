@@ -16,7 +16,7 @@ export default function BaseInput (props) {
     return (
         <>
             <input 
-                type="text" 
+                type="text"
                 className={
                     `form-control
                     ${getIn(touched, field.name) && getIn(errors, field.name) && 'is-invalid'}
