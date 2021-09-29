@@ -6,30 +6,28 @@ import odb from './../../helpers/odb';
 export const TaxesState = ({ children }) => {
 
     const [stepTaxes, setStepTaxes ] = useState(1);
-
     const [bancos, setBancos] = useState([]);
-
     const [conceptos, setConceptos] = useState([]);
-
     const [anos, setAnos] = useState([]);
-
     const [trimestres, setTrimestres] = useState([]);
-
     const [formatoFechaFutura, setFormatoFechaFutura] = useState();
-    
     const [formDatataPayment, setFormDtaPayment] = useState({});
-
     const [formDataDeclaration, setFormDataDeclaration] = useState({});
-
     const [userData, setUserData] = useState({});
-
-    const [arreglo, setArreglo] = useState([]);
-
     const [historico, setHistorico] = useState([]);
-
+    const [declaracionsustitutiva, setDeclaracionsustitutiva] = useState(false);
     const estatus = ['eliminada', 'creada', 'definitiva', 'pagada' ];
-
     const nrif = odb.get('rif');
+
+    const axiosConfig = {
+        headers: {
+            Accept: 'application/vnd.api+json',
+            'Content-Type': 'application/vnd.api+json',
+            Authorization: 'Bearer ' + odb.get('authToken')
+        }
+    }
+
+    let [declaracionSeleccionada, setDeclaracionSeleccionada] = useState([]);
 
     useEffect(() => {
         getBancos();
@@ -118,9 +116,11 @@ export const TaxesState = ({ children }) => {
 
     const getHistoricoDeclaraciones = async () => {
 
+        let arreglo = [];
+
         try {
-            const respuesta = await clientAxios.get(`/tribute_declaration/${nrif}`);
-            setArreglo(respuesta.data.data);
+            const respuesta = await clientAxios.get(`/tribute_declaration/${nrif}`, axiosConfig);
+            arreglo = respuesta.data.data;
 
             arreglo.map((x, i) => {
                 historico.push(
@@ -132,18 +132,8 @@ export const TaxesState = ({ children }) => {
                         "ano_declaracion": arreglo[i].attributes.ano_declaracion,
                         "ntrabajadores": arreglo[i].attributes.ntrabajadores,
                         "ntrabajadores_liquidados": arreglo[i].attributes.ntrabajadores_liquidados,
-                        "monto_pagado": new Intl.NumberFormat('en-US', {
-                            style: "currency",
-                            currency: "VES",
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        }).format(arreglo[i].attributes.monto_pagado),
-                        "monto_tributo": new Intl.NumberFormat('en-US', {
-                            style: "currency",
-                            currency: "VES",
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        }).format(arreglo[i].attributes.monto_tributo),
+                        "monto_pagado": arreglo[i].attributes.monto_pagado,
+                        "monto_tributo": arreglo[i].attributes.monto_tributo,
                         "terms": arreglo[i].attributes.terms,
                         "sustitutiva": arreglo[i].attributes.sustitutiva,
                         "fecha_emision": arreglo[i].attributes.fecha_emision,
@@ -151,8 +141,7 @@ export const TaxesState = ({ children }) => {
                     }
                 )
             })
-
-            console.log('historico ', historico);
+            setHistorico(historico);
 
         } catch (error) {
             console.log(error)
@@ -189,6 +178,23 @@ export const TaxesState = ({ children }) => {
         }).format(number)
     }
 
+    const sustituirDeclaracion = (seleccion) => {
+
+        declaracionSeleccionada = [];
+
+        try {
+            setDeclaracionsustitutiva(true);
+            declaracionSeleccionada.push(seleccion)
+            console.log('declaracionSustitutiva ', declaracionSeleccionada)
+
+            if (declaracionSeleccionada[0].estatus === 'definitiva') {
+                console.log('culo pelado')
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const submitPayment = async () => {
         setStepTaxes(stepTaxes+1);
     }
@@ -196,13 +202,6 @@ export const TaxesState = ({ children }) => {
     const submitDeclaration = async (valores) => {
 
         try {
-            const axiosConfig = {
-                headers: {
-                    Accept: 'application/vnd.api+json',
-                    'Content-Type': 'application/vnd.api+json',
-                    Authorization: 'Bearer ' + odb.get('authToken')
-                }
-            }
 
             const data = {
                 jsonapi: { version: '1.0' },
@@ -240,7 +239,10 @@ export const TaxesState = ({ children }) => {
         estatus,
         formatearfecha,
         formatNumber,
-        nrif
+        nrif,
+        declaracionSeleccionada,
+        declaracionsustitutiva,
+        sustituirDeclaracion
     }
 
     return (

@@ -8,11 +8,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 function ModalHistoricalDeclaration(props) {
 
-    const { estatus, formatNumber } = useContext(TaxesContext);
+    const { estatus, formatNumber, historico, formatearfecha, sustituirDeclaracion } = useContext(TaxesContext);
 
-    //const [show, setShow] = useState(false);
-
-    const sustituirDeclaracion = (obj) => {
+    const styleBtnSeleccionar = { borderRadius: '50%' }
 
         {/*
         declaracionsustitutiva = true;
@@ -37,49 +35,7 @@ function ModalHistoricalDeclaration(props) {
         declaraciones.push(declaracion);
 
         //$f7.popup.close(".popup-about");*/}
-    }
 
-    const historico = [
-        {
-            concepto_pago: "1",
-            concepto_pago_name: "Aporte patronal 2%",
-            ano_declaracion: "2021",
-            trimestre: "1",
-            ntrabajadores: "5",
-            monto_pagado: "2000000",
-            monto_tributo: "40000",
-            monto_multa: "100",
-            monto_intereses: "600",
-            fecha_emision: "2021-04-07",
-            estatus: 'definitiva'
-        },
-        {
-            concepto_pago: "1",
-            concepto_pago_name: "Aporte patronal 2%",
-            ano_declaracion: "2021",
-            trimestre: "2",
-            ntrabajadores: "5",
-            monto_pagado: "2000000",
-            monto_tributo: "40000",
-            monto_multa: "0",
-            monto_intereses: "0",
-            fecha_emision: "2021-06-11",
-            estatus: 'definitiva'
-        },
-        {
-            concepto_pago: "2",
-            concepto_pago_name: "Aporte de los trabajadores 0,5%",
-            ano_declaracion: "2021",
-            trimestre: "2",
-            ntrabajadores: "6",
-            monto_pagado: "3000000",
-            monto_tributo: "10000",
-            monto_multa: "0",
-            monto_intereses: "10",
-            fecha_emision: "2021-07-08",
-            estatus: 'creada'
-        }
-    ]
 
     return (
         <>
@@ -88,8 +44,8 @@ function ModalHistoricalDeclaration(props) {
                     <div className={`card card-custom`}>
                         <div className="card-header border-0 py-5">
                             <h3 className="card-title align-items-start flex-column">
-                                <span className="card-label font-weight-bolder text-dark">Histórico de declaración de tributos</span>
-                                <span className="text-muted mt-3 font-weight-bold font-size-sm"></span>
+                                <span className="card-label font-weight-bolder text-dark">Declaración de tributos</span>
+                                <span className="text-muted mt-3 font-weight-bold font-size-sm">Histórico de tributos declarados</span>
                             </h3>
                             <div className="card-toolbar">
                                 <a href="#" variant="outline-info"
@@ -104,16 +60,15 @@ function ModalHistoricalDeclaration(props) {
                                     <table className="table table-head-custom table-head-bg table-borderless table-vertical-center">
                                         <thead>
                                             <tr className="text-left text-uppercase">
-                                                <th style={{minWidth: "10px"}}></th>
+                                                <th style={{minWidth: "15px"}}></th>
                                                 <th style={{minWidth: "200px"}}>Concepto</th>
                                                 <th style={{minWidth: "50px"}}>Año</th>
                                                 <th style={{minWidth: "50px"}}>Trim.</th>
+                                                <th style={{minWidth: "100px"}}>Fecha declaración</th>
                                                 <th style={{minWidth: "100px"}}>Fecha emisión</th>
                                                 <th style={{minWidth: "100px"}}>Monto nómina</th>
                                                 <th style={{minWidth: "50px"}}>Cant. Trab.</th>
                                                 <th style={{minWidth: "100px"}}>Monto trubuto</th>
-                                                <th style={{minWidth: "100px"}}>Monto intereses</th>
-                                                <th style={{minWidth: "100px"}}>Monto multa</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -121,12 +76,9 @@ function ModalHistoricalDeclaration(props) {
                                             historico.map((s, i) => {
                                                 return (
                                                     <tr key={i}>
-                                                        <td>
-                                                            <a href="#" title="seleccionar declaración"
-                                                               className="btn btn-icon btn-outline btn-sm"
-                                                               onClick={sustituirDeclaracion(historico[i])}>
-                                                                <DeleteIcon color="primary"/>
-                                                            </a>
+                                                        <td name={`button${i}`}>
+                                                            <a href="#" size="sm" title="seleccionar declaración" className="btn btn-green font-weight-bolder font-size-sm mr-3"
+                                                               onClick={()=>sustituirDeclaracion(historico[i]), props.onHide} style={styleBtnSeleccionar}><DeleteIcon /></a>
                                                         </td>
                                                         <td>
                                                             <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.concepto_pago_name}</span>
@@ -141,7 +93,11 @@ function ModalHistoricalDeclaration(props) {
                                                             <span className="text-muted font-weight-bold"></span>
                                                         </td>
                                                         <td>
-                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.fecha_emision}</span>
+                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm"></span>
+                                                            <span className="text-muted font-weight-bold"></span>
+                                                        </td>
+                                                        <td>
+                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{formatearfecha(new Date(s.fecha_emision))}</span>
                                                             <span className="text-muted font-weight-bold"></span>
                                                         </td>
                                                         <td>
@@ -154,14 +110,6 @@ function ModalHistoricalDeclaration(props) {
                                                         </td>
                                                         <td>
                                                             <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{formatNumber(s.monto_tributo)}</span>
-                                                            <span className="text-muted font-weight-bold"></span>
-                                                        </td>
-                                                        <td>
-                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{formatNumber(s.monto_intereses)}</span>
-                                                            <span className="text-muted font-weight-bold"></span>
-                                                        </td>
-                                                        <td>
-                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{formatNumber(s.monto_multa)}</span>
                                                             <span className="text-muted font-weight-bold"></span>
                                                         </td>
                                                     </tr>
