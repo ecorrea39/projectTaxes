@@ -1,11 +1,15 @@
 export const initialValuesPayment = {
-    nreferencia: "",
-    modo_pago: "",
+    nroReferencia: "",
+    tipoTransaccion: "",
     banco: "",
     monto: "",
+    fechaPago: "",
     monto_tributo: "",
     intereses: "",
-    multa: ""
+    multa: "",
+    conceptos: [],
+    conceptosAPagar:[],
+    monto_credito_fiscal: ""
 }
 
 export const initialValuesDeclaration = {

@@ -5,7 +5,7 @@ import odb from './../../helpers/odb';
 
 export const TaxesState = ({ children }) => {
 
-    const [stepTaxes, setStepTaxes ] = useState(1);
+    const [stepTaxes, setStepTaxes ] = useState(2);
 
     const [bancos, setBancos] = useState([]);
 
@@ -17,7 +17,7 @@ export const TaxesState = ({ children }) => {
 
     const [formatoFechaFutura, setFormatoFechaFutura] = useState();
     
-    const [formDatataPayment, setFormDtaPayment] = useState({});
+    const [formDataPayment, setFormDataPayment] = useState({});
 
     const [formDataDeclaration, setFormDataDeclaration] = useState({});
 
@@ -57,10 +57,8 @@ export const TaxesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name < b.name ? -1 : +(a.name > b.name));
-            lista = lista.filter(x => x.id < 3);
-
-            setConceptos(lista)
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setConceptos(lista);
 
         } catch (error) {
             console.log(error)
@@ -163,10 +161,10 @@ export const TaxesState = ({ children }) => {
         setStepTaxes,
         submitPayment,
         submitDeclaration,
-        formDatataPayment,
+        formDataPayment,
         setFormDataDeclaration,
         userData,
-        setFormDtaPayment,
+        setFormDataPayment,
         getUserData,
         formatoFechaFutura
     }

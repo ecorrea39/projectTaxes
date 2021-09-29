@@ -1,18 +1,20 @@
 import * as Yup from 'yup';
 
 export const SchemaPayment = Yup.object({
-    nreferencia: Yup.string()
+    nroReferencia: Yup.string()
         .required('- Campo obligatorio -'),
-    modo_pago: Yup.string()
+    tipoTransaccion: Yup.string()
         .required('- Campo obligatorio -'),
     banco: Yup.string()
         .required('- Campo obligatorio -'),
     monto: Yup.string()
         .required('- Campo obligatorio -'),
-    monto_tributo: Yup.string()
+    fechaPago: Yup.string()
         .required('- Campo obligatorio -'),
-    intereses: Yup.string(),
-    multa: Yup.string(),
+    tipoTransaccion: Yup.string()
+        .required('- Campo obligatorio -'),
+    monto_tributo: Yup.string()
+        .required('- Campo obligatorio -')
 });
 
 export const SchemaDeclaration= Yup.object({
@@ -41,6 +43,7 @@ export const SchemaDeclaration= Yup.object({
                     is: "2" || 2,
                     then: Yup.string().required("Esto es porque el conceptos es 2")
                 })
+                
         })
     )
 });

@@ -4,7 +4,6 @@ import { getIn } from 'formik';
 export default function BaseInput (props) {
 
     const { field, form: { touched, errors, handleChange }, extraOnChange, ...rest } = props
-    
     field.onChange = e => {
         handleChange(e)
         
@@ -25,13 +24,11 @@ export default function BaseInput (props) {
                 {...field}
                 {...rest} 
             />
-            <div style={{minHeight:"1.5rem", marginTop: "0.325rem"}} id="error-wrapper">
-                {getIn(touched, field.name) && getIn(errors, field.name) && (
-                    <span className="invalid-feedback">
-                        {getIn(errors, field.name)}
-                    </span>
-                )}
-            </div>
+            {getIn(touched, field.name) && getIn(errors, field.name) && (
+                <span className="invalid-feedback">
+                    {getIn(errors, field.name)}
+                </span>
+            )}
         </>
     )
 }

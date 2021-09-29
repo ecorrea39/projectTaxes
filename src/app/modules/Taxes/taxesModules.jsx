@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import TaxesContext from "../../context/taxes/taxesContext";
 import FormPayment from "./formPayment";
 import FormStatementTaxes from "./formStatementTaxes"
+import ReceiptPayment from "./receiptPayment";
 import TitleFormTaxes from "./titleFormTaxes";
 
 function TaxesModule() {
@@ -20,7 +21,7 @@ function TaxesModule() {
           {/* Body */}
           <div className="card-body d-flex flex-column">
             {
-              stepTaxes === 1 ? <FormStatementTaxes /> : stepTaxes === 2 ? <FormPayment /> : <></>
+              stepTaxes === 1 ? <FormStatementTaxes /> : stepTaxes === 2 ? <FormPayment /> : <ReceiptPayment />
             }
           </div>
         </div>
