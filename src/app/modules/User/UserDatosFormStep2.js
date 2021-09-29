@@ -51,16 +51,17 @@ const UserDatosFormStep2 = (props) => {
     axios.get(`${API_URL}user_mercantil_data/${rif}/`, axiosConfig)
       .then(function (res) {
         console.log("get_user_company::", res);
+        console.log("res.data.data.attributes.fecha_constitucion", res.data.data.attributes.fecha_constitucion);
 
         if (res.data.data != null) {
 
           let initialValuesJson = {
-            "oficina": res.data.data.attributes.oficina,
-            "numero_de_documento": res.data.data.attributes.numero_de_documento,
-            "numero_de_tomo": res.data.data.attributes.numero_de_tomo,
-            "numero_de_folio": res.data.data.attributes.numero_de_folio,
-            "numero_de_protocolo": res.data.data.attributes.numero_de_protocolo,
-            "fecha_constitucion": res.data.data.attributes.fecha_constitucion.substring(0, 10)
+            "oficina": res.data.data.attributes.oficina != null ? res.data.data.attributes.oficina : "",
+            "numero_de_documento": res.data.data.attributes.numero_de_documento != null ? res.data.data.attributes.numero_de_documento : "",
+            "numero_de_tomo": res.data.data.attributes.numero_de_tomo != null ? res.data.data.attributes.numero_de_tomo : "",
+            "numero_de_folio": res.data.data.attributes.numero_de_folio != null ? res.data.data.attributes.numero_de_folio : "",
+            "numero_de_protocolo": res.data.data.attributes.numero_de_protocolo != null ? res.data.data.attributes.numero_de_protocolo : "",
+            "fecha_constitucion": res.data.data.attributes.fecha_constitucion != null ? res.data.data.attributes.fecha_constitucion.substring(0, 10) : ""
           };
 
           setInitialValues(initialValuesJson);
