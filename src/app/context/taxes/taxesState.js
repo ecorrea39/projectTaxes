@@ -213,7 +213,7 @@ export const TaxesState = ({ children }) => {
             }
 
             const respuesta = await clientAxios.post('/tribute_declaration/', data, axiosConfig);
-            //console.log('respuesta ', respuesta)
+            console.log('respuesta ', respuesta)
             setStepTaxes(stepTaxes+1);
         } catch (error) {
             console.log(error)
