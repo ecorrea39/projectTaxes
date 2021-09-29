@@ -39,7 +39,7 @@ const UserDatosFormStep1 = (props) => {
 
   useEffect(() => {
 
-      cargaDeClasesDeEmpresa().then((resolvedValueCargaDeClasesDeEmpresa) => {
+    cargaDeClasesDeEmpresa().then((resolvedValueCargaDeClasesDeEmpresa) => {
       console.log("resolvedValueCargaDeClasesDeEmpresa", resolvedValueCargaDeClasesDeEmpresa);
 
       cargaDeEstatus().then((resolvedValueCargaDeEstatus) => {

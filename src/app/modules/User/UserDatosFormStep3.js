@@ -37,6 +37,7 @@ const UserDatosFormStep3 = (props) => {
 
   const [loading, setLoading] = useState(false);
   const [estados, setEstados] = useState([]);
+  const [municipios, setMunicipios] = useState([]);
 
   const intl = useIntl();
   const API_URL = `${process.env.REACT_APP_API_URL}`;
@@ -60,8 +61,16 @@ const UserDatosFormStep3 = (props) => {
     cargaDeEstados().then((resolvedValueEstados) => {
       console.log("resolvedValueEstados", resolvedValueEstados);
 
+      cargaDeMunicipios().then((resolvedValueMunicipios) => {
+        console.log("resolvedValueMunicipios", resolvedValueMunicipios);
 
 
+
+
+      }, (error) => {
+        console.log("cargaDeMunicipiosFallido", error);
+        alert(error);
+      });
 
     }, (error) => {
       console.log("cargaDeEstadosFallido", error);
@@ -112,10 +121,51 @@ const UserDatosFormStep3 = (props) => {
     })
 
     return p;
-
   };
 
+  const cargaDeMunicipios = () => {
 
+    let p = new Promise(function (resolve, reject) {
+      enableLoading();
+
+      axios.get(`${API_URL}geographic_data_municipios/`, axiosConfig)
+        .then(function (res) {
+          console.log("resFormStep3_datos_geograficos_municipios", res);
+
+          const arrayData = Array.from(res.data.data);
+
+          let municipiosArray = arrayData.map(elemData => {
+            let id = elemData.attributes.cod_municipio + '-' + elemData.attributes.id_estado;;
+            let elemDataName = elemData.attributes.descripcion;
+
+            let rObj = {
+              "id": id,
+              "name": elemDataName
+            };
+
+            console.log("rObjCargaDeMunicipios", rObj);
+
+            return rObj;
+          });
+
+          municipiosArray.sort((a, b) => a.name < b.name ? -1 : 1);
+          console.log("municipiosArray", municipiosArray);
+          setMunicipios(municipiosArray);
+
+          disableLoading();
+          resolve('Municipios cargado Exitosamente');
+
+        }).catch((err) => {
+
+        console.log("errUserDatosFormStep3Municipios", err);
+        disableLoading();
+
+        reject(new Error('Error al consultar los datos de los municipios'));
+      });
+    })
+
+    return p;
+  };
 
 
   const oficinas = listaOficinas();
@@ -384,7 +434,7 @@ const UserDatosFormStep3 = (props) => {
                     >
                       <option key="0" value="">Seleccione el Municipio</option>
 
-                      {oficinas.map((elemento) =>
+                      {municipios.map((elemento) =>
                         <option value={elemento.id}>{elemento.name}</option>
                       )}
 
