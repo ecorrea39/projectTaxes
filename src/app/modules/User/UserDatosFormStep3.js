@@ -5,15 +5,50 @@ import {useFormik} from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 
-const listaOficinas = () => {
+const listaCodCelular = () => {
   const array = [
-    { "id": "1", "name": "Registro Mercantil Primero del Distrito Capital" },
-    { "id": "2", "name": "Registro Mercantil Segundo del Distrito Capital" },
-    { "id": "3", "name": "Registro Mercantil Tercero del Distrito Capital" },
-    { "id": "4", "name": "Registro Mercantil Cuarto del Distrito Capital" },
-    { "id": "5", "name": "Registro Mercantil Quinto del Distrito Capital" },
+    { "id": "1", "code": "0416", "name": "0416" },
+    { "id": "2", "code": "0426", "name": "0426" },
+    { "id": "3", "code": "0414", "name": "0414" },
+    { "id": "4", "code": "0424", "name": "0424" },
+    { "id": "5", "code": "0412", "name": "0412" }
   ];
   return array.sort((a, b) => a.name < b.name ? -1 : +(a.name > b.name));
+};
+
+const listaSector = () => {
+  const array = [
+    { "id": "1", "name": "Barrio" },
+    { "id": "2", "name": "Caserio" },
+    { "id": "3", "name": "Conjunto Residencial" },
+    { "id": "4", "name": "Sector" },
+    { "id": "5", "name": "Urbanización" },
+    { "id": "6", "name": "Zona" }
+  ];
+  return array.sort((a,b) => a.name < b.name ? -1 : +(a.name > b.name));
+};
+
+const listaVialidad = () => {
+  const array = [
+    { "id": "1", "name": "Calle" },
+    { "id": "2", "name": "Avenida" },
+    { "id": "3", "name": "Vereda" },
+    { "id": "4", "name": "Carretera" },
+    { "id": "5", "name": "Esquina" },
+    { "id": "6", "name": "Carrera" }
+  ];
+  return array.sort((a,b) => a.name < b.name ? -1 : +(a.name > b.name));
+};
+
+const listaEdificacion = () => {
+  const array = [
+    { "id": "1", "name": "Casa" },
+    { "id": "2", "name": "Centro Comercial" },
+    { "id": "3", "name": "Edificio" },
+    { "id": "4", "name": "Quinta" },
+    { "id": "5", "name": "Local" }
+  ];
+  return array.sort((a,b) => a.name < b.name ? -1 : +(a.name > b.name));
 };
 
 const UserDatosFormStep3 = (props) => {
@@ -39,6 +74,8 @@ const UserDatosFormStep3 = (props) => {
   const [estados, setEstados] = useState([]);
   const [municipiosTotales, setMunicipiosTotales] = useState([]);
   const [municipios, setMunicipios] = useState([]);
+  const [parroquiasTotales, setParroquiasTotales] = useState([]);
+  const [parroquias, setParroquias] = useState([]);
 
   const intl = useIntl();
   const API_URL = `${process.env.REACT_APP_API_URL}`;
@@ -65,7 +102,16 @@ const UserDatosFormStep3 = (props) => {
       cargaDeMunicipios().then((resolvedValueMunicipios) => {
         console.log("resolvedValueMunicipios", resolvedValueMunicipios);
 
+        cargaDeParroquias().then((resolvedValueMunicipios) => {
+          console.log("resolvedValueMunicipios", resolvedValueMunicipios);
 
+
+
+
+        }, (error) => {
+          console.log("cargaDeMunicipiosFallido", error);
+          alert(error);
+        });
 
 
       }, (error) => {
@@ -169,8 +215,55 @@ const UserDatosFormStep3 = (props) => {
     return p;
   };
 
+  const cargaDeParroquias = () => {
 
-  const oficinas = listaOficinas();
+    let p = new Promise(function (resolve, reject) {
+      enableLoading();
+
+      axios.get(`${API_URL}geographic_data_parroquias/`, axiosConfig)
+        .then(function (res) {
+          console.log("resFormStep3_datos_geograficos_parroquias", res);
+
+          const arrayData = Array.from(res.data.data);
+
+          let parroquiasArray = arrayData.map(elemData => {
+            let id = elemData.id + '-' + elemData.attributes.id_municipio;;
+            let elemDataName = elemData.attributes.descripcion;
+
+            let rObj = {
+              "id": id,
+              "name": elemDataName
+            };
+
+            console.log("rObjCargaDeParroquias", rObj);
+
+            return rObj;
+          });
+
+          parroquiasArray.sort((a, b) => a.name < b.name ? -1 : 1);
+          console.log("parroquiasArray", parroquiasArray);
+          setParroquias(parroquiasArray);
+          setParroquiasTotales(parroquiasArray);
+
+          disableLoading();
+          resolve('Parroquias cargado Exitosamente');
+
+        }).catch((err) => {
+
+        console.log("errUserDatosFormStep3Parroquias", err);
+        disableLoading();
+
+        reject(new Error('Error al consultar los datos de las Parroquias'));
+      });
+    })
+
+    return p;
+  };
+
+  const sectores = listaSector();
+  const vialidades = listaVialidad();
+  const edificaciones = listaEdificacion();
+  const codigosCelulares = listaCodCelular();
 
   const customHandleChangeNumeroDeTelefono1 = (event) => {
     const value = event.currentTarget.value;
@@ -222,6 +315,32 @@ const UserDatosFormStep3 = (props) => {
     );
   }
 
+  const handleChangeFiltrarParroquias = (event) => {
+
+    console.log("event.target.valueParroquias", event.target.value);
+
+    formik.values.municipio = event.target.value;
+
+    setParroquias(
+      parroquiasTotales.filter((parroquia) => {
+
+        if (event.target.value == "") {
+          return true;
+        } else {
+          let parroquiaArray = parroquia.id.split('-');
+
+          let municipioArray = event.target.value.split('-');
+
+          if (parroquiaArray[1] == municipioArray[0]) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      })
+    );
+  }
+
   const irAnterior = () => {
     props.cambiarFormularioActual(2);
   }
@@ -260,7 +379,7 @@ const UserDatosFormStep3 = (props) => {
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
         })
       ),
-    correo: Yup.string()
+    correo_empresa: Yup.string()
       .email(
         intl.formatMessage({
           id: "AUTH.VALIDATION.WRONG_EMAIL_FORMAT",
@@ -454,7 +573,7 @@ const UserDatosFormStep3 = (props) => {
                 <Col md={4}>
                   <Form.Group controlId="municipio">
                     <Form.Control as="select"
-                                  onChange={formik.handleChange}
+                                  onChange={handleChangeFiltrarParroquias}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.municipio}
                     >
@@ -483,7 +602,7 @@ const UserDatosFormStep3 = (props) => {
                     >
                       <option key="0" value="">Seleccione el Parroquia</option>
 
-                      {oficinas.map((elemento) =>
+                      {parroquias.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
                       )}
 
@@ -502,19 +621,12 @@ const UserDatosFormStep3 = (props) => {
 
               <Row>
                 <Col md={4}>
-                  <Form.Group controlId="ciudad">
-                    <Form.Control as="select"
+                  <Form.Group as={Col} controlId="ciudad">
+                    <Form.Control size="lg" type="text" placeholder="Ciudad"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.ciudad}
-                    >
-                      Seleccione la Ciudad
-
-                      {oficinas.map((elemento) =>
-                        <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
-                      )}
-
-                    </Form.Control>
+                    />
 
                     {formik.touched.ciudad && formik.errors.ciudad ? (
                       <div className="fv-plugins-message-container">
@@ -531,9 +643,9 @@ const UserDatosFormStep3 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.sector}
                     >
-                      Seleccione el Sector
+                      <option key="0" value="">Seleccione el Sector</option>
 
-                      {oficinas.map((elemento) =>
+                      {sectores.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
                       )}
 
@@ -554,9 +666,9 @@ const UserDatosFormStep3 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.vialidad}
                     >
-                      Seleccione la Vialidad
+                      <option key="0" value="">Seleccione la Vialidad</option>
 
-                      {oficinas.map((elemento) =>
+                      {vialidades.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
                       )}
 
@@ -581,9 +693,9 @@ const UserDatosFormStep3 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.edificacion}
                     >
-                      Seleccione la Edificacion
+                      <option key="0" value="">Seleccione la Edificación</option>
 
-                      {oficinas.map((elemento) =>
+                      {edificaciones.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
                       )}
 
@@ -624,9 +736,9 @@ const UserDatosFormStep3 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.codigo_telefono_compania1}
                     >
-                      Seleccione el Código De Area
+                      <option key="0" value="">Seleccione el Código de Area</option>
 
-                      {oficinas.map((elemento) =>
+                      {codigosCelulares.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
                       )}
 
@@ -659,13 +771,13 @@ const UserDatosFormStep3 = (props) => {
                 <Col md={2}>
                   <Form.Group controlId="codigo_telefono_compania2">
                     <Form.Control as="select"
-                                  onChange={customHandleChangeNumeroDeTelefono1}
+                                  onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.codigo_telefono_compania2}
                     >
-                      Seleccione el Código De Area
+                      <option key="0" value="">Seleccione el Código de Area</option>
 
-                      {oficinas.map((elemento) =>
+                      {codigosCelulares.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
                       )}
 
