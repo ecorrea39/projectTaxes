@@ -55,13 +55,13 @@ const UserDatosFormStep1 = (props) => {
               if (res.data.data != null) {
 
                 let initialValuesJson = {
-                  "razon_social": res.data.data.attributes.razon_social,
-                  "nombre_comercial": res.data.data.attributes.nombre_comercial,
-                  "clase_de_empresa": res.data.data.attributes.clase_de_empresa,
-                  "actividad_economica": res.data.data.attributes.actividad_economica,
-                  "estatus": res.data.data.attributes.estatus,
-                  "numero_patronal": res.data.data.attributes.numero_patronal,
-                  "numero_de_trabajadores": res.data.data.attributes.numero_de_trabajadores
+                  "razon_social": res.data.data.attributes.razon_social != null ? res.data.data.attributes.razon_social : "",
+                  "nombre_comercial": res.data.data.attributes.nombre_comercial != null ? res.data.data.attributes.nombre_comercial : "",
+                  "clase_de_empresa": res.data.data.attributes.clase_de_empresa != null ? res.data.data.attributes.clase_de_empresa : "",
+                  "actividad_economica": res.data.data.attributes.actividad_economica != null ? res.data.data.attributes.actividad_economica : "",
+                  "estatus": res.data.data.attributes.estatus != null ? res.data.data.attributes.estatus : "",
+                  "numero_patronal": res.data.data.attributes.numero_patronal != null ? res.data.data.attributes.numero_patronal : "",
+                  "numero_de_trabajadores": res.data.data.attributes.numero_de_trabajadores != null ? res.data.data.attributes.numero_de_trabajadores : ""
                 };
 
                 setInitialValues(initialValuesJson);
