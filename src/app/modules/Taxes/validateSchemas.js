@@ -10,8 +10,6 @@ export const SchemaPayment = Yup.object({
     monto: Yup.string()
         .required('- Campo obligatorio -'),
     fechaPago: Yup.string()
-        .required('- Campo obligatorio -'),
-    monto_tributo: Yup.string()
         .required('- Campo obligatorio -')
 });
 

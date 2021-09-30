@@ -5,7 +5,7 @@ import odb from './../../helpers/odb';
 
 export const TaxesState = ({ children }) => {
 
-    const [stepTaxes, setStepTaxes ] = useState(1);
+    const [stepTaxes, setStepTaxes ] = useState(2);
     const [bancos, setBancos] = useState([]);
     const [conceptos, setConceptos] = useState([]);
     const [anos, setAnos] = useState([]);
@@ -16,7 +16,7 @@ export const TaxesState = ({ children }) => {
     const [userData, setUserData] = useState({});
     const [historico, setHistorico] = useState([]);
     const [declaracionsustitutiva, setDeclaracionsustitutiva] = useState(false);
-    const [totalTributoDeclarado, setTotalTributoDeclarado ] = useState(0);
+    const [totalTributoDeclarado, setTotalTributoDeclarado ] = useState(null);
     const estatus = ['eliminada', 'creada', 'definitiva', 'pagada' ];
     const nrif = odb.get('rif');
 
