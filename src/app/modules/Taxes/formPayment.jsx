@@ -9,10 +9,11 @@ import { BaseFormik } from "./baseFormik";
 
 function FormPayment() {
 
-    const { bancos, submitPayment, setFormDataPayment, conceptos } = useContext(TaxesContext);
+    const { bancos, submitPayment, setFormDataPayment, conceptos, totalTributoDeclarado } = useContext(TaxesContext);
     const [filterConcepts, setFilterConcepts] = useState([]);
 
     const handleSubmit = async (values) => {
+        console.log(values)
         setFormDataPayment(values);
         let response = await submitPayment(values);
     }
@@ -34,7 +35,8 @@ function FormPayment() {
                             <BaseFormik
                                 formik={formik}
                                 conceptos={filterConcepts}
-                                bancos={bancos} />
+                                bancos={bancos}
+                                montoTributo={ parseInt(totalTributoDeclarado) } />
                         </Form>
                     )
                 }

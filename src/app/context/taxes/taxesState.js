@@ -107,7 +107,6 @@ export const TaxesState = ({ children }) => {
     }
 
     const getUserData = async (rif) => {
-
         try {
             const respuesta = await clientAxios.get(`/users/${rif}`);
             setUserData(respuesta.data.data)
@@ -203,7 +202,7 @@ export const TaxesState = ({ children }) => {
         try {
             requestConfig.data.type = "savePaymentDec";
             requestConfig.data.attributes = formData;
-            const respuesta = await clientAxios.get('/payment_declaration/', requestConfig);
+            const respuesta = await clientAxios.post('/payment_declaration/', requestConfig);
             console.log(respuesta)
             setStepTaxes(stepTaxes+1);
         } catch (error) {

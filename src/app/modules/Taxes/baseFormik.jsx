@@ -6,7 +6,7 @@ import BaseSelect from "../Forms/BaseSelect";
 import ShowConcept from "./showConcepts";
 import Checkbox from "../Forms/BaseCheckbox";
 
-export const BaseFormik = ({conceptos,formik,bancos}) => {
+export const BaseFormik = ({conceptos,formik,bancos,montoTributo}) => {
     
     const handleMonto = (e) => {
         console.log("hola")
@@ -27,8 +27,6 @@ export const BaseFormik = ({conceptos,formik,bancos}) => {
             formik.setFieldValue("monto_credito_fiscal", "" );
         }
     }
-
-    const montoTributo = 10;
 
     useEffect(()=>{
        console.log(formik)
