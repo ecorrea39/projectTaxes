@@ -77,7 +77,7 @@ export function AsideMenuList({ layoutProps }) {
             <span className="svg-icon menu-icon">
               <SVG src={toAbsoluteUrl("/media/svg/icons/Shopping/Bag2.svg")} />
             </span>
-            <span className="menu-text">Operaciones</span>
+            <span className="menu-text">Contribuyente</span>
           </NavLink>
           <div className="menu-submenu">
             <i className="menu-arrow" />
@@ -109,7 +109,7 @@ export function AsideMenuList({ layoutProps }) {
                 )}`}
                 aria-haspopup="true"
               >
-                <NavLink className="menu-link" to="/e-commerce/products">
+                <NavLink className="menu-link" to="/estado-cuentas">
                   <i className="menu-bullet menu-bullet-dot">
                     <span />
                   </i>
@@ -124,11 +124,11 @@ export function AsideMenuList({ layoutProps }) {
                 )}`}
                 aria-haspopup="true"
               >
-                <NavLink className="menu-link" to="/e-commerce/products">
+                <NavLink className="menu-link" to="/tributos">
                   <i className="menu-bullet menu-bullet-dot">
                     <span />
                   </i>
-                  <span className="menu-text">Reportar pago</span>
+                  <span className="menu-text">Declaración y Reporte de pago</span>
                 </NavLink>
               </li>
               {/*end::2 Level*/}
