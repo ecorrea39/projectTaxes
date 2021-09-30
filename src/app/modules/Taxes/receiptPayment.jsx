@@ -7,7 +7,7 @@ import BaseInput from "../Forms/BaseInputs";
 
 export default function ReceiptPayment() {
 
-    const { formDataPayment, bancos, getUserData } = useContext(TaxesContext);
+    const { formDataPayment, bancos, getUserData, userData } = useContext(TaxesContext);
 
     const selectBanco = (b) => {
         let banco = bancos.find(element => element.id == b );
@@ -16,8 +16,9 @@ export default function ReceiptPayment() {
         return trunBanco;
     }
 
+    const rif = odb.get("rif");
+
     useEffect(() => {
-        let rif = odb.get("rif");
         getUserData(rif);
     },[]);
 
@@ -35,7 +36,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                           
+                           {rif}
                         </span>
                     </div>
                 </Col>
@@ -45,7 +46,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                            aqui va el valor
+                            XXXX
                         </span>
                     </div>
                 </Col>
@@ -55,7 +56,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                            aqui va el valor
+                            Test C.A
                         </span>
                     </div>
                 </Col>
@@ -65,7 +66,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                            aqui va el valor
+                            04241235467
                         </span>
                     </div>
                 </Col>
@@ -75,7 +76,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                            aqui va el valor
+                            XXXXXX XXXX XXXX
                         </span>
                     </div>
                 </Col>

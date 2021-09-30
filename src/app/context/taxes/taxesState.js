@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from 'react';
-import clientAxios from '../../config/configAxios';
+import {clientAxios, requestConfig } from '../../config/configAxios';
 import TaxesContext from './taxesContext';
 import odb from './../../helpers/odb';
 
@@ -20,6 +20,7 @@ export const TaxesState = ({ children }) => {
     const estatus = ['eliminada', 'creada', 'definitiva', 'pagada' ];
     const nrif = odb.get('rif');
 
+    // ESTO NO HACE FALTA EL clientAxios YA INCLUYE ESTA CONFIGURACION
     const axiosConfig = {
         headers: {
             Accept: 'application/vnd.api+json',
@@ -106,7 +107,6 @@ export const TaxesState = ({ children }) => {
     }
 
     const getUserData = async (rif) => {
-
         try {
             const respuesta = await clientAxios.get(`/users/${rif}`);
             setUserData(respuesta.data.data)
@@ -197,8 +197,18 @@ export const TaxesState = ({ children }) => {
         }
     }
 
-    const submitPayment = async () => {
-        setStepTaxes(stepTaxes+1);
+    const submitPayment = async (formData) => {
+        
+        try {
+            requestConfig.data.type = "savePaymentDec";
+            requestConfig.data.attributes = formData;
+            const respuesta = await clientAxios.post('/payment_declaration/', requestConfig);
+            console.log(respuesta)
+            setStepTaxes(stepTaxes+1);
+        } catch (error) {
+            console.log(error)
+        }
+       
     }
 
     const submitDeclaration = async (valores) => {
