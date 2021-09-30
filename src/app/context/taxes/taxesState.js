@@ -190,7 +190,6 @@ export const TaxesState = ({ children }) => {
             console.log('declaracionSustitutiva ', declaracionSeleccionada)
 
             if (declaracionSeleccionada[0].estatus === 'definitiva') {
-                console.log('culo pelado')
             }
         } catch (error) {
             console.log(error)
