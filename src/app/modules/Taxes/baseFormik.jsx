@@ -6,11 +6,19 @@ import BaseSelect from "../Forms/BaseSelect";
 import ShowConcept from "./showConcepts";
 import Checkbox from "../Forms/BaseCheckbox";
 
-export const BaseFormik = ({conceptos,formik,bancos}) => {
+export const BaseFormik = ({conceptos,formik,bancos,montoTributo}) => {
     
     const handleMonto = (e) => {
         console.log("hola")
     }
+
+    /**VALIDACIONES PENTIEN
+     * EL MONTO A PAGAR PUEDE SER MENOR A EL MONTO DEL TRIBUTO ?
+     * EL MONTO DEL TRIBUTO NO PUEDE SER 0
+     * BLOQUEAR EL CAMPO DEL MONTO DEL TRIBUTO
+     * MOSTRAR LA INFORMACION CORRECTA EN EL RECIBO
+     * 
+     */
 
     const calcularCreditoFiscal = (montoPagado) => {
 
@@ -27,8 +35,6 @@ export const BaseFormik = ({conceptos,formik,bancos}) => {
             formik.setFieldValue("monto_credito_fiscal", "" );
         }
     }
-
-    const montoTributo = 10;
 
     useEffect(()=>{
        console.log(formik)

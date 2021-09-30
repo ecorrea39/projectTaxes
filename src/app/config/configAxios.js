@@ -1,7 +1,7 @@
 import axios from 'axios';
 import odb from '../helpers/odb';
 
-const clientAxios = axios.create({
+export const clientAxios = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
     headers: {
         Accept: 'application/vnd.api+json',
@@ -10,4 +10,11 @@ const clientAxios = axios.create({
       }
 });
 
-export default clientAxios;
+export const requestConfig = {
+  jsonapi: { version: '1.0' },
+  data: {
+      type: "",
+      id: odb.get('rif'),
+      attributes: {}
+  }
+}
