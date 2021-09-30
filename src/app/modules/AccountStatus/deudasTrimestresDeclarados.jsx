@@ -80,6 +80,8 @@ function DeudasTrimestresDeclarados({className}) {
                                     <th style={{minWidth: "100px"}}>Monto nómina</th>
                                     <th style={{minWidth: "50px"}}>Cant. Trab.</th>
                                     <th style={{minWidth: "100px"}}>Monto tr1buto</th>
+                                    <th style={{minWidth: "100px"}}>Monto intereses</th>
+                                    <th style={{minWidth: "100px"}}>Monto multa</th>
                                 </tr>
                                 </thead>
 
@@ -90,38 +92,39 @@ function DeudasTrimestresDeclarados({className}) {
                                         return (
                                             <tr key={i}>
                                                 <td>
-                                                    <span
-                                                        className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.concepto_pago_name}</span>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.concepto_pago_name}</span>
                                                     <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                                 <td>
-                                                    <span
-                                                        className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.ano_declaracion}</span>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.ano_declaracion}</span>
                                                     <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                                 <td>
-                                                    <span
-                                                        className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.trimestre}</span>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.trimestre}</span>
                                                     <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                                 <td>
-                                                    <span
-                                                        className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.fecha_emision}</span>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.fecha_emision}</span>
                                                     <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                                 <td>
-                                                    <span
-                                                        className="text-dark-75 font-weight-bolder d-block font-size-sm">{FormatNumber(s.monto_pagado)}</span>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{FormatNumber(s.monto_pagado)}</span>
                                                     <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                                 <td>
-                                                    <span
-                                                        className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.ntrabajadores}</span>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.ntrabajadores}</span>
                                                     <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                                 <td>
-                                                    <span
-                                                        className="text-dark-75 font-weight-bolder d-block font-size-sm">{FormatNumber(s.monto_tributo)}</span>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{FormatNumber(s.monto_tributo)}</span>
+                                                    <span className="text-muted font-weight-bold"></span>
+                                                </td>
+                                                <td>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{FormatNumber(s.monto_intereses)}</span>
+                                                    <span className="text-muted font-weight-bold"></span>
+                                                </td>
+                                                <td>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{FormatNumber(s.monto_multa)}</span>
                                                     <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                             </tr>

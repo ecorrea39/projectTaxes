@@ -137,6 +137,7 @@ export const TaxesState = ({ children }) => {
                         "terms": arreglo[i].attributes.terms,
                         "sustitutiva": arreglo[i].attributes.sustitutiva,
                         "fecha_emision": arreglo[i].attributes.fecha_emision,
+                        "fecha_declaracion": arreglo[i].attributes.fecha_declaracion,
                         "estatus": estatus[arreglo[i].attributes.estatus]
                     }
                 )

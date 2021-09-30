@@ -39,69 +39,69 @@ function PagosCreditosEfectosCuentasPagar({className}) {
                                 <tbody>
                                 <tr>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Resolución</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">Resolución</span>
                                         <span className="text-muted font-weight-bold">ADM-20210901-123456</span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Incumplimiento deberes formales</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">Incumplimiento deberes formales</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg"></span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm"></span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">21-09-2021</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">21-09-2021</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Banco de venezuela</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">Banco de venezuela</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">1234567890</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">1234567890</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">150.000,00</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">150.000,00</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Sanción por acta</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">Sanción por acta</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Resolución</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">Resolución</span>
                                         <span className="text-muted font-weight-bold">ADM-20210901-123456</span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Incumplimiento deberes formales</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">Incumplimiento deberes formales</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg"></span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm"></span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">21-09-2021</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">21-09-2021</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Banco de venezuela</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">Banco de venezuela</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">1234567890</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">1234567890</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">150.000,00</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">150.000,00</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Sanción por acta</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">Sanción por acta</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                 </tr>

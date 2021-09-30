@@ -35,19 +35,19 @@ function PagosCreditosSaldoCompensar({className}) {
                                 <tbody>
                                 <tr>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">500.000,00</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">500.000,00</span>
                                         <span className="text-muted font-weight-bold">1234567890</span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">ADM-20210901-123456</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">ADM-20210901-123456</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">21-09-2021</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">21-09-2021</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">123.125,45</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">123.125,45</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                 </tr>

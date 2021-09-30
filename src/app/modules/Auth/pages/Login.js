@@ -21,9 +21,9 @@ import axios from "axios";
 */
 
 const initialValues = {
-  tipo: "j",
-  user: "333333332",
-  password: "inces123.",
+  tipo: "",
+  user: "",
+  password: "",
 };
 
 function Login(props) {

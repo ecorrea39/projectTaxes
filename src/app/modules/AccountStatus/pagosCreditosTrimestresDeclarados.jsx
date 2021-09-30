@@ -39,69 +39,69 @@ function PagosCreditosTrimestresDeclarados({className}) {
                                 <tbody>
                                 <tr>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Aporte patronal 2%</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">Aporte patronal 2%</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">2021</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">2021</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">1</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">1</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">21-09-2021</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">21-09-2021</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Banco de Venezuela</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">Banco de Venezuela</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">1234567890</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">1234567890</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">125.325,42</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">125.325,42</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Tributo</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">Tributo</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Aporte de los trabajadores 0,5%</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">Aporte de los trabajadores 0,5%</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">2021</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">2021</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">1</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">1</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">21-09-2021</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">21-09-2021</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Banco Banesco</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">Banco Banesco</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">1234567890</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">1234567890</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">125.325,42</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">125.325,42</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                     <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-lg">Tributo</span>
+                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">Tributo</span>
                                         <span className="text-muted font-weight-bold"></span>
                                     </td>
                                 </tr>
