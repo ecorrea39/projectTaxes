@@ -20,15 +20,6 @@ export const TaxesState = ({ children }) => {
     const estatus = ['eliminada', 'creada', 'definitiva', 'pagada' ];
     const nrif = odb.get('rif');
 
-    // ESTO NO HACE FALTA EL clientAxios YA INCLUYE ESTA CONFIGURACION
-    const axiosConfig = {
-        headers: {
-            Accept: 'application/vnd.api+json',
-            'Content-Type': 'application/vnd.api+json',
-            Authorization: 'Bearer ' + odb.get('authToken')
-        }
-    }
-
     let [declaracionSeleccionada, setDeclaracionSeleccionada] = useState([]);
 
     useEffect(() => {
@@ -120,7 +111,7 @@ export const TaxesState = ({ children }) => {
         let arreglo = [];
 
         try {
-            const respuesta = await clientAxios.get(`/tribute_declaration/${nrif}`, axiosConfig);
+            const respuesta = await clientAxios.get(`/tribute_declaration/${nrif}`, clientAxios);
             arreglo = respuesta.data.data;
 
             arreglo.map((x, i) => {
@@ -213,32 +204,40 @@ export const TaxesState = ({ children }) => {
     const submitDeclaration = async (valores) => {
 
         try {
-
-            const data = {
-                jsonapi: { version: '1.0' },
-                data: {
-                    type: "saveTributeDeclaration",
-                    id: nrif,
-                    attributes: valores.declaraciones
-                }
-            }
-
-            const respuesta = await clientAxios.post('/tribute_declaration/', data, axiosConfig);
-            console.log('respuesta ', respuesta);
+            requestConfig.data.type = "saveTributeDeclaration";
+            requestConfig.data.attributes = valores.declaraciones;
+            const respuesta = await clientAxios.post('/tribute_declaration/', requestConfig);
+            // esto es temporal
             let total = 0;
             valores.declaraciones.map((x, i) => {
-                let calculo = 0;
-                if(x.concepto_pago === 1) {
-                    calculo = Number(x.monto_pagado) * (2/100)
-                } else {
-                    calculo = Number(x.monto_pagado) * (0.5/100)
+                let monto = 0;
+
+                switch (x.concepto_pago.toString()) {
+                    case "1":
+                        console.log('paso por 1')
+                        monto = x.ntrabajadores>4 && nrif.charAt(0).toUpperCase() !== 'G' ? Number(x.monto_pagado) * (2 / 100): 0;
+                        break;
+
+                    case "2":
+                        console.log('paso por 2')
+                        monto = x.ntrabajadores>4? Number(x.monto_pagado) * (0.5 / 100): 0;
+                        break;
+
+                    default:
+                        monto = 0;
+                        break;
                 }
-                total = total + calculo;
+
+                total = total + monto;
             });
-            console.log('total ', total)
 
             setTotalTributoDeclarado(total);
-            setStepTaxes(stepTaxes+1);
+
+            if (total > 0) {
+                setStepTaxes(stepTaxes+1)
+            } else {
+                setStepTaxes(stepTaxes)
+            }
         } catch (error) {
             console.log(error)
         }
