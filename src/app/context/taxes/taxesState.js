@@ -16,6 +16,7 @@ export const TaxesState = ({ children }) => {
     const [userData, setUserData] = useState({});
     const [historico, setHistorico] = useState([]);
     const [declaracionsustitutiva, setDeclaracionsustitutiva] = useState(false);
+    const [totalTributoDeclarado, setTotalTributoDeclarado ] = useState(0);
     const estatus = ['eliminada', 'creada', 'definitiva', 'pagada' ];
     const nrif = odb.get('rif');
 
@@ -214,7 +215,20 @@ export const TaxesState = ({ children }) => {
             }
 
             const respuesta = await clientAxios.post('/tribute_declaration/', data, axiosConfig);
-            console.log('respuesta ', respuesta)
+            console.log('respuesta ', respuesta);
+            let total = 0;
+            valores.declaraciones.map((x, i) => {
+                let calculo = 0;
+                if(x.concepto_pago === 1) {
+                    calculo = Number(x.monto_pagado) * (2/100)
+                } else {
+                    calculo = Number(x.monto_pagado) * (0.5/100)
+                }
+                total = total + calculo;
+            });
+            console.log('total ', total)
+
+            setTotalTributoDeclarado(total);
             setStepTaxes(stepTaxes+1);
         } catch (error) {
             console.log(error)
@@ -243,7 +257,8 @@ export const TaxesState = ({ children }) => {
         nrif,
         declaracionSeleccionada,
         declaracionsustitutiva,
-        sustituirDeclaracion
+        sustituirDeclaracion,
+        totalTributoDeclarado
     }
 
     return (
