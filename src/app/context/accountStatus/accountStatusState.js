@@ -23,11 +23,17 @@ export const AccountStatusState = ({ children }) => {
 
         try {
             const respuesta = await clientAxios.get(`/balance/${nrif}`);
-            setDeudaTrim(respuesta.data.data[0].attributes.total);
-            setDeudaCxP(0.00);
-            setPagos(0.00);
-            setCreditoFisTemp(0.00);
-            setCreditoFisAprob(0.00);
+            console.log('respuesta ', respuesta)
+            if(respuesta.data.data[0] !== null) {
+                setDeudaTrim(respuesta.data.data[0].attributes.total);
+            } else {
+                setDeudaTrim(0);
+            }
+
+            setDeudaCxP(0);
+            setPagos(0);
+            setCreditoFisTemp(0);
+            setCreditoFisAprob(0);
         } catch (error) {
             console.log(error)
         }
