@@ -14,7 +14,7 @@ function FormPayment() {
 
     const handleSubmit = async (values) => {
         setFormDataPayment(values);
-        let response = await submitPayment();
+        let response = await submitPayment(values);
     }
 
     useEffect(()=>{

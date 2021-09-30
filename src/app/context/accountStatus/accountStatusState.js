@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from 'react';
-import clientAxios from '../../config/configAxios';
+import {clientAxios} from '../../config/configAxios';
 import AccountStatusContext from './accountStatusContext';
 import odb from './../../helpers/odb';
 
