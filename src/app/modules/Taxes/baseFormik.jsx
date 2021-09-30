@@ -38,14 +38,9 @@ export const BaseFormik = ({conceptos,formik,bancos,montoTributo}) => {
     }
 
     useEffect(()=>{
-
-        console.log(montoTributo)
-
        if (montoTributo && montoTributo > 0) {
-           
             formik.setFieldValue("montoTributo", montoTributo );
        }
-       
     },[]);
 
     useEffect(()=>{
@@ -127,7 +122,7 @@ export const BaseFormik = ({conceptos,formik,bancos,montoTributo}) => {
                 </Col>
             </Row>
             
-            { montoTributo && <InputsTaxes /> }
+            { montoTributo =! null && <InputsTaxes /> }
 
             <Row className="mt-4 mb-4">
                 <Col xs="12">
