@@ -12,6 +12,14 @@ export const BaseFormik = ({conceptos,formik,bancos,montoTributo}) => {
         console.log("hola")
     }
 
+    /**VALIDACIONES PENTIEN
+     * EL MONTO A PAGAR PUEDE SER MENOR A EL MONTO DEL TRIBUTO ?
+     * EL MONTO DEL TRIBUTO NO PUEDE SER 0
+     * BLOQUEAR EL CAMPO DEL MONTO DEL TRIBUTO
+     * MOSTRAR LA INFORMACION CORRECTA EN EL RECIBO
+     * 
+     */
+
     const calcularCreditoFiscal = (montoPagado) => {
 
         let resta = montoPagado - montoTributo;
