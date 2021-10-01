@@ -204,34 +204,17 @@ export const TaxesState = ({ children }) => {
     const submitDeclaration = async (valores) => {
 
         try {
-            requestConfig.data.type = "saveTributeDeclaration";
-            requestConfig.data.attributes = valores.declaraciones;
-            const respuesta = await clientAxios.post('/tribute_declaration/', requestConfig);
-            // esto es temporal
             let total = 0;
             valores.declaraciones.map((x, i) => {
-                let monto = 0;
-
-                switch (x.concepto_pago.toString()) {
-                    case "1":
-                        console.log('paso por 1')
-                        monto = x.ntrabajadores>4 && nrif.charAt(0).toUpperCase() !== 'G' ? Number(x.monto_pagado) * (2 / 100): 0;
-                        break;
-
-                    case "2":
-                        console.log('paso por 2')
-                        monto = x.ntrabajadores>4? Number(x.monto_pagado) * (0.5 / 100): 0;
-                        break;
-
-                    default:
-                        monto = 0;
-                        break;
-                }
-
-                total = total + monto;
+                total = total + x.monto_tributo;
+                if(x.fecha_emision === '') x.fecha_emision = '0001-01-01'
             });
 
             setTotalTributoDeclarado(total);
+
+            requestConfig.data.type = "saveTributeDeclaration";
+            requestConfig.data.attributes = valores.declaraciones;
+            const respuesta = await clientAxios.post('/tribute_declaration/', requestConfig);
 
             if (total > 0) {
                 setStepTaxes(stepTaxes+1)

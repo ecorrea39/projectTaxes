@@ -37,8 +37,8 @@ function FormStatementTaxes({ step }) {
         "ntrabajadores": "",
         "monto_pagado": "",
         "monto_tributo": "0",
-        "monto_multa": "",
-        "monto_intereses": "",
+        "monto_multa": "0",
+        "monto_intereses": "0",
         "terms": "",
         "fecha_emision": "",
         "fecha_declaracion": formatearfecha(new Date(), 'YMD'),
@@ -58,8 +58,6 @@ function FormStatementTaxes({ step }) {
             let ntrab = arreglo[i].ntrabajadores;
             let tipo = arreglo[i].concepto_pago === '1' ? 'aporte-2%' : 'aporte-0.5%' ;
 
-            console.log('tipo ', tipo)
-
             switch (tipo) {
                 case "aporte-2%":
                     monto = ntrab > 4 && nrif.charAt(0).toUpperCase() !== 'G' ? valorNomina * (2 / 100): 0;
@@ -74,6 +72,8 @@ function FormStatementTaxes({ step }) {
                     break;
             }
 
+            arreglo[i].monto_tributo = monto;
+
         } catch (error) {
             console.log(error)
         }
@@ -83,6 +83,16 @@ function FormStatementTaxes({ step }) {
 
     return (
         <>
+            <Row className="mt-4 mb-4">
+                <Col xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
+                    <a href="#" className="btn btn-info font-size-sm w-100">Declaración y Pagos</a>
+
+                </Col>
+                <Col xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
+                    <a href="#" className="btn btn-info font-size-sm w-100">Pagos</a>
+                </Col>
+            </Row>
+
             <Formik
                 initialValues={initialValuesDeclaration}
                 validationSchema={SchemaDeclaration}
@@ -204,6 +214,7 @@ function FormStatementTaxes({ step }) {
                                                                     id="ntrabajadores"
                                                                     name={`declaraciones[${index}].ntrabajadores`}
                                                                     component={BaseInput}
+                                                                    onBlur={calculateTaxes(formik.values.declaraciones, index)}
                                                                 />
                                                             </Col>
                                                             {
@@ -229,6 +240,7 @@ function FormStatementTaxes({ step }) {
                                                                     id="monto_pagado"
                                                                     name={`declaraciones[${index}].monto_pagado`}
                                                                     component={BaseInput}
+                                                                    onBlur={calculateTaxes(formik.values.declaraciones, index)}
                                                                 />
                                                             </Col>
 
@@ -249,7 +261,7 @@ function FormStatementTaxes({ step }) {
                                                                     />
                                                                 </Col>
                                                             }
-                                                            <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="6" className="mb-6" className="mb-6">
+                                                            <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6" className="mb-6">
                                                                 <label htmlFor="monto_tributo" className="font-weight-bold">
                                                                     Monto tributo
                                                                 </label>
