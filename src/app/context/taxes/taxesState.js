@@ -128,8 +128,8 @@ export const TaxesState = ({ children }) => {
                         "monto_tributo": arreglo[i].attributes.monto_tributo,
                         "terms": arreglo[i].attributes.terms,
                         "sustitutiva": arreglo[i].attributes.sustitutiva,
-                        "fecha_emision": arreglo[i].attributes.fecha_emision,
-                        "fecha_declaracion": arreglo[i].attributes.fecha_declaracion,
+                        "fecha_emision": arreglo[i].attributes.concepto_pago === 2 ? formatearfecha(new Date(arreglo[i].attributes.fecha_emision), 'DMY') : '',
+                        "fecha_declaracion": formatearfecha(new Date(arreglo[i].attributes.fecha_declaracion), 'DMY'),
                         "estatus": estatus[arreglo[i].attributes.estatus]
                     }
                 )

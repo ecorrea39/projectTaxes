@@ -67,11 +67,11 @@ function ModalHistoricalDeclaration(props) {
                                                             <span className="text-muted font-weight-bold"></span>
                                                         </td>
                                                         <td>
-                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{formatearfecha(new Date(s.fecha_declaracion), 'DMY')}</span>
+                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.fecha_declaracion}</span>
                                                             <span className="text-muted font-weight-bold"></span>
                                                         </td>
                                                         <td>
-                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{formatearfecha(new Date(s.fecha_emision), 'DMY')}</span>
+                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.fecha_emision}</span>
                                                             <span className="text-muted font-weight-bold"></span>
                                                         </td>
                                                         <td>
