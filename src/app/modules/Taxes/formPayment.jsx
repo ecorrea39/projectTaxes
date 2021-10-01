@@ -36,7 +36,7 @@ function FormPayment() {
                                 formik={formik}
                                 conceptos={filterConcepts}
                                 bancos={bancos}
-                                montoTributo={ parseInt(totalTributoDeclarado) } />
+                                montoTributo={ totalTributoDeclarado } />
                         </Form>
                     )
                 }

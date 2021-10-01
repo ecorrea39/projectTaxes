@@ -20,15 +20,6 @@ export const TaxesState = ({ children }) => {
     const estatus = ['eliminada', 'creada', 'definitiva', 'pagada' ];
     const nrif = odb.get('rif');
 
-    // ESTO NO HACE FALTA EL clientAxios YA INCLUYE ESTA CONFIGURACION
-    const axiosConfig = {
-        headers: {
-            Accept: 'application/vnd.api+json',
-            'Content-Type': 'application/vnd.api+json',
-            Authorization: 'Bearer ' + odb.get('authToken')
-        }
-    }
-
     let [declaracionSeleccionada, setDeclaracionSeleccionada] = useState([]);
 
     useEffect(() => {
@@ -120,7 +111,7 @@ export const TaxesState = ({ children }) => {
         let arreglo = [];
 
         try {
-            const respuesta = await clientAxios.get(`/tribute_declaration/${nrif}`, axiosConfig);
+            const respuesta = await clientAxios.get(`/tribute_declaration/${nrif}`, clientAxios);
             arreglo = respuesta.data.data;
 
             arreglo.map((x, i) => {
@@ -213,32 +204,23 @@ export const TaxesState = ({ children }) => {
     const submitDeclaration = async (valores) => {
 
         try {
-
-            const data = {
-                jsonapi: { version: '1.0' },
-                data: {
-                    type: "saveTributeDeclaration",
-                    id: nrif,
-                    attributes: valores.declaraciones
-                }
-            }
-
-            const respuesta = await clientAxios.post('/tribute_declaration/', data, axiosConfig);
-            console.log('respuesta ', respuesta);
             let total = 0;
             valores.declaraciones.map((x, i) => {
-                let calculo = 0;
-                if(x.concepto_pago === 1) {
-                    calculo = Number(x.monto_pagado) * (2/100)
-                } else {
-                    calculo = Number(x.monto_pagado) * (0.5/100)
-                }
-                total = total + calculo;
+                total = total + x.monto_tributo;
+                if(x.fecha_emision === '') x.fecha_emision = '0001-01-01'
             });
-            console.log('total ', total)
 
             setTotalTributoDeclarado(total);
-            setStepTaxes(stepTaxes+1);
+
+            requestConfig.data.type = "saveTributeDeclaration";
+            requestConfig.data.attributes = valores.declaraciones;
+            const respuesta = await clientAxios.post('/tribute_declaration/', requestConfig);
+
+            if (total > 0) {
+                setStepTaxes(stepTaxes+1)
+            } else {
+                setStepTaxes(stepTaxes)
+            }
         } catch (error) {
             console.log(error)
         }
