@@ -5,6 +5,7 @@ import BaseInput from "../Forms/BaseInputs";
 import BaseSelect from "../Forms/BaseSelect";
 import ShowConcept from "./showConcepts";
 import Checkbox from "../Forms/BaseCheckbox";
+import { InputsTaxes } from "./inputsTaxes";
 
 export const BaseFormik = ({conceptos,formik,bancos,montoTributo}) => {
     
@@ -22,7 +23,7 @@ export const BaseFormik = ({conceptos,formik,bancos,montoTributo}) => {
 
     const calcularCreditoFiscal = (montoPagado) => {
 
-        let resta = montoPagado - montoTributo;
+        let resta = montoPagado - parseInt(montoTributo);
 
         if ( (montoPagado > montoTributo) && ( resta > 0 ) ) {
             formik.setFieldValue("conceptos", [...conceptos, "12"]);
@@ -37,8 +38,9 @@ export const BaseFormik = ({conceptos,formik,bancos,montoTributo}) => {
     }
 
     useEffect(()=>{
-       console.log(formik)
-       formik.setFieldValue("monto_tributo", montoTributo );
+       if (montoTributo && montoTributo > 0) {
+            formik.setFieldValue("montoTributo", montoTributo );
+       }
     },[]);
 
     useEffect(()=>{
@@ -119,43 +121,9 @@ export const BaseFormik = ({conceptos,formik,bancos,montoTributo}) => {
                     />
                 </Col>
             </Row>
-            <Row className="mt-4 mb-4">
-                <Col xs="12">
-                    <h5>Información del tributo</h5>
-                </Col>
-            </Row>
-            <Row className="mt-4 mb-4">
-                <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
-                    <label htmlFor="monto-tributo" className="font-weight-bold">
-                        Monto del tributo
-                    </label>
-                    <Field
-                        id="monto-tributo"
-                        name="monto_tributo"
-                        component={BaseInput}
-                    />
-                </Col>
-                <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
-                    <label htmlFor="intereses" className="font-weight-bold">
-                        Interes de mora
-                    </label>
-                    <Field
-                        id="intereses"
-                        name="intereses"
-                        component={BaseInput}
-                    />
-                </Col>
-                <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
-                    <label htmlFor="multa" className="font-weight-bold">
-                        Multa %
-                    </label>
-                    <Field
-                        id="multa"
-                        name="multa"
-                        component={BaseInput}
-                    />
-                </Col>
-            </Row>
+            
+            { montoTributo =! null && <InputsTaxes /> }
+
             <Row className="mt-4 mb-4">
                 <Col xs="12">
                     <h5>Otros Conceptos de Pagos</h5>

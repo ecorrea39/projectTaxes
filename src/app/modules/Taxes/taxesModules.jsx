@@ -8,7 +8,8 @@ import TitleFormTaxes from "./titleFormTaxes";
 function TaxesModule() {
 
   const { stepTaxes } = useContext(TaxesContext);
-  const title = stepTaxes === 1 ? "Declaración de tributos y Reporte de Pagos" : "Información del pago";
+  const title = stepTaxes === 1 ? "Declaración de tributos y Reporte de Pagos" :
+                stepTaxes === 2 ? "Información del pago" : "Recibo de Pago";
 
   return (
     <div className="row">
@@ -21,7 +22,8 @@ function TaxesModule() {
           {/* Body */}
           <div className="card-body d-flex flex-column">
             {
-              stepTaxes === 1 ? <FormStatementTaxes /> : stepTaxes === 2 ? <FormPayment /> : <ReceiptPayment />
+              stepTaxes === 1 ? <FormStatementTaxes /> :
+              stepTaxes === 2 ? <FormPayment /> : <ReceiptPayment />
             }
           </div>
         </div>
