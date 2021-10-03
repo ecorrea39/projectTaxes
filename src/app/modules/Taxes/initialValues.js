@@ -23,8 +23,8 @@ export const initialValuesDeclaration = {
         monto_multa: "0",
         monto_intereses: "0",
         terms: "",
-        fecha_emision: "2021-09-30",
-        fecha_declaracion: "2021-09-30",
+        fecha_emision: "",
+        fecha_declaracion: "",
         ntrabajadores_liquidados: "0",
         sustitutiva: "1",
         estatus: "1"

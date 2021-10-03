@@ -2,10 +2,12 @@ import React, {useContext} from "react";
 import {Card, Tab, Table, Tabs} from "react-bootstrap";
 
 import AccountStatusContext from "../../context/accountStatus/accountStatusContext";
+import {Formik} from "formik";
 
 function DeudasEfectosCuentasPagar({ className }) {
 
-    const { deudaCxP } = useContext(AccountStatusContext);
+    const { anos, trimestres, deudaCxP } = useContext(AccountStatusContext);
+    const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", marginTop: "3%", marginBottom: "2%" }
 
     const detalleCxP = [
         {
@@ -96,16 +98,108 @@ function DeudasEfectosCuentasPagar({ className }) {
 
     return (
         <>
-            <div className={`card card-custom ${className}`}>
+            <div className={`card card-custom ${className}`} style={styleCard}>
                 <div className="card-header border-0 py-5">
                     <h3 className="card-title align-items-start flex-column">
-                        <span className="card-label font-weight-bolder text-dark">Deudas</span>
+                        <span className="card-label font-weight-bolder text-dark">Deudas | Detalles</span>
                         <span className="text-muted mt-3 font-weight-bold font-size-sm">Efectos y Cuentas por Pagar</span>
                     </h3>
                     <div className="card-toolbar">
-                        <span className="card-label font-weight-bolder text-dark">{FormatNumber(deudaCxP)}</span>
-                        {/*<a href="#" className="btn btn-info font-weight-bolder font-size-sm mr-3">Reporte</a>*/}
-                        {/*<a href="#" className="btn btn-danger font-weight-bolder font-size-sm">Create</a>*/}
+                        <span className="text-muted mt-3 font-weight-bold font-size-sm">Total deuda: {FormatNumber(deudaCxP)} </span>
+                    </div>
+                </div>
+                <div className="px-10 border-0 ">
+                    <div>
+                        <Formik
+                            initialValues={{
+                                ano_declaracion: "",
+                                trimestre: "",
+                                searchText: "",
+                            }}
+                            onSubmit={(values) => {
+                                /*
+                                filtarHistorico(values);*/
+                            }}
+                        >
+                            {({
+                                  values,
+                                  handleSubmit,
+                                  handleBlur,
+                                  handleChange,
+                                  setFieldValue,
+                              }) => (
+                                <form onSubmit={handleSubmit} className="form form-label-right">
+                                    <div className="form-group row">
+                                        <div className="col-lg-4">
+                                            <select
+                                                className="form-control"
+                                                name="ano_declaracion"
+                                                placeholder="Filtro por año"
+                                                onChange={(e) => {
+                                                    setFieldValue("ano_declaracion", e.target.value);
+                                                    handleSubmit();
+                                                }}
+                                                onBlur={handleBlur}
+                                                value={values.ano_declaracion}
+                                            >
+                                                <option value="" disabled>seleccione</option>
+                                                <option value="">todos</option>
+                                                {
+                                                    anos.map((s, i) => {
+                                                        return <option key={i} value={s}>{s}</option>
+                                                    })
+                                                }
+                                            </select>
+                                            <small className="form-text text-muted">
+                                                <b>Filtro</b> por año
+                                            </small>
+                                        </div>
+                                        <div className="col-lg-4">
+                                            <select
+                                                className="form-control"
+                                                placeholder="Fitro por trimestre"
+                                                name="trimestre"
+                                                onBlur={handleBlur}
+                                                onChange={(e) => {
+                                                    setFieldValue("trimestre", e.target.value);
+                                                    handleSubmit();
+                                                }}
+                                                value={values.trimestre}
+                                            >
+                                                <option value="" disabled>seleccione</option>
+                                                <option value="">todos</option>
+                                                {
+                                                    trimestres.map((s, i) => {
+                                                        return <option key={s.id} value={s.id}>{s.name}</option>
+                                                    })
+                                                }
+                                            </select>
+                                            <small className="form-text text-muted">
+                                                <b>Filtro</b> por trimestre
+                                            </small>
+                                        </div>
+                                        {/*
+                                                <div className="col-lg-4">
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        name="searchText"
+                                                        placeholder="Buscar"
+                                                        onBlur={handleBlur}
+                                                        value={values.searchText}
+                                                        onChange={(e) => {
+                                                            setFieldValue("searchText", e.target.value);
+                                                            handleSubmit();
+                                                        }}
+                                                    />
+                                                    <small className="form-text text-muted">
+                                                        <b>Filtro</b> todas las columnas
+                                                    </small>
+                                                </div>*/}
+                                    </div>
+                                </form>
+                            )}
+                        </Formik>
                     </div>
                 </div>
                 <div className="card-body pt-0 pb-3">

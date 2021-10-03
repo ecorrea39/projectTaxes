@@ -15,36 +15,31 @@ function AccountStatusModules({className, baseColor = "primary", widgetHeight = 
     const title = "Estado de Cuenta del Contribuyente";
 
     return (
-
         <div className="row">
             <div className="col-lg-12">
                 <div className={`card card-custom card-stretch gutter-b`}>
-                    {/* Header */}
                     <div className="card-header border-0 pt-5">
                         <TitleFormAccountStatus title={title}/>
                     </div>
-                    {/* Body */}
                     <div className="card-body d-flex flex-column">
                         {
-                            <Card style={{width: '100%', height: '100%', padding: '2%'}}>
-                                <Tabs id="estado-cuenta" style={{padding: '1%'}} className="mb-3">
-                                    <Tab eventKey="resumen" title="Resumen" style={{padding: '3%'}}>
-                                        <Resumen/>
-                                    </Tab>
-                                    <Tab eventKey="deudas" title="Deudas" style={{padding: '1%'}}>
-                                        <DeudasTrimestresDeclarados/>
-                                        <br/>
-                                        <DeudasEfectosCuentasPagar/>
-                                    </Tab>
-                                    <Tab eventKey="pagos-creditos" title="Pagos y Créditos">
-                                        <PagosCreditosTrimestresDeclarados/>
-                                        <br/>
-                                        <PagosCreditosEfectosCuentasPagar/>
-                                        <br/>
-                                        <PagosCreditosSaldoCompensar/>
-                                    </Tab>
-                                </Tabs>
-                            </Card>
+                            <Tabs id="estado-cuenta" className="mb-3">
+                                <Tab eventKey="resumen" title="Resumen" style={{padding: '3%'}}>
+                                    <Resumen/>
+                                </Tab>
+                                <Tab eventKey="deudas" title="Deudas" style={{padding: '1%'}}>
+                                    <DeudasTrimestresDeclarados/>
+                                    <br/>
+                                    <DeudasEfectosCuentasPagar/>
+                                </Tab>
+                                <Tab eventKey="pagos-creditos" title="Pagos y Créditos">
+                                    <PagosCreditosTrimestresDeclarados/>
+                                    <br/>
+                                    <PagosCreditosEfectosCuentasPagar/>
+                                    <br/>
+                                    <PagosCreditosSaldoCompensar/>
+                                </Tab>
+                            </Tabs>
                         }
                     </div>
                 </div>
