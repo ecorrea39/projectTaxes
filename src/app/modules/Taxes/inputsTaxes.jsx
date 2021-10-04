@@ -3,7 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import { Field } from "formik";
 import BaseInput from "../Forms/BaseInputs";
 
-export const InputsTaxes = ({formik}) => {
+export const InputsTaxes = () => {
 
     return (
         <>

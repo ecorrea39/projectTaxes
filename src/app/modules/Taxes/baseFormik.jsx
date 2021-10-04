@@ -9,10 +9,6 @@ import { InputsTaxes } from "./inputsTaxes";
 
 export const BaseFormik = ({conceptos,formik,bancos,montoTributo}) => {
     
-    const handleMonto = (e) => {
-        console.log("hola")
-    }
-
     /**VALIDACIONES PENTIEN
      * EL MONTO A PAGAR PUEDE SER MENOR A EL MONTO DEL TRIBUTO ?
      * EL MONTO DEL TRIBUTO NO PUEDE SER 0
@@ -38,8 +34,10 @@ export const BaseFormik = ({conceptos,formik,bancos,montoTributo}) => {
     }
 
     useEffect(()=>{
-       if (montoTributo && montoTributo > 0) {
+        console.log("mi monto es: ", montoTributo)
+       if (montoTributo != null && montoTributo > 0) {
             formik.setFieldValue("montoTributo", montoTributo );
+            console.log("mi monto: ", formik.values)
        }
     },[]);
 
@@ -122,7 +120,7 @@ export const BaseFormik = ({conceptos,formik,bancos,montoTributo}) => {
                 </Col>
             </Row>
             
-            { montoTributo =! null && <InputsTaxes /> }
+            { montoTributo > 0 && <InputsTaxes /> }
 
             <Row className="mt-4 mb-4">
                 <Col xs="12">

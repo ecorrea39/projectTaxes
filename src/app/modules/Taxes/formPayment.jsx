@@ -17,7 +17,9 @@ function FormPayment() {
         setFormDataPayment(values);
         let response = await submitPayment(values);
     }
-
+    useEffect(()=>{
+        console.log("mi: ", totalTributoDeclarado)
+    },[]);
     useEffect(()=>{
         setFilterConcepts(conceptos.filter(x => x.id > 2)); 
     },[conceptos]);
@@ -36,7 +38,7 @@ function FormPayment() {
                                 formik={formik}
                                 conceptos={filterConcepts}
                                 bancos={bancos}
-                                montoTributo={ totalTributoDeclarado } />
+                                montoTributo={totalTributoDeclarado} />
                         </Form>
                     )
                 }
