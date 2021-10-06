@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Field } from "formik";
 import { Button, Col, Row } from "react-bootstrap";
 import BaseInput from "../Forms/BaseInputs";
@@ -6,9 +6,18 @@ import BaseSelect from "../Forms/BaseSelect";
 import ShowConcept from "./showConcepts";
 import Checkbox from "../Forms/BaseCheckbox";
 import { InputsTaxes } from "./inputsTaxes";
+import TaxesContext from "../../context/taxes/taxesContext";
 
 export const BaseFormik = ({conceptos,formik,bancos,montoTributo}) => {
     
+    const handleMonto = (e) => {
+        console.log("hola")
+    }
+
+    const handleConceptChange = () => {
+        console.log("hola...")
+    }
+
     /**VALIDACIONES PENTIEN
      * EL MONTO A PAGAR PUEDE SER MENOR A EL MONTO DEL TRIBUTO ?
      * EL MONTO DEL TRIBUTO NO PUEDE SER 0
@@ -28,7 +37,7 @@ export const BaseFormik = ({conceptos,formik,bancos,montoTributo}) => {
             let array = formik.values.conceptos;
             let indice = array.indexOf("12");
             array.splice(indice, 1);
-            formik.setFieldValue("conceptos", [array]);
+            formik.setFieldValue("conceptos", array);
             formik.setFieldValue("monto_credito_fiscal", "" );
         }
     }
@@ -37,7 +46,7 @@ export const BaseFormik = ({conceptos,formik,bancos,montoTributo}) => {
         console.log("mi monto es: ", montoTributo)
        if (montoTributo != null && montoTributo > 0) {
             formik.setFieldValue("montoTributo", montoTributo );
-            console.log("mi monto: ", formik.values)
+            console.log("mi monto es: ", formik.values)
        }
     },[]);
 
@@ -105,7 +114,6 @@ export const BaseFormik = ({conceptos,formik,bancos,montoTributo}) => {
                         id="monto"
                         name="monto"
                         component={BaseInput}
-                        
                     />
                 </Col>
                 <Col xs="12" sm="4" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -121,7 +129,7 @@ export const BaseFormik = ({conceptos,formik,bancos,montoTributo}) => {
                 </Col>
             </Row>
             
-            { montoTributo > 0 && <InputsTaxes /> }
+            { montoTributo =! null && <InputsTaxes /> }
 
             <Row className="mt-4 mb-4">
                 <Col xs="12">

@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-export const SchemaPayment = Yup.object({
+export const SchemaPayment = Yup.object().shape({
     nroReferencia: Yup.string()
         .required('- Campo obligatorio -'),
     tipoTransaccion: Yup.string()
@@ -12,6 +12,8 @@ export const SchemaPayment = Yup.object({
     fechaPago: Yup.string()
         .required('- Campo obligatorio -')
 });
+
+
 
 export const SchemaDeclaration= Yup.object({
     declaraciones: Yup.array().of(

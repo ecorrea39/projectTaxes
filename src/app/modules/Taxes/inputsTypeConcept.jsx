@@ -4,7 +4,7 @@ import { Field } from "formik";
 import BaseInput from "../Forms/BaseInputs";
 import BaseSelect from "../Forms/BaseSelect";
 
-export const ActaReparo = () => {
+export const ActaReparo = ({extraOnChange}) => {
     return (
         <>
             <Row className="mt-4 mb-4">
@@ -14,13 +14,14 @@ export const ActaReparo = () => {
             </Row>
             <Row>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4">
-                    <label htmlFor="multa" className="font-weight-bold">
+                    <label htmlFor="numActa" className="font-weight-bold">
                         Numero del Acta
                     </label>
                     <Field
                         id="numActa"
                         name="numActa"
                         component={BaseInput}
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4">
@@ -32,16 +33,18 @@ export const ActaReparo = () => {
                         name="fechaActa"
                         type="date"
                         component={BaseInput}
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4">
-                    <label htmlFor="monto-acta" className="font-weight-bold">
+                    <label htmlFor="montoActa" className="font-weight-bold">
                         Monto
                     </label>
                     <Field
                         id="montoActa"
                         name="montoActa"
                         component={BaseInput}
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
             </Row>
@@ -244,7 +247,7 @@ export const MultasPorcentuales = () => {
     )
 }
 
-export const IncumplimientoDeberesFormales = () => {
+export const IncumplimientoDeberesFormales = ({extraOnChange}) => {
     return (
         <>
             <Row className="mt-4 mb-4">
@@ -261,6 +264,7 @@ export const IncumplimientoDeberesFormales = () => {
                         id="num-resolucion-form"
                         name="numResolucionForm"
                         component={BaseInput}
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -272,6 +276,7 @@ export const IncumplimientoDeberesFormales = () => {
                         name="fechaResolucionForm"
                         type="date"
                         component={BaseInput}
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4">
@@ -282,6 +287,7 @@ export const IncumplimientoDeberesFormales = () => {
                         id="monto-resolucion-form"
                         name="montoMultaResolucionForm"
                         component={BaseInput}
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
             </Row>
@@ -290,7 +296,7 @@ export const IncumplimientoDeberesFormales = () => {
     )
 }
 
-export const IncumplimientoDeberesMateriales = () => {
+export const IncumplimientoDeberesMateriales = ({extraOnChange}) => {
     return (
         <>
             <Row className="mt-4 mb-4">
@@ -307,6 +313,7 @@ export const IncumplimientoDeberesMateriales = () => {
                         id="num-resolucion-mat"
                         name="numResolucionMat"
                         component={BaseInput}
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -318,6 +325,7 @@ export const IncumplimientoDeberesMateriales = () => {
                         name="fechaResolucionMat"
                         type="date"
                         component={BaseInput}
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4">
@@ -328,6 +336,7 @@ export const IncumplimientoDeberesMateriales = () => {
                         id="monto-multa-resolucion-mat"
                         name="montoMultaResolucionMat"
                         component={BaseInput}
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
             </Row>
@@ -336,7 +345,7 @@ export const IncumplimientoDeberesMateriales = () => {
     )
 }
 
-export const CreditoFiscal = () => {
+export const CreditoFiscal = ({extraOnChange}) => {
     return (
         <>
             <Row className="mt-4 mb-4">
@@ -351,8 +360,9 @@ export const CreditoFiscal = () => {
                     </label>
                     <Field
                         id="monto-credito-fiscal"
-                        name="monto_credito_fiscal"
+                        name="montoCredito"
                         component={BaseInput}
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
             </Row>
@@ -361,7 +371,7 @@ export const CreditoFiscal = () => {
     )
 }
 
-export const ResolucionAdministrativa = () => {
+export const ResolucionAdministrativa = ({extraOnChange}) => {
     return (
         <>
             <Row className="mt-4 mb-4">
@@ -378,6 +388,7 @@ export const ResolucionAdministrativa = () => {
                         id="num-resolucion-admin"
                         name="numResolucionAdmin"
                         component={BaseInput}
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -389,6 +400,7 @@ export const ResolucionAdministrativa = () => {
                         name="fechaResolucionAdmin"
                         type="date"
                         component={BaseInput}
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -399,6 +411,7 @@ export const ResolucionAdministrativa = () => {
                         id="monto-multa-resolucion-admin"
                         name="montoMultaResolucionAdmin"
                         component={BaseInput}
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -409,6 +422,7 @@ export const ResolucionAdministrativa = () => {
                         id="monto-interese-resolucion-admin"
                         name="montoInteresesResolucionAdmin"
                         component={BaseInput}
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
             </Row>
@@ -417,7 +431,7 @@ export const ResolucionAdministrativa = () => {
     )
 }
 
-export const ResolucionCulminatoriaSumario = () => {
+export const ResolucionCulminatoriaSumario = ({extraOnChange}) => {
     return (
         <>
             <Row className="mt-4 mb-4">
@@ -434,6 +448,7 @@ export const ResolucionCulminatoriaSumario = () => {
                         id="num-resolucion-cul"
                         name="numResolucionCul"
                         component={BaseInput}
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -445,6 +460,7 @@ export const ResolucionCulminatoriaSumario = () => {
                         name="fechaResolucionCul"
                         type="date"
                         component={BaseInput}
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -455,6 +471,7 @@ export const ResolucionCulminatoriaSumario = () => {
                         id="monto-multa-resolucion-cul"
                         name="montoMultaResolucionCul"
                         component={BaseInput}
+                        extraOnChange={extraOnChange}   
                     />
                 </Col>
             </Row>

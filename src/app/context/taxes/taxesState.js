@@ -5,7 +5,7 @@ import odb from './../../helpers/odb';
 
 export const TaxesState = ({ children }) => {
 
-    const [stepTaxes, setStepTaxes ] = useState(1);
+    const [stepTaxes, setStepTaxes ] = useState(2);
     const [bancos, setBancos] = useState([]);
     const [conceptos, setConceptos] = useState([]);
     const [anos, setAnos] = useState([]);
@@ -19,6 +19,36 @@ export const TaxesState = ({ children }) => {
     const [totalTributoDeclarado, setTotalTributoDeclarado ] = useState(0);
     const estatus = ['eliminada', 'creada', 'definitiva', 'pagada' ];
     const nrif = odb.get('rif');
+
+    const [actaReparo, setActaR] = useState({
+        numActa: "",
+        fechaActa: "",
+        montoActa: ""});
+    const [reAdmin, setReAdmin] = useState({
+        numResolucionAdmin: "",
+        fechaResolucionAdmin: "",
+        montoMultaResolucionAdmin: "",
+        montoInteresesResolucionAdmin: ""
+    });
+    const [reCul, setReCul] = useState({
+        numResolucionCul: "",
+        fechaResolucionCul: "",
+        montoMultaResolucionCul: ""
+    });
+    const [debForm, setDebForm] = useState({
+        numResolucionForm: "",
+        fechaResolucionForm: "",
+        montoMultaResolucionForm: "",
+
+    });
+    const [debMat, setDebMat] = useState({
+        numResolucionMat: "",
+        fechaResolucionMat: "",
+        montoMultaResolucionMat: ""
+    });
+    const [creditoFiscal, setCreditoFiscal] = useState({
+        montoCredito: ""
+    });
 
     // ESTO NO HACE FALTA EL clientAxios YA INCLUYE ESTA CONFIGURACION
     const axiosConfig = {
@@ -200,9 +230,70 @@ export const TaxesState = ({ children }) => {
         
         try {
             requestConfig.data.type = "savePaymentDec";
+            // ESTO SE DEBE OPTIMIZAR CON URGENCIA
+            formData.conceptos.map((element,index)=>{
+
+                let concepto = {
+                    idConcepto: "",
+                    detalle: {
+                        monto: "", // Monto del concepto
+                        montoMulta: "", // Monto de la multa del concepto
+                        motoIntereses: "", // Monto de intereses del concepto
+                        nroDoc: "", // Numero de documento/acta/resolucion/cheque de conceptops
+                        fechaConcp: "", // Fecha del documento/acta/resolucion/cheque
+                        fechaVctoGiro: "", // Fecha Vencimiento de Giro Convenio de pago
+                        fechaNotaDebito: "" // Fecha nota deito del cheque
+                    }
+                };
+
+                concepto.idConcepto = element;
+
+                if (element == 3) {
+                    concepto.detalle.monto = actaReparo.montoActa;
+                    concepto.detalle.fechaConcp = actaReparo.fechaActa;
+                    concepto.detalle.fechaConcp = actaReparo.numActa;
+                }
+                if (element == 4) {
+                    concepto.detalle.nroDoc = reAdmin.numResolucionAdmin;
+                    concepto.detalle.fechaConcp = reAdmin.fechaResolucionAdmin;
+                    concepto.detalle.montoMulta = reAdmin.montoMultaResolucionAdmin;
+                    concepto.detalle.motoIntereses = reAdmin.montoInteresesResolucionAdmin
+                }
+                if (element == 5) {
+                    concepto.detalle.nroDoc = reCul.numResolucionCul;
+                    concepto.detalle.fechaConcp = reCul.fechaResolucionCul;
+                    concepto.detalle.montoMulta = reCul.montoMultaResolucionCul;
+                }
+                if (element == 6) {
+                    concepto.detalle.nroDoc = debForm.numResolucionForm;
+                    concepto.detalle.fechaConcp = debForm.fechaResolucionForm;
+                    concepto.detalle.montoMulta = debForm.montoMultaResolucionForm;
+                }
+                if (element == 7) {
+                    concepto.detalle.nroDoc = debMat.numResolucionMat;
+                    concepto.detalle.fechaConcp = debMat.fechaResolucionMat;
+                    concepto.detalle.montoMulta = debMat.montoMultaResolucionMat;
+                }
+                if (element == 8) {
+                    concepto.detalle = {};
+                }
+                if (element == 9) {
+                    concepto.detalle = {};
+                }
+                if (element == 10) {
+                    concepto.detalle = {};
+                }
+                if (element == 11) {
+                    concepto.detalle = {};
+                }
+                if (element == 12) {
+                    concepto.detalle.monto = creditoFiscal.montoCredito;
+                }
+                formData.detallesConceptos.push(concepto);
+            });
+            setFormDataPayment(formData);
             requestConfig.data.attributes = formData;
             const respuesta = await clientAxios.post('/payment_declaration/', requestConfig);
-            console.log(respuesta)
             setStepTaxes(stepTaxes+1);
         } catch (error) {
             console.log(error)
@@ -267,7 +358,13 @@ export const TaxesState = ({ children }) => {
         declaracionSeleccionada,
         declaracionsustitutiva,
         sustituirDeclaracion,
-        totalTributoDeclarado
+        totalTributoDeclarado,
+        setActaR, actaReparo,
+        reAdmin, setReAdmin,
+        reCul, setReCul,
+        debForm, setDebForm,
+        debMat, setDebMat,
+        creditoFiscal, setCreditoFiscal
     }
 
     return (
