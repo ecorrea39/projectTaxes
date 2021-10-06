@@ -64,7 +64,7 @@ export const TaxesState = ({ children }) => {
         }
     }
 
-    let [declaracionSeleccionada, setDeclaracionSeleccionada] = useState([]);
+    //let [declaracionSeleccionada, setDeclaracionSeleccionada] = useState([]);
 
     useEffect(() => {
         getBancos();
