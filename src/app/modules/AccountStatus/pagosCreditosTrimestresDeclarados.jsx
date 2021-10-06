@@ -5,17 +5,10 @@ import AccountStatusContext from "../../context/accountStatus/accountStatusConte
 
 function PagosCreditosTrimestresDeclarados({className}) {
 
-    const { anos, trimestres, detallePagosTrim, filtarAccountStatus } = useContext(AccountStatusContext);
+    const { anos, trimestres, detallePagosTrim, filtarAccountStatus, formatNumber } = useContext(AccountStatusContext);
     const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", marginTop: "1%", marginBottom: "1%" }
 
     const detallePagoTrim = detallePagosTrim;
-
-    function FormatNumber(number) {
-        return  new Intl.NumberFormat("ES-ES", {
-            style: "currency",
-            currency: "VEF"
-        }).format(number)
-    }
 
     return (
         <>
@@ -171,7 +164,7 @@ function PagosCreditosTrimestresDeclarados({className}) {
                                                     <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                                 <td>
-                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{FormatNumber(s.monto_pagado)}</span>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{formatNumber(s.monto_pagado)}</span>
                                                     <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                                 <td>

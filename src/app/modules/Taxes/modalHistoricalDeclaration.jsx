@@ -31,6 +31,7 @@ function ModalHistoricalDeclaration(props) {
                                 <a href="#" variant="outline-info"
                                    className="btn btn-info font-weight-bolder font-size-sm mr-3"
                                    size="sm"
+                                   data-dismiss="modal" data-backdrop="false"
                                    onClick={props.onHide}>Cerrar</a>
                             </div>
                         </div>
@@ -177,8 +178,12 @@ function ModalHistoricalDeclaration(props) {
                                                             {/*
                                                             <a href="#" size="sm" title="seleccionar declaración" className="btn btn-success font-weight-bolder font-size-sm mr-3"
                                                                checked={()=>sustituirDeclaracion(historico[i])} >Seleccionar</a>
-                                                               */}
+
+
                                                             <input type="checkbox" name={`sel${i}`} id={`sel${i}`} onClick={()=>sustituirDeclaracion(historico[i], i, props)} />
+                                                            */}
+                                                            <input type="checkbox" name={`selector${i}`} onClick={()=>sustituirDeclaracion(historico[i], i, props)}  />
+
                                                         </td>
                                                         <td>
                                                             <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.concepto_pago_name}</span>

@@ -8,8 +8,6 @@ export const AccountStatusState = ({ children }) => {
     const [anos, setAnos] = useState([]);
     const [trimestres, setTrimestres] = useState([]);
 
-
-
     /* -- deuda trimestres declarados --*/
     const [totalDeudaTrim, setTotalDeudaTrim] = useState();
     const [detalleDeudaTrim, setDetalleDeudaTrim] = useState([]);
@@ -102,15 +100,15 @@ export const AccountStatusState = ({ children }) => {
         }
     }
 
-    const getDetalleDeudaTrimestresDeclarados = () => {
+    const getDetalleDeudaTrimestresDeclarados = async () => {
 
         let arreglo = [];
         const detalleTrimestre = [];
 
         try {
-            /*const respuesta = await clientAxios.get(`/balance/${nrif}`);
-            console.log('respuesta ', respuesta)
+            const respuesta = await clientAxios.get(`/tribute_declaration/${nrif}`, clientAxios);
             arreglo = respuesta.data.data;
+            console.log('respuesta ', respuesta)
 
             arreglo.map((x, i) => {
                 detalleTrimestre.push(
@@ -126,51 +124,13 @@ export const AccountStatusState = ({ children }) => {
                         "monto_tributo": arreglo[i].attributes.monto_tributo,
                         "monto_intereses": arreglo[i].attributes.monto_intereses,
                         "monto_multa": arreglo[i].attributes.monto_multa,
+                        "estatus": arreglo[i].attributes.estatus
                     }
                 )
-            });*/
+            });
 
-            const detalleTrimestre = [
-                {
-                    concepto_pago: "1",
-                    concepto_pago_name: "Aporte patronal 2%",
-                    ano_declaracion: 2021,
-                    trimestre: 1,
-                    ntrabajadores: "5",
-                    monto_pagado: "2000000",
-                    monto_tributo: "40000",
-                    monto_multa: "100",
-                    monto_intereses: "600",
-                    fecha_emision: "2021-04-07"
-                },
-                {
-                    concepto_pago: "1",
-                    concepto_pago_name: "Aporte patronal 2%",
-                    ano_declaracion: 2021,
-                    trimestre: 2,
-                    ntrabajadores: "5",
-                    monto_pagado: "2000000",
-                    monto_tributo: "40000",
-                    monto_multa: "0",
-                    monto_intereses: "0",
-                    fecha_emision: "2021-06-11"
-                },
-                {
-                    concepto_pago: "2",
-                    concepto_pago_name: "Aporte de los trabajadores 0,5%",
-                    ano_declaracion: 2021,
-                    trimestre: 2,
-                    ntrabajadores: "6",
-                    monto_pagado: "3000000",
-                    monto_tributo: "10000",
-                    monto_multa: "0",
-                    monto_intereses: "10",
-                    fecha_emision: "2021-07-08"
-                }
-            ];
-
-            setDetalleDeudaTrim(detalleTrimestre);
-            setDetalleDeudaTrimOriginal(detalleTrimestre);
+            setDetalleDeudaTrim(detalleTrimestre.filter(x=> x.estatus === 1 || x.estatus === 2));
+            setDetalleDeudaTrimOriginal(detalleTrimestre.filter(x=> x.estatus === 1 || x.estatus === 2));
         } catch (error) {
             console.log(error)
         }
@@ -329,7 +289,7 @@ export const AccountStatusState = ({ children }) => {
                     banco: "1",
                     banco_name: "Banco de Venzuela",
                     referencia: "1234567890",
-                    monto_pagado: "15000,00",
+                    monto_pagado: "15000",
                     clave: "tributo",
                 },
                 {
@@ -341,7 +301,7 @@ export const AccountStatusState = ({ children }) => {
                     banco: "1",
                     banco_name: "Banco de Venzuela",
                     referencia: "1234567890",
-                    monto_pagado: "15000,00",
+                    monto_pagado: "15000.45",
                     clave: "tributo"
                 },
                 {
@@ -353,7 +313,7 @@ export const AccountStatusState = ({ children }) => {
                     banco: "1",
                     banco_name: "Banco de Venzuela",
                     referencia: "1234567890",
-                    monto_pagado: "15000,00",
+                    monto_pagado: "15000.33",
                     clave: "tributo"
                 }
             ];
@@ -381,19 +341,16 @@ export const AccountStatusState = ({ children }) => {
         let lista = []
         switch (tipo) {
             case "deudatrim":
-                console.log('paso 1')
                 lista = detalleDeudaTrimOriginal;
                 break;
 
             case "deudactasxpagar":
                 console.log('paso 2')
                 lista = detalleDeudaCxPOriginal;
-                console.log('lista ', lista)
                 break;
 
             case "pagostrim":
                 lista = detalleDeudaCxPOriginal;
-                console.log('lista ', lista)
                 break;
 
             default:
@@ -416,6 +373,26 @@ export const AccountStatusState = ({ children }) => {
         setDetalleDeudaTrim(nuevo);
     }
 
+    const formatearfecha = (f, formato) => {
+        const ano = f.getFullYear();
+        const mes = ("0" + (f.getMonth()+1)).substr(-2);
+        const dia = ("0" + f.getDate()).substr(-2);
+
+        let fecha;
+
+        if(formato === 'DMY') fecha = `${dia}-${mes}-${ano}`
+        else if(formato === 'YMD') fecha = `${ano}-${mes}-${dia}`;
+
+        return fecha;
+    }
+
+    function formatNumber(number) {
+        return new Intl.NumberFormat("ES-ES", {
+            style: "currency",
+            currency: "VEF"
+        }).format(number)
+    }
+
     const valuesContext = {
         anos,
         trimestres,
@@ -429,7 +406,9 @@ export const AccountStatusState = ({ children }) => {
         totalCreditoFisTemp,
         totalCreditoFisAprob,
         detalleCreditoFis,
-        filtarAccountStatus
+        filtarAccountStatus,
+        formatearfecha,
+        formatNumber
     }
 
     return (

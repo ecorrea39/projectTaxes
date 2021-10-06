@@ -30,33 +30,6 @@ export const BaseFormikStatementTaxes = ({ concepts, formik, anos, trimestres, f
                 let f2 = '';
             }
 
-/*
-            "data": {
-                "type": "saveTributeDeclaration",
-                    "id":"32",
-                    "attributes": [{
-                    "rif":"v103469666",
-                    "ano_declaracion": "2016",
-                    "concepto_pago": "2",
-                    "estatus": 1,
-                    "fecha_declaracion": "2021-10-03",
-                    "fecha_emision": "2021-09-26",
-                    "id": "30",
-                    "monto_intereses": 0,
-                    "monto_multa": 0,
-                    "monto_pagado": "12000.00",
-                    "monto_tributo": 60,
-                    "ntrabajadores": "8",
-                    "ntrabajadores_liquidados": 0,
-                    "rif": "v103469666",
-                    "sustitutiva": "2",
-                    "terms": true,
-                    "trimestre": 1
-
-
-                }]
-            }*/
-
             formik.setFieldValue("declaraciones[0].id", values.id.toString());
             formik.setFieldValue("declaraciones[0].rif", nrif);
             formik.setFieldValue("declaraciones[0].concepto_pago", values.concepto_pago.toString());
@@ -155,7 +128,7 @@ export const BaseFormikStatementTaxes = ({ concepts, formik, anos, trimestres, f
             </Row>
             <FieldArray name="declaraciones">
                 {
-                    ({push, remove}) => (
+                    ({push, remove, resetForm }) => (
                         <>
                             <Row className="mt-4 mb-4">
                                 <Col className="mt-1 mb-2" xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">

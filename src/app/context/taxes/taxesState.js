@@ -128,6 +128,7 @@ export const TaxesState = ({ children }) => {
                 histo.push(
                     {
                         "id": arreglo[i].id,
+                        "selector": false,
                         "concepto_pago": arreglo[i].attributes.concepto_pago,
                         "concepto_pago_name": arreglo[i].attributes['concepto_pago_concepto.name'],
                         "trimestre": arreglo[i].attributes.trimestre,
@@ -300,7 +301,7 @@ export const TaxesState = ({ children }) => {
                 if (total > 0) {
                     setStepTaxes(stepTaxes+1)
                 } else {
-                    setStepTaxes(stepTaxes)
+                    //setStepTaxes(1)
                 }
                 setDeclaracionSustitutiva(false);
                 setDeclaracionSeleccionada([]);
