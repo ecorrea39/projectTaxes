@@ -18,13 +18,13 @@ export const TaxesState = ({ children }) => {
     const [historico, setHistorico] = useState([]);
     const [historicoOriginal, setHistoricoOriginal] = useState([]);
     const [historicoFilter, setHistoricoFilter] = useState([]);
-    const [declaracionsustitutiva, setDeclaracionsustitutiva] = useState(false);
+    const [declaracionSustitutiva, setDeclaracionSustitutiva] = useState(false);
+    const [declaracionSeleccionada, setDeclaracionSeleccionada] = useState([]);
     const [totalTributoDeclarado, setTotalTributoDeclarado ] = useState(0);
+    const [selConcepto, setSelConcepto] = useState([]);
     const estatus = ['eliminada', 'creada', 'definitiva', 'pagada' ];
     const nrif = odb.get('rif');
-    const [selConcepto, setSelConcepto] = useState(0);
 
-    let [declaracionSeleccionada, setDeclaracionSeleccionada] = useState([]);
 
     useEffect(() => {
         getBancos();
@@ -140,7 +140,8 @@ export const TaxesState = ({ children }) => {
                         "sustitutiva": arreglo[i].attributes.sustitutiva,
                         "fecha_emision": arreglo[i].attributes.concepto_pago === 2 ? formatearfecha(new Date(arreglo[i].attributes.fecha_emision), 'DMY') : '',
                         "fecha_declaracion": formatearfecha(new Date(arreglo[i].attributes.fecha_declaracion), 'DMY'),
-                        "estatus": estatus[arreglo[i].attributes.estatus]
+                        "estatus": arreglo[i].attributes.estatus,
+                        "estatus_name": estatus[arreglo[i].attributes.estatus]
                     }
                 )
             })
@@ -183,18 +184,16 @@ export const TaxesState = ({ children }) => {
         }).format(number)
     }
 
-    const sustituirDeclaracion = async (seleccion, i) => {
-
-        console.log('seleccion ', seleccion)
-
-        setDeclaracionSeleccionada([]);
+    const sustituirDeclaracion = (seleccion, i, props) => {
 
         try {
-            await setDeclaracionsustitutiva(true);
-            await declaracionSeleccionada.push(seleccion);
-            console.log('declaracionSustitutiva ', declaracionSeleccionada)
-
-            if (declaracionSeleccionada[0].estatus === 'definitiva') {
+            if (seleccion.estatus === 2) {
+                Swal.fire({
+                    title: "Declaración de tributos",
+                    text: "Declaración seleccionada con estatus Definitiva, no puede ser modificada",
+                    icon: 'warning',
+                    denyButtonText: `Ok`
+                });
             } else {
                 Swal.fire({
                     title: 'Declaración de tributos',
@@ -205,8 +204,12 @@ export const TaxesState = ({ children }) => {
                     denyButtonText: `Cancelar`,
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        /* aqui mando los valores al formulario */
+                        setDeclaracionSustitutiva(true);
+                        setDeclaracionSeleccionada(seleccion)
+                        props.onHide();
                     } else if (result.isDenied) {
+                        setDeclaracionSustitutiva(false);
+                        setDeclaracionSeleccionada([]);
                         setHistorico(historicoOriginal);
                     }
                 });
@@ -251,13 +254,13 @@ export const TaxesState = ({ children }) => {
         } else if(filter.ano_declaracion === undefined && filter.trimestre !== undefined && filter.estatus === undefined) {
             nuevo = historicoOriginal.filter(x=> x.trimestre === Number(filter.trimestre));
         } else if(filter.ano_declaracion === undefined && filter.trimestre === undefined && filter.estatus !== undefined) {
-            nuevo = historicoOriginal.filter(x=> x.estatus === filter.estatus);
+            nuevo = historicoOriginal.filter(x=> x.estatus === Number(filter.estatus));
         } else if(filter.ano_declaracion !== undefined && filter.trimestre !== undefined && filter.estatus == undefined) {
             nuevo = historicoOriginal.filter(x=> x.ano_declaracion === Number(filter.ano_declaracion) && x.trimestre === Number(filter.trimestre));
         } else if(filter.ano_declaracion !== undefined && filter.trimestre === undefined && filter.estatus !== undefined) {
-            nuevo = historicoOriginal.filter(x=> x.ano_declaracion === Number(filter.ano_declaracion) && x.estatus === filter.estatus);
+            nuevo = historicoOriginal.filter(x=> x.ano_declaracion === Number(filter.ano_declaracion) && x.estatus === Number(filter.estatus));
         } else if(filter.ano_declaracion === undefined && filter.trimestre !== undefined && filter.estatus !== undefined) {
-            nuevo = historicoOriginal.filter(x=> x.trimestre === Number(filter.trimestre) && x.estatus === filter.estatus);
+            nuevo = historicoOriginal.filter(x=> x.trimestre === Number(filter.trimestre) && x.estatus === Number(filter.estatus));
         } else {
             nuevo = historicoOriginal.filter(x=> x.ano_declaracion === Number(filter.ano_declaracion) && x.trimestre === Number(filter.trimestre) && x.estatus === filter.estatus);
         }
@@ -272,13 +275,17 @@ export const TaxesState = ({ children }) => {
             valores.declaraciones.map((x, i) => {
                 total = total + x.monto_tributo;
                 if(x.fecha_emision === '') x.fecha_emision = '0001-01-01';
-                if(x.fecha_declaracion === '') x.fecha_emision = formatearfecha(new Date(), 'YMD');
+                if(x.fecha_declaracion === '') x.fecha_declaracion = formatearfecha(new Date(), 'YMD');
             });
 
             setTotalTributoDeclarado(total);
 
             requestConfig.data.type = "saveTributeDeclaration";
             requestConfig.data.attributes = valores.declaraciones;
+            requestConfig.data.id = (!declaracionSustitutiva) ? nrif : valores.declaraciones[0].id;
+
+            console.log('valores', valores.declaraciones)
+            console.log('requestConfig ', requestConfig)
             const respuesta = await clientAxios.post('/tribute_declaration/', requestConfig);
 
             Swal.fire({
@@ -293,6 +300,8 @@ export const TaxesState = ({ children }) => {
                 } else {
                     setStepTaxes(stepTaxes)
                 }
+                setDeclaracionSustitutiva(false);
+                setDeclaracionSeleccionada([]);
             });
         } catch (error) {
             console.log(error)
@@ -308,8 +317,15 @@ export const TaxesState = ({ children }) => {
         }
     }
 
-    const showSelConcepto = (s) => {
-        setSelConcepto(s.target.value)
+    const showSelConcepto = (a) => {
+
+        let arreglo = a;
+        let tmp = [];
+        arreglo.map(x => {
+            tmp.push(Number(x.concepto_pago))
+        });
+        setSelConcepto(tmp);
+
     }
 
     const valuesContext = {
@@ -333,7 +349,7 @@ export const TaxesState = ({ children }) => {
         formatNumber,
         nrif,
         declaracionSeleccionada,
-        declaracionsustitutiva,
+        declaracionSustitutiva,
         sustituirDeclaracion,
         totalTributoDeclarado,
         filtarHistorico,

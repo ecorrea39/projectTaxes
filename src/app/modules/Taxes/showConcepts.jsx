@@ -29,9 +29,10 @@ function ShowConcept({formik}) {
 
     }
 
+    /*
     useEffect(()=>{
 
-    },[concepts])
+    },[concepts])*/
 
     return (
         <Col>

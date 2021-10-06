@@ -6,7 +6,7 @@ import AccountStatusContext from "../../context/accountStatus/accountStatusConte
 
 function Resumen({className}) {
 
-    const { deudaTrim, deudaCxP, pagos, creditoFisTemp, creditoFisAprob } = useContext(AccountStatusContext);
+    const { totalDeudaTrim, totalDeudaCxP, totalPagos, totalCreditoFisTemp, totalCreditoFisAprob } = useContext(AccountStatusContext);
     const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", padding: "20px 35px 20px 35px", marginTop: "3%" }
 
     function FormatNumber(number) {
@@ -37,14 +37,14 @@ function Resumen({className}) {
                                     <SVG src={toAbsoluteUrl("/media/svg/icons/Layout/Layout-arrange.svg")} />
                                     Total deuda trimestres declarados
                                 </div>
-                                <div className="font-size-h4 font-weight-bolder">{FormatNumber(deudaTrim)}</div>
+                                <div className="font-size-h4 font-weight-bolder">{FormatNumber(totalDeudaTrim)}</div>
                             </div>
                             <div className="col px-12 py-6">
                                 <div className="font-size-sm text-muted font-weight-bold">
                                     <SVG src={toAbsoluteUrl("/media/svg/icons/Layout/Layout-4-blocks.svg")} />
                                     Total deuda efectos y cuentas por pagar
                                 </div>
-                                <div className="font-size-h4 font-weight-bolder">{FormatNumber(deudaCxP)}</div>
+                                <div className="font-size-h4 font-weight-bolder">{FormatNumber(totalDeudaCxP)}</div>
                             </div>
                         </div>
                         <div className="row m-0">
@@ -53,7 +53,7 @@ function Resumen({className}) {
                                     <SVG src={toAbsoluteUrl("/media/svg/icons/Layout/Layout-4-blocks.svg")} />
                                     Total saldos pagados
                                 </div>
-                                <div className="font-size-h4 font-weight-bolder">{FormatNumber(pagos)}</div>
+                                <div className="font-size-h4 font-weight-bolder">{FormatNumber(totalPagos)}</div>
                             </div>
                             <div className="col px-12 py-6"></div>
                         </div>
@@ -63,14 +63,14 @@ function Resumen({className}) {
                                     <SVG src={toAbsoluteUrl("/media/svg/icons/Layout/Layout-4-blocks.svg")} />
                                     Total crédito fiscal | Saldo temporal
                                 </div>
-                                <div className="font-size-h4 font-weight-bolder">{FormatNumber(creditoFisTemp)}</div>
+                                <div className="font-size-h4 font-weight-bolder">{FormatNumber(totalCreditoFisTemp)}</div>
                             </div>
                             <div className="col px-12 py-6">
                                 <div className="font-size-sm text-muted font-weight-bold">
                                     <SVG src={toAbsoluteUrl("/media/svg/icons/Layout/Layout-4-blocks.svg")} />
                                     Total crédito fiscal | Saldo aprobado
                                 </div>
-                                <div className="font-size-h4 font-weight-bolder">{FormatNumber(creditoFisAprob)}</div>
+                                <div className="font-size-h4 font-weight-bolder">{FormatNumber(totalCreditoFisAprob)}</div>
                             </div>
                         </div>
                     </div>

@@ -6,47 +6,10 @@ import {Formik} from "formik";
 
 function DeudasTrimestresDeclarados({className}) {
 
-    const { anos, trimestres, deudaTrim } = useContext(AccountStatusContext);
+    const { anos, trimestres, totalDeudaTrim, detalleDeudaTrim, filtarAccountStatus } = useContext(AccountStatusContext);
     const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", marginTop: "1%", marginBottom: "1%" }
 
-    const detalleTrim = [
-        {
-            concepto_pago: "1",
-            concepto_pago_name: "Aporte patronal 2%",
-            ano_declaracion: "2021",
-            trimestre: "1",
-            ntrabajadores: "5",
-            monto_pagado: "2000000",
-            monto_tributo: "40000",
-            monto_multa: "100",
-            monto_intereses: "600",
-            fecha_emision: "2021-04-07"
-        },
-        {
-            concepto_pago: "1",
-            concepto_pago_name: "Aporte patronal 2%",
-            ano_declaracion: "2021",
-            trimestre: "2",
-            ntrabajadores: "5",
-            monto_pagado: "2000000",
-            monto_tributo: "40000",
-            monto_multa: "0",
-            monto_intereses: "0",
-            fecha_emision: "2021-06-11"
-        },
-        {
-            concepto_pago: "2",
-            concepto_pago_name: "Aporte de los trabajadores 0,5%",
-            ano_declaracion: "2021",
-            trimestre: "2",
-            ntrabajadores: "6",
-            monto_pagado: "3000000",
-            monto_tributo: "10000",
-            monto_multa: "0",
-            monto_intereses: "10",
-            fecha_emision: "2021-07-08"
-        }
-    ]
+    const detalleTrim = detalleDeudaTrim;
 
     function FormatNumber(number) {
         return  new Intl.NumberFormat("ES-ES", {
@@ -66,7 +29,7 @@ function DeudasTrimestresDeclarados({className}) {
                         <span className="text-muted mt-3 font-weight-bold font-size-sm">Trimestres declarados</span>
                     </h3>
                     <div className="card-toolbar">
-                        <span className="text-muted mt-3 font-weight-bold font-size-sm">Total deuda: {FormatNumber(deudaTrim)} </span>
+                        <span className="text-muted mt-3 font-weight-bold font-size-sm">Total deuda: {FormatNumber(totalDeudaTrim)} </span>
                     </div>
                 </div>
                 <div className="px-10 border-0 ">
@@ -78,8 +41,7 @@ function DeudasTrimestresDeclarados({className}) {
                                 searchText: "",
                             }}
                             onSubmit={(values) => {
-                                /*
-                                filtarHistorico(values);*/
+                                filtarAccountStatus(values, 'deudatrim');
                             }}
                         >
                             {({
@@ -184,7 +146,6 @@ function DeudasTrimestresDeclarados({className}) {
                                 </thead>
 
                                 <tbody>
-
                                 {
                                     detalleTrim.map((s,i) => {
                                         return (
