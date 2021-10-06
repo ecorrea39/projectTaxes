@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import { ReactDOM } from 'react-dom';
 import { FieldArray, Field, Form, Formik } from "formik";
-import {Button, Col, Row, Card, Modal} from "react-bootstrap";
+import { Button, Col, Row, Card, Modal } from "react-bootstrap";
 import { initialValuesDeclaration } from "./initialValues";
 import { SchemaDeclaration } from "./validateSchemas";
 import BaseInput from "../Forms/BaseInputs";
@@ -21,9 +21,10 @@ function FormStatementTaxes({ step }) {
 
     const declaSeleccionada = declaracionSeleccionada;
 
-    const handleSubmit = async (values) => {
+    const handleSubmit = async (values, actions) => {
         setFormDataDeclaration(values);
         let response = await submitDeclaration(values);
+        actions.resetForm(initialValuesDeclaration);
     };
 
     return (
@@ -41,7 +42,8 @@ function FormStatementTaxes({ step }) {
             <Formik
                 initialValues={initialValuesDeclaration}
                 validationSchema={SchemaDeclaration}
-                onSubmit={handleSubmit}
+                //onSubmit={handleSubmit(values, actions)}
+                onSubmit = { (values,actions) => { handleSubmit(values, actions)  }}
             >
                 {
                     formik => (
