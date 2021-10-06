@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 
 export const TaxesState = ({ children }) => {
 
-    const [stepTaxes, setStepTaxes ] = useState(2);
+    const [stepTaxes, setStepTaxes ] = useState(1);
     const [bancos, setBancos] = useState([]);
     const [conceptos, setConceptos] = useState([]);
     const [anos, setAnos] = useState([]);
