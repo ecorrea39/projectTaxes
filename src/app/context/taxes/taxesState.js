@@ -284,9 +284,11 @@ export const TaxesState = ({ children }) => {
             requestConfig.data.attributes = valores.declaraciones;
             requestConfig.data.id = (!declaracionSustitutiva) ? nrif : valores.declaraciones[0].id;
 
-            console.log('valores', valores.declaraciones)
-            console.log('requestConfig ', requestConfig)
-            const respuesta = await clientAxios.post('/tribute_declaration/', requestConfig);
+            if(!declaracionSustitutiva) {
+                const respuesta = await clientAxios.post('/tribute_declaration/', requestConfig);
+            } else {
+                const respuesta = await clientAxios.put('/tribute_declaration/', requestConfig);
+            }
 
             Swal.fire({
                 title: "Declaración de tributos",

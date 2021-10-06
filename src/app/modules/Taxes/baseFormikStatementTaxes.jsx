@@ -30,13 +30,40 @@ export const BaseFormikStatementTaxes = ({ concepts, formik, anos, trimestres, f
                 let f2 = '';
             }
 
-            formik.setFieldValue("declaraciones[0].id", values.id);
+/*
+            "data": {
+                "type": "saveTributeDeclaration",
+                    "id":"32",
+                    "attributes": [{
+                    "rif":"v103469666",
+                    "ano_declaracion": "2016",
+                    "concepto_pago": "2",
+                    "estatus": 1,
+                    "fecha_declaracion": "2021-10-03",
+                    "fecha_emision": "2021-09-26",
+                    "id": "30",
+                    "monto_intereses": 0,
+                    "monto_multa": 0,
+                    "monto_pagado": "12000.00",
+                    "monto_tributo": 60,
+                    "ntrabajadores": "8",
+                    "ntrabajadores_liquidados": 0,
+                    "rif": "v103469666",
+                    "sustitutiva": "2",
+                    "terms": true,
+                    "trimestre": 1
+
+
+                }]
+            }*/
+
+            formik.setFieldValue("declaraciones[0].id", values.id.toString());
             formik.setFieldValue("declaraciones[0].rif", nrif);
-            formik.setFieldValue("declaraciones[0].concepto_pago", values.concepto_pago);
-            formik.setFieldValue("declaraciones[0].ano_declaracion", values.ano_declaracion);
+            formik.setFieldValue("declaraciones[0].concepto_pago", values.concepto_pago.toString());
+            formik.setFieldValue("declaraciones[0].ano_declaracion", values.ano_declaracion.toString());
             formik.setFieldValue("declaraciones[0].trimestre", Number(values.trimestre));
-            formik.setFieldValue("declaraciones[0].ntrabajadores", values.ntrabajadores);
-            formik.setFieldValue("declaraciones[0].monto_pagado", values.monto_pagado);
+            formik.setFieldValue("declaraciones[0].ntrabajadores", values.ntrabajadores.toString());
+            formik.setFieldValue("declaraciones[0].monto_pagado", values.monto_pagado.toString());
             formik.setFieldValue("declaraciones[0].monto_tributo", Number(values.monto_tributo));
             formik.setFieldValue("declaraciones[0].monto_multa", 0);
             formik.setFieldValue("declaraciones[0].monto_intereses", 0);
@@ -44,10 +71,10 @@ export const BaseFormikStatementTaxes = ({ concepts, formik, anos, trimestres, f
             formik.setFieldValue("declaraciones[0].fecha_emision", (values.concepto_pago === 2) ? formatearfecha(new Date(f2), 'YMD') : '');
             formik.setFieldValue("declaraciones[0].fecha_declaracion", formatearfecha(new Date(f1), 'YMD'));
             formik.setFieldValue("declaraciones[0].ntrabajadores_liquidados", Number(values.ntrabajadores_liquidados));
-            formik.setFieldValue("declaraciones[0].sustitutiva", Number(values.sustitutiva) + 1);
+            formik.setFieldValue("declaraciones[0].sustitutiva", (Number(values.sustitutiva) + 1).toString());
 
             if(Number(values.sustitutiva) + 1 < 3) {
-                formik.setFieldValue("declaraciones[0].estatus", values.estatus);
+                formik.setFieldValue("declaraciones[0].estatus", 1);
             } else {
                 formik.setFieldValue("declaraciones[0].estatus", 2);
             }
