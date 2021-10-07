@@ -76,6 +76,7 @@ const UserDatosFormStep3 = (props) => {
   const [municipios, setMunicipios] = useState([]);
   const [parroquiasTotales, setParroquiasTotales] = useState([]);
   const [parroquias, setParroquias] = useState([]);
+  const [siguiente, setSiguiente] = useState(false);
 
   const intl = useIntl();
   const API_URL = `${process.env.REACT_APP_API_URL}`;
@@ -377,6 +378,11 @@ const UserDatosFormStep3 = (props) => {
     props.cambiarFormularioActual(2);
   }
 
+  const submitSiguiente = () => {
+    setSiguiente(true);
+    formik.submitForm();
+  }
+
   const LoginSchema = Yup.object().shape({
 
     domicilio_fiscal: Yup.string()
@@ -565,7 +571,10 @@ const UserDatosFormStep3 = (props) => {
 
           console.log("resFormStep3", res);
 
-          props.cambiarFormularioActual(4);
+          if (siguiente) {
+            setSiguiente(false);
+            props.cambiarFormularioActual(4);
+          }
 
           // if (parciales) {
           //   console.log('fechacontitucion ', fechacontitucion);
@@ -947,6 +956,11 @@ const UserDatosFormStep3 = (props) => {
                 <Col md={4}>
                   <Button variant="secondary" size="lg" block
                           type="button"
+                          onClick={submitSiguiente}
+                          disabled={
+                            formik.isSubmitting ||
+                            !formik.isValid
+                          }
                   >
                     Siguiente
                   </Button>
