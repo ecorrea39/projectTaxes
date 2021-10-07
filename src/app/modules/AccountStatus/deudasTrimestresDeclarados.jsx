@@ -6,17 +6,9 @@ import {Formik} from "formik";
 
 function DeudasTrimestresDeclarados({className}) {
 
-    const { anos, trimestres, totalDeudaTrim, detalleDeudaTrim, filtarAccountStatus } = useContext(AccountStatusContext);
+    const { anos, trimestres, totalDeudaTrim, detalleDeudaTrim, filtarAccountStatus, formatNumber } = useContext(AccountStatusContext);
     const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", marginTop: "1%", marginBottom: "1%" }
-
     const detalleTrim = detalleDeudaTrim;
-
-    function FormatNumber(number) {
-        return  new Intl.NumberFormat("ES-ES", {
-            style: "currency",
-            currency: "VEF"
-        }).format(number)
-    }
 
     return (
         <>
@@ -29,7 +21,7 @@ function DeudasTrimestresDeclarados({className}) {
                         <span className="text-muted mt-3 font-weight-bold font-size-sm">Trimestres declarados</span>
                     </h3>
                     <div className="card-toolbar">
-                        <span className="text-muted mt-3 font-weight-bold font-size-sm">Total deuda: {FormatNumber(totalDeudaTrim)} </span>
+                        <span className="text-muted mt-3 font-weight-bold font-size-sm">Total deuda: {formatNumber(totalDeudaTrim)} </span>
                     </div>
                 </div>
                 <div className="px-10 border-0 ">
@@ -167,7 +159,7 @@ function DeudasTrimestresDeclarados({className}) {
                                                     <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                                 <td>
-                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{FormatNumber(s.monto_pagado)}</span>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{formatNumber(s.monto_pagado)}</span>
                                                     <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                                 <td>
@@ -175,15 +167,15 @@ function DeudasTrimestresDeclarados({className}) {
                                                     <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                                 <td>
-                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{FormatNumber(s.monto_tributo)}</span>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{formatNumber(s.monto_tributo)}</span>
                                                     <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                                 <td>
-                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{FormatNumber(s.monto_intereses)}</span>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{formatNumber(s.monto_intereses)}</span>
                                                     <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                                 <td>
-                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{FormatNumber(s.monto_multa)}</span>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{formatNumber(s.monto_multa)}</span>
                                                     <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                             </tr>
