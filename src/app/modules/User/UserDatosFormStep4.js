@@ -1,8 +1,9 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import {FormattedMessage, useIntl} from "react-intl";
 import {useFormik} from "formik";
 import * as Yup from "yup";
+import axios from "axios";
 
 const listaCodCelular = () => {
   const array = [
@@ -18,10 +19,9 @@ const listaCodCelular = () => {
 const UserDatosFormStep4 = (props) => {
 
   const [loading, setLoading] = useState(false);
+  const [siguiente, setSiguiente] = useState(false);
 
-  const intl = useIntl();
-
-  const initialValues = {
+  const [initialValues, setInitialValues] = useState({
     cedula_representante_legal1: "",
     nombre_representante_legal1: "",
     apellido_representante_legal1: "",
@@ -43,7 +43,68 @@ const UserDatosFormStep4 = (props) => {
     telefono_representante_legal3: "",
     correo_electronico_representante_legal3: "",
     cargo_representante_legal3: ""
+  });
+
+  const intl = useIntl();
+  const API_URL = `${process.env.REACT_APP_API_URL}`;
+
+  const token = localStorage.getItem('authToken');
+  const rif = localStorage.getItem('rif');
+
+  const axiosConfig = {
+    headers: {
+      Accept: 'application/vnd.api+json',
+      'Content-Type': 'application/vnd.api+json',
+      Authorization: `Bearer ${token}`
+    }
   };
+
+  useEffect(() => {
+
+    axios.get(`${API_URL}user_manager_data/${rif}/`, axiosConfig)
+      .then(function (res) {
+        console.log("get_user_company::", res);
+        console.log("res.data.data.attributes.fecha_constitucion", res.data.data.attributes.fecha_constitucion);
+
+        if (res.data.data != null) {
+
+          let initialValuesJson = {
+            "cedula_representante_legal1": res.data.data.attributes.cedula_representante_legal1 != null ? res.data.data.attributes.cedula_representante_legal1 : "",
+            "nombre_representante_legal1": res.data.data.attributes.nombre_representante_legal1 != null ? res.data.data.attributes.nombre_representante_legal1 : "",
+            "apellido_representante_legal1": res.data.data.attributes.apellido_representante_legal1 != null ? res.data.data.attributes.apellido_representante_legal1 : "",
+            "codigo_de_area_representante_legal1": res.data.data.attributes.codigo_de_area_representante_legal1 != null ? res.data.data.attributes.codigo_de_area_representante_legal1 : "",
+            "telefono_representante_legal1": res.data.data.attributes.telefono_representante_legal1 != null ? res.data.data.attributes.telefono_representante_legal1 : "",
+            "correo_electronico_representante_legal1": res.data.data.attributes.correo_electronico_representante_legal1 != null ? res.data.data.attributes.correo_electronico_representante_legal1 : "",
+            "cargo_representante_legal1": res.data.data.attributes.cargo_representante_legal1 != null ? res.data.data.attributes.cargo_representante_legal1 : "",
+            "cedula_representante_legal2": res.data.data.attributes.cedula_representante_legal2 != null ? res.data.data.attributes.cedula_representante_legal2 : "",
+            "nombre_representante_legal2": res.data.data.attributes.nombre_representante_legal2 != null ? res.data.data.attributes.nombre_representante_legal2 : "",
+            "apellido_representante_legal2": res.data.data.attributes.apellido_representante_legal2 != null ? res.data.data.attributes.apellido_representante_legal2 : "",
+            "codigo_de_area_representante_legal2": res.data.data.attributes.codigo_de_area_representante_legal2 != null ? res.data.data.attributes.codigo_de_area_representante_legal2 : "",
+            "telefono_representante_legal2": res.data.data.attributes.telefono_representante_legal2 != null ? res.data.data.attributes.telefono_representante_legal2 : "",
+            "correo_electronico_representante_legal2": res.data.data.attributes.correo_electronico_representante_legal2 != null ? res.data.data.attributes.correo_electronico_representante_legal2 : "",
+            "cargo_representante_legal2": res.data.data.attributes.cargo_representante_legal2 != null ? res.data.data.attributes.cargo_representante_legal2 : "",
+            "cedula_representante_legal3": res.data.data.attributes.cedula_representante_legal3 != null ? res.data.data.attributes.cedula_representante_legal3 : "",
+            "nombre_representante_legal3": res.data.data.attributes.nombre_representante_legal3 != null ? res.data.data.attributes.nombre_representante_legal3 : "",
+            "apellido_representante_legal3": res.data.data.attributes.apellido_representante_legal3 != null ? res.data.data.attributes.apellido_representante_legal3 : "",
+            "codigo_de_area_representante_legal3": res.data.data.attributes.codigo_de_area_representante_legal3 != null ? res.data.data.attributes.codigo_de_area_representante_legal3 : "",
+            "telefono_representante_legal3": res.data.data.attributes.telefono_representante_legal3 != null ? res.data.data.attributes.telefono_representante_legal3 : "",
+            "correo_electronico_representante_legal3": res.data.data.attributes.correo_electronico_representante_legal3 != null ? res.data.data.attributes.correo_electronico_representante_legal3 : "",
+            "cargo_representante_legal3": res.data.data.attributes.cargo_representante_legal3 != null ? res.data.data.attributes.cargo_representante_legal3 : ""
+          };
+
+          setInitialValues(initialValuesJson);
+        }
+
+        disableLoading();
+      }).catch((err) => {
+
+      console.log("errGetUserCompany", err);
+      alert("Error buscando datos de los representantes legales de la empresa del usuario")
+      disableLoading();
+
+    });
+
+  }, []);
 
   const codigosCelulares = listaCodCelular();
 
@@ -127,6 +188,11 @@ const UserDatosFormStep4 = (props) => {
 
   const irAnterior = () => {
     props.cambiarFormularioActual(3);
+  }
+
+  const submitSiguiente = () => {
+    setSiguiente(true);
+    formik.submitForm();
   }
 
   const LoginSchema = Yup.object().shape({
@@ -483,6 +549,7 @@ const UserDatosFormStep4 = (props) => {
 
   const formik = useFormik({
     initialValues,
+    enableReinitialize: true,
     validationSchema: LoginSchema,
     onSubmit: (values, {setStatus, setSubmitting}) => {
 
@@ -490,10 +557,72 @@ const UserDatosFormStep4 = (props) => {
       enableLoading();
 
       console.log("values", formik.values);
-      // console.log("location.search", location.search);
 
-      setSubmitting(false);
-      disableLoading();
+      const rif = localStorage.getItem('rif');
+
+      console.log("rif", rif);
+      console.log("authToken", token);
+
+      const data = {
+        jsonapi: {version: '1.0'},
+        data: {
+          type: "userManagerData",
+          id: rif,
+          attributes: formik.values
+        }
+      };
+
+      axios.post(`${API_URL}user_manager_data/`, data, axiosConfig)
+        .then(function (res) {
+
+          alert('Guardado exitosamente');
+
+          setSubmitting(false);
+          disableLoading();
+
+          console.log("resFormStep4", res);
+
+          if (siguiente) {
+            setSiguiente(false);
+            props.cambiarFormularioActual(5);
+          }
+
+          // if (parciales) {
+          //   console.log('fechacontitucion ', fechacontitucion);
+          //   if (validateMulta(new Date(fechacontitucion), new Date(formData.fecha_registro_inces)) > 45) {
+          //     //procesar acto administrativo de la multa
+          //     toastTop = $f7.toast.create({
+          //       text: 'Se cargo multa según Artículo 35 del COT',
+          //       position: 'top',
+          //       horizontalPosition: 'center',
+          //       closeTimeout: 2000
+          //     });
+          //     toastTop.open();
+          //   }
+          // }
+          // ;
+          //
+          // let arreglo = odb.get('groups');
+          // if (!arreglo.find(x => x === 'contribuyentes')) {
+          //   arreglo.shift();
+          //   arreglo.push('contribuyentes');
+          //   odb.set('groups', arreglo);
+          // }
+          //
+          // setTimeout(() => {
+          //   window.location.href = '/dashboard';
+          //   $update();
+          // }, 2000);
+
+
+        }).catch((err) => {
+
+        console.log("errUserDatosFormStep4", err);
+        setSubmitting(false);
+        disableLoading();
+
+        alert("Error al guardar los Datos de los Representantes Legales");
+      });
     },
   });
 
@@ -944,6 +1073,11 @@ const UserDatosFormStep4 = (props) => {
                 <Col md={4}>
                   <Button variant="secondary" size="lg" block
                           type="button"
+                          onClick={submitSiguiente}
+                          disabled={
+                            formik.isSubmitting ||
+                            !formik.isValid
+                          }
                   >
                     Siguiente
                   </Button>
