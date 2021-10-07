@@ -64,11 +64,6 @@ export const TaxesState = ({ children }) => {
         }
     }
 
-<<<<<<< HEAD
-=======
-    //let [declaracionSeleccionada, setDeclaracionSeleccionada] = useState([]);
-
->>>>>>> lp-edo-cuentas
     useEffect(() => {
         getBancos();
         getConceptos();
