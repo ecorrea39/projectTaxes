@@ -182,7 +182,7 @@ function ModalHistoricalDeclaration(props) {
 
                                                             <input type="checkbox" name={`sel${i}`} id={`sel${i}`} onClick={()=>sustituirDeclaracion(historico[i], i, props)} />
                                                             */}
-                                                            <input type="checkbox" name={`selector${i}`} onClick={()=>sustituirDeclaracion(historico[i], i, props)}  />
+                                                            <input type="radio" name={'selector'} onClick={()=>sustituirDeclaracion(historico[i], i, props)}  />
 
                                                         </td>
                                                         <td>

@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext} from "react";
 
 import SVG from "react-inlinesvg";
 import { toAbsoluteUrl } from "../../../../src/_metronic/_helpers";
