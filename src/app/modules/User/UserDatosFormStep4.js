@@ -341,9 +341,8 @@ const UserDatosFormStep4 = (props) => {
       )
       .max(30,
         intl.formatMessage({
-            id: "AUTH.VALIDATION.REQUIRED",
-          },
-          {name: 'Nombre'})
+          id: "AUTH.VALIDATION.MAX_LENGTH",
+        }, {max: 30})
       )
       .required(
         intl.formatMessage({
@@ -706,7 +705,7 @@ const UserDatosFormStep4 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.codigo_de_area_representante_legal1}
                     >
-                      Seleccione el Codigo De Area Del Representante Legal 1
+                      <option key="0" value="">Seleccione el Código de Area</option>
 
                       {codigosCelulares.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
@@ -843,7 +842,7 @@ const UserDatosFormStep4 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.codigo_de_area_representante_legal2}
                     >
-                      Seleccione el Codigo De Area Del Representante Legal 1
+                      <option key="0" value="">Seleccione el Código de Area</option>
 
                       {codigosCelulares.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
@@ -865,7 +864,7 @@ const UserDatosFormStep4 = (props) => {
                                   onChange={customHandleChangeTelefonoRepresentanteLegal2}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.telefono_representante_legal2}
-                                  maxLength="8"
+                                  maxLength="7"
                     />
 
                     {formik.touched.telefono_representante_legal2 && formik.errors.telefono_representante_legal2 ? (
@@ -980,7 +979,7 @@ const UserDatosFormStep4 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.codigo_de_area_representante_legal3}
                     >
-                      Seleccione el Codigo De Area Del Representante Legal 3
+                      <option key="0" value="">Seleccione el Código de Area</option>
 
                       {codigosCelulares.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
@@ -1051,7 +1050,7 @@ const UserDatosFormStep4 = (props) => {
               <br/>
 
               <Row>
-                <Col md={4}>
+                <Col md={6}>
                   <Button variant="success" size="lg" block
                           type="submit"
                           disabled={
@@ -1062,7 +1061,7 @@ const UserDatosFormStep4 = (props) => {
                     Guardar
                   </Button>
                 </Col>
-                <Col md={4}>
+                <Col md={6}>
                   <Button variant="secondary" size="lg" block
                           type="button"
                           onClick={irAnterior}
@@ -1070,18 +1069,18 @@ const UserDatosFormStep4 = (props) => {
                     Anterior
                   </Button>
                 </Col>
-                <Col md={4}>
-                  <Button variant="secondary" size="lg" block
-                          type="button"
-                          onClick={submitSiguiente}
-                          disabled={
-                            formik.isSubmitting ||
-                            !formik.isValid
-                          }
-                  >
-                    Siguiente
-                  </Button>
-                </Col>
+                {/*<Col md={4}>*/}
+                {/*  <Button variant="secondary" size="lg" block*/}
+                {/*          type="button"*/}
+                {/*          onClick={submitSiguiente}*/}
+                {/*          disabled={*/}
+                {/*            formik.isSubmitting ||*/}
+                {/*            !formik.isValid*/}
+                {/*          }*/}
+                {/*  >*/}
+                {/*    Siguiente*/}
+                {/*  </Button>*/}
+                {/*</Col>*/}
               </Row>
             </Container>
           </form>
