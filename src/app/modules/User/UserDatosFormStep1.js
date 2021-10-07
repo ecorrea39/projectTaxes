@@ -22,6 +22,7 @@ const UserDatosFormStep1 = (props) => {
   const [clasesEmpresa, setClasesEmpresa] = useState([]);
   const [estatus, setEstatus] = useState([]);
   const [actividadesEconomicas, setActividadesEconomicas] = useState([]);
+  const [siguiente, setSiguiente] = useState(false);
 
   const intl = useIntl();
   const API_URL = `${process.env.REACT_APP_API_URL}`;
@@ -240,6 +241,11 @@ const UserDatosFormStep1 = (props) => {
     }
   }
 
+  const submitSiguiente = () => {
+    setSiguiente(true);
+    formik.submitForm();
+  }
+
   const LoginSchema = Yup.object().shape({
 
     razon_social: Yup.string()
@@ -373,7 +379,10 @@ const UserDatosFormStep1 = (props) => {
 
           console.log("resFormStep1", res);
 
-          props.cambiarFormularioActual(2);
+          if (siguiente) {
+            setSiguiente(false);
+            props.cambiarFormularioActual(2);
+          }
 
           // if (parciales) {
           //   console.log('fechacontitucion ', fechacontitucion);
@@ -598,7 +607,7 @@ const UserDatosFormStep1 = (props) => {
                 <Col md={6}>
                   <Button variant="secondary" size="lg" block
                           type="button"
-                          onClick={formik.submitForm}
+                          onClick={submitSiguiente}
                           disabled={
                             formik.isSubmitting ||
                             !formik.isValid
