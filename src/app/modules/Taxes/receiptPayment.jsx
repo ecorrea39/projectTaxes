@@ -75,7 +75,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                            {phone}
+                            02121234576
                         </span>
                     </div>
                 </Col>
@@ -180,10 +180,10 @@ export default function ReceiptPayment() {
                             formDataPayment.detallesConceptos.map((element) => (
                                 <tr>
                                     <td>{element.idConcepto}</td>
-                                    <td>{ selectConcepto(element.idConcepto) }</td>
                                     <td>{"N/A"}</td>
+                                    <td>{ selectConcepto(element.idConcepto) }</td>
                                     <td>{formDataPayment.nroReferencia}</td>
-                                    <td>{formDataPayment.fechaPago}</td>
+                                    <td>{formDataPayment.fecha}</td>
                                     <td>{"N/A"}</td>
                                     <td>{element.detalle.monto}</td>
                                 </tr>                                    
