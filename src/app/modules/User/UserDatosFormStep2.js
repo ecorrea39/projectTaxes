@@ -29,6 +29,8 @@ const UserDatosFormStep2 = (props) => {
     fecha_constitucion: ""
   });
 
+  const [siguiente, setSiguiente] = useState(false);
+
   const intl = useIntl();
 
   const oficinas = listaOficinas();
@@ -81,6 +83,11 @@ const UserDatosFormStep2 = (props) => {
 
   const irAnterior = () => {
     props.cambiarFormularioActual(1);
+  }
+
+  const submitSiguiente = () => {
+    setSiguiente(true);
+    formik.submitForm();
   }
 
   const LoginSchema = Yup.object().shape({
@@ -211,7 +218,10 @@ const UserDatosFormStep2 = (props) => {
 
           console.log("resFormStep2", res);
 
-          props.cambiarFormularioActual(3);
+          if (siguiente) {
+            setSiguiente(false);
+            props.cambiarFormularioActual(3);
+          }
 
           // if (parciales) {
           //   console.log('fechacontitucion ', fechacontitucion);
@@ -402,7 +412,7 @@ const UserDatosFormStep2 = (props) => {
                 <Col md={4}>
                   <Button variant="secondary" size="lg" block
                           type="button"
-                          onClick={formik.submitForm}
+                          onClick={submitSiguiente}
                           disabled={
                             formik.isSubmitting ||
                             !formik.isValid

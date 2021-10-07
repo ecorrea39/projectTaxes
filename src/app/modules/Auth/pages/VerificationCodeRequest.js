@@ -192,7 +192,7 @@ const VerificationCodeRequest = (props) => {
   return (
     <Fragment>
       <Card bg="primary" text="white">
-        <Card.Img src={toAbsoluteUrl("/media/logos/Luthier.jpg")}/>
+        <Card.Img src={toAbsoluteUrl("/media/logos/luthier.jpg")}/>
         <Card.Body>
           <Card.Title>
             Ingrese el código enviado a su correo
