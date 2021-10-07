@@ -4,13 +4,13 @@ import {FormattedMessage, useIntl} from "react-intl";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 
-const listaOficinas = () => {
+const listaCodCelular = () => {
   const array = [
-    { "id": "1", "name": "Registro Mercantil Primero del Distrito Capital" },
-    { "id": "2", "name": "Registro Mercantil Segundo del Distrito Capital" },
-    { "id": "3", "name": "Registro Mercantil Tercero del Distrito Capital" },
-    { "id": "4", "name": "Registro Mercantil Cuarto del Distrito Capital" },
-    { "id": "5", "name": "Registro Mercantil Quinto del Distrito Capital" },
+    {"id": "0416", "code": "0416", "name": "0416"},
+    {"id": "0426", "code": "0426", "name": "0426"},
+    {"id": "0414", "code": "0414", "name": "0414"},
+    {"id": "0424", "code": "0424", "name": "0424"},
+    {"id": "0412", "code": "0412", "name": "0412"}
   ];
   return array.sort((a, b) => a.name < b.name ? -1 : +(a.name > b.name));
 };
@@ -22,40 +22,40 @@ const UserDatosFormStep4 = (props) => {
   const intl = useIntl();
 
   const initialValues = {
-    cedulaRepresentanteLegal1: "",
-    nombreRepresentanteLegal1: "",
-    apellidoRepresentanteLegal1: "",
-    codigoDeAreaRepresentanteLegal1: "",
-    telefonoRepresentanteLegal1: "",
-    correoElectronicoRepresentanteLegal1: "",
-    cargoRepresentanteLegal1:"",
-    cedulaRepresentanteLegal2: "",
-    nombreRepresentanteLegal2: "",
-    apellidoRepresentanteLegal2: "",
-    codigoDeAreaRepresentanteLegal2: "",
-    telefonoRepresentanteLegal2: "",
-    correoElectronicoRepresentanteLegal2: "",
-    cargoRepresentanteLegal2:"",
-    cedulaRepresentanteLegal3: "",
-    nombreRepresentanteLegal3: "",
-    apellidoRepresentanteLegal3: "",
-    codigoDeAreaRepresentanteLegal3: "",
-    telefonoRepresentanteLegal3: "",
-    correoElectronicoRepresentanteLegal3: "",
-    cargoRepresentanteLegal3:""
+    cedula_representante_legal1: "",
+    nombre_representante_legal1: "",
+    apellido_representante_legal1: "",
+    codigo_de_area_representante_legal1: "",
+    telefono_representante_legal1: "",
+    correo_electronico_representante_legal1: "",
+    cargo_representante_legal1: "",
+    cedula_representante_legal2: "",
+    nombre_representante_legal2: "",
+    apellido_representante_legal2: "",
+    codigo_de_area_representante_legal2: "",
+    telefono_representante_legal2: "",
+    correo_electronico_representante_legal2: "",
+    cargo_representante_legal2: "",
+    cedula_representante_legal3: "",
+    nombre_representante_legal3: "",
+    apellido_representante_legal3: "",
+    codigo_de_area_representante_legal3: "",
+    telefono_representante_legal3: "",
+    correo_electronico_representante_legal3: "",
+    cargo_representante_legal3: ""
   };
 
-  const oficinas = listaOficinas();
+  const codigosCelulares = listaCodCelular();
 
   const customHandleChangeCedulaRepresentanteLegal1 = (event) => {
     const value = event.currentTarget.value;
 
     if (value === '') {
-      formik.setFieldValue('cedulaRepresentanteLegal1', value);
+      formik.setFieldValue('cedula_representante_legal1', value);
     } else {
       const regex = /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/;
       if (regex.test(value.toString())) {
-        formik.setFieldValue('cedulaRepresentanteLegal1', value);
+        formik.setFieldValue('cedula_representante_legal1', value);
       }
     }
   }
@@ -64,11 +64,11 @@ const UserDatosFormStep4 = (props) => {
     const value = event.currentTarget.value;
 
     if (value === '') {
-      formik.setFieldValue('cedulaRepresentanteLegal2', value);
+      formik.setFieldValue('cedula_representante_legal2', value);
     } else {
       const regex = /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/;
       if (regex.test(value.toString())) {
-        formik.setFieldValue('cedulaRepresentanteLegal2', value);
+        formik.setFieldValue('cedula_representante_legal2', value);
       }
     }
   }
@@ -77,11 +77,11 @@ const UserDatosFormStep4 = (props) => {
     const value = event.currentTarget.value;
 
     if (value === '') {
-      formik.setFieldValue('cedulaRepresentanteLegal3', value);
+      formik.setFieldValue('cedula_representante_legal3', value);
     } else {
       const regex = /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/;
       if (regex.test(value.toString())) {
-        formik.setFieldValue('cedulaRepresentanteLegal3', value);
+        formik.setFieldValue('cedula_representante_legal3', value);
       }
     }
   }
@@ -90,11 +90,11 @@ const UserDatosFormStep4 = (props) => {
     const value = event.currentTarget.value;
 
     if (value === '') {
-      formik.setFieldValue('cedulaRepresentanteLegal3', value);
+      formik.setFieldValue('telefono_representante_legal1', value);
     } else {
       const regex = /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/;
       if (regex.test(value.toString())) {
-        formik.setFieldValue('cedulaRepresentanteLegal3', value);
+        formik.setFieldValue('telefono_representante_legal1', value);
       }
     }
   }
@@ -103,11 +103,11 @@ const UserDatosFormStep4 = (props) => {
     const value = event.currentTarget.value;
 
     if (value === '') {
-      formik.setFieldValue('cedulaRepresentanteLegal3', value);
+      formik.setFieldValue('telefono_representante_legal2', value);
     } else {
       const regex = /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/;
       if (regex.test(value.toString())) {
-        formik.setFieldValue('cedulaRepresentanteLegal3', value);
+        formik.setFieldValue('telefono_representante_legal2', value);
       }
     }
   }
@@ -116,11 +116,11 @@ const UserDatosFormStep4 = (props) => {
     const value = event.currentTarget.value;
 
     if (value === '') {
-      formik.setFieldValue('cedulaRepresentanteLegal3', value);
+      formik.setFieldValue('telefono_representante_legal3', value);
     } else {
       const regex = /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/;
       if (regex.test(value.toString())) {
-        formik.setFieldValue('cedulaRepresentanteLegal3', value);
+        formik.setFieldValue('telefono_representante_legal3', value);
       }
     }
   }
@@ -131,169 +131,230 @@ const UserDatosFormStep4 = (props) => {
 
   const LoginSchema = Yup.object().shape({
 
-    nombreRepresentanteLegal1: Yup.string()
-      .min(8,
+    cedula_representante_legal1: Yup
+      .number().positive(
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.POSITIVE",
+        })
+      )
+      .test('len',
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.RANGELEN",
+        }, {min: 1, max: 8})
+        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 8)))
+      .required(
+        intl.formatMessage({
+            id: "AUTH.VALIDATION.REQUIRED",
+          },
+          {name: 'Número de Documento'})
+      ),
+    cedula_representante_legal2: Yup
+      .number().positive(
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.POSITIVE",
+        })
+      )
+      .test('len',
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.RANGELEN",
+        }, {min: 1, max: 8})
+        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 8)))
+      .required(
+        intl.formatMessage({
+            id: "AUTH.VALIDATION.REQUIRED",
+          },
+          {name: 'Número de Documento'})
+      ),
+    cedula_representante_legal3: Yup
+      .number().positive(
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.POSITIVE",
+        })
+      )
+      .test('len',
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.RANGELEN",
+        }, {min: 1, max: 8})
+        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 8)))
+      .required(
+        intl.formatMessage({
+            id: "AUTH.VALIDATION.REQUIRED",
+          },
+          {name: 'Número de Documento'})
+      ),
+    nombre_representante_legal1: Yup.string()
+      .min(1,
         intl.formatMessage({
           id: "AUTH.VALIDATION.MIN_LENGTH",
         }, {min: 1})
       )
-      .max(25,
+      .max(30,
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
-        }, {max: 50})
+        }, {max: 30})
       )
       .required(
         intl.formatMessage({
-          id: "AUTH.VALIDATION.REQUIRED_FIELD",
-        })
+            id: "AUTH.VALIDATION.REQUIRED",
+          },
+          {name: 'Nombre'})
       ),
-    nombreRepresentanteLegal2: Yup.string()
-      .min(8,
+    nombre_representante_legal2: Yup.string()
+      .min(1,
         intl.formatMessage({
           id: "AUTH.VALIDATION.MIN_LENGTH",
         }, {min: 1})
       )
-      .max(25,
+      .max(30,
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
-        }, {max: 50})
+        }, {max: 30})
       )
       .required(
         intl.formatMessage({
-          id: "AUTH.VALIDATION.REQUIRED_FIELD",
-        })
+            id: "AUTH.VALIDATION.REQUIRED",
+          },
+          {name: 'Nombre'})
       ),
-    nombreRepresentanteLegal3: Yup.string()
-      .min(8,
+    nombre_representante_legal3: Yup.string()
+      .min(1,
         intl.formatMessage({
           id: "AUTH.VALIDATION.MIN_LENGTH",
         }, {min: 1})
       )
-      .max(25,
+      .max(30,
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
-        }, {max: 50})
+        }, {max: 30})
       )
       .required(
         intl.formatMessage({
-          id: "AUTH.VALIDATION.REQUIRED_FIELD",
-        })
+            id: "AUTH.VALIDATION.REQUIRED",
+          },
+          {name: 'Nombre'})
       ),
-    apellidoRepresentanteLegal1: Yup.string()
-      .min(8,
+    apellido_representante_legal1: Yup.string()
+      .min(1,
         intl.formatMessage({
           id: "AUTH.VALIDATION.MIN_LENGTH",
         }, {min: 1})
       )
-      .max(25,
+      .max(30,
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
-        }, {max: 50})
+        }, {max: 30})
       )
       .required(
         intl.formatMessage({
-          id: "AUTH.VALIDATION.REQUIRED_FIELD",
-        })
+            id: "AUTH.VALIDATION.REQUIRED",
+          },
+          {name: 'Apellido'})
       ),
-    apellidoRepresentanteLegal2: Yup.string()
-      .min(8,
+    apellido_representante_legal2: Yup.string()
+      .min(1,
         intl.formatMessage({
           id: "AUTH.VALIDATION.MIN_LENGTH",
         }, {min: 1})
       )
-      .max(25,
+      .max(30,
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
-        }, {max: 50})
+        }, {max: 30})
       )
       .required(
         intl.formatMessage({
-          id: "AUTH.VALIDATION.REQUIRED_FIELD",
-        })
+            id: "AUTH.VALIDATION.REQUIRED",
+          },
+          {name: 'Apellido'})
       ),
-    apellidoRepresentanteLegal3: Yup.string()
-      .min(8,
+    apellido_representante_legal3: Yup.string()
+      .min(1,
         intl.formatMessage({
           id: "AUTH.VALIDATION.MIN_LENGTH",
         }, {min: 1})
       )
-      .max(25,
+      .max(30,
         intl.formatMessage({
-          id: "AUTH.VALIDATION.MAX_LENGTH",
-        }, {max: 50})
+            id: "AUTH.VALIDATION.REQUIRED",
+          },
+          {name: 'Nombre'})
       )
+      .required(
+        intl.formatMessage({
+            id: "AUTH.VALIDATION.REQUIRED",
+          },
+          {name: 'Apellido'})
+      ),
+    codigo_de_area_representante_legal1: Yup.string()
       .required(
         intl.formatMessage({
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
         })
       ),
-    cargoRepresentanteLegal1: Yup.string()
-      .min(8,
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.MIN_LENGTH",
-        }, {min: 1})
-      )
-      .max(25,
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.MAX_LENGTH",
-        }, {max: 50})
-      )
+    codigo_de_area_representante_legal2: Yup.string()
       .required(
         intl.formatMessage({
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
         })
       ),
-    cargoRepresentanteLegal2: Yup.string()
-      .min(8,
+    codigo_de_area_representante_legal3: Yup.string()
+      .required(
         intl.formatMessage({
-          id: "AUTH.VALIDATION.MIN_LENGTH",
-        }, {min: 1})
+          id: "AUTH.VALIDATION.REQUIRED_FIELD",
+        })
+      ),
+    telefono_representante_legal1: Yup
+      .number().positive(
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.POSITIVE",
+        })
       )
-      .max(25,
+      .test('len',
         intl.formatMessage({
-          id: "AUTH.VALIDATION.MAX_LENGTH",
-        }, {max: 50})
+          id: "AUTH.VALIDATION.RANGELEN",
+        }, {min: 1, max: 7})
+        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 7)))
+      .required(
+        intl.formatMessage({
+            id: "AUTH.VALIDATION.REQUIRED",
+          },
+          {name: 'Teléfono'})
+      ),
+    telefono_representante_legal2: Yup
+      .number().positive(
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.POSITIVE",
+        })
       )
+      .test('len',
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.RANGELEN",
+        }, {min: 1, max: 7})
+        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 7)))
       .required(
         intl.formatMessage({
-          id: "AUTH.VALIDATION.REQUIRED_FIELD",
-        })
+            id: "AUTH.VALIDATION.REQUIRED",
+          },
+          {name: 'Teléfono'})
       ),
-    cargoRepresentanteLegal3: Yup.string()
-      .min(8,
+    telefono_representante_legal3: Yup
+      .number().positive(
         intl.formatMessage({
-          id: "AUTH.VALIDATION.MIN_LENGTH",
-        }, {min: 1})
+          id: "AUTH.VALIDATION.POSITIVE",
+        })
       )
-      .max(25,
+      .test('len',
         intl.formatMessage({
-          id: "AUTH.VALIDATION.MAX_LENGTH",
-        }, {max: 50})
-      )
+          id: "AUTH.VALIDATION.RANGELEN",
+        }, {min: 1, max: 7})
+        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 7)))
       .required(
         intl.formatMessage({
-          id: "AUTH.VALIDATION.REQUIRED_FIELD",
-        })
+            id: "AUTH.VALIDATION.REQUIRED",
+          },
+          {name: 'Teléfono'})
       ),
-    codigoDeAreaRepresentanteLegal1: Yup.string()
-      .required(
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.REQUIRED_FIELD",
-        })
-      ),
-    codigoDeAreaRepresentanteLegal2: Yup.string()
-      .required(
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.REQUIRED_FIELD",
-        })
-      ),
-    codigoDeAreaRepresentanteLegal3: Yup.string()
-      .required(
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.REQUIRED_FIELD",
-        })
-      ),
-    correoElectronicoRepresentanteLegal1: Yup.string()
+    correo_electronico_representante_legal1: Yup.string()
       .email(
         intl.formatMessage({
           id: "AUTH.VALIDATION.WRONG_EMAIL_FORMAT",
@@ -304,17 +365,18 @@ const UserDatosFormStep4 = (props) => {
           id: "AUTH.VALIDATION.MIN_LENGTH",
         }, {min: 7})
       )
-      .max(50,
+      .max(80,
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
-        }, {max: 50})
+        }, {max: 80})
       )
       .required(
         intl.formatMessage({
-          id: "AUTH.VALIDATION.REQUIRED_FIELD",
-        })
+            id: "AUTH.VALIDATION.REQUIRED",
+          },
+          {name: 'Correo'})
       ),
-    correoElectronicoRepresentanteLegal2: Yup.string()
+    correo_electronico_representante_legal2: Yup.string()
       .email(
         intl.formatMessage({
           id: "AUTH.VALIDATION.WRONG_EMAIL_FORMAT",
@@ -325,17 +387,18 @@ const UserDatosFormStep4 = (props) => {
           id: "AUTH.VALIDATION.MIN_LENGTH",
         }, {min: 7})
       )
-      .max(50,
+      .max(80,
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
-        }, {max: 50})
+        }, {max: 80})
       )
       .required(
         intl.formatMessage({
-          id: "AUTH.VALIDATION.REQUIRED_FIELD",
-        })
+            id: "AUTH.VALIDATION.REQUIRED",
+          },
+          {name: 'Correo'})
       ),
-    correoElectronicoRepresentanteLegal3: Yup.string()
+    correo_electronico_representante_legal3: Yup.string()
       .email(
         intl.formatMessage({
           id: "AUTH.VALIDATION.WRONG_EMAIL_FORMAT",
@@ -346,117 +409,67 @@ const UserDatosFormStep4 = (props) => {
           id: "AUTH.VALIDATION.MIN_LENGTH",
         }, {min: 7})
       )
-      .max(50,
+      .max(80,
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
-        }, {max: 50})
+        }, {max: 80})
       )
-      .required(
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.REQUIRED_FIELD",
-        })
-      ),
-    cedulaRepresentanteLegal1: Yup
-      .number().positive(
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.POSITIVE",
-        })
-      )
-      .test('len',
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.RANGELEN",
-        }, {min: 1, max: 6})
-        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 6)))
       .required(
         intl.formatMessage({
             id: "AUTH.VALIDATION.REQUIRED",
           },
-          {name: 'Número de Documento'})
+          {name: 'Correo'})
       ),
-    cedulaRepresentanteLegal2: Yup
-      .number().positive(
+    cargo_representante_legal1: Yup.string()
+      .min(1,
         intl.formatMessage({
-          id: "AUTH.VALIDATION.POSITIVE",
-        })
+          id: "AUTH.VALIDATION.MIN_LENGTH",
+        }, {min: 1})
       )
-      .test('len',
+      .max(30,
         intl.formatMessage({
-          id: "AUTH.VALIDATION.RANGELEN",
-        }, {min: 1, max: 6})
-        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 6)))
+          id: "AUTH.VALIDATION.MAX_LENGTH",
+        }, {max: 30})
+      )
       .required(
         intl.formatMessage({
             id: "AUTH.VALIDATION.REQUIRED",
           },
-          {name: 'Número de Documento'})
+          {name: 'Cargo'})
       ),
-    cedulaRepresentanteLegal3: Yup
-      .number().positive(
+    cargo_representante_legal2: Yup.string()
+      .min(1,
         intl.formatMessage({
-          id: "AUTH.VALIDATION.POSITIVE",
-        })
+          id: "AUTH.VALIDATION.MIN_LENGTH",
+        }, {min: 1})
       )
-      .test('len',
+      .max(30,
         intl.formatMessage({
-          id: "AUTH.VALIDATION.RANGELEN",
-        }, {min: 1, max: 6})
-        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 6)))
+          id: "AUTH.VALIDATION.MAX_LENGTH",
+        }, {max: 30})
+      )
       .required(
         intl.formatMessage({
             id: "AUTH.VALIDATION.REQUIRED",
           },
-          {name: 'Número de Documento'})
+          {name: 'Cargo'})
       ),
-    telefonoRepresentanteLegal1: Yup
-      .number().positive(
+    cargo_representante_legal3: Yup.string()
+      .min(1,
         intl.formatMessage({
-          id: "AUTH.VALIDATION.POSITIVE",
-        })
+          id: "AUTH.VALIDATION.MIN_LENGTH",
+        }, {min: 1})
       )
-      .test('len',
+      .max(30,
         intl.formatMessage({
-          id: "AUTH.VALIDATION.RANGELEN",
-        }, {min: 1, max: 6})
-        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 6)))
+          id: "AUTH.VALIDATION.MAX_LENGTH",
+        }, {max: 30})
+      )
       .required(
         intl.formatMessage({
             id: "AUTH.VALIDATION.REQUIRED",
           },
-          {name: 'Número de Documento'})
-      ),
-    telefonoRepresentanteLegal2: Yup
-      .number().positive(
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.POSITIVE",
-        })
-      )
-      .test('len',
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.RANGELEN",
-        }, {min: 1, max: 6})
-        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 6)))
-      .required(
-        intl.formatMessage({
-            id: "AUTH.VALIDATION.REQUIRED",
-          },
-          {name: 'Número de Documento'})
-      ),
-    telefonoRepresentanteLegal3: Yup
-      .number().positive(
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.POSITIVE",
-        })
-      )
-      .test('len',
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.RANGELEN",
-        }, {min: 1, max: 6})
-        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 6)))
-      .required(
-        intl.formatMessage({
-            id: "AUTH.VALIDATION.REQUIRED",
-          },
-          {name: 'Número de Documento'})
+          {name: 'Cargo'})
       ),
   });
 
@@ -484,7 +497,7 @@ const UserDatosFormStep4 = (props) => {
     },
   });
 
-  return(
+  return (
     <Card bg="default" text="success">
       <Card.Body>
         <Card.Title>
@@ -499,183 +512,55 @@ const UserDatosFormStep4 = (props) => {
 
               <Card.Subtitle>Representante Legal 1</Card.Subtitle>
 
-              <br />
+              <br/>
 
               <Row>
                 <Col md={2}>
-                  <Form.Group as={Col} controlId="cedulaRepresentanteLegal1">
+                  <Form.Group as={Col} controlId="cedula_representante_legal1">
                     <Form.Control size="lg" type="text" placeholder="Número Del Cédula"
                                   onChange={customHandleChangeCedulaRepresentanteLegal1}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.cedulaRepresentanteLegal1}
+                                  value={formik.values.cedula_representante_legal1}
+                                  maxLength="8"
                     />
 
-                    {formik.touched.cedulaRepresentanteLegal1 && formik.errors.cedulaRepresentanteLegal1 ? (
+                    {formik.touched.cedula_representante_legal1 && formik.errors.cedula_representante_legal1 ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.cedulaRepresentanteLegal1}</div>
+                        <div className="fv-help-block">{formik.errors.cedula_representante_legal1}</div>
                       </div>
                     ) : null}
                   </Form.Group>
                 </Col>
 
                 <Col md={5}>
-                  <Form.Group as={Col} controlId="nombreRepresentanteLegal1">
+                  <Form.Group as={Col} controlId="nombre_representante_legal1">
                     <Form.Control size="lg" type="text" placeholder="Nombre del Representante Legal 1"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.nombreRepresentanteLegal1}
+                                  value={formik.values.nombre_representante_legal1}
+                                  maxLength="30"
                     />
 
-                    {formik.touched.nombreRepresentanteLegal1 && formik.errors.nombreRepresentanteLegal1 ? (
+                    {formik.touched.nombre_representante_legal1 && formik.errors.nombre_representante_legal1 ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.nombreRepresentanteLegal1}</div>
+                        <div className="fv-help-block">{formik.errors.nombre_representante_legal1}</div>
                       </div>
                     ) : null}
                   </Form.Group>
                 </Col>
 
                 <Col md={5}>
-                  <Form.Group as={Col} controlId="apellidoRepresentanteLegal1">
-                    <Form.Control size="lg" type="text" placeholder="Nombre del Representante Legal 1"
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                  value={formik.values.apellidoRepresentanteLegal1}
-                    />
-
-                    {formik.touched.apellidoRepresentanteLegal1 && formik.errors.apellidoRepresentanteLegal1 ? (
-                      <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.apellidoRepresentanteLegal1}</div>
-                      </div>
-                    ) : null}
-                  </Form.Group>
-                </Col>
-              </Row>
-
-              <br/>
-
-              <Row>
-                <Col md={2}>
-                  <Form.Group controlId="codigoDeAreaRepresentanteLegal1">
-                    <Form.Control as="select"
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                  value={formik.values.codigoDeAreaRepresentanteLegal1}
-                    >
-                      Seleccione el Codigo De Area Del Representante Legal 1
-
-                      {oficinas.map((elemento) =>
-                        <option value={elemento.id}>{elemento.name}</option>
-                      )}
-
-                    </Form.Control>
-
-                    {formik.touched.codigoDeAreaRepresentanteLegal1 && formik.errors.codigoDeAreaRepresentanteLegal1 ? (
-                      <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.codigoDeAreaRepresentanteLegal1}</div>
-                      </div>
-                    ) : null}
-                  </Form.Group>
-                </Col>
-
-                <Col md={3}>
-                  <Form.Group as={Col} controlId="telefonoRepresentanteLegal1">
-                    <Form.Control size="lg" type="text" placeholder="Telefono del Representante Legal 1"
-                                  onChange={customHandleChangeTelefonoRepresentanteLegal1}
-                                  onBlur={formik.handleBlur}
-                                  value={formik.values.telefonoRepresentanteLegal1}
-                    />
-
-                    {formik.touched.telefonoRepresentanteLegal1 && formik.errors.telefonoRepresentanteLegal1 ? (
-                      <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.telefonoRepresentanteLegal1}</div>
-                      </div>
-                    ) : null}
-                  </Form.Group>
-                </Col>
-
-                <Col md={4}>
-                  <Form.Group as={Col} controlId="correoElectronicoRepresentanteLegal1">
-                    <Form.Control size="lg" type="text" placeholder="Correo Electrónico"
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                  value={formik.values.correoElectronicoRepresentanteLegal1}
-                    />
-
-                    {formik.touched.correoElectronicoRepresentanteLegal1 && formik.errors.correoElectronicoRepresentanteLegal1 ? (
-                      <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.correoElectronicoRepresentanteLegal1}</div>
-                      </div>
-                    ) : null}
-                  </Form.Group>
-                </Col>
-
-                <Col md={3}>
-                  <Form.Group as={Col} controlId="cargoRepresentanteLegal1">
-                    <Form.Control size="lg" type="text" placeholder="Cargo del Representante Legal 1"
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                  value={formik.values.cargoRepresentanteLegal1}
-                    />
-
-                    {formik.touched.cargoRepresentanteLegal1 && formik.errors.cargoRepresentanteLegal1 ? (
-                      <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.cargoRepresentanteLegal1}</div>
-                      </div>
-                    ) : null}
-                  </Form.Group>
-                </Col>
-              </Row>
-
-              <br />
-
-              <Card.Subtitle>Representante Legal 2</Card.Subtitle>
-
-              <br />
-
-              <Row>
-                <Col md={2}>
-                  <Form.Group as={Col} controlId="cedulaRepresentanteLegal2">
-                    <Form.Control size="lg" type="text" placeholder="Número Del Cédula"
-                                  onChange={customHandleChangeCedulaRepresentanteLegal2}
-                                  onBlur={formik.handleBlur}
-                                  value={formik.values.cedulaRepresentanteLegal2}
-                    />
-
-                    {formik.touched.cedulaRepresentanteLegal2 && formik.errors.cedulaRepresentanteLegal2 ? (
-                      <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.cedulaRepresentanteLegal2}</div>
-                      </div>
-                    ) : null}
-                  </Form.Group>
-                </Col>
-
-                <Col md={5}>
-                  <Form.Group as={Col} controlId="nombreRepresentanteLegal2">
-                    <Form.Control size="lg" type="text" placeholder="Nombre del Representante Legal 1"
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                  value={formik.values.nombreRepresentanteLegal2}
-                    />
-
-                    {formik.touched.nombreRepresentanteLegal2 && formik.errors.nombreRepresentanteLegal2 ? (
-                      <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.nombreRepresentanteLegal2}</div>
-                      </div>
-                    ) : null}
-                  </Form.Group>
-                </Col>
-
-                <Col md={5}>
-                  <Form.Group as={Col} controlId="apellidoRepresentanteLegal2">
+                  <Form.Group as={Col} controlId="apellido_representante_legal1">
                     <Form.Control size="lg" type="text" placeholder="Apellido del Representante Legal 1"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.apellidoRepresentanteLegal2}
+                                  value={formik.values.apellido_representante_legal1}
+                                  maxLength="30"
                     />
 
-                    {formik.touched.apellidoRepresentanteLegal2 && formik.errors.apellidoRepresentanteLegal2 ? (
+                    {formik.touched.apellido_representante_legal1 && formik.errors.apellido_representante_legal1 ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.apellidoRepresentanteLegal2}</div>
+                        <div className="fv-help-block">{formik.errors.apellido_representante_legal1}</div>
                       </div>
                     ) : null}
                   </Form.Group>
@@ -686,127 +571,133 @@ const UserDatosFormStep4 = (props) => {
 
               <Row>
                 <Col md={2}>
-                  <Form.Group controlId="codigoDeAreaRepresentanteLegal2">
+                  <Form.Group controlId="codigo_de_area_representante_legal1">
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.codigoDeAreaRepresentanteLegal2}
+                                  value={formik.values.codigo_de_area_representante_legal1}
                     >
                       Seleccione el Codigo De Area Del Representante Legal 1
 
-                      {oficinas.map((elemento) =>
-                        <option value={elemento.id}>{elemento.name}</option>
+                      {codigosCelulares.map((elemento) =>
+                        <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
                       )}
 
                     </Form.Control>
 
-                    {formik.touched.codigoDeAreaRepresentanteLegal2 && formik.errors.codigoDeAreaRepresentanteLegal2 ? (
+                    {formik.touched.codigo_de_area_representante_legal1 && formik.errors.codigo_de_area_representante_legal1 ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.codigoDeAreaRepresentanteLegal2}</div>
+                        <div className="fv-help-block">{formik.errors.codigo_de_area_representante_legal1}</div>
                       </div>
                     ) : null}
                   </Form.Group>
                 </Col>
 
                 <Col md={3}>
-                  <Form.Group as={Col} controlId="telefonoRepresentanteLegal2">
-                    <Form.Control size="lg" type="text" placeholder="Teléfono del Representante Legal 1"
-                                  onChange={customHandleChangeTelefonoRepresentanteLegal2}
+                  <Form.Group as={Col} controlId="telefono_representante_legal1">
+                    <Form.Control size="lg" type="text" placeholder="Telefono del Representante Legal 1"
+                                  onChange={customHandleChangeTelefonoRepresentanteLegal1}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.telefonoRepresentanteLegal2}
+                                  value={formik.values.telefono_representante_legal1}
+                                  maxLength="7"
                     />
 
-                    {formik.touched.telefonoRepresentanteLegal2 && formik.errors.telefonoRepresentanteLegal2 ? (
+                    {formik.touched.telefono_representante_legal1 && formik.errors.telefono_representante_legal1 ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.telefonoRepresentanteLegal2}</div>
+                        <div className="fv-help-block">{formik.errors.telefono_representante_legal1}</div>
                       </div>
                     ) : null}
                   </Form.Group>
                 </Col>
 
                 <Col md={4}>
-                  <Form.Group as={Col} controlId="correoElectronicoRepresentanteLegal2">
+                  <Form.Group as={Col} controlId="correo_electronico_representante_legal1">
                     <Form.Control size="lg" type="text" placeholder="Correo Electrónico"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.correoElectronicoRepresentanteLegal2}
+                                  value={formik.values.correo_electronico_representante_legal1}
+                                  maxLength="80"
                     />
 
-                    {formik.touched.correoElectronicoRepresentanteLegal2 && formik.errors.correoElectronicoRepresentanteLegal2 ? (
+                    {formik.touched.correo_electronico_representante_legal1 && formik.errors.correo_electronico_representante_legal1 ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.correoElectronicoRepresentanteLegal2}</div>
+                        <div className="fv-help-block">{formik.errors.correo_electronico_representante_legal1}</div>
                       </div>
                     ) : null}
                   </Form.Group>
                 </Col>
 
                 <Col md={3}>
-                  <Form.Group as={Col} controlId="cargoRepresentanteLegal2">
+                  <Form.Group as={Col} controlId="cargo_representante_legal1">
                     <Form.Control size="lg" type="text" placeholder="Cargo del Representante Legal 1"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.cargoRepresentanteLegal2}
+                                  value={formik.values.cargo_representante_legal1}
+                                  maxLength="30"
                     />
 
-                    {formik.touched.cargoRepresentanteLegal2 && formik.errors.cargoRepresentanteLegal2 ? (
+                    {formik.touched.cargo_representante_legal1 && formik.errors.cargo_representante_legal1 ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.cargoRepresentanteLegal2}</div>
+                        <div className="fv-help-block">{formik.errors.cargo_representante_legal1}</div>
                       </div>
                     ) : null}
                   </Form.Group>
                 </Col>
               </Row>
 
-              <br />
+              <br/>
 
-              <Card.Subtitle>Representante Legal 3</Card.Subtitle>
+              <Card.Subtitle>Representante Legal 2</Card.Subtitle>
 
-              <br />
+              <br/>
 
               <Row>
                 <Col md={2}>
-                  <Form.Group as={Col} controlId="cedulaRepresentanteLegal3">
+                  <Form.Group as={Col} controlId="cedula_representante_legal2">
                     <Form.Control size="lg" type="text" placeholder="Número Del Cédula"
-                                  onChange={customHandleChangeCedulaRepresentanteLegal3}
+                                  onChange={customHandleChangeCedulaRepresentanteLegal2}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.cedulaRepresentanteLegal3}
+                                  value={formik.values.cedula_representante_legal2}
+                                  maxLength="8"
                     />
 
-                    {formik.touched.cedulaRepresentanteLegal3 && formik.errors.cedulaRepresentanteLegal3 ? (
+                    {formik.touched.cedula_representante_legal2 && formik.errors.cedula_representante_legal2 ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.cedulaRepresentanteLegal3}</div>
+                        <div className="fv-help-block">{formik.errors.cedula_representante_legal2}</div>
                       </div>
                     ) : null}
                   </Form.Group>
                 </Col>
 
                 <Col md={5}>
-                  <Form.Group as={Col} controlId="nombreRepresentanteLegal3">
-                    <Form.Control size="lg" type="text" placeholder="Nombre del Representante Legal 3"
+                  <Form.Group as={Col} controlId="nombre_representante_legal2">
+                    <Form.Control size="lg" type="text" placeholder="Nombre del Representante Legal 1"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.nombreRepresentanteLegal3}
+                                  value={formik.values.nombre_representante_legal2}
+                                  maxLength="30"
                     />
 
-                    {formik.touched.nombreRepresentanteLegal3 && formik.errors.nombreRepresentanteLegal3 ? (
+                    {formik.touched.nombre_representante_legal2 && formik.errors.nombre_representante_legal2 ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.nombreRepresentanteLegal3}</div>
+                        <div className="fv-help-block">{formik.errors.nombre_representante_legal2}</div>
                       </div>
                     ) : null}
                   </Form.Group>
                 </Col>
 
                 <Col md={5}>
-                  <Form.Group as={Col} controlId="apellidoRepresentanteLegal3">
-                    <Form.Control size="lg" type="text" placeholder="Apellido del Representante Legal 3"
+                  <Form.Group as={Col} controlId="apellido_representante_legal2">
+                    <Form.Control size="lg" type="text" placeholder="Apellido del Representante Legal 1"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.apellidoRepresentanteLegal3}
+                                  value={formik.values.apellido_representante_legal2}
+                                  maxLength="30"
                     />
 
-                    {formik.touched.apellidoRepresentanteLegal3 && formik.errors.apellidoRepresentanteLegal3 ? (
+                    {formik.touched.apellido_representante_legal2 && formik.errors.apellido_representante_legal2 ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.apellidoRepresentanteLegal3}</div>
+                        <div className="fv-help-block">{formik.errors.apellido_representante_legal2}</div>
                       </div>
                     ) : null}
                   </Form.Group>
@@ -817,78 +708,218 @@ const UserDatosFormStep4 = (props) => {
 
               <Row>
                 <Col md={2}>
-                  <Form.Group controlId="codigoDeAreaRepresentanteLegal3">
+                  <Form.Group controlId="codigo_de_area_representante_legal2">
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.codigoDeAreaRepresentanteLegal3}
+                                  value={formik.values.codigo_de_area_representante_legal2}
                     >
-                      Seleccione el Codigo De Area Del Representante Legal 3
+                      Seleccione el Codigo De Area Del Representante Legal 1
 
-                      {oficinas.map((elemento) =>
-                        <option value={elemento.id}>{elemento.name}</option>
+                      {codigosCelulares.map((elemento) =>
+                        <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
                       )}
 
                     </Form.Control>
 
-                    {formik.touched.codigoDeAreaRepresentanteLegal3 && formik.errors.codigoDeAreaRepresentanteLegal3 ? (
+                    {formik.touched.codigo_de_area_representante_legal2 && formik.errors.codigo_de_area_representante_legal2 ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.codigoDeAreaRepresentanteLegal3}</div>
+                        <div className="fv-help-block">{formik.errors.codigo_de_area_representante_legal2}</div>
                       </div>
                     ) : null}
                   </Form.Group>
                 </Col>
 
                 <Col md={3}>
-                  <Form.Group as={Col} controlId="telefonoRepresentanteLegal3">
+                  <Form.Group as={Col} controlId="telefono_representante_legal2">
                     <Form.Control size="lg" type="text" placeholder="Teléfono del Representante Legal 1"
-                                  onChange={customHandleChangeTelefonoRepresentanteLegal3}
+                                  onChange={customHandleChangeTelefonoRepresentanteLegal2}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.telefonoRepresentanteLegal3}
+                                  value={formik.values.telefono_representante_legal2}
+                                  maxLength="8"
                     />
 
-                    {formik.touched.telefonoRepresentanteLegal3 && formik.errors.telefonoRepresentanteLegal3 ? (
+                    {formik.touched.telefono_representante_legal2 && formik.errors.telefono_representante_legal2 ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.telefonoRepresentanteLegal3}</div>
+                        <div className="fv-help-block">{formik.errors.telefono_representante_legal2}</div>
                       </div>
                     ) : null}
                   </Form.Group>
                 </Col>
 
                 <Col md={4}>
-                  <Form.Group as={Col} controlId="correoElectronicoRepresentanteLegal3">
+                  <Form.Group as={Col} controlId="correo_electronico_representante_legal2">
                     <Form.Control size="lg" type="text" placeholder="Correo Electrónico"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.correoElectronicoRepresentanteLegal3}
+                                  value={formik.values.correo_electronico_representante_legal2}
+                                  maxLength="80"
                     />
 
-                    {formik.touched.correoElectronicoRepresentanteLegal3 && formik.errors.correoElectronicoRepresentanteLegal3 ? (
+                    {formik.touched.correo_electronico_representante_legal2 && formik.errors.correo_electronico_representante_legal2 ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.correoElectronicoRepresentanteLegal3}</div>
+                        <div className="fv-help-block">{formik.errors.correo_electronico_representante_legal2}</div>
                       </div>
                     ) : null}
                   </Form.Group>
                 </Col>
 
                 <Col md={3}>
-                  <Form.Group as={Col} controlId="cargoRepresentanteLegal3">
-                    <Form.Control size="lg" type="text" placeholder="Cargo del Representante Legal 3"
+                  <Form.Group as={Col} controlId="cargo_representante_legal2">
+                    <Form.Control size="lg" type="text" placeholder="Cargo del Representante Legal 1"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.cargoRepresentanteLegal3}
+                                  value={formik.values.cargo_representante_legal2}
+                                  maxLength="30"
                     />
 
-                    {formik.touched.cargoRepresentanteLegal3 && formik.errors.cargoRepresentanteLegal3 ? (
+                    {formik.touched.cargo_representante_legal2 && formik.errors.cargo_representante_legal2 ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.cargoRepresentanteLegal3}</div>
+                        <div className="fv-help-block">{formik.errors.cargo_representante_legal2}</div>
                       </div>
                     ) : null}
                   </Form.Group>
                 </Col>
               </Row>
 
-              <br />
+              <br/>
+
+              <Card.Subtitle>Representante Legal 3</Card.Subtitle>
+
+              <br/>
+
+              <Row>
+                <Col md={2}>
+                  <Form.Group as={Col} controlId="cedula_representante_legal3">
+                    <Form.Control size="lg" type="text" placeholder="Número Del Cédula"
+                                  onChange={customHandleChangeCedulaRepresentanteLegal3}
+                                  onBlur={formik.handleBlur}
+                                  value={formik.values.cedula_representante_legal3}
+                                  maxLength="8"
+                    />
+
+                    {formik.touched.cedula_representante_legal3 && formik.errors.cedula_representante_legal3 ? (
+                      <div className="fv-plugins-message-container">
+                        <div className="fv-help-block">{formik.errors.cedula_representante_legal3}</div>
+                      </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
+
+                <Col md={5}>
+                  <Form.Group as={Col} controlId="nombre_representante_legal3">
+                    <Form.Control size="lg" type="text" placeholder="Nombre del Representante Legal 3"
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  value={formik.values.nombre_representante_legal3}
+                                  maxLength="30"
+                    />
+
+                    {formik.touched.nombre_representante_legal3 && formik.errors.nombre_representante_legal3 ? (
+                      <div className="fv-plugins-message-container">
+                        <div className="fv-help-block">{formik.errors.nombre_representante_legal3}</div>
+                      </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
+
+                <Col md={5}>
+                  <Form.Group as={Col} controlId="apellido_representante_legal3">
+                    <Form.Control size="lg" type="text" placeholder="Apellido del Representante Legal 3"
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  value={formik.values.apellido_representante_legal3}
+                                  maxLength="30"
+                    />
+
+                    {formik.touched.apellido_representante_legal3 && formik.errors.apellido_representante_legal3 ? (
+                      <div className="fv-plugins-message-container">
+                        <div className="fv-help-block">{formik.errors.apellido_representante_legal3}</div>
+                      </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <br/>
+
+              <Row>
+                <Col md={2}>
+                  <Form.Group controlId="codigo_de_area_representante_legal3">
+                    <Form.Control as="select"
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  value={formik.values.codigo_de_area_representante_legal3}
+                    >
+                      Seleccione el Codigo De Area Del Representante Legal 3
+
+                      {codigosCelulares.map((elemento) =>
+                        <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
+                      )}
+
+                    </Form.Control>
+
+                    {formik.touched.codigo_de_area_representante_legal3 && formik.errors.codigo_de_area_representante_legal3 ? (
+                      <div className="fv-plugins-message-container">
+                        <div className="fv-help-block">{formik.errors.codigo_de_area_representante_legal3}</div>
+                      </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
+
+                <Col md={3}>
+                  <Form.Group as={Col} controlId="telefono_representante_legal3">
+                    <Form.Control size="lg" type="text" placeholder="Teléfono del Representante Legal 1"
+                                  onChange={customHandleChangeTelefonoRepresentanteLegal3}
+                                  onBlur={formik.handleBlur}
+                                  value={formik.values.telefono_representante_legal3}
+                                  maxLength="7"
+                    />
+
+                    {formik.touched.telefono_representante_legal3 && formik.errors.telefono_representante_legal3 ? (
+                      <div className="fv-plugins-message-container">
+                        <div className="fv-help-block">{formik.errors.telefono_representante_legal3}</div>
+                      </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
+
+                <Col md={4}>
+                  <Form.Group as={Col} controlId="correo_electronico_representante_legal3">
+                    <Form.Control size="lg" type="text" placeholder="Correo Electrónico"
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  value={formik.values.correo_electronico_representante_legal3}
+                                  maxLength="80"
+                    />
+
+                    {formik.touched.correo_electronico_representante_legal3 && formik.errors.correo_electronico_representante_legal3 ? (
+                      <div className="fv-plugins-message-container">
+                        <div className="fv-help-block">{formik.errors.correo_electronico_representante_legal3}</div>
+                      </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
+
+                <Col md={3}>
+                  <Form.Group as={Col} controlId="cargo_representante_legal3">
+                    <Form.Control size="lg" type="text" placeholder="Cargo del Representante Legal 3"
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  value={formik.values.cargo_representante_legal3}
+                                  maxLength="30"
+                    />
+
+                    {formik.touched.cargo_representante_legal3 && formik.errors.cargo_representante_legal3 ? (
+                      <div className="fv-plugins-message-container">
+                        <div className="fv-help-block">{formik.errors.cargo_representante_legal3}</div>
+                      </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <br/>
 
               <Row>
                 <Col md={4}>
