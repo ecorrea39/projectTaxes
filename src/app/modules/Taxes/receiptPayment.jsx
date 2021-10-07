@@ -24,6 +24,8 @@ export default function ReceiptPayment() {
     }
 
     const rif = odb.get("rif");
+    const razonSocial = odb.get("name");
+    const phone = odb.get("phone_number_mobile");
 
     useEffect(() => {
         getUserData(rif);
@@ -63,7 +65,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                            Test C.A
+                            {razonSocial}
                         </span>
                     </div>
                 </Col>
@@ -73,7 +75,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                            04241235467
+                            {phone}
                         </span>
                     </div>
                 </Col>
@@ -121,7 +123,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                            {formDataPayment.fechaPago}
+                            {formDataPayment.fecha}
                         </span>
                     </div>
                 </Col>

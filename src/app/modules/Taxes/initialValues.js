@@ -3,7 +3,7 @@ export const initialValuesPayment = {
     tipoTransaccion: "",
     banco: "",
     monto: "",
-    fechaPago: "",
+    fecha: "",
     montoTributo: "",
     intereses: "",
     multa: "",

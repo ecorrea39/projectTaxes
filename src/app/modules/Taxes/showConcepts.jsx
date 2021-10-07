@@ -22,10 +22,6 @@ function ShowConcept({formik}) {
 
     const conceptos = formik.values.conceptos;
 
-    const addItems = () => {
-
-    }
-
     const handleActa = (value,input) => {    
         setActaR({
             ...actaReparo,

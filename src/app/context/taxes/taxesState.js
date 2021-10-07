@@ -64,8 +64,6 @@ export const TaxesState = ({ children }) => {
         }
     }
 
-    let [declaracionSeleccionada, setDeclaracionSeleccionada] = useState([]);
-
     useEffect(() => {
         getBancos();
         getConceptos();
@@ -145,9 +143,11 @@ export const TaxesState = ({ children }) => {
     }
 
     const getUserData = async (rif) => {
-
+        
         try {
+            requestConfig.data.type = "userCompany";
             const respuesta = await clientAxios.get(`/users/${rif}`);
+            //const respuesta = await clientAxios.post(`/user_company/`, requestConfig);
             setUserData(respuesta.data.data)
         } catch (error) {
             console.log(error)
@@ -263,10 +263,13 @@ export const TaxesState = ({ children }) => {
     const submitPayment = async (formData) => {
         
         try {
+            formData.detallesConceptos = [];
+            //console.log("formDataSubmit ",formData)
             requestConfig.data.type = "savePaymentDec";
+            requestConfig.data.id = "j333333332"; // -> SI CAMBIO ESTE RIF FALLA LA PETICION
             // ESTO SE DEBE OPTIMIZAR CON URGENCIA
             formData.conceptos.map((element,index)=>{
-
+                //console.log("index ",element)
                 let concepto = {
                     idConcepto: "",
                     detalle: {
@@ -325,10 +328,18 @@ export const TaxesState = ({ children }) => {
                 }
                 formData.detallesConceptos.push(concepto);
             });
+            //console.log("formDataEnd ",formData)
             setFormDataPayment(formData);
             requestConfig.data.attributes = formData;
             const respuesta = await clientAxios.post('/payment_declaration/', requestConfig);
             setStepTaxes(stepTaxes+1);
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Su Pago fue registrado con Éxito.',
+                showConfirmButton: false,
+                timer: 2000
+            })
         } catch (error) {
             console.log(error)
         }
