@@ -2,6 +2,7 @@ import React, { useEffect, useState} from 'react';
 import {clientAxios, requestConfig } from '../../config/configAxios';
 import TaxesContext from './taxesContext';
 import odb from './../../helpers/odb';
+import Swal from "sweetalert2";
 
 export const TaxesState = ({ children }) => {
 
@@ -15,12 +16,53 @@ export const TaxesState = ({ children }) => {
     const [formDataDeclaration, setFormDataDeclaration] = useState({});
     const [userData, setUserData] = useState({});
     const [historico, setHistorico] = useState([]);
-    const [declaracionsustitutiva, setDeclaracionsustitutiva] = useState(false);
+    const [historicoOriginal, setHistoricoOriginal] = useState([]);
+    const [historicoFilter, setHistoricoFilter] = useState([]);
+    const [declaracionSustitutiva, setDeclaracionSustitutiva] = useState(false);
+    const [declaracionSeleccionada, setDeclaracionSeleccionada] = useState([]);
     const [totalTributoDeclarado, setTotalTributoDeclarado ] = useState(0);
+    const [selConcepto, setSelConcepto] = useState([]);
     const estatus = ['eliminada', 'creada', 'definitiva', 'pagada' ];
     const nrif = odb.get('rif');
 
-    let [declaracionSeleccionada, setDeclaracionSeleccionada] = useState([]);
+    const [actaReparo, setActaR] = useState({
+        numActa: "",
+        fechaActa: "",
+        montoActa: ""});
+    const [reAdmin, setReAdmin] = useState({
+        numResolucionAdmin: "",
+        fechaResolucionAdmin: "",
+        montoMultaResolucionAdmin: "",
+        montoInteresesResolucionAdmin: ""
+    });
+    const [reCul, setReCul] = useState({
+        numResolucionCul: "",
+        fechaResolucionCul: "",
+        montoMultaResolucionCul: ""
+    });
+    const [debForm, setDebForm] = useState({
+        numResolucionForm: "",
+        fechaResolucionForm: "",
+        montoMultaResolucionForm: "",
+
+    });
+    const [debMat, setDebMat] = useState({
+        numResolucionMat: "",
+        fechaResolucionMat: "",
+        montoMultaResolucionMat: ""
+    });
+    const [creditoFiscal, setCreditoFiscal] = useState({
+        montoCredito: ""
+    });
+
+    // ESTO NO HACE FALTA EL clientAxios YA INCLUYE ESTA CONFIGURACION
+    const axiosConfig = {
+        headers: {
+            Accept: 'application/vnd.api+json',
+            'Content-Type': 'application/vnd.api+json',
+            Authorization: 'Bearer ' + odb.get('authToken')
+        }
+    }
 
     useEffect(() => {
         getBancos();
@@ -64,6 +106,7 @@ export const TaxesState = ({ children }) => {
         } catch (error) {
             console.log(error)
         }
+
     }
 
     const getAnos = async () => {
@@ -80,6 +123,7 @@ export const TaxesState = ({ children }) => {
         } catch (error) {
             console.log(error)
         }
+
     }
 
     const getTrimestres = async () => {
@@ -95,29 +139,36 @@ export const TaxesState = ({ children }) => {
         } catch (error) {
             console.log(error)
         }
+
     }
 
     const getUserData = async (rif) => {
+        
         try {
+            requestConfig.data.type = "userCompany";
             const respuesta = await clientAxios.get(`/users/${rif}`);
+            //const respuesta = await clientAxios.post(`/user_company/`, requestConfig);
             setUserData(respuesta.data.data)
         } catch (error) {
             console.log(error)
         }
+
     }
 
     const getHistoricoDeclaraciones = async () => {
 
         let arreglo = [];
+        const histo = [];
 
         try {
             const respuesta = await clientAxios.get(`/tribute_declaration/${nrif}`, clientAxios);
             arreglo = respuesta.data.data;
 
             arreglo.map((x, i) => {
-                historico.push(
+                histo.push(
                     {
                         "id": arreglo[i].id,
+                        "selector": false,
                         "concepto_pago": arreglo[i].attributes.concepto_pago,
                         "concepto_pago_name": arreglo[i].attributes['concepto_pago_concepto.name'],
                         "trimestre": arreglo[i].attributes.trimestre,
@@ -128,17 +179,20 @@ export const TaxesState = ({ children }) => {
                         "monto_tributo": arreglo[i].attributes.monto_tributo,
                         "terms": arreglo[i].attributes.terms,
                         "sustitutiva": arreglo[i].attributes.sustitutiva,
-                        "fecha_emision": arreglo[i].attributes.fecha_emision,
-                        "fecha_declaracion": arreglo[i].attributes.fecha_declaracion,
-                        "estatus": estatus[arreglo[i].attributes.estatus]
+                        "fecha_emision": arreglo[i].attributes.concepto_pago === 2 ? formatearfecha(new Date(arreglo[i].attributes.fecha_emision), 'DMY') : '',
+                        "fecha_declaracion": formatearfecha(new Date(arreglo[i].attributes.fecha_declaracion), 'DMY'),
+                        "estatus": arreglo[i].attributes.estatus,
+                        "estatus_name": estatus[arreglo[i].attributes.estatus]
                     }
                 )
             })
-            setHistorico(historico);
+            setHistorico(histo);
+            setHistoricoOriginal(histo);
 
         } catch (error) {
             console.log(error)
         }
+
     }
 
     const getFechaFutura = () => {
@@ -171,16 +225,35 @@ export const TaxesState = ({ children }) => {
         }).format(number)
     }
 
-    const sustituirDeclaracion = (seleccion) => {
-
-        declaracionSeleccionada = [];
+    const sustituirDeclaracion = (seleccion, i, props) => {
 
         try {
-            setDeclaracionsustitutiva(true);
-            declaracionSeleccionada.push(seleccion)
-            console.log('declaracionSustitutiva ', declaracionSeleccionada)
-
-            if (declaracionSeleccionada[0].estatus === 'definitiva') {
+            if (seleccion.estatus === 2) {
+                Swal.fire({
+                    title: "Declaración de tributos",
+                    text: "Declaración seleccionada con estatus Definitiva, no puede ser modificada",
+                    icon: 'warning',
+                    denyButtonText: `Ok`
+                });
+            } else {
+                Swal.fire({
+                    title: 'Declaración de tributos',
+                    text: "Esta seguro de sustituir la declaración?",
+                    icon: 'info',
+                    showDenyButton: true,
+                    confirmButtonText: 'Sustituir',
+                    denyButtonText: `Cancelar`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setDeclaracionSustitutiva(true);
+                        setDeclaracionSeleccionada(seleccion)
+                        props.onHide();
+                    } else if (result.isDenied) {
+                        setDeclaracionSustitutiva(false);
+                        setDeclaracionSeleccionada([]);
+                        setHistorico(historicoOriginal);
+                    }
+                });
             }
         } catch (error) {
             console.log(error)
@@ -190,15 +263,122 @@ export const TaxesState = ({ children }) => {
     const submitPayment = async (formData) => {
         
         try {
+            formData.detallesConceptos = [];
+            //console.log("formDataSubmit ",formData)
             requestConfig.data.type = "savePaymentDec";
+            requestConfig.data.id = "j333333332"; // -> SI CAMBIO ESTE RIF FALLA LA PETICION
+            // ESTO SE DEBE OPTIMIZAR CON URGENCIA
+            formData.conceptos.map((element,index)=>{
+                //console.log("index ",element)
+                let concepto = {
+                    idConcepto: "",
+                    detalle: {
+                        monto: "", // Monto del concepto
+                        montoMulta: "", // Monto de la multa del concepto
+                        motoIntereses: "", // Monto de intereses del concepto
+                        nroDoc: "", // Numero de documento/acta/resolucion/cheque de conceptops
+                        fechaConcp: "", // Fecha del documento/acta/resolucion/cheque
+                        fechaVctoGiro: "", // Fecha Vencimiento de Giro Convenio de pago
+                        fechaNotaDebito: "" // Fecha nota deito del cheque
+                    }
+                };
+
+                concepto.idConcepto = element;
+
+                if (element == 3) {
+                    concepto.detalle.monto = actaReparo.montoActa;
+                    concepto.detalle.fechaConcp = actaReparo.fechaActa;
+                    concepto.detalle.fechaConcp = actaReparo.numActa;
+                }
+                if (element == 4) {
+                    concepto.detalle.nroDoc = reAdmin.numResolucionAdmin;
+                    concepto.detalle.fechaConcp = reAdmin.fechaResolucionAdmin;
+                    concepto.detalle.montoMulta = reAdmin.montoMultaResolucionAdmin;
+                    concepto.detalle.motoIntereses = reAdmin.montoInteresesResolucionAdmin
+                }
+                if (element == 5) {
+                    concepto.detalle.nroDoc = reCul.numResolucionCul;
+                    concepto.detalle.fechaConcp = reCul.fechaResolucionCul;
+                    concepto.detalle.montoMulta = reCul.montoMultaResolucionCul;
+                }
+                if (element == 6) {
+                    concepto.detalle.nroDoc = debForm.numResolucionForm;
+                    concepto.detalle.fechaConcp = debForm.fechaResolucionForm;
+                    concepto.detalle.montoMulta = debForm.montoMultaResolucionForm;
+                }
+                if (element == 7) {
+                    concepto.detalle.nroDoc = debMat.numResolucionMat;
+                    concepto.detalle.fechaConcp = debMat.fechaResolucionMat;
+                    concepto.detalle.montoMulta = debMat.montoMultaResolucionMat;
+                }
+                if (element == 8) {
+                    concepto.detalle = {};
+                }
+                if (element == 9) {
+                    concepto.detalle = {};
+                }
+                if (element == 10) {
+                    concepto.detalle = {};
+                }
+                if (element == 11) {
+                    concepto.detalle = {};
+                }
+                if (element == 12) {
+                    concepto.detalle.monto = creditoFiscal.montoCredito;
+                }
+                formData.detallesConceptos.push(concepto);
+            });
+            //console.log("formDataEnd ",formData)
+            setFormDataPayment(formData);
             requestConfig.data.attributes = formData;
             const respuesta = await clientAxios.post('/payment_declaration/', requestConfig);
-            console.log(respuesta)
             setStepTaxes(stepTaxes+1);
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Su Pago fue registrado con Éxito.',
+                showConfirmButton: false,
+                timer: 2000
+            })
         } catch (error) {
             console.log(error)
         }
-       
+    }
+
+    const filtarHistorico = async (values) => {
+
+        const { estatus, ano_declaracion, trimestre, searchText } = values;
+        const filter = {};
+        filter.ano_declaracion = ano_declaracion !== "" ? +ano_declaracion : undefined;
+        filter.trimestre = trimestre !== "" ? +trimestre : undefined;
+        filter.estatus = estatus !== "" ? estatus: undefined;
+        /*
+        filter.model = searchText;
+        if (searchText) {
+            filter.manufacture = searchText;
+            filter.VINCode = searchText;
+        }*/
+
+        let nuevo = [];
+        if(filter.ano_declaracion === undefined && filter.trimestre === undefined && filter.estatus === undefined) {
+            nuevo = historicoOriginal;
+        } else if(filter.ano_declaracion !== undefined && filter.trimestre === undefined && filter.estatus === undefined) {
+            nuevo = historicoOriginal.filter(x=> x.ano_declaracion === Number(filter.ano_declaracion));
+        } else if(filter.ano_declaracion === undefined && filter.trimestre !== undefined && filter.estatus === undefined) {
+            nuevo = historicoOriginal.filter(x=> x.trimestre === Number(filter.trimestre));
+        } else if(filter.ano_declaracion === undefined && filter.trimestre === undefined && filter.estatus !== undefined) {
+            nuevo = historicoOriginal.filter(x=> x.estatus === Number(filter.estatus));
+        } else if(filter.ano_declaracion !== undefined && filter.trimestre !== undefined && filter.estatus == undefined) {
+            nuevo = historicoOriginal.filter(x=> x.ano_declaracion === Number(filter.ano_declaracion) && x.trimestre === Number(filter.trimestre));
+        } else if(filter.ano_declaracion !== undefined && filter.trimestre === undefined && filter.estatus !== undefined) {
+            nuevo = historicoOriginal.filter(x=> x.ano_declaracion === Number(filter.ano_declaracion) && x.estatus === Number(filter.estatus));
+        } else if(filter.ano_declaracion === undefined && filter.trimestre !== undefined && filter.estatus !== undefined) {
+            nuevo = historicoOriginal.filter(x=> x.trimestre === Number(filter.trimestre) && x.estatus === Number(filter.estatus));
+        } else {
+            nuevo = historicoOriginal.filter(x=> x.ano_declaracion === Number(filter.ano_declaracion) && x.trimestre === Number(filter.trimestre) && x.estatus === filter.estatus);
+        }
+
+        setHistorico(nuevo);
     }
 
     const submitDeclaration = async (valores) => {
@@ -207,23 +387,60 @@ export const TaxesState = ({ children }) => {
             let total = 0;
             valores.declaraciones.map((x, i) => {
                 total = total + x.monto_tributo;
-                if(x.fecha_emision === '') x.fecha_emision = '0001-01-01'
+                if(x.fecha_emision === '') x.fecha_emision = '0001-01-01';
+                if(x.fecha_declaracion === '') x.fecha_declaracion = formatearfecha(new Date(), 'YMD');
             });
 
             setTotalTributoDeclarado(total);
 
             requestConfig.data.type = "saveTributeDeclaration";
             requestConfig.data.attributes = valores.declaraciones;
-            const respuesta = await clientAxios.post('/tribute_declaration/', requestConfig);
+            requestConfig.data.id = (!declaracionSustitutiva) ? nrif : valores.declaraciones[0].id;
 
-            if (total > 0) {
-                setStepTaxes(stepTaxes+1)
+            if(!declaracionSustitutiva) {
+                const respuesta = await clientAxios.post('/tribute_declaration/', requestConfig);
             } else {
-                setStepTaxes(stepTaxes)
+                const respuesta = await clientAxios.put('/tribute_declaration/', requestConfig);
             }
+
+            Swal.fire({
+                title: "Declaración de tributos",
+                text: "Datos guardados con éxito!",
+                icon: "success",
+                button: "Ok",
+                timer: 1500
+            }).then((value) => {
+                if (total > 0) {
+                    setStepTaxes(stepTaxes+1)
+                } else {
+                    //setStepTaxes(1)
+                }
+                setDeclaracionSustitutiva(false);
+                setDeclaracionSeleccionada([]);
+            });
         } catch (error) {
             console.log(error)
+            Swal.fire({
+                title: "Declaración de tributos",
+                text: "Error al guardar declaración de tributos!",
+                icon: "error",
+                button: "Ok",
+            }).then((value) => {
+                setStepTaxes(stepTaxes)
+            });
+
         }
+    }
+
+    const showSelConcepto = (a) => {
+
+        let arreglo = a;
+        let tmp = [];
+        arreglo.map(x => {
+            tmp.push(Number(x.concepto_pago))
+        });
+        setSelConcepto(tmp);
+
     }
 
     const valuesContext = {
@@ -247,9 +464,18 @@ export const TaxesState = ({ children }) => {
         formatNumber,
         nrif,
         declaracionSeleccionada,
-        declaracionsustitutiva,
+        declaracionSustitutiva,
         sustituirDeclaracion,
-        totalTributoDeclarado
+        totalTributoDeclarado,
+        setActaR, actaReparo,
+        reAdmin, setReAdmin,
+        reCul, setReCul,
+        debForm, setDebForm,
+        debMat, setDebMat,
+        creditoFiscal, setCreditoFiscal,
+        filtarHistorico,
+        selConcepto,
+        showSelConcepto
     }
 
     return (

@@ -13,7 +13,7 @@ export default function Checkbox (props) {
                     ${getIn(touched, field.name) && getIn(errors, field.name) && 'is-invalid'}
                 `}
                 {...field} 
-                {...rest} 
+                {...rest}
             />
             <span className={css.checkmark}></span>
             <span className={css.label}>

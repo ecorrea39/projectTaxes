@@ -7,7 +7,7 @@ import BaseInput from "../Forms/BaseInputs";
 
 export default function ReceiptPayment() {
 
-    const { formDataPayment, bancos, getUserData, userData } = useContext(TaxesContext);
+    const { formDataPayment, bancos, getUserData, userData, conceptos } = useContext(TaxesContext);
 
     const selectBanco = (b) => {
         let banco = bancos.find(element => element.id == b );
@@ -16,7 +16,16 @@ export default function ReceiptPayment() {
         return trunBanco;
     }
 
+    const selectConcepto = (c) => {
+        let concepto = conceptos.find(element => element.id == c );
+        let nombreConcepto = concepto.name;
+        let trunConcepto = nombreConcepto.length > 30 ? nombreConcepto.slice(0,30) + "..." : nombreConcepto;
+        return trunConcepto;
+    }
+
     const rif = odb.get("rif");
+    const razonSocial = odb.get("name");
+    const phone = odb.get("phone_number_mobile");
 
     useEffect(() => {
         getUserData(rif);
@@ -56,7 +65,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                            Test C.A
+                            {razonSocial}
                         </span>
                     </div>
                 </Col>
@@ -66,7 +75,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                            04241235467
+                            {phone}
                         </span>
                     </div>
                 </Col>
@@ -81,6 +90,7 @@ export default function ReceiptPayment() {
                     </div>
                 </Col>
             </Row>
+
             <Row>
                 <Col xs="12">
                     <h5>Datos del Pago</h5>
@@ -113,7 +123,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                            {formDataPayment.fechaPago}
+                            {formDataPayment.fecha}
                         </span>
                     </div>
                 </Col>
@@ -148,6 +158,7 @@ export default function ReceiptPayment() {
                     </div>
                 </Col>
             </Row>
+            
             <Row>
                 <Col xs="12" className="mt-2 mb-2">
                     <h5>Conceptos de Pagos</h5>
@@ -156,20 +167,28 @@ export default function ReceiptPayment() {
             <Row>
                 <Col xs="12">
                     <Table striped bordered hover>
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Clave</th>
-                                <th>Concepto</th>
-                                <th>Referencia</th>
-                                <th>Año</th>
-                                <th>Trimestre</th>
-                                <th>Monto (Bs)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                        </tbody>
+                        <tr>
+                            <th></th>
+                            <th>Clave</th>
+                            <th>Concepto</th>
+                            <th>Referencia</th>
+                            <th>Año</th>
+                            <th>Trimestre</th>
+                            <th>Monto (Bs)</th>
+                        </tr>
+                        {
+                            formDataPayment.detallesConceptos.map((element) => (
+                                <tr>
+                                    <td>{element.idConcepto}</td>
+                                    <td>{ selectConcepto(element.idConcepto) }</td>
+                                    <td>{"N/A"}</td>
+                                    <td>{formDataPayment.nroReferencia}</td>
+                                    <td>{formDataPayment.fechaPago}</td>
+                                    <td>{"N/A"}</td>
+                                    <td>{element.detalle.monto}</td>
+                                </tr>                                    
+                            ))
+                        }
                     </Table>
                 </Col>
             </Row>

@@ -1,71 +1,123 @@
 import React, {useContext} from "react";
 import { Card, Tab, Table, Tabs } from "react-bootstrap";
+import Pagination from "react-bootstrap/Pagination";
 import AccountStatusContext from "../../context/accountStatus/accountStatusContext";
+import {Formik} from "formik";
 
 function DeudasTrimestresDeclarados({className}) {
 
-    const { deudaTrim } = useContext(AccountStatusContext);
-
-    const detalleTrim = [
-        {
-            concepto_pago: "1",
-            concepto_pago_name: "Aporte patronal 2%",
-            ano_declaracion: "2021",
-            trimestre: "1",
-            ntrabajadores: "5",
-            monto_pagado: "2000000",
-            monto_tributo: "40000",
-            monto_multa: "100",
-            monto_intereses: "600",
-            fecha_emision: "2021-04-07"
-        },
-        {
-            concepto_pago: "1",
-            concepto_pago_name: "Aporte patronal 2%",
-            ano_declaracion: "2021",
-            trimestre: "2",
-            ntrabajadores: "5",
-            monto_pagado: "2000000",
-            monto_tributo: "40000",
-            monto_multa: "0",
-            monto_intereses: "0",
-            fecha_emision: "2021-06-11"
-        },
-        {
-            concepto_pago: "2",
-            concepto_pago_name: "Aporte de los trabajadores 0,5%",
-            ano_declaracion: "2021",
-            trimestre: "2",
-            ntrabajadores: "6",
-            monto_pagado: "3000000",
-            monto_tributo: "10000",
-            monto_multa: "0",
-            monto_intereses: "10",
-            fecha_emision: "2021-07-08"
-        }
-    ]
-
-    function FormatNumber(number) {
-        return  new Intl.NumberFormat("ES-ES", {
-            style: "currency",
-            currency: "VEF"
-        }).format(number)
-    }
+    const { anos, trimestres, totalDeudaTrim, detalleDeudaTrim, filtarAccountStatus, formatNumber } = useContext(AccountStatusContext);
+    const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", marginTop: "1%", marginBottom: "1%" }
+    const detalleTrim = detalleDeudaTrim;
 
     return (
         <>
             {/* --- detalle de deudas de trimestres declarados --- */}
 
-            <div className={`card card-custom ${className}`}>
+            <div className={`card card-custom ${className}`} style={styleCard}>
                 <div className="card-header border-0 py-5">
                     <h3 className="card-title align-items-start flex-column">
-                        <span className="card-label font-weight-bolder text-dark">Deudas</span>
+                        <span className="card-label font-weight-bolder text-dark">Deudas | Detalles</span>
                         <span className="text-muted mt-3 font-weight-bold font-size-sm">Trimestres declarados</span>
                     </h3>
                     <div className="card-toolbar">
-                        <span className="text-muted mt-3 font-weight-bold font-size-sm">Total deuda: {FormatNumber(deudaTrim)} </span>
+                        <span className="text-muted mt-3 font-weight-bold font-size-sm">Total deuda: {formatNumber(totalDeudaTrim)} </span>
                     </div>
                 </div>
+                <div className="px-10 border-0 ">
+                    <div>
+                        <Formik
+                            initialValues={{
+                                ano_declaracion: "",
+                                trimestre: "",
+                                searchText: "",
+                            }}
+                            onSubmit={(values) => {
+                                filtarAccountStatus(values, 'deudatrim');
+                            }}
+                        >
+                            {({
+                                  values,
+                                  handleSubmit,
+                                  handleBlur,
+                                  handleChange,
+                                  setFieldValue,
+                              }) => (
+                                <form onSubmit={handleSubmit} className="form form-label-right">
+                                    <div className="form-group row">
+                                        <div className="col-lg-4">
+                                            <select
+                                                className="form-control"
+                                                name="ano_declaracion"
+                                                placeholder="Filtro por año"
+                                                onChange={(e) => {
+                                                    setFieldValue("ano_declaracion", e.target.value);
+                                                    handleSubmit();
+                                                }}
+                                                onBlur={handleBlur}
+                                                value={values.ano_declaracion}
+                                            >
+                                                <option value="" disabled>seleccione</option>
+                                                <option value="">todos</option>
+                                                {
+                                                    anos.map((s, i) => {
+                                                        return <option key={i} value={s}>{s}</option>
+                                                    })
+                                                }
+                                            </select>
+                                            <small className="form-text text-muted">
+                                                <b>Filtro</b> por año
+                                            </small>
+                                        </div>
+                                        <div className="col-lg-4">
+                                            <select
+                                                className="form-control"
+                                                placeholder="Fitro por trimestre"
+                                                name="trimestre"
+                                                onBlur={handleBlur}
+                                                onChange={(e) => {
+                                                    setFieldValue("trimestre", e.target.value);
+                                                    handleSubmit();
+                                                }}
+                                                value={values.trimestre}
+                                            >
+                                                <option value="" disabled>seleccione</option>
+                                                <option value="">todos</option>
+                                                {
+                                                    trimestres.map((s, i) => {
+                                                        return <option key={s.id} value={s.id}>{s.name}</option>
+                                                    })
+                                                }
+                                            </select>
+                                            <small className="form-text text-muted">
+                                                <b>Filtro</b> por trimestre
+                                            </small>
+                                        </div>
+                                        {/*
+                                                <div className="col-lg-4">
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        name="searchText"
+                                                        placeholder="Buscar"
+                                                        onBlur={handleBlur}
+                                                        value={values.searchText}
+                                                        onChange={(e) => {
+                                                            setFieldValue("searchText", e.target.value);
+                                                            handleSubmit();
+                                                        }}
+                                                    />
+                                                    <small className="form-text text-muted">
+                                                        <b>Filtro</b> todas las columnas
+                                                    </small>
+                                                </div>*/}
+                                    </div>
+                                </form>
+                            )}
+                        </Formik>
+                    </div>
+                </div>
+
                 <div className="card-body pt-0 pb-3">
                     <div className="tab-content">
                         <div className="table-responsive">
@@ -73,7 +125,7 @@ function DeudasTrimestresDeclarados({className}) {
                                 className="table table-head-custom table-head-bg table-borderless table-vertical-center">
                                 <thead>
                                 <tr className="text-left text-uppercase">
-                                    <th style={{minWidth: "250px"}}>Concepto</th>
+                                    <th style={{minWidth: "200px"}}>Concepto</th>
                                     <th style={{minWidth: "50px"}}>Año</th>
                                     <th style={{minWidth: "50px"}}>Trim.</th>
                                     <th style={{minWidth: "100px"}}>Fecha emisión</th>
@@ -86,7 +138,6 @@ function DeudasTrimestresDeclarados({className}) {
                                 </thead>
 
                                 <tbody>
-
                                 {
                                     detalleTrim.map((s,i) => {
                                         return (
@@ -108,7 +159,7 @@ function DeudasTrimestresDeclarados({className}) {
                                                     <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                                 <td>
-                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{FormatNumber(s.monto_pagado)}</span>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{formatNumber(s.monto_pagado)}</span>
                                                     <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                                 <td>
@@ -116,15 +167,15 @@ function DeudasTrimestresDeclarados({className}) {
                                                     <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                                 <td>
-                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{FormatNumber(s.monto_tributo)}</span>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{formatNumber(s.monto_tributo)}</span>
                                                     <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                                 <td>
-                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{FormatNumber(s.monto_intereses)}</span>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{formatNumber(s.monto_intereses)}</span>
                                                     <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                                 <td>
-                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{FormatNumber(s.monto_multa)}</span>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{formatNumber(s.monto_multa)}</span>
                                                     <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                             </tr>

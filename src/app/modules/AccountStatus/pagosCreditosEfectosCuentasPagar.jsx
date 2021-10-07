@@ -3,13 +3,15 @@ import { Card, Tab, Table, Tabs } from "react-bootstrap";
 
 function PagosCreditosEfectosCuentasPagar({className}) {
 
+    const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", marginTop: "1%", marginBottom: "1%" }
+
     return (
         <>
-            <div className={`card card-custom ${className}`}>
+            <div className={`card card-custom ${className}`} style={styleCard}>
                 {/* Head */}
                 <div className="card-header border-0 py-5">
                     <h3 className="card-title align-items-start flex-column">
-                        <span className="card-label font-weight-bolder text-dark">Pagos y créditos</span>
+                        <span className="card-label font-weight-bolder text-dark">Pagos y créditos | Detalles</span>
                         <span className="text-muted mt-3 font-weight-bold font-size-sm">Efectos y cuentas por pagar</span>
                     </h3>
                     <div className="card-toolbar">
