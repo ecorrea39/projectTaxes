@@ -17,6 +17,8 @@ function ModalHistoricalDeclaration(props) {
     const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", marginTop: "1%", marginBottom: "1%" }
     const selectStatus = estatus;
 
+    let [selected, setSelected] = useState(false);
+
     return (
         <>
             <Modal {...props} size="xl" aria-labelledby="contained-modal-title-vcenter" centered >
@@ -178,12 +180,9 @@ function ModalHistoricalDeclaration(props) {
                                                             {/*
                                                             <a href="#" size="sm" title="seleccionar declaración" className="btn btn-success font-weight-bolder font-size-sm mr-3"
                                                                checked={()=>sustituirDeclaracion(historico[i])} >Seleccionar</a>
-
-
                                                             <input type="checkbox" name={`sel${i}`} id={`sel${i}`} onClick={()=>sustituirDeclaracion(historico[i], i, props)} />
                                                             */}
-                                                            <input type="checkbox" name={`selector${i}`} onClick={()=>sustituirDeclaracion(historico[i], i, props)}  />
-
+                                                            <input type="radio" name={'selector'} onClick={()=>sustituirDeclaracion(historico[i], i, props)}  />
                                                         </td>
                                                         <td>
                                                             <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.concepto_pago_name}</span>
