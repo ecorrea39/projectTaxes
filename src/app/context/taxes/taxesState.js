@@ -129,13 +129,9 @@ export const TaxesState = ({ children }) => {
     const getTrimestres = async () => {
 
         try {
-            const array = [
-                { "id": "1", "name": "Trimestre 1"},
-                { "id": "2", "name": "Trimestre 2"},
-                { "id": "3", "name": "Trimestre 3"},
-                { "id": "4", "name": "Trimestre 4"}
-            ];
-            setTrimestres(array.sort((a, b) => a.name < b.name ? -1 : +(a.name > b.name)));
+            const respuesta = await clientAxios.get('/trimestres/');
+            console.log('respuesta ', respuesta)
+            setTrimestres(respuesta.data.data)
         } catch (error) {
             console.log(error)
         }
