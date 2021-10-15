@@ -53,7 +53,6 @@ const UserDatosFormStep2 = (props) => {
     axios.get(`${API_URL}user_mercantil_data/${rif}/`, axiosConfig)
       .then(function (res) {
         console.log("get_user_company::", res);
-        console.log("res.data.data.attributes.fecha_constitucion", res.data.data.attributes.fecha_constitucion);
 
         if (res.data.data != null) {
 
@@ -67,7 +66,8 @@ const UserDatosFormStep2 = (props) => {
           };
 
           setInitialValues(initialValuesJson);
-
+        } else {
+          alert("No existe información alguna registrada del usuario");
         }
 
         disableLoading();

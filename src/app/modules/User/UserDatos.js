@@ -5,8 +5,7 @@ import UserDatosFormStep1 from "./UserDatosFormStep1";
 import UserDatosFormStep2 from "./UserDatosFormStep2";
 import UserDatosFormStep3 from "./UserDatosFormStep3";
 import UserDatosFormStep4 from "./UserDatosFormStep4";
-import {Redirect, Route} from "react-router-dom";
-import {AuthPage} from "../Auth";
+import UserDatosFormStep5 from "./UserDatosFormStep5";
 
 
 const UserDatos = (props) => {
@@ -30,6 +29,8 @@ const UserDatos = (props) => {
       { step===3 && <UserDatosFormStep3 formularioActual={step} cambiarFormularioActual={cambiarStep} /> }
 
       { step===4 && <UserDatosFormStep4 formularioActual={step} cambiarFormularioActual={cambiarStep} /> }
+
+      { step===5 && <UserDatosFormStep5 formularioActual={step} cambiarFormularioActual={cambiarStep} /> }
 
     </Fragment>
   );

@@ -127,6 +127,8 @@ const UserDatosFormStep3 = (props) => {
                 };
 
                 setInitialValues(initialValuesJson);
+              } else {
+                alert("No existe información alguna registrada del usuario");
               }
 
               disableLoading();

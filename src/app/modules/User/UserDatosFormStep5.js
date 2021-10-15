@@ -16,7 +16,7 @@ const listaCodCelular = () => {
   return array.sort((a, b) => a.name < b.name ? -1 : +(a.name > b.name));
 };
 
-const UserDatosFormStep4 = (props) => {
+const UserDatosFormStep5 = (props) => {
 
   const [loading, setLoading] = useState(false);
   const [siguiente, setSiguiente] = useState(false);
@@ -100,7 +100,7 @@ const UserDatosFormStep4 = (props) => {
       }).catch((err) => {
 
       console.log("errGetUserCompany", err);
-      alert("Error buscando datos de los representantes legales de la empresa del usuario");
+      alert("Error buscando datos de los representantes legales de la empresa del usuario")
       disableLoading();
 
     });
@@ -617,7 +617,7 @@ const UserDatosFormStep4 = (props) => {
 
         }).catch((err) => {
 
-        console.log("errUserDatosFormStep4", err);
+        console.log("errUserDatosFormStep5", err);
         setSubmitting(false);
         disableLoading();
 
@@ -1091,4 +1091,4 @@ const UserDatosFormStep4 = (props) => {
   );
 }
 
-export default UserDatosFormStep4;
+export default UserDatosFormStep5;
