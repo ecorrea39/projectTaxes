@@ -213,7 +213,7 @@ export const BaseFormikStatementTaxes = ({ concepts, formik, anos, trimestres, f
                                                         <option value="" disabled>seleccione</option>
                                                         {
                                                             trimestres.map((s) => {
-                                                                return <option key={s.id} value={s.id}>{s.attributes.name}</option>
+                                                                return <option key={s.id} value={s.id}>{s.name}</option>
                                                             })
                                                         }
                                                     </Field>

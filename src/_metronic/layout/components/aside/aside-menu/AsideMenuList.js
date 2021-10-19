@@ -152,10 +152,7 @@ export function AsideMenuList({ layoutProps }) {
         {/* eCommerce */}
         {/*begin::1 Level*/}
         <li
-          className={`menu-item menu-item-submenu ${getMenuItemActive(
-            "/e-commerce",
-            true
-          )}`}
+          className={`menu-item menu-item-submenu ${getMenuItemActive("/e-commerce",true)}`}
           aria-haspopup="true"
           data-menu-toggle="hover"
         >
@@ -163,7 +160,7 @@ export function AsideMenuList({ layoutProps }) {
             <span className="svg-icon menu-icon">
               <SVG src={toAbsoluteUrl("/media/svg/icons/Shopping/Bag2.svg")} />
             </span>
-            <span className="menu-text">Consultas</span>
+            <span className="menu-text">Contribuyente</span>
           </NavLink>
           <div className="menu-submenu">
             <i className="menu-arrow" />
@@ -175,46 +172,42 @@ export function AsideMenuList({ layoutProps }) {
               </li>
               {/*begin::2 Level*/}
               <li
-                className={`menu-item ${getMenuItemActive(
-                  "/e-commerce/products"
-                )}`}
+                className={`menu-item ${getMenuItemActive("")}`}
                 aria-haspopup="true"
               >
-                <NavLink className="menu-link" to="/e-commerce/products">
+                <NavLink className="menu-link" to="">
                   <i className="menu-bullet menu-bullet-dot">
                     <span />
                   </i>
-                  <span className="menu-text">Contribuyentes</span>
+                  <span className="menu-text">Comprobante de inscripción</span>
                 </NavLink>
               </li>
               {/*end::2 Level*/}
+
               {/*begin::2 Level*/}
               <li
-                className={`menu-item ${getMenuItemActive(
-                  "/e-commerce/customers"
-                )}`}
+                className={`menu-item ${getMenuItemActive("/reportes/certificado-solvencia")}`}
                 aria-haspopup="true"
               >
-                <NavLink className="menu-link" to="/e-commerce/customers">
+                <NavLink className="menu-link" to={`/reportes/certificado-solvencia`}>
                   <i className="menu-bullet menu-bullet-dot">
                     <span />
                   </i>
-                  <span className="menu-text">Solvencias</span>
+                  <span className="menu-text">Certificado de solvencia</span>
                 </NavLink>
               </li>
               {/*end::2 Level*/}
+
               {/*begin::2 Level*/}
               <li
-                className={`menu-item ${getMenuItemActive(
-                  "/e-commerce/products"
-                )}`}
+                className={`menu-item ${getMenuItemActive("")}`}
                 aria-haspopup="true"
               >
-                <NavLink className="menu-link" to="/e-commerce/products">
+                <NavLink className="menu-link" to="">
                   <i className="menu-bullet menu-bullet-dot">
                     <span />
                   </i>
-                  <span className="menu-text">Pago</span>
+                  <span className="menu-text">XXXXXXXXXX</span>
                 </NavLink>
               </li>
               {/*end::2 Level*/}
