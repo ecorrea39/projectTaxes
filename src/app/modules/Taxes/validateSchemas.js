@@ -24,8 +24,13 @@ export const SchemaDeclaration= Yup.object({
                 .required('- Campo obligatorio -'),
             trimestre: Yup.string()
                 .required('- Campo obligatorio -'),
-            ntrabajadores: Yup.string()
-                .required('- Campo obligatorio -'),
+            ntrabajadores:
+
+            Yup.string()
+                .required()
+                .matches(/^[0-9]+$/, "Must be only digits")
+                .min(5, 'Must be exactly 5 digits')
+                .max(5, 'Must be exactly 5 digits'),
             monto_pagado: Yup.string()
                 .required('- Campo obligatorio -'),
             monto_tributo: Yup.string(),
