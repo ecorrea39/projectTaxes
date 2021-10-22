@@ -1086,7 +1086,7 @@ const UserDatosFormStep4 = (props) => {
               <br/>
 
               <Row>
-                <Col md={6}>
+                <Col md={4}>
                   <Button variant="success" size="lg" block
                           type="submit"
                           disabled={
@@ -1097,7 +1097,7 @@ const UserDatosFormStep4 = (props) => {
                     Guardar
                   </Button>
                 </Col>
-                <Col md={6}>
+                <Col md={4}>
                   <Button variant="secondary" size="lg" block
                           type="button"
                           onClick={irAnterior}
@@ -1105,18 +1105,18 @@ const UserDatosFormStep4 = (props) => {
                     Anterior
                   </Button>
                 </Col>
-                {/*<Col md={4}>*/}
-                {/*  <Button variant="secondary" size="lg" block*/}
-                {/*          type="button"*/}
-                {/*          onClick={submitSiguiente}*/}
-                {/*          disabled={*/}
-                {/*            formik.isSubmitting ||*/}
-                {/*            !formik.isValid*/}
-                {/*          }*/}
-                {/*  >*/}
-                {/*    Siguiente*/}
-                {/*  </Button>*/}
-                {/*</Col>*/}
+                <Col md={4}>
+                  <Button variant="secondary" size="lg" block
+                          type="button"
+                          onClick={submitSiguiente}
+                          disabled={
+                            formik.isSubmitting ||
+                            !formik.isValid
+                          }
+                  >
+                    Siguiente
+                  </Button>
+                </Col>
               </Row>
             </Container>
           </form>
