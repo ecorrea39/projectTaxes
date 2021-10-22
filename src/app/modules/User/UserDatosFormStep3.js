@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import {FormattedMessage, useIntl} from "react-intl";
 import {useFormik} from "formik";
@@ -69,6 +69,15 @@ const UserDatosFormStep3 = (props) => {
     numero_telefono_compania2:"",
     correo_empresa:""
   });
+
+  const estadoRef = useRef();
+  const municipioRef = useRef();
+  const parroquiaRef = useRef();
+  const sectorRef = useRef();
+  const vialidadRef = useRef();
+  const edificacionRef = useRef();
+  const codigo_telefono_compania1Ref = useRef();
+  const codigo_telefono_compania2Ref = useRef();
 
   const [loading, setLoading] = useState(false);
   const [estados, setEstados] = useState([]);
@@ -568,6 +577,32 @@ const UserDatosFormStep3 = (props) => {
 
           alert('Guardado exitosamente');
 
+          const estadoC = estadoRef.current.options[estadoRef.current.selectedIndex].text;
+          const municipioC = municipioRef.current.options[municipioRef.current.selectedIndex].text;
+          const parroquiaC = parroquiaRef.current.options[parroquiaRef.current.selectedIndex].text;
+          const sectorC = sectorRef.current.options[sectorRef.current.selectedIndex].text;
+          const vialidadC = vialidadRef.current.options[vialidadRef.current.selectedIndex].text;
+          const edificacionC = edificacionRef.current.options[edificacionRef.current.selectedIndex].text;
+          const codigo_telefono_compania1C = codigo_telefono_compania1Ref.current.options[codigo_telefono_compania1Ref.current.selectedIndex].text;
+          const codigo_telefono_compania2C = codigo_telefono_compania2Ref.current.options[codigo_telefono_compania2Ref.current.selectedIndex].text;
+
+          props.cambiarResumenFicha({
+            domicilio_fiscal: formik.values.domicilio_fiscal,
+            estado: estadoC,
+            municipio: municipioC,
+            parroquia: parroquiaC,
+            ciudad: formik.values.ciudad,
+            sector: sectorC,
+            vialidad: vialidadC,
+            edificacion: edificacionC,
+            local: formik.values.local,
+            codigo_telefono_compania1: codigo_telefono_compania1C,
+            numero_telefono_compania1: formik.values.numero_telefono_compania1,
+            codigo_telefono_compania2: codigo_telefono_compania2C,
+            numero_telefono_compania2: formik.values.numero_telefono_compania2,
+            correo_empresa: formik.values.correo_empresa
+          });
+
           setSubmitting(false);
           disableLoading();
 
@@ -656,6 +691,7 @@ const UserDatosFormStep3 = (props) => {
                                   onChange={handleChangeFiltrarMunicipios}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.estado}
+                                  ref={estadoRef}
                     >
                       <option key="0" value="">Seleccione el Estado</option>
 
@@ -679,6 +715,7 @@ const UserDatosFormStep3 = (props) => {
                                   onChange={handleChangeFiltrarParroquias}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.municipio}
+                                  ref={municipioRef}
                     >
                       <option key="0" relacion="" value="">Seleccione el Municipio</option>
 
@@ -702,6 +739,7 @@ const UserDatosFormStep3 = (props) => {
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.parroquia}
+                                  ref={parroquiaRef}
                     >
                       <option key="0" relacion="" value="">Seleccione el Parroquia</option>
 
@@ -745,6 +783,7 @@ const UserDatosFormStep3 = (props) => {
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.sector}
+                                  ref={sectorRef}
                     >
                       <option key="0" value="">Seleccione el Sector</option>
 
@@ -768,6 +807,7 @@ const UserDatosFormStep3 = (props) => {
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.vialidad}
+                                  ref={vialidadRef}
                     >
                       <option key="0" value="">Seleccione la Vialidad</option>
 
@@ -795,6 +835,7 @@ const UserDatosFormStep3 = (props) => {
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.edificacion}
+                                  ref={edificacionRef}
                     >
                       <option key="0" value="">Seleccione la Edificación</option>
 
@@ -838,6 +879,7 @@ const UserDatosFormStep3 = (props) => {
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.codigo_telefono_compania1}
+                                  ref={codigo_telefono_compania1Ref}
                     >
                       <option key="0" value="">Seleccione el Código de Area</option>
 
@@ -878,6 +920,7 @@ const UserDatosFormStep3 = (props) => {
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.codigo_telefono_compania2}
+                                  ref={codigo_telefono_compania2Ref}
                     >
                       <option key="0" value="">Seleccione el Código de Area</option>
 

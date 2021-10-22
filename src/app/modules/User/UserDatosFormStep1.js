@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import {FormattedMessage, useIntl} from "react-intl";
 import * as Yup from "yup";
@@ -17,6 +17,10 @@ const UserDatosFormStep1 = (props) => {
     numero_patronal: "",
     numero_de_trabajadores: ""
   });
+
+  const clase_de_empresaRef = useRef();
+  const actividad_economicaRef = useRef();
+  const estatusRef = useRef();
 
   const [loading, setLoading] = useState(false);
   const [clasesEmpresa, setClasesEmpresa] = useState([]);
@@ -353,11 +357,11 @@ const UserDatosFormStep1 = (props) => {
 
       console.log("values", formik.values);
 
-
       const rif = localStorage.getItem('rif');
 
       console.log("rif", rif);
       console.log("authToken", token);
+      console.log("submit_formik::", formik);
 
       const data = {
         jsonapi: {version: '1.0'},
@@ -374,6 +378,20 @@ const UserDatosFormStep1 = (props) => {
           localStorage.setItem('surname', formik.values.nombre_comercial);
 
           alert('Guardado exitosamente');
+
+          const clase_de_empresaC = clase_de_empresaRef.current.options[clase_de_empresaRef.current.selectedIndex].text;
+          const actividad_economicaC = actividad_economicaRef.current.options[actividad_economicaRef.current.selectedIndex].text;
+          const estatusC = estatusRef.current.options[estatusRef.current.selectedIndex].text;
+
+          props.cambiarResumenFicha({
+            razon_social: formik.values.razon_social,
+            nombre_comercial: formik.values.nombre_comercial,
+            clase_de_empresa: clase_de_empresaC,
+            actividad_economica: actividad_economicaC,
+            estatus: estatusC,
+            numero_patronal: formik.values.numero_patronal,
+            numero_de_trabajadores: formik.values.numero_de_trabajadores
+          });
 
           setSubmitting(false);
           disableLoading();
@@ -477,6 +495,7 @@ const UserDatosFormStep1 = (props) => {
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.clase_de_empresa}
+                                  ref={clase_de_empresaRef}
                     >
 
                       <option key="0" value="">Seleccione la Clase de Empresa</option>
@@ -501,6 +520,7 @@ const UserDatosFormStep1 = (props) => {
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.actividad_economica}
+                                  ref={actividad_economicaRef}
                     >
 
                       <option key="0" value="">Seleccione la Actividad Económica</option>
@@ -527,6 +547,7 @@ const UserDatosFormStep1 = (props) => {
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.estatus}
+                                  ref={estatusRef}
                     >
 
                       <option key="0" value="">Seleccione el Estatus</option>

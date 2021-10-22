@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import {FormattedMessage, useIntl} from "react-intl";
 import {useFormik} from "formik";
@@ -28,6 +28,8 @@ const UserDatosFormStep2 = (props) => {
     numero_de_protocolo: "",
     fecha_constitucion: ""
   });
+
+  const oficinaRef = useRef();
 
   const [siguiente, setSiguiente] = useState(false);
 
@@ -213,6 +215,17 @@ const UserDatosFormStep2 = (props) => {
 
           alert('Guardado exitosamente');
 
+          const oficinaC = oficinaRef.current.options[oficinaRef.current.selectedIndex].text;
+
+          props.cambiarResumenFicha({
+            oficina: oficinaC,
+            numero_de_documento: formik.values.numero_de_documento,
+            numero_de_tomo: formik.values.numero_de_tomo,
+            numero_de_folio: formik.values.numero_de_folio,
+            numero_de_protocolo: formik.values.numero_de_protocolo,
+            fecha_constitucion: formik.values.fecha_constitucion
+          });
+
           setSubmitting(false);
           disableLoading();
 
@@ -281,6 +294,7 @@ const UserDatosFormStep2 = (props) => {
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.oficina}
+                                  ref={oficinaRef}
                     >
                       <option key="0" value="">Seleccione la Oficina</option>
 

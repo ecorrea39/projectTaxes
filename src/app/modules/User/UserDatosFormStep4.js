@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import {FormattedMessage, useIntl} from "react-intl";
 import {useFormik} from "formik";
@@ -44,6 +44,10 @@ const UserDatosFormStep4 = (props) => {
     correo_electronico_representante_legal3: "",
     cargo_representante_legal3: ""
   });
+
+  const codigo_de_area_representante_legal1Ref = useRef();
+  const codigo_de_area_representante_legal2Ref = useRef();
+  const codigo_de_area_representante_legal3Ref = useRef();
 
   const intl = useIntl();
   const API_URL = `${process.env.REACT_APP_API_URL}`;
@@ -577,6 +581,34 @@ const UserDatosFormStep4 = (props) => {
 
           alert('Guardado exitosamente');
 
+          const codigo_de_area_representante_legal1C = codigo_de_area_representante_legal1Ref.current.options[codigo_de_area_representante_legal1Ref.current.selectedIndex].text;
+          const codigo_de_area_representante_legal2C = codigo_de_area_representante_legal2Ref.current.options[codigo_de_area_representante_legal2Ref.current.selectedIndex].text;
+          const codigo_de_area_representante_legal3C = codigo_de_area_representante_legal3Ref.current.options[codigo_de_area_representante_legal3Ref.current.selectedIndex].text;
+
+          props.cambiarResumenFicha({
+            cedula_representante_legal1: formik.values.cedula_representante_legal1,
+            nombre_representante_legal1: formik.values.nombre_representante_legal1,
+            apellido_representante_legal1: formik.values.apellido_representante_legal1,
+            codigo_de_area_representante_legal1: codigo_de_area_representante_legal1C,
+            telefono_representante_legal1: formik.values.telefono_representante_legal1,
+            correo_electronico_representante_legal1: formik.values.correo_electronico_representante_legal1,
+            cargo_representante_legal1: formik.values.cargo_representante_legal1,
+            cedula_representante_legal2: formik.values.cedula_representante_legal2,
+            nombre_representante_legal2: formik.values.nombre_representante_legal2,
+            apellido_representante_legal2: formik.values.apellido_representante_legal2,
+            codigo_de_area_representante_legal2: codigo_de_area_representante_legal2C,
+            telefono_representante_legal2: formik.values.telefono_representante_legal2,
+            correo_electronico_representante_legal2: formik.values.correo_electronico_representante_legal2,
+            cargo_representante_legal2: formik.values.cargo_representante_legal2,
+            cedula_representante_legal3: formik.values.cedula_representante_legal3,
+            nombre_representante_legal3: formik.values.nombre_representante_legal3,
+            apellido_representante_legal3: formik.values.apellido_representante_legal3,
+            codigo_de_area_representante_legal3: codigo_de_area_representante_legal3C,
+            telefono_representante_legal3: formik.values.telefono_representante_legal3,
+            correo_electronico_representante_legal3: formik.values.correo_electronico_representante_legal3,
+            cargo_representante_legal3: formik.values.cargo_representante_legal3
+          });
+
           setSubmitting(false);
           disableLoading();
 
@@ -705,6 +737,7 @@ const UserDatosFormStep4 = (props) => {
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.codigo_de_area_representante_legal1}
+                                  ref={codigo_de_area_representante_legal1Ref}
                     >
                       <option key="0" value="">Seleccione el Código de Area</option>
 
@@ -842,6 +875,7 @@ const UserDatosFormStep4 = (props) => {
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.codigo_de_area_representante_legal2}
+                                  ref={codigo_de_area_representante_legal2Ref}
                     >
                       <option key="0" value="">Seleccione el Código de Area</option>
 
@@ -979,6 +1013,7 @@ const UserDatosFormStep4 = (props) => {
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.codigo_de_area_representante_legal3}
+                                  ref={codigo_de_area_representante_legal3Ref}
                     >
                       <option key="0" value="">Seleccione el Código de Area</option>
 
