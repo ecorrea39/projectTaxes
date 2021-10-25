@@ -63,8 +63,8 @@ export function AsideMenuList({ layoutProps }) {
           <div className="menu-submenu">
             <i className="menu-arrow" />
             <ul className="menu-subnav">
-              <li className={`menu-item ${getMenuItemActive("/e-commerce/customers")}`} aria-haspopup="true">
-                <NavLink className="menu-link" to="/e-commerce/customers">
+              <li className={`menu-item ${getMenuItemActive("/user-datos")}`} aria-haspopup="true">
+                <NavLink className="menu-link" to="/user-datos">
                   <i className="menu-bullet menu-bullet-dot">
                     <span />
                   </i>
@@ -201,14 +201,7 @@ export function AsideMenuList({ layoutProps }) {
 
         {/* eCommerce */}
         {/*begin::1 Level*/}
-        <li
-          className={`menu-item menu-item-submenu ${getMenuItemActive(
-            "/e-commerce",
-            true
-          )}`}
-          aria-haspopup="true"
-          data-menu-toggle="hover"
-        >
+        <li className={`menu-item menu-item-submenu ${getMenuItemActive("/e-commerce", true)}`} aria-haspopup="true" data-menu-toggle="hover">
           <NavLink className="menu-link menu-toggle" to="/e-commerce">
             <span className="svg-icon menu-icon">
               <SVG src={toAbsoluteUrl("/media/svg/icons/Shopping/Bag2.svg")} />
@@ -224,12 +217,7 @@ export function AsideMenuList({ layoutProps }) {
                 </span>
               </li>
               {/*begin::2 Level*/}
-              <li
-                className={`menu-item ${getMenuItemActive(
-                  "/user-datos"
-                )}`}
-                aria-haspopup="true"
-              >
+              <li className={`menu-item ${getMenuItemActive("/user-datos")}`} aria-haspopup="true">
                 <NavLink className="menu-link" to="/user-datos">
                   <i className="menu-bullet menu-bullet-dot">
                     <span />
@@ -238,13 +226,9 @@ export function AsideMenuList({ layoutProps }) {
                 </NavLink>
               </li>
               {/*end::2 Level*/}
+
               {/*begin::2 Level*/}
-              <li
-                className={`menu-item ${getMenuItemActive(
-                  "/e-commerce/products"
-                )}`}
-                aria-haspopup="true"
-              >
+              <li className={`menu-item ${getMenuItemActive("/e-commerce/products")}`} aria-haspopup="true">
                 <NavLink className="menu-link" to="/e-commerce/products">
                   <i className="menu-bullet menu-bullet-dot">
                     <span />
@@ -258,6 +242,51 @@ export function AsideMenuList({ layoutProps }) {
         </li>
         {/*end::1 Level*/}
 
+
+        {/* opción de tablas del sistema */}
+        <li className={`menu-item menu-item-submenu ${getMenuItemActive("/e-commerce", true)}`} aria-haspopup="true" data-menu-toggle="hover">
+
+          <NavLink className="menu-link menu-toggle" to="">
+            <span className="svg-icon menu-icon">
+              <SVG src={toAbsoluteUrl("/media/svg/icons/Shopping/Bag2.svg")} />
+            </span>
+            <span className="menu-text">Tablas Maestras</span>
+          </NavLink>
+
+          <div className="menu-submenu">
+            <i className="menu-arrow" />
+            <ul className="menu-subnav">
+
+              <li className={`menu-item ${getMenuItemActive("/tablas/trimestre")}`} aria-haspopup="true">
+                <NavLink className="menu-link" to="/tablas/trimestre">
+                  <i className="menu-bullet menu-bullet-dot">
+                    <span />
+                  </i>
+                  <span className="menu-text">Trimestres</span>
+                </NavLink>
+              </li>
+
+              <li className={`menu-item ${getMenuItemActive("/tablas/forma-pago")}`} aria-haspopup="true">
+                <NavLink className="menu-link" to="/tablas/forma-pago">
+                  <i className="menu-bullet menu-bullet-dot">
+                    <span />
+                  </i>
+                  <span className="menu-text">Formas de pago</span>
+                </NavLink>
+              </li>
+
+              <li className={`menu-item ${getMenuItemActive("/tablas/cuentas-recaudadoras")}`} aria-haspopup="true">
+                <NavLink className="menu-link" to="/tablas/cuentas-recaudadoras">
+                  <i className="menu-bullet menu-bullet-dot">
+                    <span />
+                  </i>
+                  <span className="menu-text">Cuentas Recaudadoras</span>
+                </NavLink>
+              </li>
+
+            </ul>
+          </div>
+        </li>
 
 
 

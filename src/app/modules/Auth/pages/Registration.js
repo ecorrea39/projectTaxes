@@ -190,7 +190,7 @@ function Registration(props) {
 
       axios.post(`${API_URL}users/`, data, axiosConfig).then(function (res) {
 
-        console.log("registerRes", res);
+        //console.log("registerRes", res);
 
         disableLoading();
         setSubmitting(false);
@@ -250,7 +250,7 @@ function Registration(props) {
         {/* end: Alert */}
 
         {/* begin: tipo */}
-        <Form.Group as={Col} controlId="tipo">
+        <Form.Group as={Col} controlId="tipo" className="p-0" >
           {/*<Form.Label>State</Form.Label>*/}
           <Form.Control as="select"
                         onChange={formik.handleChange}
@@ -282,11 +282,9 @@ function Registration(props) {
         {/* begin: user */}
         <div className="form-group fv-plugins-icon-container">
           <input
-            placeholder="rif"
+            placeholder="ingrese número de R.I.F."
             type="text"
-            className={`form-control form-control-solid h-auto py-5 px-6 ${getInputClasses(
-              "user"
-            )}`}
+            className={`form-control form-control-solid h-auto ${getInputClasses("user")}`}
             name="user"
             onChange={customHandleChange}
             value={formik.values.user}
@@ -303,11 +301,9 @@ function Registration(props) {
         {/* begin: Email */}
         <div className="form-group fv-plugins-icon-container">
           <input
-            placeholder="Email"
+            placeholder="ingrese correo electrónico"
             type="email"
-            className={`form-control form-control-solid h-auto py-5 px-6 ${getInputClasses(
-              "email"
-            )}`}
+            className={`form-control form-control-solid h-auto ${getInputClasses("email")}`}
             name="email"
             {...formik.getFieldProps("email")}
           />
@@ -322,11 +318,9 @@ function Registration(props) {
         {/* begin: Password */}
         <div className="form-group fv-plugins-icon-container">
           <input
-            placeholder="Password"
+            placeholder="ingrese contraseña"
             type="password"
-            className={`form-control form-control-solid h-auto py-5 px-6 ${getInputClasses(
-              "password"
-            )}`}
+            className={`form-control form-control-solid h-auto ${getInputClasses("password")}`}
             name="password"
             {...formik.getFieldProps("password")}
           />
@@ -341,11 +335,9 @@ function Registration(props) {
         {/* begin: Confirm Password */}
         <div className="form-group fv-plugins-icon-container">
           <input
-            placeholder="Re Password"
+            placeholder="ingrese confirmación de contraseña"
             type="password"
-            className={`form-control form-control-solid h-auto py-5 px-6 ${getInputClasses(
-              "changepassword"
-            )}`}
+            className={`form-control form-control-solid h-auto ${getInputClasses("changepassword")}`}
             name="changepassword"
             {...formik.getFieldProps("changepassword")}
           />

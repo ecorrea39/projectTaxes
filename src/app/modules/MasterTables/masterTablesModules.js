@@ -11,15 +11,15 @@ function MasterTablesModule() {
 
     switch (tabla) {
         case "trimestre":
-            title = "Tabla de Trimestres";
+            title = "Trimestres";
             break;
 
         case "forma-pago":
-            title = "Tabla de Forma de Pago ";
+            title = "Formas de Pago";
             break;
 
         case "cuentas-recaudadoras":
-            title = "Tabla de Cuentas Recaudadoras";
+            title = "Cuentas Recaudadoras";
             break;
 
         default:

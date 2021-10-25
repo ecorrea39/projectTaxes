@@ -29,13 +29,9 @@ function DeudasTrimestresDeclarados({className}) {
                         <Formik
                             initialValues={{
                                 ano_declaracion: "",
-                                trimestre: "",
-                                searchText: "",
+                                trimestre: ""
                             }}
-                            onSubmit={(values) => {
-                                filtarAccountStatus(values, 'deudatrim');
-                            }}
-                        >
+                            onSubmit={(values) => { filtarAccountStatus(values, 'deudatrim'); }} >
                             {({
                                   values,
                                   handleSubmit,
@@ -93,24 +89,6 @@ function DeudasTrimestresDeclarados({className}) {
                                                 <b>Filtro</b> por trimestre
                                             </small>
                                         </div>
-                                        {/*
-                                                <div className="col-lg-4">
-                                                    <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        name="searchText"
-                                                        placeholder="Buscar"
-                                                        onBlur={handleBlur}
-                                                        value={values.searchText}
-                                                        onChange={(e) => {
-                                                            setFieldValue("searchText", e.target.value);
-                                                            handleSubmit();
-                                                        }}
-                                                    />
-                                                    <small className="form-text text-muted">
-                                                        <b>Filtro</b> todas las columnas
-                                                    </small>
-                                                </div>*/}
                                     </div>
                                 </form>
                             )}
@@ -121,8 +99,7 @@ function DeudasTrimestresDeclarados({className}) {
                 <div className="card-body pt-0 pb-3">
                     <div className="tab-content">
                         <div className="table-responsive">
-                            <table
-                                className="table table-head-custom table-head-bg table-borderless table-vertical-center">
+                            <table className="table table-vertical-center table-head-bg">
                                 <thead>
                                 <tr className="text-left text-uppercase">
                                     <th style={{minWidth: "200px"}}>Concepto</th>
@@ -181,6 +158,9 @@ function DeudasTrimestresDeclarados({className}) {
                                             </tr>
                                         )
                                     })
+                                }
+                                {
+                                    detalleTrim.length == 0 && (<span className="text-muted">sin información para mostrar</span>)
                                 }
                                 </tbody>
                             </table>

@@ -1,9 +1,14 @@
-import React from "react";
-import { Card, Tab, Table, Tabs } from "react-bootstrap";
+import React, {useContext} from "react";
+import {Card, Col, Tab, Table, Tabs} from "react-bootstrap";
+import {Field, Formik} from "formik";
+import BaseInput from "../Forms/BaseInputs";
+import AccountStatusContext from "../../context/accountStatus/accountStatusContext";
 
 function PagosCreditosEfectosCuentasPagar({className}) {
 
+    const { formatoFechaFutura, formatNumber, detallePagosCxP } = useContext(AccountStatusContext);
     const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", marginTop: "1%", marginBottom: "1%" }
+    const detallePagoCxP = detallePagosCxP;
 
     return (
         <>
@@ -19,94 +24,118 @@ function PagosCreditosEfectosCuentasPagar({className}) {
                         {/*<a href="#" className="btn btn-danger font-weight-bolder font-size-sm">Create</a>*/}
                     </div>
                 </div>
-                {/* Body */}
+                <div className="px-10 border-0 ">
+                    <div>
+                        <Formik
+                            initialValues={{
+                                fecha_desde: "",
+                                fecha_hasta: "",
+                            }}
+                            onSubmit={(values) => {
+                                {/*
+                                filtarAccountStatus(values, 'pagostrim');*/}
+                            }}
+                        >
+                            {({
+                                  values,
+                                  handleSubmit,
+                                  handleBlur,
+                                  handleChange,
+                                  setFieldValue,
+                              }) => (
+                                <form onSubmit={handleSubmit} className="form form-label-right">
+                                    <div className="form-group row">
+                                        <div className="col-lg-4">
+                                            <Field
+                                                id="fecha_desde"
+                                                name="fecha_desde"
+                                                component={BaseInput}
+                                                type="date"
+                                                max={formatoFechaFutura}
+                                            />
+                                            <small className="form-text text-muted">
+                                                <b>Filtro</b> por fecha desde
+                                            </small>
+                                        </div>
+                                        <div className="col-lg-4">
+                                            <Field
+                                                id="fecha_hasta"
+                                                name="fecha_hasta"
+                                                component={BaseInput}
+                                                type="date"
+                                                max={formatoFechaFutura}
+                                            />
+                                            <small className="form-text text-muted">
+                                                <b>Filtro</b> por fecha hasta
+                                            </small>
+                                        </div>
+                                    </div>
+                                </form>
+                            )}
+                        </Formik>
+                    </div>
+                </div>
                 <div className="card-body pt-0 pb-3">
                     <div className="tab-content">
                         <div className="table-responsive">
-                            <table
-                                className="table table-head-custom table-head-bg table-borderless table-vertical-center">
+                            <table className="table table-vertical-center table-head-bg">
                                 <thead>
                                 <tr className="text-left text-uppercase">
-                                    <th style={{minWidth: "170px"}}>Concepto documento</th>
-                                    <th style={{minWidth: "170px"}}>Componentes</th>
+                                    <th style={{minWidth: "190px"}}>Concepto documento</th>
+                                    <th style={{minWidth: "130px"}}>Componentes</th>
                                     <th style={{minWidth: "50px"}}>Número giro</th>
                                     <th style={{minWidth: "100px"}}>Fecha</th>
                                     <th style={{minWidth: "100px"}}>Banco</th>
                                     <th style={{minWidth: "50px"}}>Referencia</th>
                                     <th style={{minWidth: "100px"}}>Monto pagado</th>
-                                    <th style={{minWidth: "100px"}}>Clave de pago</th>
+                                    <th style={{minWidth: "80px"}}>Clave de pago</th>
                                 </tr>
                                 </thead>
 
                                 <tbody>
-                                <tr>
-                                    <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">Resolución</span>
-                                        <span className="text-muted font-weight-bold">ADM-20210901-123456</span>
-                                    </td>
-                                    <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">Incumplimiento deberes formales</span>
-                                        <span className="text-muted font-weight-bold"></span>
-                                    </td>
-                                    <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm"></span>
-                                        <span className="text-muted font-weight-bold"></span>
-                                    </td>
-                                    <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">21-09-2021</span>
-                                        <span className="text-muted font-weight-bold"></span>
-                                    </td>
-                                    <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">Banco de venezuela</span>
-                                        <span className="text-muted font-weight-bold"></span>
-                                    </td>
-                                    <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">1234567890</span>
-                                        <span className="text-muted font-weight-bold"></span>
-                                    </td>
-                                    <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">150.000,00</span>
-                                        <span className="text-muted font-weight-bold"></span>
-                                    </td>
-                                    <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">Sanción por acta</span>
-                                        <span className="text-muted font-weight-bold"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">Resolución</span>
-                                        <span className="text-muted font-weight-bold">ADM-20210901-123456</span>
-                                    </td>
-                                    <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">Incumplimiento deberes formales</span>
-                                        <span className="text-muted font-weight-bold"></span>
-                                    </td>
-                                    <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm"></span>
-                                        <span className="text-muted font-weight-bold"></span>
-                                    </td>
-                                    <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">21-09-2021</span>
-                                        <span className="text-muted font-weight-bold"></span>
-                                    </td>
-                                    <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">Banco de venezuela</span>
-                                        <span className="text-muted font-weight-bold"></span>
-                                    </td>
-                                    <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">1234567890</span>
-                                        <span className="text-muted font-weight-bold"></span>
-                                    </td>
-                                    <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">150.000,00</span>
-                                        <span className="text-muted font-weight-bold"></span>
-                                    </td>
-                                    <td>
-                                        <span className="text-dark-75 font-weight-bolder d-block font-size-sm">Sanción por acta</span>
-                                        <span className="text-muted font-weight-bold"></span>
-                                    </td>
-                                </tr>
+                                {
+                                    detallePagoCxP.map((s,i) => {
+                                        return (
+                                            <tr key={i}>
+                                                <td>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.concepto_pago_name}</span>
+                                                    <span className="text-muted font-weight-bold">{s.numero_documento}</span>
+                                                </td>
+                                                <td>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.componentes}</span>
+                                                    <span className="text-muted font-weight-bold"></span>
+                                                </td>
+                                                <td>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.numero_giro}</span>
+                                                    <span className="text-muted font-weight-bold"></span>
+                                                </td>
+                                                <td>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.fecha_pago}</span>
+                                                    <span className="text-muted font-weight-bold"></span>
+                                                </td>
+                                                <td>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.banco_name}</span>
+                                                    <span className="text-muted font-weight-bold"></span>
+                                                </td>
+                                                <td>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.referencia}</span>
+                                                    <span className="text-muted font-weight-bold"></span>
+                                                </td>
+                                                <td>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{formatNumber(s.monto_pagado)}</span>
+                                                    <span className="text-muted font-weight-bold"></span>
+                                                </td>
+                                                <td>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.clave}</span>
+                                                    <span className="text-muted font-weight-bold"></span>
+                                                </td>
+                                            </tr>
+                                        )
+                                    })
+                                }
+                                {
+                                    detallePagoCxP.length == 0 && (<span className="text-muted">sin información para mostrar</span>)
+                                }
                                 </tbody>
                             </table>
                         </div>
