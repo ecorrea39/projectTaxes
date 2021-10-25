@@ -16,6 +16,10 @@ const listaOficinas = () => {
   return array;
 };
 
+const textLabelColor = {
+  'color': '#5A5EFF',
+};
+
 const UserDatosFormStep2 = (props) => {
 
   const [loading, setLoading] = useState(false);
@@ -290,6 +294,7 @@ const UserDatosFormStep2 = (props) => {
               <Row>
                 <Col md={6}>
                   <Form.Group controlId="oficina">
+                    <Form.Label style={textLabelColor}>Oficina</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
@@ -314,6 +319,7 @@ const UserDatosFormStep2 = (props) => {
 
                 <Col md={6}>
                   <Form.Group as={Col} controlId="numero_de_documento">
+                    <Form.Label style={textLabelColor}>Número de Documento</Form.Label>
                     <Form.Control size="lg" type="text" placeholder="Número Del Documento"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
@@ -334,6 +340,7 @@ const UserDatosFormStep2 = (props) => {
               <Row>
                 <Col md={6}>
                   <Form.Group as={Col} controlId="numero_de_tomo">
+                    <Form.Label style={textLabelColor}>Número de Tomo</Form.Label>
                     <Form.Control size="lg" type="text" placeholder="Número De Tomo"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
@@ -350,6 +357,7 @@ const UserDatosFormStep2 = (props) => {
 
                 <Col md={6}>
                   <Form.Group as={Col} controlId="numero_de_folio">
+                    <Form.Label style={textLabelColor}>Número de Folio</Form.Label>
                     <Form.Control size="lg" type="text" placeholder="Número Del Folio"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
@@ -370,6 +378,7 @@ const UserDatosFormStep2 = (props) => {
               <Row>
                 <Col md={6}>
                   <Form.Group as={Col} controlId="numero_de_protocolo">
+                    <Form.Label style={textLabelColor}>Número de Protocolo</Form.Label>
                     <Form.Control size="lg" type="text" placeholder="Número De Protocolo"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
@@ -386,6 +395,7 @@ const UserDatosFormStep2 = (props) => {
 
                 <Col md={6}>
                   <Form.Group as={Col} controlId="fecha_constitucion">
+                    <Form.Label style={textLabelColor}>Fecha de Constitución</Form.Label>
                     <Form.Control size="lg" type="date" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" placeholder="dd-mm-yyyy"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}

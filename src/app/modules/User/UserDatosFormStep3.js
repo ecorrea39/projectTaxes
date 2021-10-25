@@ -51,6 +51,10 @@ const listaEdificacion = () => {
   return array.sort((a,b) => a.name < b.name ? -1 : +(a.name > b.name));
 };
 
+const textLabelColor = {
+  'color': '#5A5EFF',
+};
+
 const UserDatosFormStep3 = (props) => {
 
   const [initialValues, setInitialValues] = useState({
@@ -667,6 +671,7 @@ const UserDatosFormStep3 = (props) => {
               <Row>
                 <Col md={12}>
                   <Form.Group as={Col} controlId="domicilio_fiscal">
+                    <Form.Label style={textLabelColor}>Domicilio Fiscal</Form.Label>
                     <Form.Control size="lg" type="text" placeholder="Domicilio Fiscal"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
@@ -687,6 +692,7 @@ const UserDatosFormStep3 = (props) => {
               <Row>
                 <Col md={4}>
                   <Form.Group controlId="estado">
+                    <Form.Label style={textLabelColor}>Estado</Form.Label>
                     <Form.Control as="select"
                                   onChange={handleChangeFiltrarMunicipios}
                                   onBlur={formik.handleBlur}
@@ -711,6 +717,7 @@ const UserDatosFormStep3 = (props) => {
 
                 <Col md={4}>
                   <Form.Group controlId="municipio">
+                    <Form.Label style={textLabelColor}>Municipio</Form.Label>
                     <Form.Control as="select"
                                   onChange={handleChangeFiltrarParroquias}
                                   onBlur={formik.handleBlur}
@@ -735,6 +742,7 @@ const UserDatosFormStep3 = (props) => {
 
                 <Col md={4}>
                   <Form.Group controlId="parroquia">
+                    <Form.Label style={textLabelColor}>Parroquia</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
@@ -763,6 +771,7 @@ const UserDatosFormStep3 = (props) => {
               <Row>
                 <Col md={4}>
                   <Form.Group as={Col} controlId="ciudad">
+                    <Form.Label style={textLabelColor}>Ciudad</Form.Label>
                     <Form.Control size="lg" type="text" placeholder="Ciudad"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
@@ -779,6 +788,7 @@ const UserDatosFormStep3 = (props) => {
 
                 <Col md={4}>
                   <Form.Group controlId="sector">
+                    <Form.Label style={textLabelColor}>Sector</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
@@ -803,6 +813,7 @@ const UserDatosFormStep3 = (props) => {
 
                 <Col md={4}>
                   <Form.Group controlId="vialidad">
+                    <Form.Label style={textLabelColor}>Vialidad</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
@@ -831,6 +842,7 @@ const UserDatosFormStep3 = (props) => {
               <Row>
                 <Col md={6}>
                   <Form.Group controlId="edificacion">
+                    <Form.Label style={textLabelColor}>Edificación</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
@@ -855,6 +867,7 @@ const UserDatosFormStep3 = (props) => {
 
                 <Col md={6}>
                   <Form.Group as={Col} controlId="local">
+                    <Form.Label style={textLabelColor}>Local</Form.Label>
                     <Form.Control size="lg" type="text" placeholder="Local"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
@@ -875,6 +888,7 @@ const UserDatosFormStep3 = (props) => {
               <Row>
                 <Col md={2}>
                   <Form.Group controlId="codigo_telefono_compania1">
+                    <Form.Label style={textLabelColor}>Código de área</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
@@ -899,6 +913,7 @@ const UserDatosFormStep3 = (props) => {
 
                 <Col md={4}>
                   <Form.Group as={Col} controlId="numero_telefono_compania1">
+                    <Form.Label style={textLabelColor}>Número de Teléfono 1</Form.Label>
                     <Form.Control size="lg" type="text" placeholder="Telefono 1"
                                   onChange={customHandleChangeNumeroDeTelefono1}
                                   onBlur={formik.handleBlur}
@@ -916,6 +931,7 @@ const UserDatosFormStep3 = (props) => {
 
                 <Col md={2}>
                   <Form.Group controlId="codigo_telefono_compania2">
+                    <Form.Label style={textLabelColor}>Código de área</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
@@ -940,6 +956,7 @@ const UserDatosFormStep3 = (props) => {
 
                 <Col md={4}>
                   <Form.Group as={Col} controlId="numero_telefono_compania2">
+                    <Form.Label style={textLabelColor}>Número de Teléfono 2</Form.Label>
                     <Form.Control size="lg" type="text" placeholder="Telefono 2"
                                   onChange={customHandleChangeNumeroDeTelefono2}
                                   onBlur={formik.handleBlur}
@@ -961,6 +978,7 @@ const UserDatosFormStep3 = (props) => {
               <Row>
                 <Col md={12}>
                   <Form.Group as={Col} controlId="correo_empresa">
+                    <Form.Label style={textLabelColor}>Correo electrónico</Form.Label>
                     <Form.Control size="lg" type="text" placeholder="Correo Electrónico"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
