@@ -1,10 +1,13 @@
 import React, {useState, useEffect, useRef} from "react";
-import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
+import {Button, Card, Col, Container, Dropdown, DropdownButton, Form, Row, SplitButton} from "react-bootstrap";
 import {FormattedMessage, useIntl} from "react-intl";
 import * as Yup from "yup";
 import {useFormik} from "formik";
 import axios from "axios";
 
+const textLabelColor = {
+  'color': '#5A5EFF',
+};
 
 const UserDatosFormStep1 = (props) => {
 
@@ -445,206 +448,233 @@ const UserDatosFormStep1 = (props) => {
   return (
     <Card bg="default" text="success">
       <Card.Body>
-        <Card.Title>
-          Datos de la Empresa
-        </Card.Title>
-        <Card.Body>
-          <form
-            onSubmit={formik.handleSubmit}
-            className="form fv-plugins-bootstrap fv-plugins-framework"
-          >
-            <Container>
-              <Row>
-                <Col md={6}>
-                  <Form.Group as={Col} controlId="razon_social">
-                    <Form.Control size="lg" type="text" placeholder="Razón Social"
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                  value={formik.values.razon_social}
-                    />
 
-                    {formik.touched.razon_social && formik.errors.razon_social ? (
-                      <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.razon_social}</div>
-                      </div>
-                    ) : null}
-                  </Form.Group>
-                </Col>
+          <Row>
+            <Col md={4}>
+              <Card.Title>
+                Datos de la Empresa
+              </Card.Title>
+            </Col>
+            <Col md={3}>
+              Empresa Principal y Fondos de Comercio
+            </Col>
+            <Col md={5}>
+              <form>
+                <Form.Group controlId="fondoComercio">
+                  <Form.Control as="select">
+                    <option key="0" value="">Seleccione el Fondo de Comercio1</option>
+                    <option key="1" value="">Seleccione el Fondo de Comercio2</option>
+                  </Form.Control>
+                </Form.Group>
+              </form>
+            </Col>
+          </Row>
 
-                <Col md={6}>
-                  <Form.Group as={Col} controlId="nombre_comercial">
-                    <Form.Control size="lg" type="text" placeholder="Nombre Comercial"
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                  value={formik.values.nombre_comercial}
-                    />
 
-                    {formik.touched.nombre_comercial && formik.errors.nombre_comercial ? (
-                      <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.nombre_comercial}</div>
-                      </div>
-                    ) : null}
-                  </Form.Group>
-                </Col>
-              </Row>
+          <Card.Body>
+            <form
+              onSubmit={formik.handleSubmit}
+              className="form fv-plugins-bootstrap fv-plugins-framework"
+            >
+              <Container>
+                <Row>
+                  <Col md={6}>
+                    <Form.Group as={Col} controlId="razon_social">
+                      <Form.Label style={textLabelColor}>Razón Social</Form.Label>
+                      <Form.Control size="lg" type="text" placeholder="Razón Social"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.razon_social}
+                      />
 
-              <Row>
-                <Col md={6}>
-                  <Form.Group controlId="clase_de_empresa">
-                    <Form.Control as="select"
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                  value={formik.values.clase_de_empresa}
-                                  ref={clase_de_empresaRef}
+                      {formik.touched.razon_social && formik.errors.razon_social ? (
+                        <div className="fv-plugins-message-container">
+                          <div className="fv-help-block">{formik.errors.razon_social}</div>
+                        </div>
+                      ) : null}
+                    </Form.Group>
+                  </Col>
+
+                  <Col md={6}>
+                    <Form.Group as={Col} controlId="nombre_comercial">
+                      <Form.Label style={textLabelColor}>Nombre Comercial</Form.Label>
+                      <Form.Control size="lg" type="text" placeholder="Nombre Comercial"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.nombre_comercial}
+                      />
+
+                      {formik.touched.nombre_comercial && formik.errors.nombre_comercial ? (
+                        <div className="fv-plugins-message-container">
+                          <div className="fv-help-block">{formik.errors.nombre_comercial}</div>
+                        </div>
+                      ) : null}
+                    </Form.Group>
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col md={6}>
+                    <Form.Group controlId="clase_de_empresa">
+                      <Form.Label style={textLabelColor}>Clase de Empresa</Form.Label>
+                      <Form.Control as="select"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.clase_de_empresa}
+                                    ref={clase_de_empresaRef}
+                      >
+
+                        <option key="0" value="">Seleccione la Clase de Empresa</option>
+
+                        {clasesEmpresa.map((elemento) =>
+                          <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
+                        )}
+
+                      </Form.Control>
+
+                      {formik.touched.clase_de_empresa && formik.errors.clase_de_empresa ? (
+                        <div className="fv-plugins-message-container">
+                          <div className="fv-help-block">{formik.errors.clase_de_empresa}</div>
+                        </div>
+                      ) : null}
+                    </Form.Group>
+                  </Col>
+
+                  <Col md={6}>
+                    <Form.Group controlId="actividad_economica">
+                      <Form.Label style={textLabelColor}>Actividad Económica</Form.Label>
+                      <Form.Control as="select"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.actividad_economica}
+                                    ref={actividad_economicaRef}
+                      >
+
+                        <option key="0" value="">Seleccione la Actividad Económica</option>
+
+                        {actividadesEconomicas.map((elemento) =>
+                          <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
+                        )}
+
+                      </Form.Control>
+
+                      {formik.touched.actividad_economica && formik.errors.actividad_economica ? (
+                        <div className="fv-plugins-message-container">
+                          <div className="fv-help-block">{formik.errors.actividad_economica}</div>
+                        </div>
+                      ) : null}
+                    </Form.Group>
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col md={6}>
+                    <Form.Group controlId="estatus">
+                      <Form.Label style={textLabelColor}>Estatus</Form.Label>
+                      <Form.Control as="select"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.estatus}
+                                    ref={estatusRef}
+                      >
+
+                        <option key="0" value="">Seleccione el Estatus</option>
+
+                        {estatus.map((elemento) =>
+                          <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
+                        )}
+
+                      </Form.Control>
+
+                      {formik.touched.estatus && formik.errors.estatus ? (
+                        <div className="fv-plugins-message-container">
+                          <div className="fv-help-block">{formik.errors.estatus}</div>
+                        </div>
+                      ) : null}
+                    </Form.Group>
+                  </Col>
+
+                  <Col md={6}>
+
+                  </Col>
+                </Row>
+
+                <br/>
+
+                <Card.Subtitle>Datos de IVSS</Card.Subtitle>
+
+                <br/>
+
+                <Row>
+                  <Col md={6}>
+                    <Form.Group as={Col} controlId="numero_patronal">
+                      <Form.Label style={textLabelColor}>Número Patronal</Form.Label>
+                      <Form.Control size="lg" type="text" placeholder="Número Patronal"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.numero_patronal}
+                      />
+
+                      {formik.touched.numero_patronal && formik.errors.numero_patronal ? (
+                        <div className="fv-plugins-message-container">
+                          <div className="fv-help-block">{formik.errors.numero_patronal}</div>
+                        </div>
+                      ) : null}
+                    </Form.Group>
+                  </Col>
+
+                  <Col md={6}>
+                    <Form.Group as={Col} controlId="numero_de_trabajadores">
+                      <Form.Label style={textLabelColor}>Número de Trabajadores</Form.Label>
+                      <Form.Control size="lg" type="text" placeholder="Número de Trabajadores"
+                                    onChange={customHandleChangeNumeroDeTrabajadores}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.numero_de_trabajadores}
+                      />
+
+                      {formik.touched.numero_de_trabajadores && formik.errors.numero_de_trabajadores ? (
+                        <div className="fv-plugins-message-container">
+                          <div className="fv-help-block">{formik.errors.numero_de_trabajadores}</div>
+                        </div>
+                      ) : null}
+                    </Form.Group>
+                  </Col>
+                </Row>
+
+                <br/>
+
+                <Row>
+                  <Col md={6}>
+                    <Button variant="success" size="lg" block
+                            type="submit"
+                            disabled={
+                              formik.isSubmitting ||
+                              !formik.isValid
+                            }
                     >
+                      Guardar
+                    </Button>
+                  </Col>
 
-                      <option key="0" value="">Seleccione la Clase de Empresa</option>
-
-                      {clasesEmpresa.map((elemento) =>
-                        <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
-                      )}
-
-                    </Form.Control>
-
-                    {formik.touched.clase_de_empresa && formik.errors.clase_de_empresa ? (
-                      <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.clase_de_empresa}</div>
-                      </div>
-                    ) : null}
-                  </Form.Group>
-                </Col>
-
-                <Col md={6}>
-                  <Form.Group controlId="actividad_economica">
-                    <Form.Control as="select"
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                  value={formik.values.actividad_economica}
-                                  ref={actividad_economicaRef}
+                  <Col md={6}>
+                    <Button variant="secondary" size="lg" block
+                            type="button"
+                            onClick={submitSiguiente}
+                            disabled={
+                              formik.isSubmitting ||
+                              !formik.isValid
+                            }
                     >
-
-                      <option key="0" value="">Seleccione la Actividad Económica</option>
-
-                      {actividadesEconomicas.map((elemento) =>
-                        <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
-                      )}
-
-                    </Form.Control>
-
-                    {formik.touched.actividad_economica && formik.errors.actividad_economica ? (
-                      <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.actividad_economica}</div>
-                      </div>
-                    ) : null}
-                  </Form.Group>
-                </Col>
-              </Row>
-
-              <Row>
-                <Col md={6}>
-                  <Form.Group controlId="estatus">
-                    <Form.Control as="select"
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                  value={formik.values.estatus}
-                                  ref={estatusRef}
-                    >
-
-                      <option key="0" value="">Seleccione el Estatus</option>
-
-                      {estatus.map((elemento) =>
-                        <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
-                      )}
-
-                    </Form.Control>
-
-                    {formik.touched.estatus && formik.errors.estatus ? (
-                      <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.estatus}</div>
-                      </div>
-                    ) : null}
-                  </Form.Group>
-                </Col>
-
-                <Col md={6}>
-
-                </Col>
-              </Row>
-
-              <br/>
-
-              <Card.Subtitle>Datos de IVSS</Card.Subtitle>
-
-              <br/>
-
-              <Row>
-                <Col md={6}>
-                  <Form.Group as={Col} controlId="numero_patronal">
-                    <Form.Control size="lg" type="text" placeholder="Número Patronal"
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                  value={formik.values.numero_patronal}
-                    />
-
-                    {formik.touched.numero_patronal && formik.errors.numero_patronal ? (
-                      <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.numero_patronal}</div>
-                      </div>
-                    ) : null}
-                  </Form.Group>
-                </Col>
-
-                <Col md={6}>
-                  <Form.Group as={Col} controlId="numero_de_trabajadores">
-                    <Form.Control size="lg" type="text" placeholder="Número de Trabajadores"
-                                  onChange={customHandleChangeNumeroDeTrabajadores}
-                                  onBlur={formik.handleBlur}
-                                  value={formik.values.numero_de_trabajadores}
-                    />
-
-                    {formik.touched.numero_de_trabajadores && formik.errors.numero_de_trabajadores ? (
-                      <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.numero_de_trabajadores}</div>
-                      </div>
-                    ) : null}
-                  </Form.Group>
-                </Col>
-              </Row>
-
-              <br/>
-
-              <Row>
-                <Col md={6}>
-                  <Button variant="success" size="lg" block
-                          type="submit"
-                          disabled={
-                            formik.isSubmitting ||
-                            !formik.isValid
-                          }
-                  >
-                    Guardar
-                  </Button>
-                </Col>
-
-                <Col md={6}>
-                  <Button variant="secondary" size="lg" block
-                          type="button"
-                          onClick={submitSiguiente}
-                          disabled={
-                            formik.isSubmitting ||
-                            !formik.isValid
-                          }
-                  >
-                    Siguiente
-                  </Button>
-                </Col>
-              </Row>
-            </Container>
-          </form>
-        </Card.Body>
+                      Siguiente
+                    </Button>
+                  </Col>
+                </Row>
+              </Container>
+            </form>
+          </Card.Body>
       </Card.Body>
     </Card>
-  );
+);
 }
 
 export default UserDatosFormStep1;
