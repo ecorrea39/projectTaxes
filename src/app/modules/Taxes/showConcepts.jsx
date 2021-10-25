@@ -18,7 +18,7 @@ function ShowConcept({formik}) {
         reCul, setReCul,
         debForm, setDebForm,
         debMat, setDebMat,
-        creditoFiscal, setCreditoFiscal } = useContext(TaxesContext);
+        creditoFiscal, setCreditoFiscal, formatoFechaFutura } = useContext(TaxesContext);
 
     const conceptos = formik.values.conceptos;
 
@@ -26,7 +26,7 @@ function ShowConcept({formik}) {
         setActaR({
             ...actaReparo,
             [input] : value
-        })
+        });
     }
     const handleReAdmin = (value,input) => {  
         console.log(value,input)  
@@ -63,7 +63,7 @@ function ShowConcept({formik}) {
     return (
         <>
             <Col>
-                { conceptos.includes("3") && <ActaReparo extraOnChange={handleActa} /> }
+                { conceptos.includes("3") && <ActaReparo formatoFecha={formatoFechaFutura} extraOnChange={handleActa} /> }
                 { conceptos.includes("4") && <ResolucionAdministrativa extraOnChange={handleReAdmin} /> }
                 { conceptos.includes("5") && <ResolucionCulminatoriaSumario extraOnChange={handleReCul} /> }
                 { conceptos.includes("6") && <IncumplimientoDeberesFormales extraOnChange={handleDebFormales} /> }

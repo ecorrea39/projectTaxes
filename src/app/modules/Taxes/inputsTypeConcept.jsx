@@ -4,7 +4,7 @@ import { Field } from "formik";
 import BaseInput from "../Forms/BaseInputs";
 import BaseSelect from "../Forms/BaseSelect";
 
-export const ActaReparo = ({extraOnChange}) => {
+export const ActaReparo = ({extraOnChange, formatoFecha}) => {
     return (
         <>
             <Row className="mt-4 mb-4">
@@ -22,6 +22,7 @@ export const ActaReparo = ({extraOnChange}) => {
                         name="numActa"
                         component={BaseInput}
                         extraOnChange={extraOnChange}
+                        maxLength="15"
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4">
@@ -34,6 +35,7 @@ export const ActaReparo = ({extraOnChange}) => {
                         type="date"
                         component={BaseInput}
                         extraOnChange={extraOnChange}
+                        max={formatoFecha}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4">
@@ -45,6 +47,7 @@ export const ActaReparo = ({extraOnChange}) => {
                         name="montoActa"
                         component={BaseInput}
                         extraOnChange={extraOnChange}
+                        maxLength="10"
                     />
                 </Col>
             </Row>
@@ -53,7 +56,7 @@ export const ActaReparo = ({extraOnChange}) => {
     )
 }
 
-export const InteresesMoratorios = () => {
+export const InteresesMoratorios = ({formatoFecha}) => {
     return (
         <>
             <Row className="mt-4 mb-4">
@@ -70,6 +73,7 @@ export const InteresesMoratorios = () => {
                         id="monto-intereses-moratorios"
                         name="montoInteresesMoratorios"
                         component={BaseInput}
+                        maxLength="10"
                     />
                 </Col>
             </Row>
@@ -78,7 +82,7 @@ export const InteresesMoratorios = () => {
     )
 }
 
-export const ChequeDevuelto = () => {
+export const ChequeDevuelto = ({formatoFecha}) => {
     return (
         <>
             <Row className="mt-4 mb-4">
@@ -95,6 +99,7 @@ export const ChequeDevuelto = () => {
                         id="num-cheque"
                         name="numCheque"
                         component={BaseInput}
+                        maxLength="15"
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -106,6 +111,7 @@ export const ChequeDevuelto = () => {
                         name="fechaCheque"
                         type="date"
                         component={BaseInput}
+                        max={formatoFecha}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -127,6 +133,7 @@ export const ChequeDevuelto = () => {
                         name="fechaNotaDebito"
                         type="date"
                         component={BaseInput}
+                        max={formatoFecha}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -137,6 +144,7 @@ export const ChequeDevuelto = () => {
                         id="monto-cheque"
                         name="montoCheque"
                         component={BaseInput}
+                        maxLength="10"
                     />
                 </Col>
             </Row>
@@ -145,7 +153,7 @@ export const ChequeDevuelto = () => {
     )
 }
 
-export const ConvenioPago = () => {
+export const ConvenioPago = ({formatoFecha}) => {
     return (
         <>
             <Row className="mt-4 mb-4">
@@ -162,6 +170,7 @@ export const ConvenioPago = () => {
                         id="num-conv-pago"
                         name="numConvPago"
                         component={BaseInput}
+                        maxLength="15"
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -173,6 +182,7 @@ export const ConvenioPago = () => {
                         name="fechaConvenio"
                         type="date"
                         component={BaseInput}
+                        max={formatoFecha}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -183,6 +193,7 @@ export const ConvenioPago = () => {
                         id="num-giro-pago"
                         name="numGiroConvenioPago"
                         component={BaseInput}
+                        maxLength="10"
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -194,6 +205,7 @@ export const ConvenioPago = () => {
                         name="fechaVencConvenio"
                         type="date"
                         component={BaseInput}
+                        max={formatoFecha}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -204,6 +216,7 @@ export const ConvenioPago = () => {
                         id="monto-convenio"
                         name="montoConvenio"
                         component={BaseInput}
+                        maxLength="10"
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -214,6 +227,7 @@ export const ConvenioPago = () => {
                         id="monto-interese"
                         name="montoInteresesConvenio"
                         component={BaseInput}
+                        maxLength="10"
                     />
                 </Col>
             </Row>
@@ -239,6 +253,7 @@ export const MultasPorcentuales = () => {
                         id="monto-multa"
                         name="montoMulta"
                         component={BaseInput}
+                        maxLength="10"
                     />
                 </Col>
             </Row>
@@ -247,7 +262,7 @@ export const MultasPorcentuales = () => {
     )
 }
 
-export const IncumplimientoDeberesFormales = ({extraOnChange}) => {
+export const IncumplimientoDeberesFormales = ({extraOnChange,formatoFecha}) => {
     return (
         <>
             <Row className="mt-4 mb-4">
@@ -265,6 +280,7 @@ export const IncumplimientoDeberesFormales = ({extraOnChange}) => {
                         name="numResolucionForm"
                         component={BaseInput}
                         extraOnChange={extraOnChange}
+                        maxLength="15"
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -277,6 +293,7 @@ export const IncumplimientoDeberesFormales = ({extraOnChange}) => {
                         type="date"
                         component={BaseInput}
                         extraOnChange={extraOnChange}
+                        max={formatoFecha}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4">
@@ -288,6 +305,7 @@ export const IncumplimientoDeberesFormales = ({extraOnChange}) => {
                         name="montoMultaResolucionForm"
                         component={BaseInput}
                         extraOnChange={extraOnChange}
+                        maxLength="10"
                     />
                 </Col>
             </Row>
@@ -296,7 +314,7 @@ export const IncumplimientoDeberesFormales = ({extraOnChange}) => {
     )
 }
 
-export const IncumplimientoDeberesMateriales = ({extraOnChange}) => {
+export const IncumplimientoDeberesMateriales = ({extraOnChange,formatoFecha}) => {
     return (
         <>
             <Row className="mt-4 mb-4">
@@ -314,6 +332,7 @@ export const IncumplimientoDeberesMateriales = ({extraOnChange}) => {
                         name="numResolucionMat"
                         component={BaseInput}
                         extraOnChange={extraOnChange}
+                        maxLength="15"
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -326,6 +345,7 @@ export const IncumplimientoDeberesMateriales = ({extraOnChange}) => {
                         type="date"
                         component={BaseInput}
                         extraOnChange={extraOnChange}
+                        max={formatoFecha}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4">
@@ -337,6 +357,7 @@ export const IncumplimientoDeberesMateriales = ({extraOnChange}) => {
                         name="montoMultaResolucionMat"
                         component={BaseInput}
                         extraOnChange={extraOnChange}
+                        maxLength="10"
                     />
                 </Col>
             </Row>
@@ -363,6 +384,7 @@ export const CreditoFiscal = ({extraOnChange}) => {
                         name="montoCredito"
                         component={BaseInput}
                         extraOnChange={extraOnChange}
+                        maxLength="10"
                     />
                 </Col>
             </Row>
@@ -371,7 +393,7 @@ export const CreditoFiscal = ({extraOnChange}) => {
     )
 }
 
-export const ResolucionAdministrativa = ({extraOnChange}) => {
+export const ResolucionAdministrativa = ({extraOnChange,formatoFecha}) => {
     return (
         <>
             <Row className="mt-4 mb-4">
@@ -389,6 +411,7 @@ export const ResolucionAdministrativa = ({extraOnChange}) => {
                         name="numResolucionAdmin"
                         component={BaseInput}
                         extraOnChange={extraOnChange}
+                        maxLength="15"
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -401,6 +424,7 @@ export const ResolucionAdministrativa = ({extraOnChange}) => {
                         type="date"
                         component={BaseInput}
                         extraOnChange={extraOnChange}
+                        max={formatoFecha}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -412,6 +436,7 @@ export const ResolucionAdministrativa = ({extraOnChange}) => {
                         name="montoMultaResolucionAdmin"
                         component={BaseInput}
                         extraOnChange={extraOnChange}
+                        maxLength="10"
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -423,6 +448,7 @@ export const ResolucionAdministrativa = ({extraOnChange}) => {
                         name="montoInteresesResolucionAdmin"
                         component={BaseInput}
                         extraOnChange={extraOnChange}
+                        maxLength="10"
                     />
                 </Col>
             </Row>
@@ -431,7 +457,7 @@ export const ResolucionAdministrativa = ({extraOnChange}) => {
     )
 }
 
-export const ResolucionCulminatoriaSumario = ({extraOnChange}) => {
+export const ResolucionCulminatoriaSumario = ({extraOnChange,formatoFecha}) => {
     return (
         <>
             <Row className="mt-4 mb-4">
@@ -449,6 +475,7 @@ export const ResolucionCulminatoriaSumario = ({extraOnChange}) => {
                         name="numResolucionCul"
                         component={BaseInput}
                         extraOnChange={extraOnChange}
+                        maxLength="15"
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -461,6 +488,7 @@ export const ResolucionCulminatoriaSumario = ({extraOnChange}) => {
                         type="date"
                         component={BaseInput}
                         extraOnChange={extraOnChange}
+                        max={formatoFecha}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -472,6 +500,7 @@ export const ResolucionCulminatoriaSumario = ({extraOnChange}) => {
                         name="montoMultaResolucionCul"
                         component={BaseInput}
                         extraOnChange={extraOnChange}   
+                        maxLength="10"
                     />
                 </Col>
             </Row>

@@ -32,6 +32,7 @@ export const InputsTaxes = () => {
                         id="intereses"
                         name="intereses"
                         component={BaseInput}
+                        maxLength="10"
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -42,6 +43,7 @@ export const InputsTaxes = () => {
                         id="multa"
                         name="multa"
                         component={BaseInput}
+                        maxLength="10"
                     />
                 </Col>
             </Row>

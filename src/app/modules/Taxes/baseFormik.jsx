@@ -7,32 +7,38 @@ import ShowConcept from "./showConcepts";
 import Checkbox from "../Forms/BaseCheckbox";
 import { InputsTaxes } from "./inputsTaxes";
 import TaxesContext from "../../context/taxes/taxesContext";
+import { ListConcepts } from "./listConcepts";
 
 export const BaseFormik = ({conceptos,formik}) => {
 
-    const { bancos, totalTributoDeclarado, setCreditoFiscal } = useContext(TaxesContext);
+    const {
+        setDeducible, deducible, bancos, totalTributoDeclarado,
+        setCreditoFiscal, formatoFechaFutura, modalidadesPagos } = useContext(TaxesContext);
 
     /**VALIDACIONES PENTIEN
      * EL MONTO A PAGAR PUEDE SER MENOR A EL MONTO DEL TRIBUTO ?
      * EL MONTO DEL TRIBUTO NO PUEDE SER 0
-     * BLOQUEAR EL CAMPO DEL MONTO DEL TRIBUTO
+     * BLOQUEAR EL CAMPO DEL MONTO DEL TRIBUTO -> listo
      * MOSTRAR LA INFORMACION CORRECTA EN EL RECIBO
      * LA SUMATORIA DE LOS MONTOS DE CADA CONCEPTOS + EL MONTO DE LA DECLARACION CON EL MONTO DEL PAGO
      */
 
     const calcularCreditoFiscal = (montoPagado) => {
         
-        let resta = parseInt(montoPagado) - parseInt(totalTributoDeclarado);
+        let resta = parseInt(montoPagado) - parseInt(100);
         let array = formik.values.conceptos;
-        console.log( resta > 0 )
+        
         if ( resta > 0 )  {
+            setDeducible(resta);
             formik.setFieldValue("conceptos", [...array, "12"]);
             // ESTO SE DEBE CAMBIAR 
             setCreditoFiscal({
                 montoCredito: resta
             });
             formik.setFieldValue("montoCredito", resta);
+           
         } else {
+            setDeducible(0);
             let indice = array.indexOf("12");
             array.splice(indice, 1);
             formik.setFieldValue("conceptos", array);
@@ -43,6 +49,7 @@ export const BaseFormik = ({conceptos,formik}) => {
     }
 
     useEffect(()=>{
+        // formik.setFieldValue("montoTributo", totalTributoDeclarado );
         if (totalTributoDeclarado != null && totalTributoDeclarado > 0) {
             formik.setFieldValue("montoTributo", totalTributoDeclarado );
         }
@@ -50,7 +57,7 @@ export const BaseFormik = ({conceptos,formik}) => {
 
     useEffect(()=>{
        calcularCreditoFiscal(formik.values.monto);
-     },[formik.values.monto]);
+    },[formik.values.monto]);
 
     return (
         <>
@@ -64,6 +71,8 @@ export const BaseFormik = ({conceptos,formik}) => {
                         name="nroReferencia"
                         placeholder="Ej: 999999"
                         component={BaseInput}
+                        maxLength="10"
+                        minLength="4"
                     />
                 </Col>
                 <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6" className="mb-6">
@@ -77,8 +86,16 @@ export const BaseFormik = ({conceptos,formik}) => {
                         name="tipoTransaccion"
                     >
                         <option value="" disabled>. . .</option>
-                        <option value="Transferencia Electrónica">Transferencia Electrónica</option>
-                        <option value="Depósito en Taquilla">Depósito en Taquilla</option>
+                        {
+                            modalidadesPagos.map(element => (
+                                <option
+                                    key={element.id}
+                                    value={element.id}
+                                >
+                                    {element.attributes.name}
+                                </option>
+                            ))
+                        }
                     </Field>
                 </Col>
                 <Col xs="12" sm="4" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -98,7 +115,7 @@ export const BaseFormik = ({conceptos,formik}) => {
                                     key={element.id}
                                     value={element.id}
                                 >
-                                    {element.attributes.nom_banco}
+                                    {element.attributes["id_banco_banco.nom_banco"]}
                                 </option>
                             ))
                         }
@@ -112,6 +129,7 @@ export const BaseFormik = ({conceptos,formik}) => {
                         id="monto"
                         name="monto"
                         component={BaseInput}
+                        maxLength="10"
                     />
                 </Col>
                 <Col xs="12" sm="4" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -123,33 +141,19 @@ export const BaseFormik = ({conceptos,formik}) => {
                         type="date"
                         name="fecha"
                         component={BaseInput}
+                        max={formatoFechaFutura}
                     />
                 </Col>
             </Row>
             
-            { totalTributoDeclarado != null && <InputsTaxes /> }
-
-            <Row className="mt-4 mb-4">
-                <Col xs="12">
-                    <h5>Otros Conceptos de Pagos</h5>
-                </Col>
-            </Row>
-            <Row>
             {
-                conceptos.map((element,key) => (
-                    <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" key={key}>
-                        <Field
-                            type="checkbox" 
-                            component={Checkbox} 
-                            name="conceptos"
-                            label={element.name}
-                            value={element.id}
-                            formik={formik}
-                        />
-                    </Col>
-                ))
+                totalTributoDeclarado != null && <InputsTaxes />
             }
-            </Row>
+
+            {
+              deducible > 0 && <ListConcepts formik={formik} conceptos={conceptos} />
+            }
+            
             <Row>
                 <ShowConcept
                     formik={formik}

@@ -24,6 +24,8 @@ export const TaxesState = ({ children }) => {
     const [selConcepto, setSelConcepto] = useState([]);
     const estatus = ['eliminada', 'creada', 'definitiva', 'pagada' ];
     const nrif = odb.get('rif');
+    const [deducible, setDeducible] = useState(0);
+    const [modalidadesPagos, setModalidadPagos] = useState([]);
 
     const [actaReparo, setActaR] = useState({
         numActa: "",
@@ -67,6 +69,7 @@ export const TaxesState = ({ children }) => {
     useEffect(() => {
         getBancos();
         getConceptos();
+        getModalidadDePagos();
         getAnos();
         getTrimestres();
         getHistoricoDeclaraciones();
@@ -77,8 +80,19 @@ export const TaxesState = ({ children }) => {
     const getBancos = async () => {
 
         try {
-            const respuesta = await clientAxios.get('/banks/');
+            const respuesta = await clientAxios.get('/cuentas_banco/');
             setBancos(respuesta.data.data)
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getModalidadDePagos = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/formas_pago/');
+            setModalidadPagos(respuesta.data.data)
         } catch (error) {
             console.log(error)
         }
@@ -96,6 +110,7 @@ export const TaxesState = ({ children }) => {
                 lista.push(
                     {
                         "id": arreglo[i].id,
+                        "clave": arreglo[i].attributes.clave,
                         "name": arreglo[i].attributes.name,
                     }
                 )
@@ -260,86 +275,32 @@ export const TaxesState = ({ children }) => {
         }
     }
 
+    const validateAmount = (montoConcepto, monto) => {
+        if(montoConcepto + totalTributoDeclarado > monto) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Verifique que los montos de los conceptos no superen al monto del pago.',
+                showConfirmButton: false,
+                timer: 3000
+            })
+            return;
+        }
+    }
+
     const submitPayment = async (formData) => {
         
         try {
-            formData.detallesConceptos = [];
-            //console.log("formDataSubmit ",formData)
             requestConfig.data.type = "savePaymentDec";
             requestConfig.data.id = "j333333332"; // -> SI CAMBIO ESTE RIF FALLA LA PETICION
-            // ESTO SE DEBE OPTIMIZAR CON URGENCIA
-            formData.conceptos.map((element,index)=>{
-                //console.log("index ",element)
-                let concepto = {
-                    idConcepto: "",
-                    detalle: {
-                        monto: "", // Monto del concepto
-                        montoMulta: "", // Monto de la multa del concepto
-                        motoIntereses: "", // Monto de intereses del concepto
-                        nroDoc: "", // Numero de documento/acta/resolucion/cheque de conceptops
-                        fechaConcp: "", // Fecha del documento/acta/resolucion/cheque
-                        fechaVctoGiro: "", // Fecha Vencimiento de Giro Convenio de pago
-                        fechaNotaDebito: "" // Fecha nota deito del cheque
-                    }
-                };
-
-                concepto.idConcepto = element;
-
-                if (element == 3) {
-                    concepto.detalle.monto = actaReparo.montoActa;
-                    concepto.detalle.fechaConcp = actaReparo.fechaActa;
-                    concepto.detalle.fechaConcp = actaReparo.numActa;
-                }
-                if (element == 4) {
-                    concepto.detalle.nroDoc = reAdmin.numResolucionAdmin;
-                    concepto.detalle.fechaConcp = reAdmin.fechaResolucionAdmin;
-                    concepto.detalle.montoMulta = reAdmin.montoMultaResolucionAdmin;
-                    concepto.detalle.motoIntereses = reAdmin.montoInteresesResolucionAdmin
-                }
-                if (element == 5) {
-                    concepto.detalle.nroDoc = reCul.numResolucionCul;
-                    concepto.detalle.fechaConcp = reCul.fechaResolucionCul;
-                    concepto.detalle.montoMulta = reCul.montoMultaResolucionCul;
-                }
-                if (element == 6) {
-                    concepto.detalle.nroDoc = debForm.numResolucionForm;
-                    concepto.detalle.fechaConcp = debForm.fechaResolucionForm;
-                    concepto.detalle.montoMulta = debForm.montoMultaResolucionForm;
-                }
-                if (element == 7) {
-                    concepto.detalle.nroDoc = debMat.numResolucionMat;
-                    concepto.detalle.fechaConcp = debMat.fechaResolucionMat;
-                    concepto.detalle.montoMulta = debMat.montoMultaResolucionMat;
-                }
-                if (element == 8) {
-                    concepto.detalle = {};
-                }
-                if (element == 9) {
-                    concepto.detalle = {};
-                }
-                if (element == 10) {
-                    concepto.detalle = {};
-                }
-                if (element == 11) {
-                    concepto.detalle = {};
-                }
-                if (element == 12) {
-                    concepto.detalle.monto = creditoFiscal.montoCredito;
-                }
-                formData.detallesConceptos.push(concepto);
-            });
-            //console.log("formDataEnd ",formData)
-            setFormDataPayment(formData);
             requestConfig.data.attributes = formData;
             const respuesta = await clientAxios.post('/payment_declaration/', requestConfig);
             setStepTaxes(stepTaxes+1);
-
             Swal.fire({
                 icon: 'success',
                 title: 'Su Pago fue registrado con Éxito.',
                 showConfirmButton: false,
                 timer: 2000
-            })
+            });
         } catch (error) {
             console.log(error)
         }
@@ -454,6 +415,7 @@ export const TaxesState = ({ children }) => {
         submitDeclaration,
         formDataPayment,
         setFormDataDeclaration,
+        formDataDeclaration,
         userData,
         setFormDataPayment,
         getUserData,
@@ -475,7 +437,11 @@ export const TaxesState = ({ children }) => {
         creditoFiscal, setCreditoFiscal,
         filtarHistorico,
         selConcepto,
-        showSelConcepto
+        showSelConcepto,
+        deducible,
+        setDeducible,
+        modalidadesPagos,
+        setModalidadPagos
     }
 
     return (

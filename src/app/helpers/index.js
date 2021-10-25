@@ -1,3 +1,1 @@
-
-
-export {}
+export const regexNumber = /^[0-9]+$/;
