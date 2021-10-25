@@ -48,6 +48,8 @@ const UserDatosFormStep5 = (props) => {
 
         alert('Guardado exitosamente');
 
+        window.open(API_URL + 'reports/comprobante_inscripcion/J888','_blank');
+
         disableLoading();
 
         console.log("resFormStep5", res);

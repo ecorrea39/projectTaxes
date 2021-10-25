@@ -130,7 +130,7 @@ export function AsideMenuList({ layoutProps }) {
             <span className="svg-icon menu-icon">
               <SVG src={toAbsoluteUrl("/media/svg/icons/Shopping/Bag2.svg")} />
             </span>
-            <span className="menu-text">Contribuyente</span>
+            <span className="menu-text">Consultas</span>
           </NavLink>
           <div className="menu-submenu">
             <i className="menu-arrow" />
