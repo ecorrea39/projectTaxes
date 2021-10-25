@@ -55,15 +55,6 @@ export const TaxesState = ({ children }) => {
         montoCredito: ""
     });
 
-    // ESTO NO HACE FALTA EL clientAxios YA INCLUYE ESTA CONFIGURACION
-    const axiosConfig = {
-        headers: {
-            Accept: 'application/vnd.api+json',
-            'Content-Type': 'application/vnd.api+json',
-            Authorization: 'Bearer ' + odb.get('authToken')
-        }
-    }
-
     useEffect(() => {
         getBancos();
         getConceptos();
@@ -129,13 +120,21 @@ export const TaxesState = ({ children }) => {
     const getTrimestres = async () => {
 
         try {
-            const array = [
-                { "id": "1", "name": "Trimestre 1"},
-                { "id": "2", "name": "Trimestre 2"},
-                { "id": "3", "name": "Trimestre 3"},
-                { "id": "4", "name": "Trimestre 4"}
-            ];
-            setTrimestres(array.sort((a, b) => a.name < b.name ? -1 : +(a.name > b.name)));
+            const respuesta = await clientAxios.get('/trimestres/', clientAxios);
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "name": arreglo[i].attributes.name,
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setTrimestres(lista)
+
         } catch (error) {
             console.log(error)
         }
@@ -228,10 +227,10 @@ export const TaxesState = ({ children }) => {
     const sustituirDeclaracion = (seleccion, i, props) => {
 
         try {
-            if (seleccion.estatus === 2) {
+            if (seleccion.estatus === 2 || seleccion.estatus === 3 ) {
                 Swal.fire({
                     title: "Declaración de tributos",
-                    text: "Declaración seleccionada con estatus Definitiva, no puede ser modificada",
+                    text: "Declaración seleccionada con estatus Definitiva/Pagada, no puede ser modificada",
                     icon: 'warning',
                     denyButtonText: `Ok`
                 });
@@ -335,10 +334,11 @@ export const TaxesState = ({ children }) => {
             setStepTaxes(stepTaxes+1);
 
             Swal.fire({
+                title: "Pago de tributos",
+                text: "Su Pago fue registrado con Éxito.",
+                button: "Ok",
                 icon: 'success',
-                title: 'Su Pago fue registrado con Éxito.',
-                showConfirmButton: false,
-                timer: 2000
+                timer: 1500
             })
         } catch (error) {
             console.log(error)
@@ -394,10 +394,10 @@ export const TaxesState = ({ children }) => {
             setTotalTributoDeclarado(total);
 
             requestConfig.data.type = "saveTributeDeclaration";
-            requestConfig.data.attributes = valores.declaraciones;
-            requestConfig.data.id = (!declaracionSustitutiva) ? nrif : valores.declaraciones[0].id;
+            requestConfig.data.attributes = (declaracionSustitutiva === false) ? valores.declaraciones : valores.declaraciones[0];
+            requestConfig.data.id = (declaracionSustitutiva === false) ? nrif : valores.declaraciones[0].id;
 
-            if(!declaracionSustitutiva) {
+            if(declaracionSustitutiva === false) {
                 const respuesta = await clientAxios.post('/tribute_declaration/', requestConfig);
             } else {
                 const respuesta = await clientAxios.put('/tribute_declaration/', requestConfig);
@@ -412,11 +412,10 @@ export const TaxesState = ({ children }) => {
             }).then((value) => {
                 if (total > 0) {
                     setStepTaxes(stepTaxes+1)
-                } else {
-                    //setStepTaxes(1)
                 }
                 setDeclaracionSustitutiva(false);
                 setDeclaracionSeleccionada([]);
+                getHistoricoDeclaraciones();
             });
         } catch (error) {
             console.log(error)
@@ -440,6 +439,7 @@ export const TaxesState = ({ children }) => {
             tmp.push(Number(x.concepto_pago))
         });
         setSelConcepto(tmp);
+        getTrimestres();
 
     }
 

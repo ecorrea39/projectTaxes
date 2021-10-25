@@ -181,7 +181,7 @@ function ForgotPassword(props) {
             )}
 
             {/* begin: tipo */}
-            <Form.Group as={Col} controlId="tipo">
+            <Form.Group as={Col} controlId="tipo" className="p-0" >
               {/*<Form.Label>State</Form.Label>*/}
               <Form.Control as="select"
                             onChange={formik.handleChange}
@@ -215,9 +215,7 @@ function ForgotPassword(props) {
               <input
                 placeholder="rif"
                 type="text"
-                className={`form-control form-control-solid h-auto py-5 px-6 ${getInputClasses(
-                  "user"
-                )}`}
+                className={`form-control form-control-solid h-auto ${getInputClasses("user")}`}
                 name="user"
                 onChange={customHandleChange}
                 value={formik.values.user}

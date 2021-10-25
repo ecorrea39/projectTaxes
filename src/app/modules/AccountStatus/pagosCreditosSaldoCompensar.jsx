@@ -1,16 +1,19 @@
-import React from "react";
+import React, {useContext} from "react";
 import { Card, Tab, Table, Tabs } from "react-bootstrap";
+import AccountStatusContext from "../../context/accountStatus/accountStatusContext";
 
 function PagosCreditosSaldoCompensar({className}) {
 
+    const { formatoFechaFutura, formatNumber, detalleCreditoFis } = useContext(AccountStatusContext);
     const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", marginTop: "1%", marginBottom: "1%" }
+    const detalleCreditoFiscal = detalleCreditoFis;
 
     return (
         <>
             <div className={`card card-custom ${className}`} style={styleCard}>
                 <div className="card-header border-0 py-5">
                     <h3 className="card-title align-items-start flex-column">
-                        <span className="card-label font-weight-bolder text-dark">Pagos y créditos</span>
+                        <span className="card-label font-weight-bolder text-dark">Pagos y créditos | Pago compensatorio</span>
                         <span className="text-muted mt-3 font-weight-bold font-size-sm">Saldo a compensar por crédito fiscal</span>
                     </h3>
                     <div className="card-toolbar">
@@ -21,8 +24,7 @@ function PagosCreditosSaldoCompensar({className}) {
                 <div className="card-body pt-0 pb-3">
                     <div className="tab-content">
                         <div className="table-responsive">
-                            <table
-                                className="table table-head-custom table-head-bg table-borderless table-vertical-center">
+                            <table className="table table-vertical-center table-head-bg">
                                 <thead>
                                 <tr className="text-left text-uppercase">
                                     <th style={{minWidth: "180px"}}>Saldo temporal a compensar</th>

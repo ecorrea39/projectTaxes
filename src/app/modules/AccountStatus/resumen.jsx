@@ -61,14 +61,14 @@ function Resumen({className}) {
                             <div className="col px-12 py-6">
                                 <div className="font-size-sm text-muted font-weight-bold">
                                     <SVG src={toAbsoluteUrl("/media/svg/icons/Layout/Layout-4-blocks.svg")} />
-                                    Total crédito fiscal | Saldo temporal
+                                    Total crédito fiscal | Saldo temporal a compensar
                                 </div>
                                 <div className="font-size-h4 font-weight-bolder">{FormatNumber(totalCreditoFisTemp)}</div>
                             </div>
                             <div className="col px-12 py-6">
                                 <div className="font-size-sm text-muted font-weight-bold">
                                     <SVG src={toAbsoluteUrl("/media/svg/icons/Layout/Layout-4-blocks.svg")} />
-                                    Total crédito fiscal | Saldo aprobado
+                                    Total crédito fiscal | Saldo aprobado certificado de crédito fiscal
                                 </div>
                                 <div className="font-size-h4 font-weight-bolder">{FormatNumber(totalCreditoFisAprob)}</div>
                             </div>
