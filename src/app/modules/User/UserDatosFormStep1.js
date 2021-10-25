@@ -455,7 +455,7 @@ const UserDatosFormStep1 = (props) => {
                 Datos de la Empresa
               </Card.Title>
             </Col>
-            <Col md={3}>
+            <Col md={3} style={textLabelColor}>
               Empresa Principal y Fondos de Comercio
             </Col>
             <Col md={5}>
