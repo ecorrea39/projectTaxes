@@ -46,13 +46,15 @@ const UserDatosFormStep5 = (props) => {
     axios.post(`${API_URL}profile_summary/`, data, axiosConfig)
       .then(function (res) {
 
+        console.log("resFormStep5", res);
+
         alert('Guardado exitosamente');
 
-        window.open(API_URL + 'reports/comprobante_inscripcion/J888','_blank');
+        window.open(API_URL + 'reports/comprobante_inscripcion/' + res.data.data.id,'_blank');
 
         disableLoading();
 
-        console.log("resFormStep5", res);
+
 
         // if (parciales) {
         //   console.log('fechacontitucion ', fechacontitucion);
