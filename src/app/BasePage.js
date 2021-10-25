@@ -23,6 +23,9 @@ const UserProfilepage = lazy(() =>
 const UserDatospage = lazy(() =>
   import("./modules/User/UserDatos")
 );
+const Mapapage = lazy(() =>
+  import("./modules/Mapa/Mapa")
+);
 
 export default function BasePage() {
   // useEffect(() => {
@@ -47,6 +50,7 @@ export default function BasePage() {
         <Route path="/e-commerce" component={ECommercePage} />
         <Route path="/user-profile" component={UserProfilepage} />
         <Route path="/user-datos" component={UserDatospage} />
+        <Route path="/mapa" component={Mapapage} />
         <Redirect to="error/error-v1" />
       </Switch>
     </Suspense>

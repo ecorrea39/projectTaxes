@@ -12,6 +12,17 @@ import {
   ListsWidget4,
   ListsWidget8,
 } from "../widgets";
+
+// src/app/modules/AccountStatus/accountStatusModules.jsx
+//
+// src/_metronic/_partials/dashboards/Demo1Dashboard.js
+
+import Resumen from '../../../app/modules/AccountStatus/resumen';
+//import AccountStatusContext from "../../context/accountStatus/accountStatusContext";
+
+// import Resumen from '../AccountStatus/resumen'
+import DashboardCard from "./DashboardCard";
+
 export function Demo1Dashboard() {
   return (
     <>
@@ -50,10 +61,11 @@ export function Demo1Dashboard() {
       {/*</div>*/}
       <div className="row">
         <div className="col-lg-4">
-          <MixedWidget14 className="card-stretch gutter-b" />
+          <DashboardCard />
         </div>
         <div className="col-lg-8">
-          <AdvanceTablesWidget4 className="card-stretch gutter-b" />
+          {/*<AdvanceTablesWidget4 className="card-stretch gutter-b" />*/}
+          <Resumen/>
         </div>
       </div>
     </>
