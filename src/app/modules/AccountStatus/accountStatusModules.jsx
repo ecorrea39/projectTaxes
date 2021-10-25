@@ -24,10 +24,11 @@ function AccountStatusModules({className, baseColor = "primary", widgetHeight = 
                     <div className="card-body d-flex flex-column">
                         {
                             <Tabs id="estado-cuenta" className="mb-3">
+                                {/*
                                 <Tab eventKey="resumen" title="Resumen" style={{padding: '3%'}}>
                                     <Resumen/>
-                                </Tab>
-                                <Tab eventKey="deudas" title="Deudas" style={{padding: '1%'}}>
+                                </Tab>*/}
+                                <Tab eventKey="deudas" title="Efectos y Cuentas por Pagar" style={{padding: '1%'}}>
                                     <DeudasTrimestresDeclarados/>
                                     <br/>
                                     <DeudasEfectosCuentasPagar/>

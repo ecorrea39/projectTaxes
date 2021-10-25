@@ -17,7 +17,7 @@ function DeudasTrimestresDeclarados({className}) {
             <div className={`card card-custom ${className}`} style={styleCard}>
                 <div className="card-header border-0 py-5">
                     <h3 className="card-title align-items-start flex-column">
-                        <span className="card-label font-weight-bolder text-dark">Deudas | Detalles</span>
+                        <span className="card-label font-weight-bolder text-dark">Efectos y Cuentas por Pagar | Detalles</span>
                         <span className="text-muted mt-3 font-weight-bold font-size-sm">Trimestres declarados</span>
                     </h3>
                     <div className="card-toolbar">

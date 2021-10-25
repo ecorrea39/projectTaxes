@@ -33,7 +33,7 @@ function ReportsCertificateSolvency() {
             <Card style={styleCard}>
                 <Row className="mt-4 mb-4">
                     <Col xs="12">
-                        <h3>Reporte | Certificado de Solvencia</h3>
+                        <h3>Certificado de Solvencia</h3>
                     </Col>
                 </Row>
                 <Formik
