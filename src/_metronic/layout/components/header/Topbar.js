@@ -44,7 +44,7 @@ export function Topbar() {
     <div className="topbar">
       {/*{layoutProps.viewSearchDisplay && <SearchDropdown />}*/}
 
-      {layoutProps.viewNotificationsDisplay && <UserNotificationsDropdown />}
+      {/*{layoutProps.viewNotificationsDisplay && <UserNotificationsDropdown />}*/}
 
       {/*{layoutProps.viewQuickActionsDisplay && <QuickActionsDropdown />}*/}
 
