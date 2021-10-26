@@ -1,13 +1,56 @@
 import React, {Fragment} from "react";
+import 'bootstrap/dist/css/bootstrap.css';
+import DataTable from 'react-data-table-component';
+
+const tableFondoDeComercio = [
+  {id: 1, razon_social: "Fondo 1", nombre_comercial: "Fondo Comercio 1"},
+  {id: 2, razon_social: "Fondo 2", nombre_comercial: "Fondo Comercio 2"},
+  {id: 3, razon_social: "Fondo 3", nombre_comercial: "Fondo Comercio 3"}
+];
+
+const columnas = [
+  {
+    name: "ID",
+    selector: "id",
+    sortable: true
+  },
+  {
+    name: "Razón Social",
+    selector: "razon_social",
+    sortable: true,
+    grow: 2
+  },
+  {
+    name: "Nombre Comercial",
+    selector: "nombre_comercial",
+    sortable: true,
+    right: true
+  }
+];
+
+const paginationOptions = {
+  rowsPerPageText: "Filas por página",
+  rangeSeparatorText: "de",
+  selectAllRowsItem: true,
+  selectAllRowsItemText: "Todos"
+};
 
 const FondoDeComercioLista = (props) => {
 
   return (
-    <Fragment>
-      Lista de Fondos de Comercio
+    <div className="table-responsive">
 
-      
-    </Fragment>
+      <DataTable
+        columns={columnas}
+        data={tableFondoDeComercio}
+        title="Fondos de Comercio"
+        pagination
+        paginationComponentOptions={paginationOptions}
+        fixedHeader
+        fixedHeaderScrollHeight="600px"
+      />
+
+    </div>
   );
 }
 
