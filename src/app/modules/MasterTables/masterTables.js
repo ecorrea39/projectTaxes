@@ -1,13 +1,8 @@
 import React, {useContext, useEffect, useState} from "react";
 import { ReactDOM } from 'react-dom';
-import {Button, Col, Row, Card, Modal, Table, FormCheck} from "react-bootstrap";
+import {Modal, Table} from "react-bootstrap";
 
-import { initialValuesTables } from "./initialValues";
-import { SchemaTables } from "./validateSchemas";
-
-import BaseInput from "../Forms/BaseInputs";
 import MasterTablesContext from "../../context/masterTables/masterTablesContext";
-import BaseSelect from "../Forms/BaseSelect";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import SVG from "react-inlinesvg";
 import { toAbsoluteUrl } from "../../../_metronic/_helpers";
@@ -20,26 +15,27 @@ function MasterTables({tabla}) {
     const [isSwitchOn, setIsSwitchOn] = useState(false);
     const styleBtn = { borderRadius: '100%'}
     const [show, setShow] = useState(show);
+    const [accion, setAccion] = useState("");
 
     let data = [];
-    let title = '';
+    let titulo = '';
     let columnas = '';
 
     switch (tabla) {
         case "trimestre":
-            title = "Trimestres";
+            titulo = "Trimestres";
             data = trimestres;
             columnas = "col-1";
             break;
 
         case "forma-pago":
-            title = "Forma de Pago ";
+            titulo = "Forma de Pago";
             data = formasPago;
             columnas = "col-1";
             break;
 
         case "cuentas-recaudadoras":
-            title = "Cuentas Recaudadoras";
+            titulo = "Cuentas Recaudadoras";
             data = cuentasRecaudadoras;
             columnas = "col-2";
             break;
@@ -56,7 +52,9 @@ function MasterTables({tabla}) {
             <div className="tab-content">
                 <div className="table-responsive">
 
-                    <a title="agregar"onClick={() => setShow(true)} variant="outline-info" className="btn btn-sm btn-info font-weight-bolder font-size-sm mb-3">Nuevo registro</a>
+                    <a title="agregar" style={{position: 'fixed', top: '18%', right: '6%', borderRadius: '100%'}} onClick={() => {setShow(true); setAccion("Agregar") }} className="btn btn-icon btn-warning btn-hover-light btn-sm mx-3">
+                        <span>+</span>
+                    </a>
 
                     <Table responsive="sm" className="table-vertical-center table-head-bg" pagination={paginationFactory()}>
                         <thead variant="outline-info">
@@ -77,8 +75,8 @@ function MasterTables({tabla}) {
                                         <th style={{minWidth: "15px"}}></th>
                                         <th style={{minWidth: "15px"}}>id</th>
                                         <th style={{minWidth: "200px"}}>Banco</th>
-                                        <th style={{minWidth: "50px"}}>Tipo Cuenta</th>
-                                        <th style={{minWidth: "50px"}}>Número Cuenta</th>
+                                        <th style={{minWidth: "50px"}}>Tipo Cta.</th>
+                                        <th style={{minWidth: "50px"}}>Número Cta.</th>
                                         <th style={{minWidth: "50px"}}>Estatus</th>
                                         <th style={{minWidth: "50px"}}>Acciones</th>
                                     </>
@@ -91,43 +89,43 @@ function MasterTables({tabla}) {
                             data.map((s, i) => {
                                 return (
                                     <tr key={i}>
-                                        <td></td>
-                                        <td>
+                                        <td style={{padding: "0rem", paddingLeft: "0.75rem"}}></td>
+                                        <td style={{padding: "0rem", paddingLeft: "0.75rem"}}>
                                             <span className="text-dark-75 d-block font-size-sm">{s.id}</span>
                                         </td>
                                         {
                                             columnas === 'col-1' &&
                                             <>
-                                                <td>
-                                                    <span className="text-dark-75 d-block font-size-sm">{s.name}</span>
+                                                <td style={{padding: "0rem", paddingLeft: "0.75rem"}}>
+                                                    <span className="text-dark-75 font-size-sm">{s.name}</span>
                                                 </td>
                                             </>
                                         }
                                         {
                                             columnas === 'col-2' &&
                                             <>
-                                                <td>
-                                                    <span className="text-dark-75 d-block font-size-sm">{s.name}</span>
+                                                <td style={{padding: "0rem", paddingLeft: "0.75rem"}}>
+                                                    <span className="text-dark-75 font-size-sm">{s.name}</span>
                                                 </td>
-                                                <td>
-                                                    <span className="text-dark-75 d-block font-size-sm">{s.cuenta_tipo}</span>
+                                                <td style={{padding: "0rem", paddingLeft: "0.75rem"}}>
+                                                    <span className="text-dark-75 font-size-sm">{s.cuenta_tipo}</span>
                                                 </td>
-                                                <td>
-                                                    <span className="text-dark-75 d-block font-size-sm">{s.cuenta_nro}</span>
+                                                <td style={{padding: "0rem", paddingLeft: "0.75rem"}}>
+                                                    <span className="text-dark-75 font-size-sm">{s.cuenta_nro}</span>
                                                 </td>
                                             </>
                                         }
-                                        <td>
-                                            <span className="text-dark-75 d-block font-size-sm">{s.is_active == true ? 'Activo': 'No activo'}</span>
+                                        <td style={{padding: "0rem", paddingLeft: "0.75rem"}}>
+                                            <span className="text-dark-75 font-size-sm">{s.is_active == true ? 'Activo': 'No activo'}</span>
                                         </td>
-                                        <td>
-                                            <a title="editar" style={styleBtn} className="btn btn-icon btn-hover-light btn-sm mx-3">
-                                                <span className="svg-icon svg-icon-md svg-icon-primary">
+                                        <td style={{padding: "0rem", paddingLeft: "0.75rem"}}>
+                                            <a title="editar" onClick={() => {setShow(true); setAccion('Modificar') }} style={styleBtn} className="btn btn-icon btn-hover-light btn-sm mx-3">
+                                                <span className="svg-icon svg-icon-md svg-icon-info">
                                                   <SVG src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}/>
                                                 </span>
                                             </a>
 
-                                            <a title="eliminar" style={styleBtn} onClick={()=>deleteMasterTables(tabla, title, s)} className="btn btn-icon btn-hover-light btn-sm">
+                                            <a title="eliminar" style={styleBtn} onClick={()=>deleteMasterTables(tabla, titulo, s)} className="btn btn-icon btn-hover-light btn-sm">
                                                 <span className="svg-icon svg-icon-md svg-icon-danger">
                                                   <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")}/>
                                                 </span>
@@ -145,7 +143,10 @@ function MasterTables({tabla}) {
             <ModalMasterTables
                 show={show}
                 onHide={() => setShow(false)}
-                title={title}
+                titulo={titulo}
+                columnas={columnas}
+                accion={accion}
+                tabla={tabla}
             />
 
         </>

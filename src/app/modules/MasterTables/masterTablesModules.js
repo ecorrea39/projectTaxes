@@ -31,7 +31,7 @@ function MasterTablesModule() {
             <div className="col-lg-12">
                 <div className={`card card-custom card-stretch gutter-b`}>
                     {/* Header */}
-                    <div className="border-0 pl-10 pt-5">
+                    <div className="border-0 pl-10 pt-10">
                         <TitleFormMasterTables title={title}/>
                     </div>
                     {/* Body */}

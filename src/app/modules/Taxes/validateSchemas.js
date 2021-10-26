@@ -1,5 +1,7 @@
 import * as Yup from 'yup';
 
+const regexNumber = /^[0-9]+$/;
+
 export const SchemaPayment = Yup.object().shape({
     nroReferencia: Yup.string()
         .required('- Campo obligatorio -'),
@@ -25,7 +27,9 @@ export const SchemaDeclaration= Yup.object({
             trimestre: Yup.string()
                 .required('- Campo obligatorio -'),
             ntrabajadores: Yup.string()
-                .required('- Campo obligatorio -'),
+                .required('- Campo obligatorio -')
+                .max(6, 'Debe ingresar un maximo de 10 digitos')
+                .matches(regexNumber, '- Solo debe ingresar numeros -'),
             monto_pagado: Yup.string()
                 .required('- Campo obligatorio -'),
             monto_tributo: Yup.string(),
@@ -34,7 +38,9 @@ export const SchemaDeclaration= Yup.object({
             fecha_declaracion: Yup.date(),
             terms: Yup.boolean()
                 .required('- Campo obligatorio -'),
-            ntrabajadores_liquidados: Yup.string(),
+            ntrabajadores_liquidados: Yup.string()
+                .max(6, 'Debe ingresar un maximo de 6 digitos')
+                .matches(regexNumber, '- Solo debe ingresar numeros -'),
             sustitutiva: Yup.string(),
             estatus: Yup.string(),
             fecha_emision: Yup.date()

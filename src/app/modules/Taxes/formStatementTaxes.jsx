@@ -42,8 +42,7 @@ function FormStatementTaxes({ step }) {
             <Formik
                 initialValues={initialValuesDeclaration}
                 validationSchema={SchemaDeclaration}
-                //onSubmit={handleSubmit(values, actions)}
-                onSubmit = { (values,actions) => { handleSubmit(values, actions)  }}
+                onSubmit = { (values, actions) => { handleSubmit(values, actions)  }}
             >
                 {
                     formik => (
@@ -66,12 +65,6 @@ function FormStatementTaxes({ step }) {
                     )
                 }
             </Formik>
-
-            {/*
-            <ModalHistoricalDeclaration
-                show={show}
-                onHide={() => setShow(false)}
-            />*/}
         </>
     );
 }

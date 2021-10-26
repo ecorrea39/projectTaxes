@@ -9,6 +9,7 @@ export const MasterTablesState = ({ children }) => {
     const [trimestres, setTrimestres] = useState([]);
     const [formasPago, setFormasPago] = useState([]);
     const [cuentasRecaudadoras, setCuentasRecaudadoras] = useState([]);
+    const [formDataTables, setFormDataTables] = useState({});
 
     useEffect(() => {
         getTrimestres();
@@ -162,39 +163,75 @@ export const MasterTablesState = ({ children }) => {
         }
     }
 
-    const submitMasterTables = async (valores, titulo) => {
+    const submitMasterTables = async (valores, props) => {
+
+        console.log('props ', props)
+        let dataType = "";
+        let urlTabla = ""
 
         try {
-            /*
-            requestConfig.data.type = "saveTributeDeclaration";
-            requestConfig.data.attributes = valores.declaraciones;
 
-            requestConfig.data.id = (!declaracionSustitutiva) ? nrif : valores.declaraciones[0].id;
+            switch (props.tabla) {
+                case "trimestre":
+                    dataType = "saveTrimestres";
+                    urlTabla = "/trimestres/";
+                    break;
 
-            if(!declaracionSustitutiva) {
-                const respuesta = await clientAxios.post('/tribute_declaration/', requestConfig);
-            } else {
-                const respuesta = await clientAxios.put('/tribute_declaration/', requestConfig);
+                case "forma-pago":
+                    dataType = "saveFormasPago";
+                    urlTabla = "/formas_pago/";
+                    break;
+
+                case "cuentas-recaudadoras":
+                    dataType = "saveCuentasBanco";
+                    urlTabla = "/cuentas_banco/";
+                    break;
+
+                default:
+                    break;
             }
 
+            requestConfig.data.type = dataType;
+            requestConfig.data.attributes = valores;
+            requestConfig.data.id = (props.accion !== 'Agregar') ? valores.declaraciones[0].id : '';
+
+            console.log('requestConfig ', requestConfig)
+
+            if(props.accion === 'Agregar') {
+                const respuesta = await clientAxios.post(urlTabla, requestConfig);
+            } else {
+                //const respuesta = await clientAxios.put(urlTabla, requestConfig);
+            }
+
+            props.onHide();
             Swal.fire({
-                title: "Declaración de tributos",
+                title: props.titulo,
                 text: "Datos guardados con éxito!",
                 icon: "success",
                 button: "Ok",
                 timer: 1500
             }).then((value) => {
-                if (total > 0) {
-                    setStepTaxes(stepTaxes+1)
+                switch (props.tabla) {
+                    case "trimestre":
+                        getTrimestres();
+                        break;
+
+                    case "forma-pago":
+                        getFormasPago();
+                        break;
+
+                    case "cuentas-recaudadoras":
+                        getCuentasRecaudadoras();
+                        break;
+
+                    default:
+                        break;
                 }
-                setDeclaracionSustitutiva(false);
-                setDeclaracionSeleccionada([]);
-                getHistoricoDeclaraciones();
-            });*/
+            });
         } catch (error) {
             console.log(error)
             Swal.fire({
-                title: titulo,
+                title: props.titulo,
                 text: "Error al intentar guardar registro!",
                 icon: "error",
                 button: "Ok",
@@ -207,7 +244,8 @@ export const MasterTablesState = ({ children }) => {
         trimestres,
         formasPago,
         cuentasRecaudadoras,
-        submitMasterTables
+        submitMasterTables,
+        setFormDataTables
     }
 
     return (
