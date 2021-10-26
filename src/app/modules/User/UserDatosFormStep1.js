@@ -366,12 +366,16 @@ const UserDatosFormStep1 = (props) => {
       console.log("authToken", token);
       console.log("submit_formik::", formik);
 
+      let jsonAttributes = formik.values;
+
+      jsonAttributes["tipo"] = "PRINCIPAL";
+
       const data = {
         jsonapi: {version: '1.0'},
         data: {
           type: "userCompany",
           id: rif,
-          attributes: formik.values
+          attributes: jsonAttributes
         }
       };
 
@@ -385,6 +389,7 @@ const UserDatosFormStep1 = (props) => {
           const estatusC = estatusRef.current.options[estatusRef.current.selectedIndex].text;
 
           props.cambiarResumenFicha({
+            tipo: "PRINCIPAL",
             razon_social: formik.values.razon_social,
             nombre_comercial: formik.values.nombre_comercial,
             clase_de_empresa: clase_de_empresaC,

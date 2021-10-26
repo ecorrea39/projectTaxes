@@ -12,6 +12,7 @@ const UserDatos = (props) => {
 
   const [step, setStep] = useState(1);
   const [valoresParaFichaDeRegistro, setValoresParaFichaDeRegistro] = useState({
+    tipo: "",
     razon_social: "",
     nombre_comercial: "",
     clase_de_empresa: "",
@@ -73,6 +74,7 @@ const UserDatos = (props) => {
     setValoresParaFichaDeRegistro((prevState) => {
       return {
         ...prevState,
+        tipo: objeto.tipo,
         razon_social: objeto.razon_social,
         nombre_comercial: objeto.nombre_comercial,
         clase_de_empresa: objeto.clase_de_empresa,
