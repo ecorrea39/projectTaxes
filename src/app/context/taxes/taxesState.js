@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 
 export const TaxesState = ({ children }) => {
 
-    const [stepTaxes, setStepTaxes ] = useState(1);
+    const [stepTaxes, setStepTaxes ] = useState(2);
     const [bancos, setBancos] = useState([]);
     const [conceptos, setConceptos] = useState([]);
     const [anos, setAnos] = useState([]);
@@ -26,6 +26,7 @@ export const TaxesState = ({ children }) => {
     const nrif = odb.get('rif');
     const [deducible, setDeducible] = useState(0);
     const [modalidadesPagos, setModalidadPagos] = useState([]);
+    const [linkRecibo, setLinkRecibo] = useState("");
 
     const [actaReparo, setActaR] = useState({
         numActa: "",
@@ -294,6 +295,7 @@ export const TaxesState = ({ children }) => {
             requestConfig.data.id = "j333333332"; // -> SI CAMBIO ESTE RIF FALLA LA PETICION
             requestConfig.data.attributes = formData;
             const respuesta = await clientAxios.post('/payment_declaration/', requestConfig);
+            setLinkRecibo(process.env.REACT_APP_API_URL+"reports/recibos_pago/"+respuesta.data.data.id);
             setStepTaxes(stepTaxes+1);
             Swal.fire({
                 icon: 'success',
@@ -441,7 +443,9 @@ export const TaxesState = ({ children }) => {
         deducible,
         setDeducible,
         modalidadesPagos,
-        setModalidadPagos
+        setModalidadPagos,
+        linkRecibo,
+        setLinkRecibo
     }
 
     return (

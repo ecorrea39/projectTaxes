@@ -25,7 +25,7 @@ export const BaseFormik = ({conceptos,formik}) => {
 
     const calcularCreditoFiscal = (montoPagado) => {
         
-        let resta = parseInt(montoPagado) - parseInt(100);
+        let resta = parseInt(montoPagado) - parseInt(totalTributoDeclarado);
         let array = formik.values.conceptos;
         
         if ( resta > 0 )  {
@@ -49,8 +49,7 @@ export const BaseFormik = ({conceptos,formik}) => {
     }
 
     useEffect(()=>{
-        // formik.setFieldValue("montoTributo", totalTributoDeclarado );
-        if (totalTributoDeclarado != null && totalTributoDeclarado > 0) {
+        if (totalTributoDeclarado != null) {
             formik.setFieldValue("montoTributo", totalTributoDeclarado );
         }
     },[]);
@@ -147,7 +146,7 @@ export const BaseFormik = ({conceptos,formik}) => {
             </Row>
             
             {
-                totalTributoDeclarado != null && <InputsTaxes />
+                totalTributoDeclarado > 0 && <InputsTaxes />
             }
 
             {

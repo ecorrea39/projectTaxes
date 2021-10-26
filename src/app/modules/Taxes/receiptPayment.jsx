@@ -1,13 +1,13 @@
 import { Field } from "formik";
 import React, { useContext, useEffect, useState } from "react";
-import { Col, Row, Table } from "react-bootstrap";
+import { Button, Col, Row, Table } from "react-bootstrap";
 import TaxesContext from "../../context/taxes/taxesContext";
 import odb from "../../helpers/odb";
 import BaseInput from "../Forms/BaseInputs";
 
 export default function ReceiptPayment() {
 
-    const { formDataPayment, bancos, getUserData, userData, conceptos, modalidadesPagos, formDataDeclaration } = useContext(TaxesContext);
+    const { formDataPayment, bancos, getUserData, userData, conceptos, modalidadesPagos, formDataDeclaration, linkRecibo } = useContext(TaxesContext);
 
     const [dataBanco, setDataBanco] = useState({nomBanco: "",numCuenta:""});
     const [listConceptos, setListConceptos] = useState([]);
@@ -67,6 +67,12 @@ export default function ReceiptPayment() {
         return tipoTransaccion.attributes.name;
     }
 
+    const handlePrint = () => {
+
+        window.open(linkRecibo);
+
+    }
+
     const rif = odb.get("rif");
     const razonSocial = odb.get("name");
     const phone = odb.get("phone_number_mobile");
@@ -85,7 +91,7 @@ export default function ReceiptPayment() {
                 </Col>
             </Row>
             <Row>
-                <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6" className="mt-2 mb-4">
+                <Col xs="12" sm="4" md="4" lg="4" xl="4" xxl="4" className="mt-2 mb-4">
                     <label className="font-weight-bold">
                         RIF
                     </label>
@@ -95,7 +101,7 @@ export default function ReceiptPayment() {
                         </span>
                     </div>
                 </Col>
-                <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6" className="mt-2 mb-4">
+                <Col xs="12" sm="4" md="4" lg="4" xl="4" xxl="4" className="mt-2 mb-4">
                     <label className="font-weight-bold">
                         Nro. Registro
                     </label>
@@ -105,27 +111,7 @@ export default function ReceiptPayment() {
                         </span>
                     </div>
                 </Col>
-                <Col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12" className="mt-2 mb-4">
-                    <label className="font-weight-bold">
-                        Razon social
-                    </label>
-                    <div className="form-control">
-                        <span>
-                            {razonSocial}
-                        </span>
-                    </div>
-                </Col>
-                <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6" className="mt-2 mb-4">
-                    <label className="font-weight-bold">
-                        Telefono
-                    </label>
-                    <div className="form-control">
-                        <span>
-                            {phone}
-                        </span>
-                    </div>
-                </Col>
-                <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6" className="mt-2 mb-4">
+                <Col xs="12" sm="4" md="4" lg="4" xl="4" xxl="4" className="mt-2 mb-4">
                     <label className="font-weight-bold">
                         Unidad Estadal de Tributos
                     </label>
@@ -135,9 +121,29 @@ export default function ReceiptPayment() {
                         </span>
                     </div>
                 </Col>
+                <Col xs="12" sm="8" md="8" lg="8" xl="8" xxl="8" className="mt-2 mb-4">
+                    <label className="font-weight-bold">
+                        Razon social
+                    </label>
+                    <div className="form-control">
+                        <span>
+                            {razonSocial}
+                        </span>
+                    </div>
+                </Col>
+                <Col xs="12" sm="4" md="4" lg="4" xl="4" xxl="4" className="mt-2 mb-4">
+                    <label className="font-weight-bold">
+                        Telefono
+                    </label>
+                    <div className="form-control">
+                        <span>
+                            {phone}
+                        </span>
+                    </div>
+                </Col>
             </Row>
 
-            <Row>
+            <Row className="mt-6">
                 <Col xs="12">
                     <h5>Datos del Pago</h5>
                 </Col>
@@ -205,7 +211,7 @@ export default function ReceiptPayment() {
                 </Col>
             </Row>
             
-            <Row>
+            <Row className="mt-6">
                 <Col xs="12" className="mt-2 mb-2">
                     <h5>Conceptos de Pagos</h5>
                 </Col>
@@ -238,6 +244,22 @@ export default function ReceiptPayment() {
                         }
                         </tbody>
                     </Table>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <div id="emailHelp" className="form-text">Nota: No es necesario imprimir este recibo de pago</div>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Button
+                        type="button"
+                        variant="primary"
+                        size="lg"
+                        className="w-100"
+                        onClick={()=>handlePrint()}
+                    >Imprimir Recibo</Button>
                 </Col>
             </Row>
         </>

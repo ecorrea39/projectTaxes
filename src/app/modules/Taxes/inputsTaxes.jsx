@@ -21,6 +21,7 @@ export const InputsTaxes = () => {
                         id="monto-tributo"
                         name="montoTributo"
                         component={BaseInput}
+                        maxLength="10"
                         disabled
                     />
                 </Col>
