@@ -1,28 +1,23 @@
 import React, {useEffect} from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import DataTable from 'react-data-table-component';
-
-const tableFondoDeComercioData = [
-  {id: 1, razon_social: "Fondo 1", nombre_comercial: "Fondo Comercio 1"},
-  {id: 2, razon_social: "Fondo 2", nombre_comercial: "Fondo Comercio 2"},
-  {id: 3, razon_social: "Fondo 3", nombre_comercial: "Fondo Comercio 3"}
-];
+import axios from "axios";
 
 const columnas = [
   {
     name: "ID",
-    selector: "id",
+    selector: row => row.id,
     sortable: true
   },
   {
     name: "Razón Social",
-    selector: "razon_social",
+    selector: row => row.razon_social,
     sortable: true,
     grow: 2
   },
   {
     name: "Nombre Comercial",
-    selector: "nombre_comercial",
+    selector: row => row.nombre_comercial,
     sortable: true,
     right: true
   }
@@ -40,12 +35,52 @@ const FondoDeComercioLista = (props) => {
   const [pending, setPending] = React.useState(true);
   const [rows, setRows] = React.useState([]);
 
+  const API_URL = `${process.env.REACT_APP_API_URL}`;
+
+  const token = localStorage.getItem('authToken');
+  const rif = localStorage.getItem('rif');
+
+  const axiosConfig = {
+    headers: {
+      Accept: 'application/vnd.api+json',
+      'Content-Type': 'application/vnd.api+json',
+      Authorization: `Bearer ${token}`
+    }
+  };
+
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setRows(tableFondoDeComercioData);
-      setPending(false);
-    }, 2000);
-    return () => clearTimeout(timeout);
+
+    axios.get(`${API_URL}user_company/fondos/${rif}/`, axiosConfig)
+      .then(function (res) {
+        console.log("get_user_company_fondo_comercio::", res);
+
+        let tableFondoDeComercioData = [];
+
+        if (res.data.data != null) {
+
+          tableFondoDeComercioData = res.data.data.map(elemData => {
+            let id = elemData.id;
+            let elemDataName = elemData.attributes.name;
+
+            let rObj = {
+              "id": elemData.id,
+              "razon_social": elemData.attributes.razon_social,
+              "nombre_comercial": elemData.attributes.nombre_comercial
+            };
+
+            return rObj;
+          });
+
+          setRows(tableFondoDeComercioData);
+          setPending(false);
+
+        }
+
+      }).catch((err) => {
+
+      console.log("errGetUserCompany_fondo_comercio", err);
+      alert("Error buscando datos de la empresa del usuario")
+    });
   }, []);
 
   return (
