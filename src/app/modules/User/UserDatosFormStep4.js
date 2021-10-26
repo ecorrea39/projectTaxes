@@ -583,8 +583,6 @@ const UserDatosFormStep4 = (props) => {
       axios.post(`${API_URL}user_manager_data/`, data, axiosConfig)
         .then(function (res) {
 
-          alert('Guardado exitosamente');
-
           const codigo_de_area_representante_legal1C = codigo_de_area_representante_legal1Ref.current.options[codigo_de_area_representante_legal1Ref.current.selectedIndex].text;
           const codigo_de_area_representante_legal2C = codigo_de_area_representante_legal2Ref.current.options[codigo_de_area_representante_legal2Ref.current.selectedIndex].text;
           const codigo_de_area_representante_legal3C = codigo_de_area_representante_legal3Ref.current.options[codigo_de_area_representante_legal3Ref.current.selectedIndex].text;
@@ -622,35 +620,6 @@ const UserDatosFormStep4 = (props) => {
             setSiguiente(false);
             props.cambiarFormularioActual(5);
           }
-
-          // if (parciales) {
-          //   console.log('fechacontitucion ', fechacontitucion);
-          //   if (validateMulta(new Date(fechacontitucion), new Date(formData.fecha_registro_inces)) > 45) {
-          //     //procesar acto administrativo de la multa
-          //     toastTop = $f7.toast.create({
-          //       text: 'Se cargo multa según Artículo 35 del COT',
-          //       position: 'top',
-          //       horizontalPosition: 'center',
-          //       closeTimeout: 2000
-          //     });
-          //     toastTop.open();
-          //   }
-          // }
-          // ;
-          //
-          // let arreglo = odb.get('groups');
-          // if (!arreglo.find(x => x === 'contribuyentes')) {
-          //   arreglo.shift();
-          //   arreglo.push('contribuyentes');
-          //   odb.set('groups', arreglo);
-          // }
-          //
-          // setTimeout(() => {
-          //   window.location.href = '/dashboard';
-          //   $update();
-          // }, 2000);
-
-
         }).catch((err) => {
 
         console.log("errUserDatosFormStep4", err);

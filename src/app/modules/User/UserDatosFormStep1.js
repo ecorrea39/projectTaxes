@@ -380,8 +380,6 @@ const UserDatosFormStep1 = (props) => {
           localStorage.setItem('name', formik.values.razon_social);
           localStorage.setItem('surname', formik.values.nombre_comercial);
 
-          alert('Guardado exitosamente');
-
           const clase_de_empresaC = clase_de_empresaRef.current.options[clase_de_empresaRef.current.selectedIndex].text;
           const actividad_economicaC = actividad_economicaRef.current.options[actividad_economicaRef.current.selectedIndex].text;
           const estatusC = estatusRef.current.options[estatusRef.current.selectedIndex].text;
@@ -405,35 +403,6 @@ const UserDatosFormStep1 = (props) => {
             setSiguiente(false);
             props.cambiarFormularioActual(2);
           }
-
-          // if (parciales) {
-          //   console.log('fechacontitucion ', fechacontitucion);
-          //   if (validateMulta(new Date(fechacontitucion), new Date(formData.fecha_registro_inces)) > 45) {
-          //     //procesar acto administrativo de la multa
-          //     toastTop = $f7.toast.create({
-          //       text: 'Se cargo multa según Artículo 35 del COT',
-          //       position: 'top',
-          //       horizontalPosition: 'center',
-          //       closeTimeout: 2000
-          //     });
-          //     toastTop.open();
-          //   }
-          // }
-          // ;
-          //
-          // let arreglo = odb.get('groups');
-          // if (!arreglo.find(x => x === 'contribuyentes')) {
-          //   arreglo.shift();
-          //   arreglo.push('contribuyentes');
-          //   odb.set('groups', arreglo);
-          // }
-          //
-          // setTimeout(() => {
-          //   window.location.href = '/dashboard';
-          //   $update();
-          // }, 2000);
-
-
         }).catch((err) => {
 
         console.log("errUserDatosFormStep1", err);
