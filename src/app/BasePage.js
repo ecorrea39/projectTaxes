@@ -6,6 +6,8 @@ import { MyPage } from "./pages/MyPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import TaxesPage from "./pages/taxes";
 import AccountStatusPage from "./pages/accountStatus";
+import MasterTablesPage from "./pages/masterTables";
+import ReportsPage from './pages/reports';
 import { UserDatos } from "./modules/User/UserDatos";
 
 const GoogleMaterialPage = lazy(() =>
@@ -40,6 +42,8 @@ export default function BasePage() {
         <ContentRoute path="/dashboard" component={DashboardPage} />
         <Route exact path="/tributos" component={TaxesPage}  />
         <Route exact path="/estado-cuentas" component={AccountStatusPage} />
+        <Route exact path="/tablas/:tabla" component={MasterTablesPage} />
+        <Route exact path="/reportes/:reporte" component={ReportsPage} />
         <ContentRoute path="/builder" component={BuilderPage} />
         <ContentRoute path="/my-page" component={MyPage} />
         <Route path="/google-material" component={GoogleMaterialPage} />

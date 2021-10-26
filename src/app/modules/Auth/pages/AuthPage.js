@@ -30,9 +30,7 @@ export function AuthPage() {
           {/*begin::Aside*/}
           <div
             className="login-aside d-flex flex-row-auto bgi-size-cover bgi-no-repeat p-10 p-lg-10"
-            style={{
-              backgroundImage: `url(${toAbsoluteUrl("/media/bg/bg-5.jpg")})`,
-            }}
+            style={{ backgroundImage: `url(${toAbsoluteUrl("/media/bg/bg-5.jpg")})`, }}
           >
             {/*begin: Aside Container*/}
             <div className="d-flex flex-row-fluid flex-column justify-content-between">
@@ -48,9 +46,14 @@ export function AuthPage() {
 
               {/* start:: Aside content */}
               <div className="flex-column-fluid d-flex flex-column justify-content-center">
-                <h3 className="font-size-h1 mb-5 text-white">
+                <h2 className="font-size-h2 mb-5 text-white">
+                  <FormattedMessage id="AUTH.LOGIN.TITLE_RNCP"/>
+                </h2>
+                <br/><br/>
+                <h5 className="font-size-h5 mb-5 text-white">
                   <FormattedMessage id="AUTH.LOGIN.WELCOME"/>
-                </h3>
+                </h5>
+                <br/><br/>
                 <p className="font-weight-lighter text-white opacity-80">
                   <FormattedMessage id="AUTH.LOGIN.DESCRIPTION"/>
                 </p>
@@ -99,7 +102,8 @@ export function AuthPage() {
             {/*  </Link>*/}
             {/*</div>*/}
 
-            {mostrarHeader && <AuthHeader />}
+            {/*
+            {mostrarHeader && <AuthHeader />}*/}
             {/*end::Content header*/}
 
             {/* begin::Content body */}

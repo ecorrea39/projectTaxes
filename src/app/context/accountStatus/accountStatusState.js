@@ -7,6 +7,7 @@ export const AccountStatusState = ({ children }) => {
 
     const [anos, setAnos] = useState([]);
     const [trimestres, setTrimestres] = useState([]);
+    const [formatoFechaFutura, setFormatoFechaFutura] = useState();
 
     /* -- deuda trimestres declarados --*/
     const [totalDeudaTrim, setTotalDeudaTrim] = useState();
@@ -20,14 +21,15 @@ export const AccountStatusState = ({ children }) => {
 
     /* -- pagos  --*/
     const [totalPagos, setTotalPagos] = useState();
+    const [totalCreditoFisTemp, setTotalCreditoFisTemp] = useState();
+    const [totalCreditoFisAprob, setTotalCreditoFisAprob] = useState();
+
     const [detallePagosTrim, setDetallePagosTrim] = useState([]);
     const [detallePagosTrimOriginal, setDetallePagosTrimOriginal] = useState([]);
 
-    const [totalCreditoFisTemp, setTotalCreditoFisTemp] = useState();
     const [detallePagosCxP, setDetallePagosCxP] = useState([]);
     const [detallePagosCxPOriginal, setDetallePagosCxPOriginal] = useState([]);
 
-    const [totalCreditoFisAprob, setTotalCreditoFisAprob] = useState();
     const [detalleCreditoFis, setDetalleCreditoFis] = useState([]);
     const [detalleCreditoFisOriginal, setDetalleCreditoFisOriginal] = useState([]);
 
@@ -36,10 +38,11 @@ export const AccountStatusState = ({ children }) => {
     useEffect(() => {
         getAnos();
         getTrimestres();
+        getFechaFutura();
         getResumen();
         getDetalleDeudaTrimestresDeclarados();
         getDetalleDeudaCtasEfectosPorPagar();
-        getDetallePagosTrimestresDeclarados();
+        getDetalleCreditoFiscal();
     },[]);
 
     const getAnos = async () => {
@@ -62,13 +65,21 @@ export const AccountStatusState = ({ children }) => {
     const getTrimestres = async () => {
 
         try {
-            const array = [
-                { "id": "1", "name": "Trimestre 1"},
-                { "id": "2", "name": "Trimestre 2"},
-                { "id": "3", "name": "Trimestre 3"},
-                { "id": "4", "name": "Trimestre 4"}
-            ];
-            setTrimestres(array.sort((a, b) => a.name < b.name ? -1 : +(a.name > b.name)));
+            const respuesta = await clientAxios.get('/trimestres/', clientAxios);
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "name": arreglo[i].attributes.name,
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setTrimestres(lista)
+
         } catch (error) {
             console.log(error)
         }
@@ -79,52 +90,43 @@ export const AccountStatusState = ({ children }) => {
 
         try {
             const respuesta = await clientAxios.get(`/balance/${nrif}`);
-            //console.log('respuesta ', respuesta)
-            if(respuesta.data.data[0] !== null) {
-                setTotalDeudaTrim(respuesta.data.data[0].attributes.total);
-            } else {
-                setTotalDeudaTrim(0);
-            }
 
-            if(respuesta.data.data[1] !== null) {
-                //setDeudaTrim(respuesta.data.data[1].attributes.total);
-            } else {
-                setTotalDeudaCxP(0);
-            }
+            (respuesta.data.data[0] !== null) ? setTotalDeudaTrim(respuesta.data.data[0].attributes.total): setTotalDeudaTrim(0);
+            (respuesta.data.data[1] !== null) ? setTotalDeudaCxP(respuesta.data.data[1].attributes.total): setTotalDeudaCxP(0);
+            (respuesta.data.data[2] !== null) ? setTotalPagos(respuesta.data.data[2].attributes.total): setTotalPagos(0);
+            (respuesta.data.data[3] !== null) ? setTotalCreditoFisTemp(respuesta.data.data[3].attributes.total): setTotalCreditoFisTemp(0);
+            (respuesta.data.data[4] !== null) ? setTotalCreditoFisAprob(respuesta.data.data[4].attributes.total): setTotalCreditoFisAprob(0);
 
-            setTotalPagos(0);
-            setTotalCreditoFisTemp(0);
-            setTotalCreditoFisAprob(0);
         } catch (error) {
             console.log(error)
         }
     }
 
+    {/* deudas trimestres */}
     const getDetalleDeudaTrimestresDeclarados = async () => {
 
         let arreglo = [];
         const detalleTrimestre = [];
 
         try {
-            const respuesta = await clientAxios.get(`/tribute_declaration/${nrif}`, clientAxios);
-            arreglo = respuesta.data.data;
-            console.log('respuesta ', respuesta)
+            const respuesta = await clientAxios.get(`/balance/detail/${nrif}`, clientAxios);
+            arreglo = respuesta.data.data[0].attributes['deuda-trimestre'][0];
 
             arreglo.map((x, i) => {
                 detalleTrimestre.push(
                     {
                         "id": arreglo[i].id,
-                        "concepto_pago": arreglo[i].attributes.concepto_pago,
-                        "concepto_pago_name": arreglo[i].attributes['concepto_pago_concepto.name'],
-                        "trimestre": arreglo[i].attributes.trimestre,
-                        "ano_declaracion": arreglo[i].attributes.ano_declaracion,
-                        "fecha_emision": arreglo[i].attributes.concepto_pago === 2 ? formatearfecha(new Date(arreglo[i].attributes.fecha_emision), 'DMY') : '',
-                        "monto_pagado": arreglo[i].attributes.monto_pagado,
-                        "ntrabajadores": arreglo[i].attributes.ntrabajadores,
-                        "monto_tributo": arreglo[i].attributes.monto_tributo,
-                        "monto_intereses": arreglo[i].attributes.monto_intereses,
-                        "monto_multa": arreglo[i].attributes.monto_multa,
-                        "estatus": arreglo[i].attributes.estatus
+                        "concepto_pago": arreglo[i].concepto_pago,
+                        //"concepto_pago_name": arreglo[i].attributes['concepto_pago_concepto.name'],
+                        "trimestre": arreglo[i].trimestre,
+                        "ano_declaracion": arreglo[i].ano_declaracion,
+                        "fecha_emision": arreglo[i].concepto_pago === 2 ? formatearfecha(new Date(arreglo[i].fecha_emision), 'DMY') : '',
+                        "monto_pagado": arreglo[i].monto_pagado,
+                        "ntrabajadores": arreglo[i].ntrabajadores,
+                        "monto_tributo": arreglo[i].monto_tributo,
+                        "monto_intereses": arreglo[i].monto_intereses,
+                        "monto_multa": arreglo[i].monto_multa,
+                        "estatus": arreglo[i].estatus
                     }
                 )
             });
@@ -136,113 +138,34 @@ export const AccountStatusState = ({ children }) => {
         }
     }
 
-    const getDetalleDeudaCtasEfectosPorPagar = () => {
+    {/* deudas cuentas y efectos por pagar */}
+    const getDetalleDeudaCtasEfectosPorPagar = async () => {
 
         let arreglo = [];
         const detalleCxP = [];
 
         try {
-            /*const respuesta = await clientAxios.get(`/balance/${nrif}`);
-            console.log('respuesta ', respuesta)
-            arreglo = respuesta.data.data;
+            const respuesta = await clientAxios.get(`/balance/detail/${nrif}`, clientAxios);
+            arreglo = respuesta.data.data[0].attributes['deuda-efectos-cuentas'][0];
 
             arreglo.map((x, i) => {
                 detalleCxP.push(
                     {
                         "id": arreglo[i].id,
-                        "concepto_pago": arreglo[i].attributes.concepto_pago,
-                        "concepto_pago_name": arreglo[i].attributes['concepto_pago_concepto.name'],
-                        "trimestre": arreglo[i].attributes.trimestre,
-                        "ano_declaracion": arreglo[i].attributes.ano_declaracion,
-                        "fecha_emision": arreglo[i].attributes.concepto_pago === 2 ? formatearfecha(new Date(arreglo[i].attributes.fecha_emision), 'DMY') : '',
-                        "monto_pagado": arreglo[i].attributes.monto_pagado,
-                        "ntrabajadores": arreglo[i].attributes.ntrabajadores,
-                        "monto_tributo": arreglo[i].attributes.monto_tributo,
-                        "monto_intereses": arreglo[i].attributes.monto_intereses,
-                        "monto_multa": arreglo[i].attributes.monto_multa,
+                        //"concepto_pago": arreglo[i].concepto_pago,
+                        //"concepto_pago_name": arreglo[i].attributes['concepto_pago_concepto.name'],
+                        //"componentes": arreglo[i].componentes,
+                        "fecha_documento": formatearfecha(new Date(arreglo[i].fecha_documento), 'DMY'),
+                        "numero_documento": arreglo[i].numero_documento,
+                        "numero_giro": arreglo[i].numero_giro,
+                        "valor_mmv": 300.25,
+                        //"nveces_mmv": arreglo[i].nveces_mmv,
+                        "nveces_mmv": 50,
+                        "monto": 300.25 * 50,
+                        "estatus": arreglo[i].estatus
                     }
                 )
-            });*/
-
-            const detalleCxP = [
-                {
-                    concepto_pago: "10",
-                    concepto_pago_name: "Resolución por incumplimiento deberes formales",
-                    componentes: "",
-                    fecha_notificacion: "2021-05-06",
-                    numero_documento: "",
-                    numero_giro: "",
-                    valor_mmv: "",
-                    numero_veces_mmv: "50",
-                    monto: "150000"
-                },
-                {
-                    concepto_pago: "11",
-                    concepto_pago_name: "Resolución por incumplimiento deberes materiales",
-                    componentes: "",
-                    fecha_notificacion: "2021-05-07",
-                    numero_documento: "",
-                    numero_giro: "",
-                    valor_mmv: "",
-                    numero_veces_mmv: "50",
-                    monto: "150000"
-                },
-                {
-                    concepto_pago: "3",
-                    concepto_pago_name: "Acta de reparo",
-                    componentes: "",
-                    fecha_notificacion: "2021-05-07",
-                    numero_documento: "CUL-20210901-123456",
-                    numero_giro: "",
-                    valor_mmv: "",
-                    numero_veces_mmv: "",
-                    monto: "800000"
-                },
-                {
-                    concepto_pago: "3",
-                    concepto_pago_name: "Acta de reparo",
-                    componentes: "",
-                    fecha_notificacion: "2021-05-07",
-                    numero_documento: "CUL-20210901-000002",
-                    numero_giro: "",
-                    valor_mmv: "",
-                    numero_veces_mmv: "",
-                    monto: "800000"
-                },
-                {
-                    concepto_pago: "4",
-                    concepto_pago_name: "Sanción por acta de reparo",
-                    componentes: "",
-                    fecha_notificacion: "2021-06-09",
-                    numero_documento: "CUL-20210901-000001",
-                    numero_giro: "",
-                    valor_mmv: "",
-                    numero_veces_mmv: "",
-                    monto: "800000"
-                },
-                {
-                    concepto_pago: "7",
-                    concepto_pago_name: "Giro por convenio de pago",
-                    componentes: "",
-                    fecha_notificacion: "2021-06-09",
-                    numero_documento: "",
-                    numero_giro: "02/02",
-                    valor_mmv: "",
-                    numero_veces_mmv: "",
-                    monto: "0"
-                },
-                {
-                    concepto_pago: "7",
-                    concepto_pago_name: "Giro por convenio de pago",
-                    componentes: "",
-                    fecha_notificacion: "2021-05-09",
-                    numero_documento: "",
-                    numero_giro: "01/02",
-                    valor_mmv: "",
-                    numero_veces_mmv: "",
-                    monto: "100000"
-                }
-            ];
+            });
 
             setDetalleDeudaCxP(detalleCxP);
             setDetalleDeudaCxPOriginal(detalleCxP);
@@ -251,75 +174,109 @@ export const AccountStatusState = ({ children }) => {
         }
     }
 
-    const getDetallePagosTrimestresDeclarados = () => {
+    const getDetallePagosTrimestresDeclarados = async () => {
 
         let arreglo = [];
         const detallePagosTrim = [];
 
         try {
-            /*const respuesta = await clientAxios.get(`/balance/${nrif}`);
-            console.log('respuesta ', respuesta)
-            arreglo = respuesta.data.data;
+            const respuesta = await clientAxios.get(`/balance/detail/${nrif}`, clientAxios);
+            arreglo = respuesta.data.data[0].attributes['pagos-efectos-cuentas'][0];
 
             arreglo.map((x, i) => {
                 detallePagosTrim.push(
                     {
                         "id": arreglo[i].id,
-                        "concepto_pago": arreglo[i].attributes.concepto_pago,
-                        "concepto_pago_name": arreglo[i].attributes['concepto_pago_concepto.name'],
-                        "trimestre": arreglo[i].attributes.trimestre,
-                        "ano_declaracion": arreglo[i].attributes.ano_declaracion,
-                        "fecha_emision": arreglo[i].attributes.concepto_pago === 2 ? formatearfecha(new Date(arreglo[i].attributes.fecha_emision), 'DMY') : '',
-                        "monto_pagado": arreglo[i].attributes.monto_pagado,
-                        "ntrabajadores": arreglo[i].attributes.ntrabajadores,
-                        "monto_tributo": arreglo[i].attributes.monto_tributo,
-                        "monto_intereses": arreglo[i].attributes.monto_intereses,
-                        "monto_multa": arreglo[i].attributes.monto_multa,
+                        "concepto_pago": arreglo[i].concepto_pago,
+                        "concepto_pago_name": arreglo[i].concepto_pago_name,
+                        "ano_declaracion": arreglo[i].ano_declaracion,
+                        "trimestre": arreglo[i].trimestre,
+
+                        "fecha_pago": arreglo[i].fecha_pago,
+                        "banco": arreglo[i].banco,
+                        "banco_name": arreglo[i].banco_nombre,
+                        "referencia": arreglo[i].referencia,
+                        "monto_pagado": arreglo[i].monto_pagado,
+                        "clave": arreglo[i].clave
                     }
                 )
-            });*/
-
-            const detallePagosTrim = [
-                {
-                    concepto_pago: "1",
-                    concepto_pago_name: "Aporte patronal 2%",
-                    ano_declaracion: 2021,
-                    trimestre: 1,
-                    fecha_pago: "2021-03-28",
-                    banco: "1",
-                    banco_name: "Banco de Venzuela",
-                    referencia: "1234567890",
-                    monto_pagado: "15000",
-                    clave: "tributo",
-                },
-                {
-                    concepto_pago: "1",
-                    concepto_pago_name: "Aporte patronal 2%",
-                    ano_declaracion: 2021,
-                    trimestre: 2,
-                    fecha_pago: "2021-06-30",
-                    banco: "1",
-                    banco_name: "Banco de Venzuela",
-                    referencia: "1234567890",
-                    monto_pagado: "15000.45",
-                    clave: "tributo"
-                },
-                {
-                    concepto_pago: "1",
-                    concepto_pago_name: "Aporte patronal 2%",
-                    ano_declaracion: 2021,
-                    trimestre: 3,
-                    fecha_pago: "2021-09-30",
-                    banco: "1",
-                    banco_name: "Banco de Venzuela",
-                    referencia: "1234567890",
-                    monto_pagado: "15000.33",
-                    clave: "tributo"
-                }
-            ];
+            });
 
             setDetallePagosTrim(detallePagosTrim);
             setDetallePagosTrimOriginal(detallePagosTrim);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const getDetallePagosCtasEfectosPorPagar = async () => {
+
+        let arreglo = [];
+        const detallePagosTrim = [];
+
+        try {
+            const respuesta = await clientAxios.get(`/balance/detail/${nrif}`, clientAxios);
+            arreglo = respuesta.data.data[0].attributes['pagos-efectos-cuentas'][0];
+
+            arreglo.map((x, i) => {
+                detallePagosCxP.push(
+                    {
+
+                        "id": arreglo[i].id,
+                        //"concepto_pago": arreglo[i].concepto_pago,
+                        //"concepto_pago_name": arreglo[i].attributes['concepto_pago_concepto.name'],
+                        //"componentes": arreglo[i].componentes,
+                        "numero_documento": arreglo[i].numero_documento,
+                        "numero_giro": arreglo[i].numero_giro,
+
+                        "fecha_pago": arreglo[i].fecha_pago,
+                        "banco": arreglo[i].banco,
+                        "banco_name": arreglo[i].banco_nombre,
+                        "referencia": arreglo[i].referencia,
+                        "monto_pagado": arreglo[i].monto_pagado,
+                        "clave": arreglo[i].clave
+                    }
+                )
+            });
+
+            setDetallePagosCxP(detallePagosCxP);
+            setDetallePagosCxPOriginal(detallePagosCxP);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const getDetalleCreditoFiscal = async () => {
+
+        let arreglo = [];
+        const detalleCreditoFiscal = [];
+
+        try {
+            const respuesta = await clientAxios.get(`/balance/detail/${nrif}`, clientAxios);
+            arreglo = respuesta.data.data[0].attributes[''][0];
+
+            arreglo.map((x, i) => {
+                detalleCreditoFiscal.push(
+                    {
+
+                        "id": arreglo[i].id,
+                        //"concepto_pago": arreglo[i].concepto_pago,
+                        //"concepto_pago_name": arreglo[i].attributes['concepto_pago_concepto.name'],
+                        //"componentes": arreglo[i].componentes,
+                        "numero_documento": arreglo[i].numero_documento,
+                        "numero_giro": arreglo[i].numero_giro,
+
+                        "fecha_pago": arreglo[i].fecha_pago,
+                        "banco": arreglo[i].banco,
+                        "banco_name": arreglo[i].banco_nombre,
+                        "referencia": arreglo[i].referencia,
+                        "monto_pagado": arreglo[i].monto_pagado,
+                        "clave": arreglo[i].clave
+                    }
+                )
+            });
+
+            setDetalleCreditoFis(detalleCreditoFiscal);
         } catch (error) {
             console.log(error)
         }
@@ -386,6 +343,16 @@ export const AccountStatusState = ({ children }) => {
         return fecha;
     }
 
+    const getFechaFutura = () => {
+        const fecha = new Date();
+        const year = fecha.getFullYear();
+        let month = fecha.getMonth() + 1;
+        let day = fecha.getDate();
+        if (month < 10) month = '0' + month.toString();
+        if (day < 10) day = '0' + day.toString();
+        setFormatoFechaFutura(year + '-' + month + '-' + day);
+    }
+
     function formatNumber(number) {
         return new Intl.NumberFormat("ES-ES", {
             style: "currency",
@@ -408,7 +375,8 @@ export const AccountStatusState = ({ children }) => {
         detalleCreditoFis,
         filtarAccountStatus,
         formatearfecha,
-        formatNumber
+        formatNumber,
+        formatoFechaFutura
     }
 
     return (

@@ -146,7 +146,7 @@ export const BaseFormikStatementTaxes = ({ concepts, formik, anos, trimestres, f
                                     <Card key={index} style={styleCard}>
                                         <Row className="mt-4 mb-4">
                                             <Col xs="10" sm="10" md="10" lg="6" xl="6" xxl="6">
-                                                <label htmlFor="concepto-pago" className="font-weight-bold">Concepto de pago</label>
+                                                <label htmlFor="concepto_pago" className="font-weight-bold">Concepto de pago</label>
                                                 <Field
                                                     id="concepto_pago"
                                                     name={`declaraciones[${index}].concepto_pago`}
@@ -192,6 +192,7 @@ export const BaseFormikStatementTaxes = ({ concepts, formik, anos, trimestres, f
                                                         name={`declaraciones[${index}].ano_declaracion`}
                                                         type="select"
                                                         component={BaseSelect}
+                                                        disabled={declaracionSustitutiva}
                                                     >
                                                         <option value="" disabled>seleccione</option>
                                                         {
@@ -209,6 +210,7 @@ export const BaseFormikStatementTaxes = ({ concepts, formik, anos, trimestres, f
                                                         name={`declaraciones[${index}].trimestre`}
                                                         type="select"
                                                         component={BaseSelect}
+                                                        disabled={declaracionSustitutiva}
                                                     >
                                                         <option value="" disabled>seleccione</option>
                                                         {
@@ -218,8 +220,7 @@ export const BaseFormikStatementTaxes = ({ concepts, formik, anos, trimestres, f
                                                         }
                                                     </Field>
                                                 </Col>
-                                                <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6"
-                                                     className="mb-6">
+                                                <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6" className="mb-6">
                                                     <label htmlFor="ntrabajadores" className="font-weight-bold">Cantidad trabajadores en nómina</label>
                                                     <Field
                                                         id="ntrabajadores"

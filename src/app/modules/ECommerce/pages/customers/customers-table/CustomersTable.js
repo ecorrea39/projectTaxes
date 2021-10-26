@@ -55,7 +55,7 @@ export function CustomersTable() {
   const columns = [
     {
       dataField: "id",
-      text: "ID",
+      text: "IDcambio",
       sort: true,
       sortCaret: sortCaret,
       headerSortingClasses,
