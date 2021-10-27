@@ -60,6 +60,12 @@ const FondoDeComercioLista = (props) => {
     }
   };
 
+  const verificarTipoDeEmpresa = (elemento) => {
+    if (elemento.attributes.tipo == "FONDO COMERCIO") {
+      return true;
+    }
+  };
+
   useEffect(() => {
 
     axios.get(`${API_URL}user_company/fondos/${rif}/`, axiosConfig)
@@ -70,20 +76,15 @@ const FondoDeComercioLista = (props) => {
 
         if (res.data.data != null) {
 
-          tableFondoDeComercioData = res.data.data.map(elemData => {
+          tableFondoDeComercioData = res.data.data.filter(verificarTipoDeEmpresa).map(elemData => {
 
-            if (elemData.tipo === "FONDO COMERCIO") {
-              let id = elemData.id;
-              let elemDataName = elemData.attributes.name;
+            let rObj = {
+              "id": elemData.id,
+              "razon_social": elemData.attributes.razon_social,
+              "nombre_comercial": elemData.attributes.nombre_comercial
+            };
 
-              let rObj = {
-                "id": elemData.id,
-                "razon_social": elemData.attributes.razon_social,
-                "nombre_comercial": elemData.attributes.nombre_comercial
-              };
-
-              return rObj;
-            }
+            return rObj;
           });
 
           setRows(tableFondoDeComercioData);
