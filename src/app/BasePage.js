@@ -19,17 +19,20 @@ const ReactBootstrapPage = lazy(() =>
 const ECommercePage = lazy(() =>
   import("./modules/ECommerce/pages/eCommercePage")
 );
-const UserProfilepage = lazy(() =>
+const UserProfilePage = lazy(() =>
   import("./modules/UserProfile/UserProfilePage")
 );
-const UserDatospage = lazy(() =>
+const UserDatosPage = lazy(() =>
   import("./modules/User/UserDatos")
 );
-const Mapapage = lazy(() =>
+const MapaPage = lazy(() =>
   import("./modules/Mapa/Mapa")
 );
-const FondosDeComerciopage = lazy(() =>
+const FondosDeComercioPage = lazy(() =>
   import("./modules/FondoDeComercio/FondoDeComercio")
+);
+const ReporteComprobanteDeInscripcionPage = lazy(() =>
+  import("./modules/Reports/ComprobanteDeInscripcion")
 );
 
 export default function BasePage() {
@@ -55,10 +58,11 @@ export default function BasePage() {
         <Route path="/google-material" component={GoogleMaterialPage} />
         <Route path="/react-bootstrap" component={ReactBootstrapPage} />
         <Route path="/e-commerce" component={ECommercePage} />
-        <Route path="/user-profile" component={UserProfilepage} />
-        <Route path="/user-datos" component={UserDatospage} />
-        <Route path="/mapa" component={Mapapage} />
-        <Route path="/fondosdecomercio" component={FondosDeComerciopage} />
+        <Route path="/user-profile" component={UserProfilePage} />
+        <Route path="/user-datos" component={UserDatosPage} />
+        <Route path="/mapa" component={MapaPage} />
+        <Route path="/fondosdecomercio" component={FondosDeComercioPage} />
+        <Route path="/comprobantedeinscripcion" component={ReporteComprobanteDeInscripcionPage} />
 
         <Redirect to="error/error-v1" />
       </Switch>

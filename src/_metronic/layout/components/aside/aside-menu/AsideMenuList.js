@@ -157,10 +157,10 @@ export function AsideMenuList({ layoutProps }) {
               </li>
               {/*begin::2 Level*/}
               <li
-                className={`menu-item ${getMenuItemActive("")}`}
+                className={`menu-item ${getMenuItemActive("/comprobantedeinscripcion")}`}
                 aria-haspopup="true"
               >
-                <NavLink className="menu-link" to="">
+                <NavLink className="menu-link" to="/comprobantedeinscripcion">
                   <i className="menu-bullet menu-bullet-dot">
                     <span />
                   </i>
