@@ -29,7 +29,7 @@ function FormStatementTaxes({ step }) {
 
     return (
         <>
-            {/*
+            
             <Row className="mt-6 mb-6">
                 <Col className="mt-1 mb-2" xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
                     <a href="#" className="btn btn-info font-size-sm w-100">Declaración y Pagos</a>
@@ -37,7 +37,7 @@ function FormStatementTaxes({ step }) {
                 <Col className="mt-1 mb-2" xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
                     <a href="#" className="btn btn-info font-size-sm w-100">Pagos</a>
                 </Col>
-            </Row>*/}
+            </Row>
 
             <Formik
                 initialValues={initialValuesDeclaration}

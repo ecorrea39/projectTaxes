@@ -12,16 +12,10 @@ import { ListConcepts } from "./listConcepts";
 export const BaseFormik = ({conceptos,formik}) => {
 
     const {
-        setDeducible, deducible, bancos, totalTributoDeclarado,
-        setCreditoFiscal, formatoFechaFutura, modalidadesPagos } = useContext(TaxesContext);
-
-    /**VALIDACIONES PENTIEN
-     * EL MONTO A PAGAR PUEDE SER MENOR A EL MONTO DEL TRIBUTO ?
-     * EL MONTO DEL TRIBUTO NO PUEDE SER 0
-     * BLOQUEAR EL CAMPO DEL MONTO DEL TRIBUTO -> listo
-     * MOSTRAR LA INFORMACION CORRECTA EN EL RECIBO
-     * LA SUMATORIA DE LOS MONTOS DE CADA CONCEPTOS + EL MONTO DE LA DECLARACION CON EL MONTO DEL PAGO
-     */
+        bancos, totalTributoDeclarado, setCreditoFiscal,
+        formatoFechaFutura, modalidadesPagos } = useContext(TaxesContext);
+    
+    const [deducible, setDeducible] = useState(0);
 
     const calcularCreditoFiscal = (montoPagado) => {
         
@@ -29,7 +23,7 @@ export const BaseFormik = ({conceptos,formik}) => {
         let array = formik.values.conceptos;
         
         if ( resta > 0 )  {
-            setDeducible(resta);
+            // setDeducible(resta);
             formik.setFieldValue("conceptos", [...array, "12"]);
             // ESTO SE DEBE CAMBIAR 
             setCreditoFiscal({
@@ -38,7 +32,7 @@ export const BaseFormik = ({conceptos,formik}) => {
             formik.setFieldValue("montoCredito", resta);
            
         } else {
-            setDeducible(0);
+            // setDeducible(0);
             let indice = array.indexOf("12");
             array.splice(indice, 1);
             formik.setFieldValue("conceptos", array);
@@ -55,7 +49,9 @@ export const BaseFormik = ({conceptos,formik}) => {
     },[]);
 
     useEffect(()=>{
-       calcularCreditoFiscal(formik.values.monto);
+        if(totalTributoDeclarado > 0) {
+            calcularCreditoFiscal(formik.values.monto);
+        }
     },[formik.values.monto]);
 
     return (
@@ -150,7 +146,7 @@ export const BaseFormik = ({conceptos,formik}) => {
             }
 
             {
-              deducible > 0 && <ListConcepts formik={formik} conceptos={conceptos} />
+                <ListConcepts formik={formik} conceptos={conceptos} />
             }
             
             <Row>

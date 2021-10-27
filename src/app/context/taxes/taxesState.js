@@ -24,7 +24,6 @@ export const TaxesState = ({ children }) => {
     const [selConcepto, setSelConcepto] = useState([]);
     const estatus = ['eliminada', 'creada', 'definitiva', 'pagada' ];
     const nrif = odb.get('rif');
-    const [deducible, setDeducible] = useState(0);
     const [modalidadesPagos, setModalidadPagos] = useState([]);
     const [linkRecibo, setLinkRecibo] = useState("");
 
@@ -442,8 +441,6 @@ export const TaxesState = ({ children }) => {
         filtarHistorico,
         selConcepto,
         showSelConcepto,
-        deducible,
-        setDeducible,
         modalidadesPagos,
         setModalidadPagos,
         linkRecibo,

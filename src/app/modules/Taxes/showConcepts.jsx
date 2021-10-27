@@ -28,8 +28,7 @@ function ShowConcept({formik}) {
             [input] : value
         });
     }
-    const handleReAdmin = (value,input) => {  
-        console.log(value,input)  
+    const handleReAdmin = (value,input) => {
         setReAdmin({
             ...reAdmin,
             [input] : value
