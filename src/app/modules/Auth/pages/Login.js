@@ -26,7 +26,7 @@ const initialValues = {
   password: "inces123."
 };
 
-const styleCenter = { "display":"flex", "justify-content":"center", "align-item":"center" }
+const styleCenter = { "display":"flex", "justifyContent":"center", "alignItem":"center" }
 
 function Login(props) {
   const {intl} = props;

@@ -1,7 +1,8 @@
-import React, {useEffect} from "react";
+import React, {useContext, useEffect} from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import DataTable from 'react-data-table-component';
 import axios from "axios";
+import GeneralContext from "../../store/general-context";
 
 const columnas = [
   {
@@ -32,6 +33,8 @@ const paginationOptions = {
 
 const FondoDeComercioLista = (props) => {
 
+  const generalCtx = useContext(GeneralContext);
+
   const [pending, setPending] = React.useState(true);
   const [rows, setRows] = React.useState([]);
 
@@ -39,6 +42,15 @@ const FondoDeComercioLista = (props) => {
 
   const token = localStorage.getItem('authToken');
   const rif = localStorage.getItem('rif');
+
+  const onRowClicked = (row, event) => {
+
+    if (window.confirm("Deseas editar: " + row.razon_social + "?")) {
+      generalCtx.iniIdUserInformacion(row.id);
+      generalCtx.iniRazonSocial(row.razon_social);
+      generalCtx.iniTipoDeEmpresa("FONDO COMERCIO");
+    }
+  };
 
   const axiosConfig = {
     headers: {
@@ -59,23 +71,24 @@ const FondoDeComercioLista = (props) => {
         if (res.data.data != null) {
 
           tableFondoDeComercioData = res.data.data.map(elemData => {
-            let id = elemData.id;
-            let elemDataName = elemData.attributes.name;
 
-            let rObj = {
-              "id": elemData.id,
-              "razon_social": elemData.attributes.razon_social,
-              "nombre_comercial": elemData.attributes.nombre_comercial
-            };
+            if (elemData.tipo === "FONDO COMERCIO") {
+              let id = elemData.id;
+              let elemDataName = elemData.attributes.name;
 
-            return rObj;
+              let rObj = {
+                "id": elemData.id,
+                "razon_social": elemData.attributes.razon_social,
+                "nombre_comercial": elemData.attributes.nombre_comercial
+              };
+
+              return rObj;
+            }
           });
 
           setRows(tableFondoDeComercioData);
           setPending(false);
-
         }
-
       }).catch((err) => {
 
       console.log("errGetUserCompany_fondo_comercio", err);
@@ -95,6 +108,7 @@ const FondoDeComercioLista = (props) => {
         fixedHeader
         fixedHeaderScrollHeight="600px"
         progressPending={pending}
+        onRowClicked={onRowClicked}
       />
 
     </div>

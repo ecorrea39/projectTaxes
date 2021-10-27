@@ -1,15 +1,18 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect, useRef, useContext} from "react";
 import {Button, Card, Col, Container, Dropdown, DropdownButton, Form, Row, SplitButton} from "react-bootstrap";
 import {FormattedMessage, useIntl} from "react-intl";
 import * as Yup from "yup";
 import {useFormik} from "formik";
 import axios from "axios";
+import GeneralContext from "../../store/general-context";
 
 const textLabelColor = {
   'color': '#5A5EFF',
 };
 
 const UserDatosFormStep1 = (props) => {
+
+  const generalCtx = useContext(GeneralContext);
 
   const [initialValues, setInitialValues] = useState({
     razon_social: "",
@@ -29,7 +32,9 @@ const UserDatosFormStep1 = (props) => {
   const [clasesEmpresa, setClasesEmpresa] = useState([]);
   const [estatus, setEstatus] = useState([]);
   const [actividadesEconomicas, setActividadesEconomicas] = useState([]);
+  const [userCompanies, setUserCompanies] = useState([]);
   const [siguiente, setSiguiente] = useState(false);
+  const [mostrarComboEmpresas, setMostrarComboEmpresas] = useState(false);
 
   const intl = useIntl();
   const API_URL = `${process.env.REACT_APP_API_URL}`;
@@ -56,34 +61,43 @@ const UserDatosFormStep1 = (props) => {
         cargaDeActividadesEconomicas().then((resolvedValueCargaDeActividadesEconomicas) => {
           console.log("resolvedValueCargaDeActividadesEconomicas", resolvedValueCargaDeActividadesEconomicas);
 
-          axios.get(`${API_URL}user_company/${rif}/`, axiosConfig)
-            .then(function (res) {
-              console.log("get_user_company::", res);
+          cargaDeEmpresas().then((resolvedValueCargaDeEmpresas) => {
+            console.log("resolvedValueCargaDeEmpresas", resolvedValueCargaDeEmpresas);
 
-              if (res.data.data != null) {
+            axios.get(`${API_URL}user_company/${rif}/`, axiosConfig)
+              .then(function (res) {
+                console.log("get_user_company::", res);
 
-                let initialValuesJson = {
-                  "razon_social": res.data.data.attributes.razon_social != null ? res.data.data.attributes.razon_social : "",
-                  "nombre_comercial": res.data.data.attributes.nombre_comercial != null ? res.data.data.attributes.nombre_comercial : "",
-                  "clase_de_empresa": res.data.data.attributes.clase_de_empresa != null ? res.data.data.attributes.clase_de_empresa : "",
-                  "actividad_economica": res.data.data.attributes.actividad_economica != null ? res.data.data.attributes.actividad_economica : "",
-                  "estatus": res.data.data.attributes.estatus != null ? res.data.data.attributes.estatus : "",
-                  "numero_patronal": res.data.data.attributes.numero_patronal != null ? res.data.data.attributes.numero_patronal : "",
-                  "numero_de_trabajadores": res.data.data.attributes.numero_de_trabajadores != null ? res.data.data.attributes.numero_de_trabajadores : ""
-                };
+                if (res.data.data != null) {
 
-                setInitialValues(initialValuesJson);
-              } else {
-                alert("No existe información alguna registrada del usuario");
-              }
+                  let initialValuesJson = {
+                    "razon_social": res.data.data.attributes.razon_social != null ? res.data.data.attributes.razon_social : "",
+                    "nombre_comercial": res.data.data.attributes.nombre_comercial != null ? res.data.data.attributes.nombre_comercial : "",
+                    "clase_de_empresa": res.data.data.attributes.clase_de_empresa != null ? res.data.data.attributes.clase_de_empresa : "",
+                    "actividad_economica": res.data.data.attributes.actividad_economica != null ? res.data.data.attributes.actividad_economica : "",
+                    "estatus": res.data.data.attributes.estatus != null ? res.data.data.attributes.estatus : "",
+                    "numero_patronal": res.data.data.attributes.numero_patronal != null ? res.data.data.attributes.numero_patronal : "",
+                    "numero_de_trabajadores": res.data.data.attributes.numero_de_trabajadores != null ? res.data.data.attributes.numero_de_trabajadores : ""
+                  };
 
+                  generalCtx.iniIdUserInformacionProfile(res.data.data.id);
+                  setInitialValues(initialValuesJson);
+                } else {
+                  generalCtx.iniIdUserInformacionProfile("-");
+                  alert("No existe información alguna registrada del usuario");
+                }
+
+                disableLoading();
+              }).catch((err) => {
+
+              console.log("errGetUserCompany", err);
+              alert("Error buscando datos de la empresa del usuario")
               disableLoading();
-            }).catch((err) => {
 
-            console.log("errGetUserCompany", err);
-            alert("Error buscando datos de la empresa del usuario")
-            disableLoading();
-
+            });
+          }, (error) => {
+            console.log("cargaDeEmpresasFallido", error);
+            alert(error);
           });
         }, (error) => {
           console.log("cargaDeActividadesEconomicasFallido", error);
@@ -236,6 +250,56 @@ const UserDatosFormStep1 = (props) => {
     return p;
   }
 
+  const cargaDeEmpresas = () => {
+
+    let p = new Promise(function (resolve, reject) {
+      enableLoading();
+
+      axios.get(`${API_URL}user_company/fondos/${rif}/`, axiosConfig)
+        .then(function (res) {
+          console.log("resFormStep1_fondos", res);
+
+          const arrayData = Array.from(res.data.data);
+
+          if (arrayData.length > 0) {
+            setMostrarComboEmpresas(true);
+          } else {
+            setMostrarComboEmpresas(false);
+          }
+
+          let companiesArray = arrayData.map(elemData => {
+            let id = elemData.id;
+            let elemDataName = elemData.attributes.razon_social;
+
+            let rObj = {
+              "id": id,
+              "name": elemDataName
+            };
+
+            console.log("rObjCompanies", rObj);
+
+            return rObj;
+          });
+
+          setUserCompanies(companiesArray);
+          console.log("companiesArray::", companiesArray);
+
+          disableLoading();
+
+          resolve('Companies cargado Exitosamente');
+
+        }).catch((err) => {
+
+        console.log("errUserDatosFormStep1EstatusCompanies", err);
+        disableLoading();
+
+        reject(new Error('Error al consultar los datos de las Compañías asociadas al RIF'));
+      });
+    })
+
+    return p;
+  }
+
   const customHandleChangeNumeroDeTrabajadores = (event) => {
     const value = event.currentTarget.value;
 
@@ -247,6 +311,41 @@ const UserDatosFormStep1 = (props) => {
         formik.setFieldValue('numero_de_trabajadores', value);
       }
     }
+  }
+
+  const companiesChangeHandler = (event) => {
+
+    axios.get(`${API_URL}user_company/fondoporid/${event.target.value}/`, axiosConfig)
+      .then(function (res) {
+        console.log("get_user_company::", res);
+
+        if (res.data.data != null) {
+
+          let initialValuesJson = {
+            "razon_social": res.data.data.attributes.razon_social != null ? res.data.data.attributes.razon_social : "",
+            "nombre_comercial": res.data.data.attributes.nombre_comercial != null ? res.data.data.attributes.nombre_comercial : "",
+            "clase_de_empresa": res.data.data.attributes.clase_de_empresa != null ? res.data.data.attributes.clase_de_empresa : "",
+            "actividad_economica": res.data.data.attributes.actividad_economica != null ? res.data.data.attributes.actividad_economica : "",
+            "estatus": res.data.data.attributes.estatus != null ? res.data.data.attributes.estatus : "",
+            "numero_patronal": res.data.data.attributes.numero_patronal != null ? res.data.data.attributes.numero_patronal : "",
+            "numero_de_trabajadores": res.data.data.attributes.numero_de_trabajadores != null ? res.data.data.attributes.numero_de_trabajadores : ""
+          };
+
+          generalCtx.iniIdUserInformacionProfile(res.data.data.id);
+          setInitialValues(initialValuesJson);
+        } else {
+          generalCtx.iniIdUserInformacionProfile("-");
+          alert("No existe información alguna registrada del usuario");
+        }
+
+        disableLoading();
+      }).catch((err) => {
+
+      console.log("errGetUserCompany", err);
+      alert("Error buscando datos de la empresa del usuario")
+      disableLoading();
+
+    });
   }
 
   const submitSiguiente = () => {
@@ -368,7 +467,7 @@ const UserDatosFormStep1 = (props) => {
 
       let jsonAttributes = formik.values;
 
-      jsonAttributes["tipo"] = "PRINCIPAL";
+      jsonAttributes["user_information_id"] = generalCtx.theIdUserInformacionProfile;
 
       const data = {
         jsonapi: {version: '1.0'},
@@ -430,17 +529,22 @@ const UserDatosFormStep1 = (props) => {
               </Card.Title>
             </Col>
             <Col md={3} style={textLabelColor}>
-              Empresa Principal y Fondos de Comercio
+              {mostrarComboEmpresas && 'Empresa Principal y Fondos de Comercio'}
             </Col>
             <Col md={5}>
-              <form>
-                <Form.Group controlId="fondoComercio">
-                  <Form.Control as="select">
-                    <option key="0" value="">Seleccione el Fondo de Comercio1</option>
-                    <option key="1" value="">Seleccione el Fondo de Comercio2</option>
-                  </Form.Control>
-                </Form.Group>
-              </form>
+              {mostrarComboEmpresas &&
+                <form>
+                  <Form.Group controlId="fondoComercio">
+                    <Form.Control as="select" onChange={companiesChangeHandler}>
+
+                      {userCompanies.map((elemento) =>
+                        <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
+                      )}
+
+                    </Form.Control>
+                  </Form.Group>
+                </form>
+              }
             </Col>
           </Row>
 
