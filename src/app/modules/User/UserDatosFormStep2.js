@@ -1,9 +1,10 @@
-import React, {useEffect, useState, useRef} from "react";
+import React, {useEffect, useState, useRef, useContext} from "react";
 import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import {FormattedMessage, useIntl} from "react-intl";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import GeneralContext from "../../store/general-context";
 
 const listaOficinas = () => {
   const array = [
@@ -23,6 +24,8 @@ const textLabelColor = {
 const UserDatosFormStep2 = (props) => {
 
   const [loading, setLoading] = useState(false);
+
+  const generalCtx = useContext(GeneralContext);
 
   const [initialValues, setInitialValues] = useState({
     oficina: "",
@@ -56,7 +59,7 @@ const UserDatosFormStep2 = (props) => {
 
   useEffect(() => {
 
-    axios.get(`${API_URL}user_mercantil_data/${rif}/`, axiosConfig)
+    axios.get(`${API_URL}user_mercantil_data/fondoporid/${generalCtx.theIdUserInformacionProfile}/`, axiosConfig)
       .then(function (res) {
         console.log("get_user_company::", res);
 
