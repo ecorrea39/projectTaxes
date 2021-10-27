@@ -1,11 +1,12 @@
 
 export const initialValuesTablesCol1 = {
     name: "",
-    estatus: true
+    is_active: true
 }
 
 export const initialValuesTablesCol2 = {
-    name: "",
-    estatus: true
+    id_banco: "",
+    cuenta_tipo: "",
+    cuenta_nro: "",
+    is_active: true
 }
-

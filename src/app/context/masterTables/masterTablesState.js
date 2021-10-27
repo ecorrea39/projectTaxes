@@ -6,16 +6,29 @@ import Swal from "sweetalert2";
 
 export const MasterTablesState = ({ children }) => {
 
+    const [bancos, setBancos] = useState([]);
     const [trimestres, setTrimestres] = useState([]);
     const [formasPago, setFormasPago] = useState([]);
     const [cuentasRecaudadoras, setCuentasRecaudadoras] = useState([]);
     const [formDataTables, setFormDataTables] = useState({});
 
     useEffect(() => {
+        getBancos();
         getTrimestres();
         getFormasPago();
         getCuentasRecaudadoras();
     },[]);
+
+    const getBancos = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/banks/');
+            setBancos(respuesta.data.data);
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
 
     const getTrimestres = async () => {
 
@@ -94,14 +107,32 @@ export const MasterTablesState = ({ children }) => {
 
     }
 
-    const deleteMasterTables = async (tabla, titulo, obj) => {
+    const obtenerValores = async (tabla, valores) => {
+        switch (tabla) {
+            case "trimestre":
+                //name = valores.name;
+                //is_active = valores.is_active;
+                //Formik.setFieldValue("name", valores.name);
+                //Formik.setFieldValue("is_active", valores.is_active);
+                break;
 
-        let respuesta;
+            case "forma-pago":
+                break;
+
+            case "cuentas-recaudadoras":
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    const deleteMasterTables = async (tabla, titulo, valores) => {
+
+        let dataType = "";
+        let urlTabla = ""
 
         try {
-            /*
-            const respuesta = await clientAxios.get('/banks/');
-            setBancos(respuesta.data.data)*/
             Swal.fire({
                 title: titulo,
                 text: 'Esta seguro de eliminar el registro?',
@@ -110,35 +141,34 @@ export const MasterTablesState = ({ children }) => {
                 denyButtonText: `Cancelar`,
                 confirmButtonText: 'Eliminar',
             }).then((result) => {
+
                 if (result.isConfirmed) {
-
-                    requestConfig.data.attributes = obj;
-                    requestConfig.data.id = obj.id;
-                    requestConfig.data.attributes.is_active = !obj.is_active;
-
                     switch (tabla) {
                         case "trimestre":
-
-                            requestConfig.data.type = "saveTrimestres";
-                            respuesta = clientAxios.put('/trimestres/', requestConfig);
-                            getTrimestres();
+                            dataType = "saveTrimestres";
+                            urlTabla = "/trimestres/";
                             break;
 
                         case "forma-pago":
-                            requestConfig.data.type = "saveFormasPago";
-                            respuesta = clientAxios.put('/formas_pago/', requestConfig);
-                            getFormasPago();
+                            dataType = "saveFormasPago";
+                            urlTabla = "/formas_pago/";
                             break;
 
                         case "cuentas-recaudadoras":
-                            requestConfig.data.type = "saveCuentasBanco";
-                            respuesta = clientAxios.put('/cuentas_banco/', requestConfig);
-                            getCuentasRecaudadoras();
+                            dataType = "saveCuentasBanco";
+                            urlTabla = "/cuentas_banco/";
                             break;
 
                         default:
                             break;
                     }
+
+                    requestConfig.data.type = dataType;
+                    requestConfig.data.attributes = valores;
+                    requestConfig.data.id = valores.id;
+                    requestConfig.data.attributes.is_active = !valores.is_active;
+
+                    const respuesta = clientAxios.put(urlTabla, requestConfig);
 
                     Swal.fire({
                         title: titulo,
@@ -146,12 +176,26 @@ export const MasterTablesState = ({ children }) => {
                         icon: "success",
                         button: "Ok",
                         timer: 1500
-                    });
+                    }).then((value) => {
+                        switch (tabla) {
+                            case "trimestre":
+                                getTrimestres();
+                                break;
 
-                } else if (result.isDenied) {
+                            case "forma-pago":
+                                getFormasPago();
+                                break;
+
+                            case "cuentas-recaudadoras":
+                                getCuentasRecaudadoras();
+                                break;
+
+                            default:
+                                break;
+                        }
+                    });
                 }
             });
-
         } catch (error) {
             console.log(error)
             Swal.fire({
@@ -165,7 +209,6 @@ export const MasterTablesState = ({ children }) => {
 
     const submitMasterTables = async (valores, props) => {
 
-        console.log('props ', props)
         let dataType = "";
         let urlTabla = ""
 
@@ -200,13 +243,13 @@ export const MasterTablesState = ({ children }) => {
             if(props.accion === 'Agregar') {
                 const respuesta = await clientAxios.post(urlTabla, requestConfig);
             } else {
-                //const respuesta = await clientAxios.put(urlTabla, requestConfig);
+                const respuesta = await clientAxios.put(urlTabla, requestConfig);
             }
 
             props.onHide();
             Swal.fire({
                 title: props.titulo,
-                text: "Datos guardados con éxito!",
+                text: `Datos ${ props.accion === 'Agregar'? 'guadados' : 'actualizados' } con éxito!`,
                 icon: "success",
                 button: "Ok",
                 timer: 1500
@@ -232,7 +275,7 @@ export const MasterTablesState = ({ children }) => {
             console.log(error)
             Swal.fire({
                 title: props.titulo,
-                text: "Error al intentar guardar registro!",
+                text: `Error al intentar ${ props.accion === 'Agregar'? 'guadar' : 'actualizar' } registro!`,
                 icon: "error",
                 button: "Ok",
             });
@@ -240,12 +283,14 @@ export const MasterTablesState = ({ children }) => {
     }
 
     const valuesContext = {
-        deleteMasterTables,
+        bancos,
         trimestres,
         formasPago,
         cuentasRecaudadoras,
         submitMasterTables,
-        setFormDataTables
+        setFormDataTables,
+        deleteMasterTables,
+        obtenerValores
     }
 
     return (

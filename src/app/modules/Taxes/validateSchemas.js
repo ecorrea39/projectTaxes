@@ -1,8 +1,6 @@
 import * as Yup from 'yup';
 import { regexNumber } from '../../helpers';
 
-const regexNumber = /^[0-9]+$/;
-
 export const SchemaPayment = Yup.object().shape({
     nroReferencia: Yup.string()
         .required('- Campo obligatorio -')
@@ -11,8 +9,7 @@ export const SchemaPayment = Yup.object().shape({
         .matches(regexNumber, '- Numero de referencia invalido. -'),
     tipoTransaccion: Yup.string()
         .required('- Campo obligatorio -'),
-    banco: Yup.string()
-        ,
+    banco: Yup.string(),
     monto: Yup.string()
         .required('- Campo obligatorio -')
         .max(10, 'Debe ingresar un maximo de 10 digistos')
@@ -27,8 +24,6 @@ export const SchemaPayment = Yup.object().shape({
         .required('- Campo obligatorio -')
         .max(new Date(), "La fecha ingresada no esta permitida")
 });
-
-
 
 export const SchemaDeclaration= Yup.object({
     declaraciones: Yup.array().of(
@@ -52,8 +47,8 @@ export const SchemaDeclaration= Yup.object({
             terms: Yup.boolean()
                 .required('- Campo obligatorio -'),
             ntrabajadores_liquidados: Yup.string()
-                .max(6, 'Debe ingresar un maximo de 6 digitos')
-                .matches(regexNumber, '- Solo debe ingresar numeros -'),
+                .max(6, 'Debe ingresar un máximo de 6 digitos')
+                .matches(regexNumber, '- Solo debe ingresar números -'),
             sustitutiva: Yup.string(),
             estatus: Yup.string(),
             fecha_emision: Yup.date()
