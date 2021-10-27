@@ -1,13 +1,11 @@
 import * as Yup from 'yup';
 import { regexNumber } from '../../helpers';
 
-const regexNumber = /^[0-9]+$/;
-
 export const SchemaPayment = Yup.object().shape({
     nroReferencia: Yup.string()
         .required('- Campo obligatorio -')
         .min(4, '- Debe ingresar al menos los ultimos 4 digistos de la referencia. -')
-        .max(10, '- Debe ingresar un maximo de 10 digistos de la referencia. -')
+        .max(10, '- Debe ingresar un máximo de 10 digistos de la referencia. -')
         .matches(regexNumber, '- Numero de referencia invalido. -'),
     tipoTransaccion: Yup.string()
         .required('- Campo obligatorio -'),
@@ -15,10 +13,10 @@ export const SchemaPayment = Yup.object().shape({
         ,
     monto: Yup.string()
         .required('- Campo obligatorio -')
-        .max(10, 'Debe ingresar un maximo de 10 digistos')
+        .max(10, 'Debe ingresar un máximo de 10 digitos')
         .matches(regexNumber, '- Solo se permiten numeros -'),
     intereses: Yup.string()
-        .max(10, 'Debe ingresar un maximo de 10 digistos')
+        .max(10, 'Debe ingresar un máximo de 10 digitos')
         .matches(regexNumber, '- Solo se permiten numeros -'),
     multa: Yup.string()
         .max(10, 'Debe ingresar un maximo de 10 digistos')
