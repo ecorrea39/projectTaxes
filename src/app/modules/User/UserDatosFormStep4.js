@@ -574,12 +574,16 @@ const UserDatosFormStep4 = (props) => {
       console.log("rif", rif);
       console.log("authToken", token);
 
+      let jsonAttributes = formik.values;
+
+      jsonAttributes["user_information_id"] = generalCtx.theIdUserInformacionProfile;
+
       const data = {
         jsonapi: {version: '1.0'},
         data: {
           type: "userManagerData",
           id: rif,
-          attributes: formik.values
+          attributes: jsonAttributes
         }
       };
 

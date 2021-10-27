@@ -1,11 +1,14 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import {useIntl} from "react-intl";
 import axios from "axios";
+import GeneralContext from "../../store/general-context";
 
 const UserDatosFormStep5 = (props) => {
 
   const [loading, setLoading] = useState(false);
+
+  const generalCtx = useContext(GeneralContext);
 
   const intl = useIntl();
   const API_URL = `${process.env.REACT_APP_API_URL}`;
@@ -35,11 +38,16 @@ const UserDatosFormStep5 = (props) => {
     console.log("rif", rif);
     console.log("authToken", token);
 
+    let jsonAttributes = {};
+
+    jsonAttributes["user_information_id"] = generalCtx.theIdUserInformacionProfile;
+
     const data = {
       jsonapi: {version: '1.0'},
       data: {
         type: "userManagerData",
-        id: rif
+        id: rif,
+        attributes: jsonAttributes
       }
     };
 
@@ -50,7 +58,7 @@ const UserDatosFormStep5 = (props) => {
 
         alert('Guardado exitosamente');
 
-        window.open(API_URL + 'reports/comprobante_inscripcion/' + res.data.data.id,'_blank');
+        window.open(API_URL + 'reports/comprobante_inscripcion/' + generalCtx.theIdUserInformacionProfile,'_blank');
 
         disableLoading();
 
