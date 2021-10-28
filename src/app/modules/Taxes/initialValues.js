@@ -28,4 +28,5 @@ export const initialValuesDeclaration = {
         sustitutiva: "1",
         estatus: "1"
     }],
+    termG: ""
 }

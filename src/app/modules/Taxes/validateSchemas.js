@@ -25,7 +25,7 @@ export const SchemaPayment = Yup.object().shape({
         .max(new Date(), "La fecha ingresada no esta permitida")
 });
 
-export const SchemaDeclaration= Yup.object({
+export const SchemaDeclaration = Yup.object({
     declaraciones: Yup.array().of(
         Yup.object().shape({
             concepto_pago: Yup.string()
@@ -44,8 +44,7 @@ export const SchemaDeclaration= Yup.object({
             monto_multa: Yup.string(),
             monto_intereses: Yup.string(),
             fecha_declaracion: Yup.date(),
-            terms: Yup.boolean()
-                .required('- Campo obligatorio -'),
+            terms: Yup.boolean(),
             ntrabajadores_liquidados: Yup.string()
                 .max(6, 'Debe ingresar un máximo de 6 digitos')
                 .matches(regexNumber, '- Solo debe ingresar números -'),
@@ -57,6 +56,8 @@ export const SchemaDeclaration= Yup.object({
                     then: Yup.string().required('- Campo obligatorio -')
                 })
                 
-        })
-    )
+        }),
+    ),
+    termsG: Yup.boolean()
+        .required('- Campo obligatorio -')
 });

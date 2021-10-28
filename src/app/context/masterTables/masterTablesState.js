@@ -9,21 +9,40 @@ export const MasterTablesState = ({ children }) => {
     const [bancos, setBancos] = useState([]);
     const [trimestres, setTrimestres] = useState([]);
     const [formasPago, setFormasPago] = useState([]);
+    const [estatus, setEstatus] = useState([]);
     const [cuentasRecaudadoras, setCuentasRecaudadoras] = useState([]);
+    const [claseEmpresa, setClaseEmpresa] = useState([]);
     const [formDataTables, setFormDataTables] = useState({});
+    const [registroSeleccionado, setRegistroSeleccionado] = useState({});
 
     useEffect(() => {
         getBancos();
         getTrimestres();
         getFormasPago();
         getCuentasRecaudadoras();
+        getEstatus();
+        getClaseEmpresa();
     },[]);
 
     const getBancos = async () => {
 
         try {
             const respuesta = await clientAxios.get('/banks/');
-            setBancos(respuesta.data.data);
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "name": arreglo[i].attributes.nom_banco,
+                        "is_active": arreglo[i].attributes.is_active
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setBancos(lista)
+
         } catch (error) {
             console.log(error)
         }
@@ -91,6 +110,7 @@ export const MasterTablesState = ({ children }) => {
                 lista.push(
                     {
                         "id": arreglo[i].id,
+                        "id_banco": arreglo[i].attributes.id_banco,
                         "name": arreglo[i].attributes['id_banco_banco.nom_banco'],
                         "cuenta_tipo": arreglo[i].attributes.cuenta_tipo,
                         "cuenta_nro": arreglo[i].attributes.cuenta_nro,
@@ -107,24 +127,61 @@ export const MasterTablesState = ({ children }) => {
 
     }
 
-    const obtenerValores = async (tabla, valores) => {
-        switch (tabla) {
-            case "trimestre":
-                //name = valores.name;
-                //is_active = valores.is_active;
-                //Formik.setFieldValue("name", valores.name);
-                //Formik.setFieldValue("is_active", valores.is_active);
-                break;
+    const getEstatus = async () => {
 
-            case "forma-pago":
-                break;
+        try {
+            const respuesta = await clientAxios.get('/estatus/', clientAxios);
 
-            case "cuentas-recaudadoras":
-                break;
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "name": arreglo[i].attributes.name,
+                        "is_active": arreglo[i].attributes.is_active
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setEstatus(lista);
 
-            default:
-                break;
+        } catch (error) {
+            console.log(error)
         }
+
+    }
+
+    const getClaseEmpresa = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/company_class/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "name": arreglo[i].attributes.name,
+                        "is_active": arreglo[i].attributes.is_active
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setClaseEmpresa(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const obtenerValores = (valores) => {
+        console.log('valores ', valores)
+        setRegistroSeleccionado(valores);
     }
 
     const deleteMasterTables = async (tabla, titulo, valores) => {
@@ -159,6 +216,21 @@ export const MasterTablesState = ({ children }) => {
                             urlTabla = "/cuentas_banco/";
                             break;
 
+                        case "estatus-entidad-trabajo":
+                            dataType = "saveEstatus";
+                            urlTabla = "/estatus/";
+                            break;
+
+                        case "clase-empresa":
+                            dataType = "saveCompanyClass";
+                            urlTabla = "/company_class/";
+                            break;
+
+                        case "bancos-recaudadores":
+                            dataType = "banks";
+                            urlTabla = "/banks/";
+                            break;
+
                         default:
                             break;
                     }
@@ -188,6 +260,18 @@ export const MasterTablesState = ({ children }) => {
 
                             case "cuentas-recaudadoras":
                                 getCuentasRecaudadoras();
+                                break;
+
+                            case "estatus-entidad-trabajo":
+                                getEstatus();
+                                break;
+
+                            case "clase-empresa":
+                                getClaseEmpresa();
+                                break;
+
+                            case "bancos-recaudadores":
+                                getBancos();
                                 break;
 
                             default:
@@ -230,19 +314,36 @@ export const MasterTablesState = ({ children }) => {
                     urlTabla = "/cuentas_banco/";
                     break;
 
+                case "estatus-entidad-trabajo":
+                    dataType = "saveEstatus";
+                    urlTabla = "/estatus/";
+                    break;
+
+                case "clase-empresa":
+                    dataType = "saveCompanyClass";
+                    urlTabla = "/company_class/";
+                    break;
+
+                case "bancos-recaudadores":
+                    dataType = "banks";
+                    urlTabla = "/banks/";
+                    break;
+
                 default:
                     break;
             }
 
             requestConfig.data.type = dataType;
             requestConfig.data.attributes = valores;
-            requestConfig.data.id = (props.accion !== 'Agregar') ? valores.declaraciones[0].id : '';
+            requestConfig.data.id = (props.accion !== 'Agregar') ? valores.id : '';
 
             console.log('requestConfig ', requestConfig)
 
             if(props.accion === 'Agregar') {
+                console.log('agrgar')
                 const respuesta = await clientAxios.post(urlTabla, requestConfig);
             } else {
+                console.log('modificar')
                 const respuesta = await clientAxios.put(urlTabla, requestConfig);
             }
 
@@ -267,6 +368,18 @@ export const MasterTablesState = ({ children }) => {
                         getCuentasRecaudadoras();
                         break;
 
+                    case "estatus-entidad-trabajo":
+                        getEstatus();
+                        break;
+
+                    case "clase-empresa":
+                        getClaseEmpresa();
+                        break;
+
+                    case "bancos-recaudadores":
+                        getBancos();
+                        break;
+
                     default:
                         break;
                 }
@@ -275,7 +388,7 @@ export const MasterTablesState = ({ children }) => {
             console.log(error)
             Swal.fire({
                 title: props.titulo,
-                text: `Error al intentar ${ props.accion === 'Agregar'? 'guadar' : 'actualizar' } registro!`,
+                text: `Error al intentar ${ props.accion === 'Agregar' ? 'guardar' : 'actualizar' } registro!`,
                 icon: "error",
                 button: "Ok",
             });
@@ -287,9 +400,12 @@ export const MasterTablesState = ({ children }) => {
         trimestres,
         formasPago,
         cuentasRecaudadoras,
+        estatus,
+        claseEmpresa,
         submitMasterTables,
         setFormDataTables,
         deleteMasterTables,
+        registroSeleccionado,
         obtenerValores
     }
 

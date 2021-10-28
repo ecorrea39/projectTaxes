@@ -278,8 +278,9 @@ export const TaxesState = ({ children }) => {
     const validateAmount = (montoConcepto, monto) => {
         if(montoConcepto + totalTributoDeclarado > monto) {
             Swal.fire({
+                title: "Pago de tributos",
                 icon: 'error',
-                title: 'Verifique que los montos de los conceptos no superen al monto del pago.',
+                text: 'Verifique que los montos de los conceptos no superen al monto del pago.',
                 showConfirmButton: false,
                 timer: 3000
             })
@@ -301,7 +302,6 @@ export const TaxesState = ({ children }) => {
                 text: "Su Pago fue registrado con Éxito.",
                 button: "Ok",
                 icon: 'success',
-                title: 'Su Pago fue registrado con Éxito.',
                 showConfirmButton: false,
                 timer: 2000
             });
@@ -354,6 +354,7 @@ export const TaxesState = ({ children }) => {
                 total = total + x.monto_tributo;
                 if(x.fecha_emision === '') x.fecha_emision = '0001-01-01';
                 if(x.fecha_declaracion === '') x.fecha_declaracion = formatearfecha(new Date(), 'YMD');
+                x.terms = valores.termsG;
             });
 
             setTotalTributoDeclarado(total);
@@ -376,7 +377,18 @@ export const TaxesState = ({ children }) => {
                 timer: 1500
             }).then((value) => {
                 if (total > 0) {
-                    setStepTaxes(stepTaxes+1)
+                    Swal.fire({
+                        title: 'Declaración de tributos',
+                        text: "Esta seguro de realizar el pago de tributos?",
+                        icon: 'info',
+                        showDenyButton: true,
+                        confirmButtonText: 'Si',
+                        denyButtonText: `No`,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            setStepTaxes(stepTaxes+1)
+                        }
+                    });
                 }
                 setDeclaracionSustitutiva(false);
                 setDeclaracionSeleccionada([]);
