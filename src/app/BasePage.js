@@ -34,6 +34,9 @@ const FondosDeComercioPage = lazy(() =>
 const ReporteComprobanteDeInscripcionPage = lazy(() =>
   import("./modules/Reports/ComprobanteDeInscripcion")
 );
+const CrearFondosDeComercioPage = lazy(() =>
+  import("./modules/FondoDeComercio/FondoDeComercioCrear")
+);
 
 export default function BasePage() {
   // useEffect(() => {
@@ -63,6 +66,7 @@ export default function BasePage() {
         <Route path="/mapa" component={MapaPage} />
         <Route path="/fondosdecomercio" component={FondosDeComercioPage} />
         <Route path="/comprobantedeinscripcion" component={ReporteComprobanteDeInscripcionPage} />
+        <Route path="/crearfondocomercio" component={CrearFondosDeComercioPage} />
 
         <Redirect to="error/error-v1" />
       </Switch>
