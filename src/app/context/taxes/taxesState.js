@@ -8,19 +8,55 @@ export const TaxesState = ({ children }) => {
 
     const [stepTaxes, setStepTaxes ] = useState(1);
     const [bancos, setBancos] = useState([]);
-    const [conceptos, setConceptos] = useState([]);
+    const [conceptos, setConceptos] = useState([
+    ]);
     const [anos, setAnos] = useState([]);
     const [trimestres, setTrimestres] = useState([]);
     const [formatoFechaFutura, setFormatoFechaFutura] = useState();    
     const [formDataPayment, setFormDataPayment] = useState({});
-    const [formDataDeclaration, setFormDataDeclaration] = useState({});
+    const [formDataDeclaration, setFormDataDeclaration] = useState({
+        declaraciones: [
+            {
+                ano_declaracion: "2021",
+                concepto_pago: "1",
+                estatus: "1",
+                fecha_declaracion: "2021-10-22",
+                fecha_emision: "0001-01-01",
+                monto_intereses: "0",
+                monto_multa: "0",
+                monto_pagado: "100",
+                monto_tributo: 2,
+                ntrabajadores: "25",
+                ntrabajadores_liquidados: "0",
+                sustitutiva: "1",
+                terms: true,
+                trimestre: "1"
+            },
+            {
+                ano_declaracion: "2020",
+                concepto_pago: "2",
+                estatus: "1",
+                fecha_declaracion: "2021-10-22",
+                fecha_emision: "2021-10-01",
+                monto_intereses: "0",
+                monto_multa: "0",
+                monto_pagado: "2000",
+                monto_tributo: 10,
+                ntrabajadores: "25",
+                ntrabajadores_liquidados: "120",
+                sustitutiva: "1",
+                terms: true,
+                trimestre: "2"
+            }
+        ]
+    });
     const [userData, setUserData] = useState({});
     const [historico, setHistorico] = useState([]);
     const [historicoOriginal, setHistoricoOriginal] = useState([]);
     const [historicoFilter, setHistoricoFilter] = useState([]);
     const [declaracionSustitutiva, setDeclaracionSustitutiva] = useState(false);
     const [declaracionSeleccionada, setDeclaracionSeleccionada] = useState([]);
-    const [totalTributoDeclarado, setTotalTributoDeclarado ] = useState(0);
+    const [totalTributoDeclarado, setTotalTributoDeclarado ] = useState(100);
     const [selConcepto, setSelConcepto] = useState([]);
     const estatus = ['eliminada', 'creada', 'definitiva', 'pagada' ];
     const nrif = odb.get('rif');
@@ -52,6 +88,27 @@ export const TaxesState = ({ children }) => {
         numResolucionMat: "",
         fechaResolucionMat: "",
         montoMultaResolucionMat: ""
+    });
+    const [conv, setConv] = useState({
+        numConvPago: "",
+        fechaConvenio: "",
+        numGiroConvenioPago: "",
+        fechaVencConvenio: "",
+        montoConvenio: "",
+        montoInteresesConvenio: "",
+    });
+    const [cheq, setCheq] = useState({
+        numCheque: "",
+        fechaCheque: "",
+        notaDebito: "",
+        fechaNotaDebito: "",
+        montoCheque: ""
+    });
+    const [multa, setMulta] = useState({
+        montoMulta: ""
+    });
+    const [intereses, setIntereses] = useState({
+        montoInteresesMoratorios: ""
     });
     const [creditoFiscal, setCreditoFiscal] = useState({
         montoCredito: ""
@@ -438,6 +495,10 @@ export const TaxesState = ({ children }) => {
         debForm, setDebForm,
         debMat, setDebMat,
         creditoFiscal, setCreditoFiscal,
+        conv, setConv,
+        cheq, setCheq,
+        multa, setMulta,
+        intereses, setIntereses,
         filtarHistorico,
         selConcepto,
         showSelConcepto,

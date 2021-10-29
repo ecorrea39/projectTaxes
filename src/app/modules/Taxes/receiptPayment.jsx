@@ -25,7 +25,7 @@ export default function ReceiptPayment() {
                     concepto: slcConcept.name,
                     anio: element.ano_declaracion,
                     trimestre: element.trimestre,
-                    referencia: formDataPayment.nroReferencia,
+                    referencia: formDataPayment.nro_referencia,
                     monto: element.monto_tributo
                 }
                 conceptos.push(jsonData)
@@ -39,7 +39,7 @@ export default function ReceiptPayment() {
                 concepto: slcConcept.name,
                 anio: "N/A",
                 trimestre: "N/A",
-                referencia: formDataPayment.nroReferencia,
+                referencia: formDataPayment.nro_referencia,
                 monto: element.detalle.monto
             }
             conceptos.push(jsonData)                                 
@@ -165,7 +165,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                            {formDataPayment.nroReferencia}
+                            {formDataPayment.nro_referencia}
                         </span>
                     </div>
                 </Col>
@@ -195,7 +195,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                            { selectTipoTransaccion(formDataPayment.tipoTransaccion) }
+                            { selectTipoTransaccion(formDataPayment.tipo_transaccion) }
                         </span>
                     </div>
                 </Col>

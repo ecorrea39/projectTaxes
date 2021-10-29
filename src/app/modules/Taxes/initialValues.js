@@ -1,6 +1,6 @@
 export const initialValuesPayment = {
-    nroReferencia: "",
-    tipoTransaccion: "",
+    nro_referencia:"",
+    tipo_transaccion: "",
     banco: "",
     monto: "",
     fecha: "",

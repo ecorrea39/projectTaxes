@@ -2,12 +2,12 @@ import * as Yup from 'yup';
 import { regexNumber } from '../../helpers';
 
 export const SchemaPayment = Yup.object().shape({
-    nroReferencia: Yup.string()
+    nro_referencia: Yup.string()
         .required('- Campo obligatorio -')
         .min(4, '- Debe ingresar al menos los ultimos 4 digistos de la referencia. -')
         .max(10, '- Debe ingresar un máximo de 10 digistos de la referencia. -')
         .matches(regexNumber, '- Numero de referencia invalido. -'),
-    tipoTransaccion: Yup.string()
+    tipo_transaccion: Yup.string()
         .required('- Campo obligatorio -'),
     banco: Yup.string()
         ,

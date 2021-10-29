@@ -9,7 +9,7 @@ import { InputsTaxes } from "./inputsTaxes";
 import TaxesContext from "../../context/taxes/taxesContext";
 import { ListConcepts } from "./listConcepts";
 
-export const BaseFormik = ({conceptos,formik}) => {
+export const BaseFormik = ({conceptos,formik,listDeclaraciones}) => {
 
     const {
         bancos, totalTributoDeclarado, setCreditoFiscal,
@@ -21,19 +21,20 @@ export const BaseFormik = ({conceptos,formik}) => {
         
         let resta = parseInt(montoPagado) - parseInt(totalTributoDeclarado);
         let array = formik.values.conceptos;
+        let indice = array.indexOf("12");
         
         if ( resta > 0 )  {
             // setDeducible(resta);
-            formik.setFieldValue("conceptos", [...array, "12"]);
+            if(indice == -1) {
+                formik.setFieldValue("conceptos", [...array, "12"]);
+            }
             // ESTO SE DEBE CAMBIAR 
             setCreditoFiscal({
                 montoCredito: resta
             });
             formik.setFieldValue("montoCredito", resta);
-           
         } else {
             // setDeducible(0);
-            let indice = array.indexOf("12");
             array.splice(indice, 1);
             formik.setFieldValue("conceptos", array);
             // ESTO SE DEBE CAMBIAR 
@@ -63,7 +64,7 @@ export const BaseFormik = ({conceptos,formik}) => {
                     </label>
                     <Field
                         id="referencia"
-                        name="nroReferencia"
+                        name="nro_referencia"
                         placeholder="Ej: 999999"
                         component={BaseInput}
                         maxLength="10"
@@ -78,7 +79,7 @@ export const BaseFormik = ({conceptos,formik}) => {
                         type="select"
                         component={BaseSelect}
                         id="modalidad-pago"
-                        name="tipoTransaccion"
+                        name="tipo_transaccion"
                     >
                         <option value="" disabled>. . .</option>
                         {
@@ -142,7 +143,7 @@ export const BaseFormik = ({conceptos,formik}) => {
             </Row>
             
             {
-                totalTributoDeclarado > 0 && <InputsTaxes />
+                totalTributoDeclarado > 0 && <InputsTaxes listDeclaraciones={listDeclaraciones} />
             }
 
             {
