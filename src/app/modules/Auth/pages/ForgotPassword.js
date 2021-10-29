@@ -7,6 +7,7 @@ import {FormattedMessage, injectIntl} from "react-intl";
 import * as auth from "../_redux/authRedux";
 import {Col, Form} from "react-bootstrap";
 import axios from "axios";
+import Util from "../../../helpers/Util";
 
 const initialValues = {
   tipo: "",
@@ -57,22 +58,16 @@ function ForgotPassword(props) {
         })
       ),
     user: Yup
-      .number().positive(
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.POSITIVE",
-        })
-      )
-      .test('len',
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.RANGELEN",
-        }, {min: 7, max: 9})
-        , val => !val || (val && (val.toString().length >= 7 && val.toString().length <= 9)))
+      .string()
       .required(
         intl.formatMessage({
             id: "AUTH.VALIDATION.REQUIRED",
           },
           {name: 'RIF'})
-      ),
+      )
+      .test('validarRif',
+        'El RIF no es válido',
+        val => Util.validarRif(formik.values.tipo + val)),
   });
 
   const getInputClasses = (fieldname) => {

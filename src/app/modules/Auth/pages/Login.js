@@ -9,6 +9,7 @@ import MTCaptcha from "../../MtCaptcha/MTCaptcha";
 import {Form, Col, Row} from "react-bootstrap";
 import AuthContext from "../../../store/auth-context";
 import axios from "axios";
+import Util from "../../../helpers/Util";
 
 /*
   INTL (i18n) docs:
@@ -58,22 +59,16 @@ function Login(props) {
         })
       ),
     user: Yup
-      .number().positive(
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.POSITIVE",
-        })
-      )
-      .test('len',
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.RANGELEN",
-        }, {min: 7, max: 9})
-        , val => !val || (val && (val.toString().length >= 7 && val.toString().length <= 9)))
+      .string()
       .required(
         intl.formatMessage({
             id: "AUTH.VALIDATION.REQUIRED",
           },
           {name: 'RIF'})
-      ),
+      )
+      .test('validarRif',
+        'El RIF no es válido',
+        val => Util.validarRif(formik.values.tipo + val)),
     password: Yup.string()
       .min(8,
         intl.formatMessage({
