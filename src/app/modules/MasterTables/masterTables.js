@@ -35,20 +35,8 @@ function MasterTables({tabla}) {
             break;
 
         case "estatus-entidad-trabajo":
-            titulo = "Estatus entidad de trabajo";
+            titulo = "Estatus Entidad de Trabajo";
             data = estatus;
-            columnas = "col-1";
-            break;
-
-        case "bancos-recaudadores":
-            titulo = "Bancos recaudadores";
-            data = bancos;
-            columnas = "col-1";
-            break;
-
-        case "clase-empresa":
-            titulo = "Clase entidad de trabajo";
-            data = claseEmpresa;
             columnas = "col-1";
             break;
 
@@ -56,6 +44,18 @@ function MasterTables({tabla}) {
             titulo = "Cuentas Recaudadoras";
             data = cuentasRecaudadoras;
             columnas = "col-2";
+            break;
+
+        case "bancos-recaudadores":
+            titulo = "Bancos Recaudadores";
+            data = bancos;
+            columnas = "col-3";
+            break;
+
+        case "clase-empresa":
+            titulo = "Clase Entidad de Trabajo";
+            data = claseEmpresa;
+            columnas = "col-4";
             break;
 
         default:
@@ -99,7 +99,27 @@ function MasterTables({tabla}) {
                                         <th style={{minWidth: "50px"}}>Acciones</th>
                                     </>
                                 }
-
+                                {
+                                    columnas === 'col-3' &&
+                                    <>
+                                        <th style={{minWidth: "15px"}}></th>
+                                        <th style={{minWidth: "15px"}}>id</th>
+                                        <th style={{minWidth: "200px"}}>Nombre del banco</th>
+                                        <th style={{minWidth: "100px"}}>Código banco</th>
+                                        <th style={{minWidth: "100px"}}>Estatus</th>
+                                        <th style={{minWidth: "50px"}}>Acciones</th>
+                                    </>
+                                }
+                                {
+                                    columnas === 'col-4' &&
+                                    <>
+                                        <th style={{minWidth: "15px"}}></th>
+                                        <th style={{minWidth: "15px"}}>id</th>
+                                        <th style={{minWidth: "200px"}}>Nombre</th>
+                                        <th style={{minWidth: "100px"}}>Estatus</th>
+                                        <th style={{minWidth: "50px"}}>Acciones</th>
+                                    </>
+                                }
                             </tr>
                         </thead>
                         <tbody>
@@ -116,6 +136,25 @@ function MasterTables({tabla}) {
                                             <>
                                                 <td style={{padding: "0rem", paddingLeft: "0.75rem"}}>
                                                     <span className="text-dark-75 font-size-sm">{s.name}</span>
+                                                </td>
+                                            </>
+                                        }
+                                        {
+                                            columnas === 'col-4'&&
+                                            <>
+                                                <td style={{padding: "0rem", paddingLeft: "0.75rem"}}>
+                                                    <span className="text-dark-75 font-size-sm">{s.name}</span>
+                                                </td>
+                                            </>
+                                        }
+                                        {
+                                            columnas === 'col-3' &&
+                                            <>
+                                                <td style={{padding: "0rem", paddingLeft: "0.75rem"}}>
+                                                    <span className="text-dark-75 font-size-sm">{s.nom_banco}</span>
+                                                </td>
+                                                <td style={{padding: "0rem", paddingLeft: "0.75rem"}}>
+                                                    <span className="text-dark-75 font-size-sm">{s.cod_banco}</span>
                                                 </td>
                                             </>
                                         }

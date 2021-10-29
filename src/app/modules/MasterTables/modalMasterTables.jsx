@@ -9,9 +9,11 @@ import BaseInput from "../Forms/BaseInputs";
 import BaseSelect from "../Forms/BaseSelect";
 import Checkbox from "../Forms/BaseCheckbox";
 import ModalHeader from "react-bootstrap/ModalHeader";
-import { initialValuesTablesCol1, initialValuesTablesCol2 } from "./initialValues";
-import { SchemaTablesCol1, SchemaTablesCol2 } from "./validateSchemas";
-import { BaseFormikTrimestre } from "./baseFormikTrimestre";
+import { initialValuesTablesCol1, initialValuesTablesCol2, initialValuesTablesCol3, initialValuesTablesCol4 } from "./initialValues";
+import { SchemaTablesCol1, SchemaTablesCol2, SchemaTablesCol3, SchemaTablesCol4  } from "./validateSchemas";
+import { BaseFormik } from "./baseFormik";
+import { BaseFormikBancosRecaudadores } from "./baseFormikBancosRecaudadores";
+import { BaseFormikClaseEmpresas } from "./baseFormikClaseEmpresas";
 import { BaseFormikCuentasRecaudadoras } from "./baseFormikCuentasRecaudadoras";
 
 function ModalMasterTables(props) {
@@ -38,13 +40,13 @@ function ModalMasterTables(props) {
             break;
 
         case "clase-empresa":
-            initialValuesTables = initialValuesTablesCol1;
-            schemaTables = SchemaTablesCol1;
+            initialValuesTables = initialValuesTablesCol4;
+            schemaTables = SchemaTablesCol4;
             break;
 
         case "bancos-recaudadores":
-            initialValuesTables = initialValuesTablesCol1;
-            schemaTables = SchemaTablesCol1;
+            initialValuesTables = initialValuesTablesCol3;
+            schemaTables = SchemaTablesCol3;
             break;
 
         case "cuentas-recaudadoras":
@@ -82,7 +84,7 @@ function ModalMasterTables(props) {
                                     <Form className="form form-label-right">
 
                                         { props.columnas === 'col-1' &&
-                                            <BaseFormikTrimestre
+                                            <BaseFormik
                                                 formik={formik}
                                                 props={props}
                                             />
@@ -94,6 +96,20 @@ function ModalMasterTables(props) {
                                                     props={props}
                                                     bancos={bancos}
                                                 />
+                                        }
+                                        {
+                                            props.columnas === 'col-3' &&
+                                            <BaseFormikBancosRecaudadores
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-4' &&
+                                            <BaseFormikClaseEmpresas
+                                                formik={formik}
+                                                props={props}
+                                            />
                                         }
 
                                         <Row className="mb-4" style={{justifyContent: "center"}}>

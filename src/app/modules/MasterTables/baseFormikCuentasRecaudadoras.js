@@ -10,12 +10,14 @@ export const BaseFormikCuentasRecaudadoras = ({formik, props, bancos}) => {
     const { registroSeleccionado } = useContext(MasterTablesContext);
 
     useEffect(()=> {
-        formik.setFieldValue("id", registroSeleccionado.id);
-        formik.setFieldValue("id_banco", registroSeleccionado.id_banco);
-        formik.setFieldValue("cuenta_tipo", registroSeleccionado.cuenta_tipo);
-        formik.setFieldValue("cuenta_nro", registroSeleccionado.cuenta_nro);
-        formik.setFieldValue("is_active", registroSeleccionado.is_active);
-    },[props.accion === 'Modificar']);
+        if(props.accion === 'Modificar') {
+            formik.setFieldValue("id", registroSeleccionado.id);
+            formik.setFieldValue("id_banco", registroSeleccionado.id_banco);
+            formik.setFieldValue("cuenta_tipo", registroSeleccionado.cuenta_tipo);
+            formik.setFieldValue("cuenta_nro", registroSeleccionado.cuenta_nro);
+            formik.setFieldValue("is_active", registroSeleccionado.is_active);
+        }
+    },[]);
 
     return (
         <>
@@ -31,7 +33,7 @@ export const BaseFormikCuentasRecaudadoras = ({formik, props, bancos}) => {
                         <option value="" disabled>seleccione</option>
                         {
                             bancos.map((s) => {
-                                return <option key={s.id} value={s.id}>{s.name}</option>
+                                return <option key={s.id} value={s.id}>{s.nom_banco}</option>
                             })
                         }
                     </Field>

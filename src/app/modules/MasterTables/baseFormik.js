@@ -5,15 +5,17 @@ import BaseInput from "../Forms/BaseInputs";
 import BaseSelect from "../Forms/BaseSelect";
 import MasterTablesContext from "../../context/masterTables/masterTablesContext";
 
-export const BaseFormikTrimestre = ({formik, props}) => {
+export const BaseFormik = ({formik, props}) => {
 
     const { registroSeleccionado } = useContext(MasterTablesContext);
 
-    useEffect(()=> {
-        formik.setFieldValue("id", registroSeleccionado.id);
-        formik.setFieldValue("name", registroSeleccionado.name);
-        formik.setFieldValue("is_active", registroSeleccionado.is_active);
-    },[props.accion === 'Modificar']);
+    useEffect(() => {
+        if(props.accion === 'Modificar') {
+            formik.setFieldValue("id", registroSeleccionado.id);
+            formik.setFieldValue("name", registroSeleccionado.name);
+            formik.setFieldValue("is_active", registroSeleccionado.is_active);
+        }
+    },[]);
 
     return (
         <>
