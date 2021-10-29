@@ -207,7 +207,7 @@ export const MasterTablesState = ({ children }) => {
                 if (result.isConfirmed) {
                     switch (tabla) {
                         case "trimestre":
-                            dataType = "trimestres";
+                            //dataType = "trimestres";
                             urlTabla = `/trimestres/${valores.id}`;
                             break;
 
@@ -217,8 +217,8 @@ export const MasterTablesState = ({ children }) => {
                             break;
 
                         case "cuentas-recaudadoras":
-                            dataType = "saveCuentasBanco";
-                            urlTabla = "/cuentas_banco/";
+                            //dataType = "cuentasBanco";
+                            urlTabla = `/cuentas_banco/${valores.id}`;
                             break;
 
                         case "estatus-entidad-trabajo":
@@ -232,18 +232,13 @@ export const MasterTablesState = ({ children }) => {
                             break;
 
                         case "bancos-recaudadores":
-                            dataType = "banks";
-                            urlTabla = "/banks/";
+                            //dataType = "banks";
+                            urlTabla = `/banks/${valores.id}`;
                             break;
 
                         default:
                             break;
                     }
-
-                    requestConfig.data.type = dataType;
-                    //requestConfig.data.attributes = valores;
-                    //requestConfig.data.id = valores.id;
-                    //requestConfig.data.attributes.is_active = !valores.is_active;
 
                     const respuesta = clientAxios.delete(urlTabla, requestConfig);
 
