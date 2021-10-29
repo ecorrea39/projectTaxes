@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 import {FormattedMessage, injectIntl} from "react-intl";
 import * as auth from "../_redux/authRedux";
 import MTCaptcha from "../../MtCaptcha/MTCaptcha";
-import {Form, Col, Row} from "react-bootstrap";
+import {Form, Col, Row, Button} from "react-bootstrap";
 import AuthContext from "../../../store/auth-context";
 import axios from "axios";
 import Util from "../../../helpers/Util";
@@ -195,50 +195,54 @@ function Login(props) {
         }
 
         <div className="form-group fv-plugins-icon-container">
-          <Form.Group as={Col} controlId="tipo" className="p-0" >
-            {/*<Form.Label>State</Form.Label>*/}
-            <Form.Control as="select"
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          value={formik.values.tipo}
-            >
+          <Row>
+            <Col md={3}>
+              <Form.Group controlId="tipo" className="p-0" >
+                {/*<Form.Label>State</Form.Label>*/}
+                <Form.Control as="select"
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              value={formik.values.tipo}
+                >
 
-              <FormattedMessage id='AUTH.GENERAL.IDENTIFICATIONTYPE'>
-                {(message) => <option value="">{message}</option>}
-              </FormattedMessage>
+                  <FormattedMessage id='AUTH.GENERAL.IDENTIFICATIONTYPE'>
+                    {(message) => <option value="">{message}</option>}
+                  </FormattedMessage>
 
-              <option value="j">J</option>
-              <option value="v">V</option>
-              <option value="c">C</option>
-              <option value="e">E</option>
-              <option value="g">G</option>
-              <option value="p">P</option>
+                  <option value="j">J</option>
+                  <option value="v">V</option>
+                  <option value="c">C</option>
+                  <option value="e">E</option>
+                  <option value="g">G</option>
+                  <option value="p">P</option>
 
-            </Form.Control>
+                </Form.Control>
 
-            {formik.touched.tipo && formik.errors.tipo ? (
-              <div className="fv-plugins-message-container">
-                <div className="fv-help-block">{formik.errors.tipo}</div>
-              </div>
-            ) : null}
-          </Form.Group>
-        </div>
-        <div className="form-group fv-plugins-icon-container">
-          <input
-            placeholder="ingrese número de R.I.F."
-            type="text"
-            className={`form-control form-control-solid ${getInputClasses("user")}`}
-            name="user"
-            onChange={customHandleChange}
-            value={formik.values.user}
-            onBlur={formik.handleBlur}
-            maxLength="10"
-          />
-          {formik.touched.user && formik.errors.user ? (
-            <div className="fv-plugins-message-container">
-              <div className="fv-help-block">{formik.errors.user}</div>
-            </div>
-          ) : null}
+                {formik.touched.tipo && formik.errors.tipo ? (
+                  <div className="fv-plugins-message-container">
+                    <div className="fv-help-block">{formik.errors.tipo}</div>
+                  </div>
+                ) : null}
+              </Form.Group>
+            </Col>
+            <Col md={9}>
+              <input
+                placeholder="ingrese número de R.I.F."
+                type="text"
+                className={`form-control form-control-solid ${getInputClasses("user")}`}
+                name="user"
+                onChange={customHandleChange}
+                value={formik.values.user}
+                onBlur={formik.handleBlur}
+                maxLength="10"
+              />
+              {formik.touched.user && formik.errors.user ? (
+                <div className="fv-plugins-message-container">
+                  <div className="fv-help-block">{formik.errors.user}</div>
+                </div>
+              ) : null}
+            </Col>
+          </Row>
         </div>
         <div className="form-group fv-plugins-icon-container">
           <input

@@ -75,7 +75,7 @@
   "AUTH.VALIDATION.MAX_LENGTH": "Mínimo {max} caracteres",
   "AUTH.LOGIN.TITLE_RNCP": "Registro Nacional de Contribuciones Parafiscales RNCP",
   "AUTH.LOGIN.WELCOME": "Bienvenidos a inces",
-  "AUTH.GENERAL.IDENTIFICATIONTYPE": "Seleccione el tipo de contribuyente",
+  "AUTH.GENERAL.IDENTIFICATIONTYPE": "Tipo",
   "AUTH.VALIDATION.WRONG_EMAIL_FORMAT": "Formato de correo inválido",
   "AUTH.VALIDATION.PASSWORD_MATCH": "La contraseña y su confirmación no coinciden",
   "AUTH.GENERAL.AGREEMENT": "Estoy de acuerdo con los términos y condiciones",
