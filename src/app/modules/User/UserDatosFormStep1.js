@@ -563,6 +563,7 @@ const UserDatosFormStep1 = (props) => {
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.razon_social}
+                                    maxLength="100"
                       />
 
                       {formik.touched.razon_social && formik.errors.razon_social ? (
@@ -580,6 +581,7 @@ const UserDatosFormStep1 = (props) => {
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.nombre_comercial}
+                                    maxLength="100"
                       />
 
                       {formik.touched.nombre_comercial && formik.errors.nombre_comercial ? (
@@ -691,6 +693,7 @@ const UserDatosFormStep1 = (props) => {
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.numero_patronal}
+                                    maxLength="20"
                       />
 
                       {formik.touched.numero_patronal && formik.errors.numero_patronal ? (
@@ -708,6 +711,7 @@ const UserDatosFormStep1 = (props) => {
                                     onChange={customHandleChangeNumeroDeTrabajadores}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.numero_de_trabajadores}
+                                    maxLength="7"
                       />
 
                       {formik.touched.numero_de_trabajadores && formik.errors.numero_de_trabajadores ? (

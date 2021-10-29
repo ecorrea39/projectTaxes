@@ -652,6 +652,7 @@ const UserDatosFormStep3 = (props) => {
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.domicilio_fiscal}
+                                  maxLength="100"
                     />
 
                     {formik.touched.domicilio_fiscal && formik.errors.domicilio_fiscal ? (
@@ -752,6 +753,7 @@ const UserDatosFormStep3 = (props) => {
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.ciudad}
+                                  maxLength="30"
                     />
 
                     {formik.touched.ciudad && formik.errors.ciudad ? (
@@ -848,6 +850,7 @@ const UserDatosFormStep3 = (props) => {
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.local}
+                                  maxLength="20"
                     />
 
                     {formik.touched.local && formik.errors.local ? (
@@ -959,6 +962,7 @@ const UserDatosFormStep3 = (props) => {
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.correo_empresa}
+                                  maxLength="80"
                     />
 
                     {formik.touched.correo_empresa && formik.errors.correo_empresa ? (

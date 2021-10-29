@@ -49,6 +49,16 @@ const UserDatosFormStep2 = (props) => {
   const token = localStorage.getItem('authToken');
   const rif = localStorage.getItem('rif');
 
+  const getFechaFutura = () => {
+    const fecha = new Date();
+    const year = fecha.getFullYear();
+    let month = fecha.getMonth() + 1;
+    let day = fecha.getDate();
+    if (month < 10) month = '0' + month.toString();
+    if (day < 10) day = '0' + day.toString();
+    return year + '-' + month + '-' + day;
+  }
+
   const axiosConfig = {
     headers: {
       Accept: 'application/vnd.api+json',
@@ -300,6 +310,7 @@ const UserDatosFormStep2 = (props) => {
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.numero_de_documento}
+                                  maxLength="20"
                     />
 
                     {formik.touched.numero_de_documento && formik.errors.numero_de_documento ? (
@@ -321,6 +332,7 @@ const UserDatosFormStep2 = (props) => {
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.numero_de_tomo}
+                                  maxLength="20"
                     />
 
                     {formik.touched.numero_de_tomo && formik.errors.numero_de_tomo ? (
@@ -338,6 +350,7 @@ const UserDatosFormStep2 = (props) => {
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.numero_de_folio}
+                                  maxLength="20"
                     />
 
                     {formik.touched.numero_de_folio && formik.errors.numero_de_folio ? (
@@ -359,6 +372,7 @@ const UserDatosFormStep2 = (props) => {
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.numero_de_protocolo}
+                                  maxLength="20"
                     />
 
                     {formik.touched.numero_de_protocolo && formik.errors.numero_de_protocolo ? (
@@ -372,7 +386,7 @@ const UserDatosFormStep2 = (props) => {
                 <Col md={6}>
                   <Form.Group as={Col} controlId="fecha_constitucion">
                     <Form.Label style={textLabelColor}>Fecha de Constitución</Form.Label>
-                    <Form.Control size="lg" type="date" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" placeholder="dd-mm-yyyy"
+                    <Form.Control size="lg" type="date" required
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.fecha_constitucion}
