@@ -210,6 +210,7 @@ const VerificationCodeRequest = (props) => {
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.user}
+                                    maxLength="9"
                       />
                     </Form.Group>
                   </Col>
@@ -221,6 +222,7 @@ const VerificationCodeRequest = (props) => {
                       <Form.Control size="lg" type="text" placeholder="Código de Verificación"
                                     onChange={customHandleChange}
                                     onBlur={formik.handleBlur}
+                                    maxLength="10"
                                     value={formik.values.verification_code}
                       />
 
@@ -239,6 +241,7 @@ const VerificationCodeRequest = (props) => {
                       <Form.Control size="lg" type="password" placeholder="Password"
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
+                                    maxLength="30"
                                     value={formik.values.password}
                       />
 

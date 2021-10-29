@@ -284,6 +284,7 @@ function Registration(props) {
             onChange={customHandleChange}
             value={formik.values.user}
             onBlur={formik.handleBlur}
+            maxLength="10"
           />
           {formik.touched.user && formik.errors.user ? (
             <div className="fv-plugins-message-container">
@@ -298,6 +299,7 @@ function Registration(props) {
           <input
             placeholder="ingrese correo electrónico"
             type="email"
+            maxLength="50"
             className={`form-control form-control-solid h-auto ${getInputClasses("email")}`}
             name="email"
             {...formik.getFieldProps("email")}
@@ -315,6 +317,7 @@ function Registration(props) {
           <input
             placeholder="ingrese contraseña"
             type="password"
+            maxLength="30"
             className={`form-control form-control-solid h-auto ${getInputClasses("password")}`}
             name="password"
             {...formik.getFieldProps("password")}
@@ -332,6 +335,7 @@ function Registration(props) {
           <input
             placeholder="ingrese confirmación de contraseña"
             type="password"
+            maxLength="30"
             className={`form-control form-control-solid h-auto ${getInputClasses("changepassword")}`}
             name="changepassword"
             {...formik.getFieldProps("changepassword")}

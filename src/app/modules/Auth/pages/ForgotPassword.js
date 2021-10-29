@@ -215,6 +215,7 @@ function ForgotPassword(props) {
                 onChange={customHandleChange}
                 value={formik.values.user}
                 onBlur={formik.handleBlur}
+                maxLength="10"
               />
               {formik.touched.user && formik.errors.user ? (
                 <div className="fv-plugins-message-container">

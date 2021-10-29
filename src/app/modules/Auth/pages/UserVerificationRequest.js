@@ -187,6 +187,7 @@ const UserVerificationRequest = (props) => {
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.user}
+                                    maxLength="10"
                       />
                     </Form.Group>
                   </Col>
@@ -201,6 +202,7 @@ const UserVerificationRequest = (props) => {
                                     onChange={customHandleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.verification_code}
+                                    maxLength="10"
                       />
 
                       {formik.touched.verification_code && formik.errors.verification_code ? (

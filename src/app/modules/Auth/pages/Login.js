@@ -11,16 +11,6 @@ import AuthContext from "../../../store/auth-context";
 import axios from "axios";
 import Util from "../../../helpers/Util";
 
-/*
-  INTL (i18n) docs:
-  https://github.com/formatjs/react-intl/blob/master/docs/Components.md#formattedmessage
-*/
-
-/*
-  Formik+YUP:
-  https://jaredpalmer.com/formik/docs/tutorial#getfieldprops
-*/
-
 const initialValues = {
   tipo: "j",
   user: "333333332",
@@ -242,6 +232,7 @@ function Login(props) {
             onChange={customHandleChange}
             value={formik.values.user}
             onBlur={formik.handleBlur}
+            maxLength="10"
           />
           {formik.touched.user && formik.errors.user ? (
             <div className="fv-plugins-message-container">
@@ -253,6 +244,7 @@ function Login(props) {
           <input
             placeholder="ingrese su contraseña"
             type="password"
+            maxLength="30"
             className={`form-control form-control-solid py-5 px-6 ${getInputClasses("password")}`}
             name="password"
             {...formik.getFieldProps("password")}
