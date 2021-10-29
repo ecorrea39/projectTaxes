@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 import {FormattedMessage, injectIntl} from "react-intl";
 import * as auth from "../_redux/authRedux";
 import MTCaptcha from "../../MtCaptcha/MTCaptcha";
-import {Form, Col, Row} from "react-bootstrap";
+import {Form, Col } from "react-bootstrap";
 import AuthContext from "../../../store/auth-context";
 import axios from "axios";
 

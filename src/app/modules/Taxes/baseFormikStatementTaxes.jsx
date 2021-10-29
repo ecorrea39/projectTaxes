@@ -10,7 +10,7 @@ import ModalHistoricalDeclaration from './modalHistoricalDeclaration';
 export const BaseFormikStatementTaxes = ({ concepts, formik, anos, trimestres, formatearfecha, formatoFechaFutura, showSelConcepto, seleccionado, nrif, declaracionSustitutiva, declaSeleccionada }) => {
 
     const label_terms = "Declaro bajo fe de juramento, que la información aquí suministrada es fiel y exacta y estará sometida a control posterior, so pena de incurrir en suministrar información incompleta, falso-forjado ó errónea conforme a los parámetros previstos en el Código Orgánico Tributario.";
-    const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", padding: "20px 35px 20px 35px", marginTop: "3%" }
+    const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", padding: "8px 35px 5px 35px", marginTop: "2%" }
     const styleBtnEliminar = { marginTop: '23px', borderRadius: '100%', position: 'absolute' }
     const [show, setShow] = useState(show);
 
@@ -45,6 +45,7 @@ export const BaseFormikStatementTaxes = ({ concepts, formik, anos, trimestres, f
             formik.setFieldValue("declaraciones[0].fecha_declaracion", formatearfecha(new Date(f1), 'YMD'));
             formik.setFieldValue("declaraciones[0].ntrabajadores_liquidados", Number(values.ntrabajadores_liquidados));
             formik.setFieldValue("declaraciones[0].sustitutiva", (Number(values.sustitutiva) + 1).toString());
+            formik.setFieldValue("termsG", values.terms);
 
             if(Number(values.sustitutiva) + 1 < 3) {
                 formik.setFieldValue("declaraciones[0].estatus", 1);
@@ -184,16 +185,14 @@ export const BaseFormikStatementTaxes = ({ concepts, formik, anos, trimestres, f
                                                 </Col>
                                             </Row>
                                             <Row className="mt-4 mb-4">
-                                                <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6"
-                                                     className="mb-6">
+                                                <Col xs="12" sm="6" md="3" lg="3" xl="3" xxl="3" className="mb-6">
                                                     <label htmlFor="ano_declaracion" className="font-weight-bold">Año</label>
                                                     <Field
                                                         id="ano_declatacion"
                                                         name={`declaraciones[${index}].ano_declaracion`}
                                                         type="select"
                                                         component={BaseSelect}
-                                                        disabled={declaracionSustitutiva}
-                                                    >
+                                                        disabled={declaracionSustitutiva}>
                                                         <option value="" disabled>seleccione</option>
                                                         {
                                                             anos.map((s, i) => {
@@ -202,16 +201,14 @@ export const BaseFormikStatementTaxes = ({ concepts, formik, anos, trimestres, f
                                                         }
                                                     </Field>
                                                 </Col>
-                                                <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6"
-                                                     className="mb-6">
+                                                <Col xs="12" sm="6" md="3" lg="3" xl="3" xxl="3" className="mb-6">
                                                     <label htmlFor="trimestre" className="font-weight-bold">Trimestre</label>
                                                     <Field
                                                         id="trimestre"
                                                         name={`declaraciones[${index}].trimestre`}
                                                         type="select"
                                                         component={BaseSelect}
-                                                        disabled={declaracionSustitutiva}
-                                                    >
+                                                        disabled={declaracionSustitutiva}>
                                                         <option value="" disabled>seleccione</option>
                                                         {
                                                             trimestres.map((s) => {
@@ -220,8 +217,8 @@ export const BaseFormikStatementTaxes = ({ concepts, formik, anos, trimestres, f
                                                         }
                                                     </Field>
                                                 </Col>
-                                                <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6" className="mb-6">
-                                                    <label htmlFor="ntrabajadores" className="font-weight-bold">Cantidad trabajadores en nómina</label>
+                                                <Col xs="12" sm="6" md="3" lg="3" xl="3" xxl="3" className="mb-6">
+                                                    <label htmlFor="ntrabajadores" className="font-weight-bold">Cant. trab. en nómina</label>
                                                     <Field
                                                         id="ntrabajadores"
                                                         name={`declaraciones[${index}].ntrabajadores`}
@@ -231,17 +228,17 @@ export const BaseFormikStatementTaxes = ({ concepts, formik, anos, trimestres, f
                                                 </Col>
 
                                                 { seleccionado[index] === 2 &&
-                                                <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6" className="mb-6">
-                                                    <label htmlFor="ntrabajadores" className="font-weight-bold">Cantidad trabajadores líquidados</label>
-                                                    <Field
-                                                        id="ntrabajadores_liquidados"
-                                                        name={`declaraciones[${index}].ntrabajadores_liquidados`}
-                                                        component={BaseInput}
-                                                    />
-                                                </Col>
+                                                    <Col xs="12" sm="6" md="3" lg="3" xl="3" xxl="3" className="mb-6">
+                                                        <label htmlFor="ntrabajadores" className="font-weight-bold">Cant. trab. líquidados</label>
+                                                        <Field
+                                                            id="ntrabajadores_liquidados"
+                                                            name={`declaraciones[${index}].ntrabajadores_liquidados`}
+                                                            component={BaseInput}
+                                                        />
+                                                    </Col>
                                                 }
 
-                                                <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6" className="mb-6">
+                                                <Col xs="12" sm="6" md="3" lg="3" xl="3" xxl="3" className="mb-6">
                                                     <label htmlFor="monto_pagado" className="font-weight-bold">
                                                         { seleccionado[index] !== 2 ? 'Pago nómina trimestral' : 'Total Aguinaldos / Utilidades' }
                                                     </label>
@@ -254,20 +251,19 @@ export const BaseFormikStatementTaxes = ({ concepts, formik, anos, trimestres, f
                                                 </Col>
 
                                                 { seleccionado[index] === 2 &&
-                                                <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6"
-                                                     className="mb-6">
-                                                    <label htmlFor="fecha_emision" className="font-weight-bold">Fecha de emisión de orden de pago</label>
-                                                    <Field
-                                                        id="fecha_emision"
-                                                        name={`declaraciones[${index}].fecha_emision`}
-                                                        component={BaseInput}
-                                                        type="date"
-                                                        max={formatoFechaFutura}
-                                                    />
-                                                </Col>
+                                                    <Col xs="12" sm="6" md="3" lg="3" xl="3" xxl="3" className="mb-6">
+                                                        <label htmlFor="fecha_emision" className="font-weight-bold">Fecha emisión orden de pago</label>
+                                                        <Field
+                                                            id="fecha_emision"
+                                                            name={`declaraciones[${index}].fecha_emision`}
+                                                            component={BaseInput}
+                                                            type="date"
+                                                            max={formatoFechaFutura}
+                                                        />
+                                                    </Col>
                                                 }
 
-                                                <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6" className="mb-6">
+                                                <Col xs="12" sm="12" md="3" lg="3" xl="3" xxl="3" className="mb-4">
                                                     <label htmlFor="monto_tributo" className="font-weight-bold">Monto tributo</label>
                                                     <Field
                                                         id="monto_tributo"
@@ -278,29 +274,30 @@ export const BaseFormikStatementTaxes = ({ concepts, formik, anos, trimestres, f
                                                     />
                                                 </Col>
                                             </Row>
-                                            <Row className="mt-4 mb-4">
-                                                <Col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
-                                                    <label htmlFor="terms">
-                                                        <Field
-                                                            id="terms"
-                                                            type="checkbox"
-                                                            component={Checkbox}
-                                                            name={`declaraciones[${index}].terms`}
-                                                            label={label_terms}
-                                                        />
-                                                    </label>
-                                                </Col>
-                                            </Row>
                                         </div>
                                     </Card>
                                 )
                             })}
+
+                            <Row className="pt-6">
+                                <Col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
+                                    <label htmlFor="terms">
+                                        <Field
+                                            id="termsG"
+                                            type="checkbox"
+                                            component={Checkbox}
+                                            name={`termsG`}
+                                            label={label_terms}
+                                        />
+                                    </label>
+                                </Col>
+                            </Row>
                         </>
                     )
                 }
             </FieldArray>
 
-            <Row style={{"paddingTop":"3%"}}>
+            <Row>
                 <Col className="mt-1 mb-2" xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
                     <a href="/dashboard" className="btn btn-danger font-size-lg w-100"
                        onClick={() => setShow(true)}>Cancelar</a>

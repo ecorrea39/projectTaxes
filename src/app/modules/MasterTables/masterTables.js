@@ -10,7 +10,7 @@ import ModalMasterTables from "./modalMasterTables";
 
 function MasterTables({tabla}) {
 
-    const { deleteMasterTables, trimestres, formasPago, cuentasRecaudadoras } = useContext(MasterTablesContext);
+    const { deleteMasterTables, trimestres, formasPago, cuentasRecaudadoras, estatus, bancos, claseEmpresa, obtenerValores } = useContext(MasterTablesContext);
     const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", padding: "20px 35px 20px 35px"}
     const [isSwitchOn, setIsSwitchOn] = useState(false);
     const styleBtn = { borderRadius: '100%'}
@@ -34,6 +34,24 @@ function MasterTables({tabla}) {
             columnas = "col-1";
             break;
 
+        case "estatus-entidad-trabajo":
+            titulo = "Estatus entidad de trabajo";
+            data = estatus;
+            columnas = "col-1";
+            break;
+
+        case "bancos-recaudadores":
+            titulo = "Bancos recaudadores";
+            data = bancos;
+            columnas = "col-1";
+            break;
+
+        case "clase-empresa":
+            titulo = "Clase entidad de trabajo";
+            data = claseEmpresa;
+            columnas = "col-1";
+            break;
+
         case "cuentas-recaudadoras":
             titulo = "Cuentas Recaudadoras";
             data = cuentasRecaudadoras;
@@ -52,7 +70,7 @@ function MasterTables({tabla}) {
             <div className="tab-content">
                 <div className="table-responsive">
 
-                    <a title="agregar" style={{position: 'fixed', top: '18%', right: '6%', borderRadius: '100%'}} onClick={() => {setShow(true); setAccion("Agregar") }} className="btn btn-icon btn-warning btn-hover-light btn-sm mx-3">
+                    <a title="agregar" style={{position: 'fixed', top: '18%', right: '6%', borderRadius: '100%', boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)"}} onClick={() => {setShow(true); setAccion("Agregar") }} className="btn btn-icon btn-warning btn-hover-light btn-md mx-3">
                         <span>+</span>
                     </a>
 
@@ -119,7 +137,7 @@ function MasterTables({tabla}) {
                                             <span className="text-dark-75 font-size-sm">{s.is_active == true ? 'Activo': 'No activo'}</span>
                                         </td>
                                         <td style={{padding: "0rem", paddingLeft: "0.75rem"}}>
-                                            <a title="editar" onClick={() => {setShow(true); setAccion('Modificar') }} style={styleBtn} className="btn btn-icon btn-hover-light btn-sm mx-3">
+                                            <a title="modificar" onClick={() => {setShow(true); setAccion('Modificar'); obtenerValores(s) }} style={styleBtn} className="btn btn-icon btn-hover-light btn-sm mx-3">
                                                 <span className="svg-icon svg-icon-md svg-icon-info">
                                                   <SVG src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}/>
                                                 </span>

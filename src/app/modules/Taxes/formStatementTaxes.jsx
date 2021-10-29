@@ -59,8 +59,7 @@ function FormStatementTaxes({ step }) {
                                 nrif={nrif}
                                 show={show}
                                 declaracionSustitutiva={declaracionSustitutiva}
-                                declaSeleccionada={declaSeleccionada}
-                        />
+                                declaSeleccionada={declaSeleccionada} />
                         </Form>
                     )
                 }

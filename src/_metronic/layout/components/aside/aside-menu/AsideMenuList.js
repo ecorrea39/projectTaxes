@@ -275,6 +275,15 @@ export function AsideMenuList({ layoutProps }) {
                 </NavLink>
               </li>
 
+              <li className={`menu-item ${getMenuItemActive("/tablas/bancos-recaudadores")}`} aria-haspopup="true">
+                <NavLink className="menu-link" to="/tablas/bancos-recaudadores">
+                  <i className="menu-bullet menu-bullet-dot">
+                    <span />
+                  </i>
+                  <span className="menu-text">Bancos recaudadores</span>
+                </NavLink>
+              </li>
+
               <li className={`menu-item ${getMenuItemActive("/tablas/cuentas-recaudadoras")}`} aria-haspopup="true">
                 <NavLink className="menu-link" to="/tablas/cuentas-recaudadoras">
                   <i className="menu-bullet menu-bullet-dot">
@@ -284,6 +293,23 @@ export function AsideMenuList({ layoutProps }) {
                 </NavLink>
               </li>
 
+              <li className={`menu-item ${getMenuItemActive("/tablas/estatus-entidad-trabajo")}`} aria-haspopup="true">
+                <NavLink className="menu-link" to="/tablas/estatus-entidad-trabajo">
+                  <i className="menu-bullet menu-bullet-dot">
+                    <span />
+                  </i>
+                  <span className="menu-text">Estatus entidad de trabajo</span>
+                </NavLink>
+              </li>
+
+              <li className={`menu-item ${getMenuItemActive("/tablas/clase-empresa")}`} aria-haspopup="true">
+                <NavLink className="menu-link" to="/tablas/clase-empresa">
+                  <i className="menu-bullet menu-bullet-dot">
+                    <span />
+                  </i>
+                  <span className="menu-text">Clase de entidad de trabajo</span>
+                </NavLink>
+              </li>
             </ul>
           </div>
         </li>

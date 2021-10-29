@@ -22,6 +22,18 @@ function MasterTablesModule() {
             title = "Cuentas Recaudadoras";
             break;
 
+        case "estatus-entidad-trabajo":
+            title = "Estatus entidad de trabajo";
+            break;
+
+        case "clase-empresa":
+            title = "Estatus entidad de trabajo";
+            break;
+
+        case "bancos-recaudadores":
+            title = "Bancos recaudadores";
+            break;
+
         default:
             break;
     }
