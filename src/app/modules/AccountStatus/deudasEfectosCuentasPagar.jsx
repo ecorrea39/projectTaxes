@@ -122,7 +122,7 @@ function DeudasEfectosCuentasPagar({ className }) {
                                                     <span className="text-muted font-weight-bold">{s.numero_documento}</span>
                                                 </td>
                                                 <td>
-                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.componentes}</span>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.componente}</span>
                                                     <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                                 <td>
