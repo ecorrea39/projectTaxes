@@ -148,20 +148,21 @@ export const AccountStatusState = ({ children }) => {
             const respuesta = await clientAxios.get(`/balance/detail/${nrif}`, clientAxios);
             arreglo = respuesta.data.data[0].attributes['deuda-efectos-cuentas'][0];
 
+            console.log(' arreglo ', arreglo )
+
             arreglo.map((x, i) => {
                 detalleCxP.push(
                     {
                         "id": arreglo[i].id,
-                        //"concepto_pago": arreglo[i].concepto_pago,
+                        "concepto": arreglo[i].concepto,
                         //"concepto_pago_name": arreglo[i].attributes['concepto_pago_concepto.name'],
-                        //"componentes": arreglo[i].componentes,
+                        "componente": arreglo[i].componente,
                         "fecha_documento": formatearfecha(new Date(arreglo[i].fecha_documento), 'DMY'),
                         "numero_documento": arreglo[i].numero_documento,
                         "numero_giro": arreglo[i].numero_giro,
-                        "valor_mmv": 300.25,
-                        //"nveces_mmv": arreglo[i].nveces_mmv,
-                        "nveces_mmv": 50,
-                        "monto": 300.25 * 50,
+                        "valor_mmv": 5.25,
+                        "nveces_mmv": arreglo[i].nveces_mmv,
+                        "monto": 5.25 * arreglo[i].nveces_mmv,
                         "estatus": arreglo[i].estatus
                     }
                 )

@@ -141,7 +141,7 @@ function ModalHistoricalDeclaration(props) {
                                         <thead>
                                             <tr className="text-left text-uppercase">
                                                 <th style={{minWidth: "15px"}}></th>
-                                                <th style={{minWidth: "200px"}}>Concepto</th>
+                                                <th style={{minWidth: "180px"}}>Concepto</th>
                                                 <th style={{minWidth: "50px"}}>Año</th>
                                                 <th style={{minWidth: "50px"}}>Trim.</th>
                                                 <th style={{minWidth: "100px"}}>Fecha declaración</th>
@@ -149,6 +149,7 @@ function ModalHistoricalDeclaration(props) {
                                                 <th style={{minWidth: "100px"}}>Monto nómina</th>
                                                 <th style={{minWidth: "50px"}}>Cant. Trab.</th>
                                                 <th style={{minWidth: "100px"}}>Monto tributo</th>
+                                                <th style={{minWidth: "100px"}}>Estatus</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -167,7 +168,9 @@ function ModalHistoricalDeclaration(props) {
                                                         </td>
                                                         <td>
                                                             <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.concepto_pago_name}</span>
+                                                            {/*
                                                             <span className="text-muted font-weight-bold">Estatus: - {s.estatus_name} -</span>
+                                                            */}
                                                         </td>
                                                         <td>
                                                             <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.ano_declaracion}</span>
@@ -197,6 +200,11 @@ function ModalHistoricalDeclaration(props) {
                                                             <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{formatNumber(s.monto_tributo)}</span>
                                                             <span className="text-muted font-weight-bold"></span>
                                                         </td>
+                                                        <td>
+                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.estatus_name}</span>
+                                                            <span className="text-muted font-weight-bold"></span>
+                                                        </td>
+
                                                     </tr>
                                                 )
                                             })

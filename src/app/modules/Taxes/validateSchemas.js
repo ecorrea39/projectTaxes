@@ -9,7 +9,8 @@ export const SchemaPayment = Yup.object().shape({
         .matches(regexNumber, '- Numero de referencia invalido. -'),
     tipo_transaccion: Yup.string()
         .required('- Campo obligatorio -'),
-    banco: Yup.string(),
+    banco: Yup.string()
+        .required('- Campo obligatorio -'),
     monto: Yup.string()
         .required('- Campo obligatorio -')
         .max(10, 'Debe ingresar un máximo de 10 digitos')

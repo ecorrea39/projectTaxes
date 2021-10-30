@@ -68,7 +68,8 @@ export const TaxesState = ({ children }) => {
     const [historicoFilter, setHistoricoFilter] = useState([]);
     const [declaracionSustitutiva, setDeclaracionSustitutiva] = useState(false);
     const [declaracionSeleccionada, setDeclaracionSeleccionada] = useState([]);
-    const [totalTributoDeclarado, setTotalTributoDeclarado ] = useState(100);
+    const [totalTributoDeclarado, setTotalTributoDeclarado] = useState(0);
+    const [declaracionesRealizadas, setDeclaracionesRealizadas] = useState([]);
     const [selConcepto, setSelConcepto] = useState([]);
     const estatus = ['eliminada', 'creada', 'definitiva', 'pagada' ];
     const nrif = odb.get('rif');
@@ -385,12 +386,6 @@ export const TaxesState = ({ children }) => {
         filter.ano_declaracion = ano_declaracion !== "" ? +ano_declaracion : undefined;
         filter.trimestre = trimestre !== "" ? +trimestre : undefined;
         filter.estatus = estatus !== "" ? estatus: undefined;
-        /*
-        filter.model = searchText;
-        if (searchText) {
-            filter.manufacture = searchText;
-            filter.VINCode = searchText;
-        }*/
 
         let nuevo = [];
         if(filter.ano_declaracion === undefined && filter.trimestre === undefined && filter.estatus === undefined) {
@@ -416,6 +411,8 @@ export const TaxesState = ({ children }) => {
 
     const submitDeclaration = async (valores) => {
 
+        let respuesta = "";
+
         try {
             let total = 0;
             valores.declaraciones.map((x, i) => {
@@ -431,9 +428,9 @@ export const TaxesState = ({ children }) => {
             requestConfig.data.id = (declaracionSustitutiva === false) ? nrif : valores.declaraciones[0].id;
 
             if(declaracionSustitutiva === false) {
-                const respuesta = await clientAxios.post('/tribute_declaration/', requestConfig);
+                respuesta = await clientAxios.post('/tribute_declaration/', requestConfig);
             } else {
-                const respuesta = await clientAxios.put('/tribute_declaration/', requestConfig);
+                respuesta = await clientAxios.put('/tribute_declaration/', requestConfig);
             }
 
             Swal.fire({
@@ -441,10 +438,22 @@ export const TaxesState = ({ children }) => {
                 text: "Datos guardados con éxito!",
                 icon: "success",
                 button: "Ok",
-                timer: 1500
+                timer: 2000
             }).then((value) => {
                 if (total > 0) {
-                    setStepTaxes(stepTaxes+1)
+                    Swal.fire({
+                        title: 'Declaración de tributos',
+                        text: "Esta seguro de realizar el pago de tributos?",
+                        icon: 'info',
+                        showDenyButton: true,
+                        confirmButtonText: 'Si',
+                        denyButtonText: `No`,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            setDeclaracionesRealizadas(respuesta.data.data)
+                            setStepTaxes(stepTaxes+1)
+                        }
+                    });
                 }
                 setDeclaracionSustitutiva(false);
                 setDeclaracionSeleccionada([]);
@@ -457,6 +466,7 @@ export const TaxesState = ({ children }) => {
                 text: "Error al guardar declaración de tributos!",
                 icon: "error",
                 button: "Ok",
+                timer: 2000
             }).then((value) => {
                 setStepTaxes(stepTaxes)
             });
@@ -518,7 +528,9 @@ export const TaxesState = ({ children }) => {
         modalidadesPagos,
         setModalidadPagos,
         linkRecibo,
-        setLinkRecibo
+        setLinkRecibo,
+        declaracionesRealizadas,
+        setDeclaracionesRealizadas
     }
 
     return (

@@ -12,7 +12,7 @@ import { ListConcepts } from "./listConcepts";
 export const BaseFormik = ({conceptos,formik,listDeclaraciones}) => {
 
     const {
-        bancos, totalTributoDeclarado, setCreditoFiscal,
+        bancos, totalTributoDeclarado, setCreditoFiscal, declaracionesRealizadas,
         formatoFechaFutura, modalidadesPagos } = useContext(TaxesContext);
     
     const [deducible, setDeducible] = useState(0);
@@ -43,8 +43,6 @@ export const BaseFormik = ({conceptos,formik,listDeclaraciones}) => {
         }
     }
 
-    const tributos = ["1", "2"]; // SOLO DE PRUEBAS LORENZO DEBE DE PONER LOS VALORES EN EL STADO
-
     useEffect(()=>{
         if (totalTributoDeclarado != null) {
             formik.setFieldValue("montoTributo", totalTributoDeclarado );
@@ -58,7 +56,7 @@ export const BaseFormik = ({conceptos,formik,listDeclaraciones}) => {
     },[formik.values.monto]);
 
     useEffect(()=>{
-        formik.setFieldValue("tributos", tributos);
+        formik.setFieldValue("tributos", declaracionesRealizadas);
     },[]);
 
     return (
