@@ -56,7 +56,7 @@ export const ActaReparo = ({extraOnChange, formatoFecha}) => {
     )
 }
 
-export const InteresesMoratorios = ({formatoFecha}) => {
+export const InteresesMoratorios = ({extraOnChange,formatoFecha}) => {
     return (
         <>
             <Row className="mt-4 mb-4">
@@ -74,6 +74,7 @@ export const InteresesMoratorios = ({formatoFecha}) => {
                         name="montoInteresesMoratorios"
                         component={BaseInput}
                         maxLength="10"
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
             </Row>
@@ -82,7 +83,7 @@ export const InteresesMoratorios = ({formatoFecha}) => {
     )
 }
 
-export const ChequeDevuelto = ({formatoFecha}) => {
+export const ChequeDevuelto = ({extraOnChange,formatoFecha}) => {
     return (
         <>
             <Row className="mt-4 mb-4">
@@ -100,6 +101,7 @@ export const ChequeDevuelto = ({formatoFecha}) => {
                         name="numCheque"
                         component={BaseInput}
                         maxLength="15"
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -112,6 +114,7 @@ export const ChequeDevuelto = ({formatoFecha}) => {
                         type="date"
                         component={BaseInput}
                         max={formatoFecha}
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -122,6 +125,7 @@ export const ChequeDevuelto = ({formatoFecha}) => {
                         id="nota-debito"
                         name="notaDebito"
                         component={BaseInput}
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -134,6 +138,7 @@ export const ChequeDevuelto = ({formatoFecha}) => {
                         type="date"
                         component={BaseInput}
                         max={formatoFecha}
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -145,6 +150,7 @@ export const ChequeDevuelto = ({formatoFecha}) => {
                         name="montoCheque"
                         component={BaseInput}
                         maxLength="10"
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
             </Row>
@@ -153,7 +159,7 @@ export const ChequeDevuelto = ({formatoFecha}) => {
     )
 }
 
-export const ConvenioPago = ({formatoFecha}) => {
+export const ConvenioPago = ({extraOnChange,formatoFecha}) => {
     return (
         <>
             <Row className="mt-4 mb-4">
@@ -171,6 +177,7 @@ export const ConvenioPago = ({formatoFecha}) => {
                         name="numConvPago"
                         component={BaseInput}
                         maxLength="15"
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -183,6 +190,7 @@ export const ConvenioPago = ({formatoFecha}) => {
                         type="date"
                         component={BaseInput}
                         max={formatoFecha}
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -194,6 +202,7 @@ export const ConvenioPago = ({formatoFecha}) => {
                         name="numGiroConvenioPago"
                         component={BaseInput}
                         maxLength="10"
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -206,6 +215,7 @@ export const ConvenioPago = ({formatoFecha}) => {
                         type="date"
                         component={BaseInput}
                         max={formatoFecha}
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -217,6 +227,7 @@ export const ConvenioPago = ({formatoFecha}) => {
                         name="montoConvenio"
                         component={BaseInput}
                         maxLength="10"
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -228,6 +239,7 @@ export const ConvenioPago = ({formatoFecha}) => {
                         name="montoInteresesConvenio"
                         component={BaseInput}
                         maxLength="10"
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
             </Row>
@@ -236,7 +248,7 @@ export const ConvenioPago = ({formatoFecha}) => {
     )
 }
 
-export const MultasPorcentuales = () => {
+export const MultasPorcentuales = ({extraOnChange}) => {
     return (
         <>
             <Row className="mt-4 mb-4">
@@ -253,6 +265,7 @@ export const MultasPorcentuales = () => {
                         id="monto-multa"
                         name="montoMulta"
                         component={BaseInput}
+                        extraOnChange={extraOnChange}
                         maxLength="10"
                     />
                 </Col>

@@ -9,37 +9,32 @@ import { InputsTaxes } from "./inputsTaxes";
 import TaxesContext from "../../context/taxes/taxesContext";
 import { ListConcepts } from "./listConcepts";
 
-export const BaseFormik = ({conceptos,formik}) => {
+export const BaseFormik = ({conceptos,formik,listDeclaraciones}) => {
 
     const {
-        setDeducible, deducible, bancos, totalTributoDeclarado,
-        setCreditoFiscal, formatoFechaFutura, modalidadesPagos } = useContext(TaxesContext);
-
-    /**VALIDACIONES PENTIEN
-     * EL MONTO A PAGAR PUEDE SER MENOR A EL MONTO DEL TRIBUTO ?
-     * EL MONTO DEL TRIBUTO NO PUEDE SER 0
-     * BLOQUEAR EL CAMPO DEL MONTO DEL TRIBUTO -> listo
-     * MOSTRAR LA INFORMACION CORRECTA EN EL RECIBO
-     * LA SUMATORIA DE LOS MONTOS DE CADA CONCEPTOS + EL MONTO DE LA DECLARACION CON EL MONTO DEL PAGO
-     */
+        bancos, totalTributoDeclarado, setCreditoFiscal, declaracionesRealizadas,
+        formatoFechaFutura, modalidadesPagos } = useContext(TaxesContext);
+    
+    const [deducible, setDeducible] = useState(0);
 
     const calcularCreditoFiscal = (montoPagado) => {
         
         let resta = parseInt(montoPagado) - parseInt(totalTributoDeclarado);
         let array = formik.values.conceptos;
+        let indice = array.indexOf("12");
         
         if ( resta > 0 )  {
-            setDeducible(resta);
-            formik.setFieldValue("conceptos", [...array, "12"]);
+            // setDeducible(resta);
+            if(indice == -1) {
+                formik.setFieldValue("conceptos", [...array, "12"]);
+            }
             // ESTO SE DEBE CAMBIAR 
             setCreditoFiscal({
                 montoCredito: resta
             });
             formik.setFieldValue("montoCredito", resta);
-           
         } else {
-            setDeducible(0);
-            let indice = array.indexOf("12");
+            // setDeducible(0);
             array.splice(indice, 1);
             formik.setFieldValue("conceptos", array);
             // ESTO SE DEBE CAMBIAR 
@@ -52,11 +47,17 @@ export const BaseFormik = ({conceptos,formik}) => {
         if (totalTributoDeclarado != null) {
             formik.setFieldValue("montoTributo", totalTributoDeclarado );
         }
-    },[]);
+    },[totalTributoDeclarado]);
 
     useEffect(()=>{
-       calcularCreditoFiscal(formik.values.monto);
+        if(totalTributoDeclarado > 0) {
+            calcularCreditoFiscal(formik.values.monto);
+        }
     },[formik.values.monto]);
+
+    useEffect(()=>{
+        formik.setFieldValue("tributos", declaracionesRealizadas);
+    },[]);
 
     return (
         <>
@@ -67,7 +68,7 @@ export const BaseFormik = ({conceptos,formik}) => {
                     </label>
                     <Field
                         id="referencia"
-                        name="nroReferencia"
+                        name="nro_referencia"
                         placeholder="Ej: 999999"
                         component={BaseInput}
                         maxLength="10"
@@ -82,7 +83,7 @@ export const BaseFormik = ({conceptos,formik}) => {
                         type="select"
                         component={BaseSelect}
                         id="modalidad-pago"
-                        name="tipoTransaccion"
+                        name="tipo_transaccion"
                     >
                         <option value="" disabled>. . .</option>
                         {
@@ -145,12 +146,10 @@ export const BaseFormik = ({conceptos,formik}) => {
                 </Col>
             </Row>
             
-            {
-                totalTributoDeclarado > 0 && <InputsTaxes />
-            }
+            <InputsTaxes listDeclaraciones={listDeclaraciones} formik={formik} />
 
             {
-              deducible > 0 && <ListConcepts formik={formik} conceptos={conceptos} />
+                <ListConcepts formik={formik} conceptos={conceptos} />
             }
             
             <Row>

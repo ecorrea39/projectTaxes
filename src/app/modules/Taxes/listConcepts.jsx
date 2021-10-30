@@ -10,7 +10,7 @@ export const ListConcepts = ({conceptos,formik}) => {
         <>
             <Row className="mt-4 mb-4">
                 <Col xs="12">
-                    <h5>Otros Conceptos de Pagos</h5>
+                    <h4>Otros Conceptos de Pagos</h4>
                 </Col>
             </Row>
             <Row>
