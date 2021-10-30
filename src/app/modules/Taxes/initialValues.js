@@ -8,6 +8,7 @@ export const initialValuesPayment = {
     intereses: "",
     multa: "",
     conceptos: [],
+    tributos: [],
     detallesConceptos:[]
 }
 

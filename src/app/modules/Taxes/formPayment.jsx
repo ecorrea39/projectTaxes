@@ -101,7 +101,6 @@ function FormPayment() {
             detallesConceptos.push(concepto);
         });
         values.detallesConceptos = detallesConceptos;
-        console.log(montoTotal)
         return {continue: montoTotal <= values.monto, newValues: values};
     }
 
@@ -129,7 +128,8 @@ function FormPayment() {
                 multa: element.monto_multa,
                 name: "",
                 conceptoId: element.concepto_pago,
-                id: index+1
+                id: index+1,
+                checked: true,
             }
             array.push(detalles);
         });

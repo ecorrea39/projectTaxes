@@ -43,17 +43,23 @@ export const BaseFormik = ({conceptos,formik,listDeclaraciones}) => {
         }
     }
 
+    const tributos = ["1", "2"]; // SOLO DE PRUEBAS LORENZO DEBE DE PONER LOS VALORES EN EL STADO
+
     useEffect(()=>{
         if (totalTributoDeclarado != null) {
             formik.setFieldValue("montoTributo", totalTributoDeclarado );
         }
-    },[]);
+    },[totalTributoDeclarado]);
 
     useEffect(()=>{
         if(totalTributoDeclarado > 0) {
             calcularCreditoFiscal(formik.values.monto);
         }
     },[formik.values.monto]);
+
+    useEffect(()=>{
+        formik.setFieldValue("tributos", tributos);
+    },[]);
 
     return (
         <>
@@ -142,9 +148,7 @@ export const BaseFormik = ({conceptos,formik,listDeclaraciones}) => {
                 </Col>
             </Row>
             
-            {
-                totalTributoDeclarado > 0 && <InputsTaxes listDeclaraciones={listDeclaraciones} />
-            }
+            <InputsTaxes listDeclaraciones={listDeclaraciones} formik={formik} />
 
             {
                 <ListConcepts formik={formik} conceptos={conceptos} />

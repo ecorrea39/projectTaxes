@@ -9,13 +9,25 @@ export const TaxesState = ({ children }) => {
     const [stepTaxes, setStepTaxes ] = useState(1);
     const [bancos, setBancos] = useState([]);
     const [conceptos, setConceptos] = useState([
+        {clave: "01", id: "1", name: "Aporte patronal 2%"},
+        {clave: "02", id: "2", name: "Aporte de los trabajadores 0,5%"},
+        {clave: "03", id: "3", name: "Acta de reparo"},
+        {clave: "04", id: "4", name: "Resolucion administrativa"},
+        {clave: "05", id: "5", name: "Resolución culminatoria del sumario"},
+        {clave: "06", id: "6", name: "Resolucion por incumplimiento deberes formales"},
+        {clave: "07", id: "7", name: "Resolucion por incumplimiento deberes materiales"},
+        {clave: "08", id: "8", name: "Convenio de pago"},
+        {clave: "09", id: "9", name: "Cheques devueltos"},
+        {clave: "10", id: "10", name: "Multas porcentuales"},
+        {clave: "11", id: "11", name: "Intereses de mora"},
+        {clave: "12", id: "12", name: "Crédito fiscal"}
     ]);
     const [anos, setAnos] = useState([]);
     const [trimestres, setTrimestres] = useState([]);
     const [formatoFechaFutura, setFormatoFechaFutura] = useState();    
     const [formDataPayment, setFormDataPayment] = useState({});
     const [formDataDeclaration, setFormDataDeclaration] = useState({
-        declaraciones: [
+        /*declaraciones: [
             {
                 ano_declaracion: "2021",
                 concepto_pago: "1",
@@ -25,7 +37,7 @@ export const TaxesState = ({ children }) => {
                 monto_intereses: "0",
                 monto_multa: "0",
                 monto_pagado: "100",
-                monto_tributo: 2,
+                monto_tributo: 50,
                 ntrabajadores: "25",
                 ntrabajadores_liquidados: "0",
                 sustitutiva: "1",
@@ -41,14 +53,14 @@ export const TaxesState = ({ children }) => {
                 monto_intereses: "0",
                 monto_multa: "0",
                 monto_pagado: "2000",
-                monto_tributo: 10,
+                monto_tributo: 50,
                 ntrabajadores: "25",
                 ntrabajadores_liquidados: "120",
                 sustitutiva: "1",
                 terms: true,
                 trimestre: "2"
             }
-        ]
+        ]*/
     });
     const [userData, setUserData] = useState({});
     const [historico, setHistorico] = useState([]);
@@ -334,9 +346,8 @@ export const TaxesState = ({ children }) => {
     const validateAmount = (montoConcepto, monto) => {
         if(montoConcepto + totalTributoDeclarado > monto) {
             Swal.fire({
-                title: "Pago de tributos",
                 icon: 'error',
-                text: 'Verifique que los montos de los conceptos no superen al monto del pago.',
+                title: 'Verifique que los montos de los conceptos no superen al monto del pago.',
                 showConfirmButton: false,
                 timer: 3000
             })
@@ -358,6 +369,7 @@ export const TaxesState = ({ children }) => {
                 text: "Su Pago fue registrado con Éxito.",
                 button: "Ok",
                 icon: 'success',
+                title: 'Su Pago fue registrado con Éxito.',
                 showConfirmButton: false,
                 timer: 2000
             });
@@ -410,7 +422,6 @@ export const TaxesState = ({ children }) => {
                 total = total + x.monto_tributo;
                 if(x.fecha_emision === '') x.fecha_emision = '0001-01-01';
                 if(x.fecha_declaracion === '') x.fecha_declaracion = formatearfecha(new Date(), 'YMD');
-                x.terms = valores.termsG;
             });
 
             setTotalTributoDeclarado(total);
@@ -433,18 +444,7 @@ export const TaxesState = ({ children }) => {
                 timer: 1500
             }).then((value) => {
                 if (total > 0) {
-                    Swal.fire({
-                        title: 'Declaración de tributos',
-                        text: "Esta seguro de realizar el pago de tributos?",
-                        icon: 'info',
-                        showDenyButton: true,
-                        confirmButtonText: 'Si',
-                        denyButtonText: `No`,
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            setStepTaxes(stepTaxes+1)
-                        }
-                    });
+                    setStepTaxes(stepTaxes+1)
                 }
                 setDeclaracionSustitutiva(false);
                 setDeclaracionSeleccionada([]);
@@ -501,6 +501,7 @@ export const TaxesState = ({ children }) => {
         declaracionSustitutiva,
         sustituirDeclaracion,
         totalTributoDeclarado,
+        setTotalTributoDeclarado,
         setActaR, actaReparo,
         reAdmin, setReAdmin,
         reCul, setReCul,
