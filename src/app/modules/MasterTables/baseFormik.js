@@ -7,7 +7,7 @@ import MasterTablesContext from "../../context/masterTables/masterTablesContext"
 
 export const BaseFormik = ({formik, props}) => {
 
-    const { registroSeleccionado } = useContext(MasterTablesContext);
+    const { registroSeleccionado, validarDescripcion } = useContext(MasterTablesContext);
 
     useEffect(() => {
         if(props.accion === 'Modificar') {
@@ -26,6 +26,7 @@ export const BaseFormik = ({formik, props}) => {
                         id="name"
                         name="name"
                         component={BaseInput}
+                        onKeyUp={(e) => validarDescripcion(e, props)}
                     />
                 </Col>
             </Row>

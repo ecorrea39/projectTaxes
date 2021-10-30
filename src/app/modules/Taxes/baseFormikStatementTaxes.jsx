@@ -11,7 +11,7 @@ export const BaseFormikStatementTaxes = ({ concepts, formik, anos, trimestres, f
 
     const label_terms = "Declaro bajo fe de juramento, que la información aquí suministrada es fiel y exacta y estará sometida a control posterior, so pena de incurrir en suministrar información incompleta, falso-forjado ó errónea conforme a los parámetros previstos en el Código Orgánico Tributario.";
     const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", padding: "8px 35px 5px 35px", marginTop: "2%" }
-    const styleBtnEliminar = { marginTop: '23px', borderRadius: '100%', position: 'absolute' }
+    const styleBtnEliminar = { marginTop: '23px', borderRadius: '100%', position: 'absolute', padding: '10px 12px', borderBottom: 'none' }
     const [show, setShow] = useState(show);
 
     const cargarDatosDeclaraciones = (values) => {
@@ -166,7 +166,7 @@ export const BaseFormikStatementTaxes = ({ concepts, formik, anos, trimestres, f
                                             </Col>
                                             <Col xs="2" sm="2" md="2" lg="6" xl="6" xxl="6">
                                                 <a href="#" size="sm" title="eliminar concepto"
-                                                   className="btn btn-danger font-weight-bolder font-size-sm mr-3"
+                                                   className="btn btn-danger font-weight-bolder font-size-sm"
                                                    onClick={() => formik.values.declaraciones.splice(index, 1)}
                                                    style={styleBtnEliminar}><DeleteIcon/></a>
                                             </Col>

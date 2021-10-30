@@ -189,6 +189,67 @@ export const MasterTablesState = ({ children }) => {
         setRegistroSeleccionado({});
     }
 
+    const validarDescripcion = (e, props) => {
+
+        let busqueda = false;
+        let valor = e.target.value.toUpperCase();
+
+        switch (props.tabla) {
+            case "trimestre":
+                trimestres.map((x) => {
+                    if(x.name.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "forma-pago":
+                formasPago.map((x) => {
+                    if(x.name.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "estatus-entidad-trabajo":
+                estatus.map((x) => {
+                    if(x.name.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "clase-empresa":
+                claseEmpresa.map((x) => {
+                    if(x.name.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "bancos-recaudadores":
+                bancos.map((x) => {
+                    if(x.nom_banco.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            default:
+                break;
+        }
+
+        if(busqueda) {
+            Swal.fire({
+                title: props.titulo,
+                text: "La descripción ya existe !",
+                icon: "info",
+                button: "Ok",
+                timer: 2000
+            });
+        }
+    }
+
     const deleteMasterTables = async (tabla, titulo, valores) => {
 
         let dataType = "";
@@ -405,7 +466,8 @@ export const MasterTablesState = ({ children }) => {
         deleteMasterTables,
         registroSeleccionado,
         obtenerValores,
-        limpiarSeleccionado
+        limpiarSeleccionado,
+        validarDescripcion
     }
 
     return (
