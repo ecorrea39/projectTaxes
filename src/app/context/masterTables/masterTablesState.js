@@ -35,7 +35,8 @@ export const MasterTablesState = ({ children }) => {
                 lista.push(
                     {
                         "id": arreglo[i].id,
-                        "name": arreglo[i].attributes.nom_banco,
+                        "nom_banco": arreglo[i].attributes.nom_banco,
+                        "cod_banco": arreglo[i].attributes.cod_banco,
                         "is_active": arreglo[i].attributes.is_active
                     }
                 )
@@ -166,6 +167,7 @@ export const MasterTablesState = ({ children }) => {
                     {
                         "id": arreglo[i].id,
                         "name": arreglo[i].attributes.name,
+                        "descripcion": arreglo[i].attributes.descripcion,
                         "is_active": arreglo[i].attributes.is_active
                     }
                 )
@@ -180,8 +182,11 @@ export const MasterTablesState = ({ children }) => {
     }
 
     const obtenerValores = (valores) => {
-        console.log('valores ', valores)
         setRegistroSeleccionado(valores);
+    }
+
+    const limpiarSeleccionado = () => {
+        setRegistroSeleccionado({});
     }
 
     const deleteMasterTables = async (tabla, titulo, valores) => {
@@ -202,8 +207,8 @@ export const MasterTablesState = ({ children }) => {
                 if (result.isConfirmed) {
                     switch (tabla) {
                         case "trimestre":
-                            dataType = "saveTrimestres";
-                            urlTabla = "/trimestres/";
+                            //dataType = "trimestres";
+                            urlTabla = `/trimestres/${valores.id}`;
                             break;
 
                         case "forma-pago":
@@ -212,8 +217,8 @@ export const MasterTablesState = ({ children }) => {
                             break;
 
                         case "cuentas-recaudadoras":
-                            dataType = "saveCuentasBanco";
-                            urlTabla = "/cuentas_banco/";
+                            //dataType = "cuentasBanco";
+                            urlTabla = `/cuentas_banco/${valores.id}`;
                             break;
 
                         case "estatus-entidad-trabajo":
@@ -227,20 +232,15 @@ export const MasterTablesState = ({ children }) => {
                             break;
 
                         case "bancos-recaudadores":
-                            dataType = "banks";
-                            urlTabla = "/banks/";
+                            //dataType = "banks";
+                            urlTabla = `/banks/${valores.id}`;
                             break;
 
                         default:
                             break;
                     }
 
-                    requestConfig.data.type = dataType;
-                    requestConfig.data.attributes = valores;
-                    requestConfig.data.id = valores.id;
-                    requestConfig.data.attributes.is_active = !valores.is_active;
-
-                    const respuesta = clientAxios.put(urlTabla, requestConfig);
+                    const respuesta = clientAxios.delete(urlTabla, requestConfig);
 
                     Swal.fire({
                         title: titulo,
@@ -340,10 +340,8 @@ export const MasterTablesState = ({ children }) => {
             console.log('requestConfig ', requestConfig)
 
             if(props.accion === 'Agregar') {
-                console.log('agrgar')
                 const respuesta = await clientAxios.post(urlTabla, requestConfig);
             } else {
-                console.log('modificar')
                 const respuesta = await clientAxios.put(urlTabla, requestConfig);
             }
 
@@ -406,7 +404,8 @@ export const MasterTablesState = ({ children }) => {
         setFormDataTables,
         deleteMasterTables,
         registroSeleccionado,
-        obtenerValores
+        obtenerValores,
+        limpiarSeleccionado
     }
 
     return (

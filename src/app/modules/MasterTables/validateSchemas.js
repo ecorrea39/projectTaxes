@@ -21,3 +21,24 @@ export const SchemaTablesCol2 = Yup.object().shape({
     is_active: Yup.boolean()
         .required('- Campo obligatorio -')
 });
+
+export const SchemaTablesCol3 = Yup.object().shape({
+    nom_banco: Yup.string()
+        .required('- Campo obligatorio -'),
+    cod_banco: Yup.string()
+        .required('- Campo obligatorio -')
+        .min(4, '- Debe ingresar un mínimo de 4 digitos -')
+        .max(4, '- Debe ingresar un máximo de 4 digitos -'),
+    is_active: Yup.boolean()
+        .required('- Campo obligatorio -')
+});
+
+export const SchemaTablesCol4 = Yup.object().shape({
+    name: Yup.string()
+        .required('- Campo obligatorio -'),
+    descripcion: Yup.string(),
+    is_active: Yup.boolean()
+        .required('- Campo obligatorio -')
+});
+
+
