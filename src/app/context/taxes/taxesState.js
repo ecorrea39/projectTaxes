@@ -419,6 +419,7 @@ export const TaxesState = ({ children }) => {
                 total = total + x.monto_tributo;
                 if(x.fecha_emision === '') x.fecha_emision = '0001-01-01';
                 if(x.fecha_declaracion === '') x.fecha_declaracion = formatearfecha(new Date(), 'YMD');
+                x.terms = valores.termsG;
             });
 
             setTotalTributoDeclarado(total);

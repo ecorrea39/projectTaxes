@@ -268,32 +268,26 @@ export const MasterTablesState = ({ children }) => {
                 if (result.isConfirmed) {
                     switch (tabla) {
                         case "trimestre":
-                            //dataType = "trimestres";
                             urlTabla = `/trimestres/${valores.id}`;
                             break;
 
                         case "forma-pago":
-                            dataType = "saveFormasPago";
-                            urlTabla = "/formas_pago/";
+                            urlTabla = `/formas_pago/${valores.id}`;
                             break;
 
                         case "cuentas-recaudadoras":
-                            //dataType = "cuentasBanco";
                             urlTabla = `/cuentas_banco/${valores.id}`;
                             break;
 
                         case "estatus-entidad-trabajo":
-                            dataType = "saveEstatus";
-                            urlTabla = "/estatus/";
+                            urlTabla = `/estatus/${valores.id}`;
                             break;
 
                         case "clase-empresa":
-                            dataType = "saveCompanyClass";
-                            urlTabla = "/company_class/";
+                            urlTabla = `/company_class/${valores.id}`;
                             break;
 
                         case "bancos-recaudadores":
-                            //dataType = "banks";
                             urlTabla = `/banks/${valores.id}`;
                             break;
 
@@ -450,6 +444,7 @@ export const MasterTablesState = ({ children }) => {
                 text: `Error al intentar ${ props.accion === 'Agregar' ? 'guardar' : 'actualizar' } registro!`,
                 icon: "error",
                 button: "Ok",
+                timer: 2000
             });
         }
     }

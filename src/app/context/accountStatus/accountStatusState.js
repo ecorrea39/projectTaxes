@@ -192,7 +192,6 @@ export const AccountStatusState = ({ children }) => {
                         "concepto_pago_name": arreglo[i].concepto_pago_name,
                         "ano_declaracion": arreglo[i].ano_declaracion,
                         "trimestre": arreglo[i].trimestre,
-
                         "fecha_pago": arreglo[i].fecha_pago,
                         "banco": arreglo[i].banco,
                         "banco_name": arreglo[i].banco_nombre,
@@ -226,10 +225,9 @@ export const AccountStatusState = ({ children }) => {
                         "id": arreglo[i].id,
                         //"concepto_pago": arreglo[i].concepto_pago,
                         //"concepto_pago_name": arreglo[i].attributes['concepto_pago_concepto.name'],
-                        //"componentes": arreglo[i].componentes,
+                        "componentes": arreglo[i].componentes,
                         "numero_documento": arreglo[i].numero_documento,
                         "numero_giro": arreglo[i].numero_giro,
-
                         "fecha_pago": arreglo[i].fecha_pago,
                         "banco": arreglo[i].banco,
                         "banco_name": arreglo[i].banco_nombre,
@@ -259,14 +257,12 @@ export const AccountStatusState = ({ children }) => {
             arreglo.map((x, i) => {
                 detalleCreditoFiscal.push(
                     {
-
                         "id": arreglo[i].id,
                         //"concepto_pago": arreglo[i].concepto_pago,
                         //"concepto_pago_name": arreglo[i].attributes['concepto_pago_concepto.name'],
                         //"componentes": arreglo[i].componentes,
                         "numero_documento": arreglo[i].numero_documento,
                         "numero_giro": arreglo[i].numero_giro,
-
                         "fecha_pago": arreglo[i].fecha_pago,
                         "banco": arreglo[i].banco,
                         "banco_name": arreglo[i].banco_nombre,
@@ -277,7 +273,7 @@ export const AccountStatusState = ({ children }) => {
                 )
             });
 
-            setDetalleCreditoFis(detalleCreditoFiscal);
+            setDetalleCreditoFis([]); //ojo esto falta por resolver samuel
         } catch (error) {
             console.log(error)
         }

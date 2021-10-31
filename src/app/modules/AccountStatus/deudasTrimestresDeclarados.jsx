@@ -160,7 +160,7 @@ function DeudasTrimestresDeclarados({className}) {
                                     })
                                 }
                                 {
-                                    detalleTrim.length == 0 && (<span className="text-muted">sin información para mostrar</span>)
+                                    detalleTrim.length == 0 || detalleTrim === null  && (<span className="text-muted">sin información para mostrar</span>)
                                 }
                                 </tbody>
                             </table>
