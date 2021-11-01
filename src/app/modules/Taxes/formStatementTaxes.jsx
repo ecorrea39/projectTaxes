@@ -14,7 +14,11 @@ import { BaseFormikStatementTaxes } from './baseFormikStatementTaxes';
 
 function FormStatementTaxes({ step }) {
 
-    const { conceptos, anos, trimestres, formatoFechaFutura, setFormDataDeclaration, submitDeclaration, formatearfecha, nrif, declaracionSeleccionada, declaracionSustitutiva, selConcepto, showSelConcepto  } = useContext(TaxesContext);
+    const {
+        conceptos, anos, trimestres, formatoFechaFutura, setFormDataDeclaration,
+        submitDeclaration, formatearfecha, nrif, declaracionSeleccionada, declaracionSustitutiva,
+        selConcepto, showSelConcepto, setStepTaxes  } = useContext(TaxesContext);
+
     const concepts = conceptos.filter(x => x.id < 3);
     const seleccionado = selConcepto;
     const [show, setShow] = useState(false);
@@ -29,15 +33,14 @@ function FormStatementTaxes({ step }) {
 
     return (
         <>
-            {/*
             <Row className="mt-6 mb-6">
                 <Col className="mt-1 mb-2" xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
-                    <a href="#" className="btn btn-info font-size-sm w-100">Declaración y Pagos</a>
+                    <span className="btn btn-info font-size-sm w-100" onClick={()=>setStepTaxes(1)}>Declaración y Pagos</span>
                 </Col>
                 <Col className="mt-1 mb-2" xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
-                    <a href="#" className="btn btn-info font-size-sm w-100">Pagos</a>
+                    <span className="btn btn-info font-size-sm w-100" onClick={()=>setStepTaxes(2)}>Pagos</span>
                 </Col>
-            </Row>*/}
+            </Row>
 
             <Formik
                 initialValues={initialValuesDeclaration}

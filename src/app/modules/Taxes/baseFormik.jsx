@@ -8,12 +8,13 @@ import Checkbox from "../Forms/BaseCheckbox";
 import { InputsTaxes } from "./inputsTaxes";
 import TaxesContext from "../../context/taxes/taxesContext";
 import { ListConcepts } from "./listConcepts";
+import { Link } from "react-router-dom";
 
 export const BaseFormik = ({conceptos,formik,listDeclaraciones}) => {
 
     const {
         bancos, totalTributoDeclarado, setCreditoFiscal, declaracionesRealizadas,
-        formatoFechaFutura, modalidadesPagos } = useContext(TaxesContext);
+        formatoFechaFutura, modalidadesPagos, formDataDeclaration } = useContext(TaxesContext);
     
     const [deducible, setDeducible] = useState(0);
 
@@ -145,9 +146,11 @@ export const BaseFormik = ({conceptos,formik,listDeclaraciones}) => {
                     />
                 </Col>
             </Row>
-            
-            <InputsTaxes listDeclaraciones={listDeclaraciones} formik={formik} />
 
+            {
+                formDataDeclaration.declaraciones && <InputsTaxes listDeclaraciones={listDeclaraciones} formik={formik} />
+            }
+            
             {
                 <ListConcepts formik={formik} conceptos={conceptos} />
             }
@@ -159,7 +162,7 @@ export const BaseFormik = ({conceptos,formik,listDeclaraciones}) => {
             </Row>
             <Row className="mt-4 mb-4">
                 <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
-                    <Button variant="outline-danger" size="lg" className="w-100">Cancelar</Button>
+                    <Link size="lg" className="btn btn-danger font-size-lg w-100" to="/dashboard">Cancelar</Link>
                 </Col>
                 <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
                     <Button

@@ -137,8 +137,10 @@ function FormPayment() {
     }
     
     useEffect(()=>{
-        setFilterConcepts(conceptos.filter(x => x.id > 2)); 
-        createListDetails();
+        setFilterConcepts(conceptos.filter(x => x.id > 2));
+        if(formDataDeclaration.declaraciones) {
+            createListDetails();
+        }
     },[conceptos]);
 
     return (
