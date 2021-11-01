@@ -36,19 +36,19 @@ export function AsideMenuList({ layoutProps }) {
         {/*end::1 Level*/}
 
         {/* Tributos */}
-          { userGroup == "contribuyente" && <LinksTributos getMenuItemActive={getMenuItemActive} />}
+          { userGroup == "contribuyentes" && <LinksTributos getMenuItemActive={getMenuItemActive} />}
         {/* End Tributos */}
 
         {/* Reportes */}
-          { userGroup == "contribuyente" && <LinksRepotes getMenuItemActive={getMenuItemActive} />}
+          { userGroup == "contribuyentes" && <LinksRepotes getMenuItemActive={getMenuItemActive} />}
         {/*end Reportes*/}
 
         {/* Prefil de usuario */}
-          { (userGroup == "contribuyente" || userGroup == "parciales") && <LinksPerfil getMenuItemActive={getMenuItemActive} />}
+          { (userGroup == "contribuyentes" || userGroup == "parciales") && <LinksPerfil getMenuItemActive={getMenuItemActive} />}
         {/*end  Prefil de usuario*/}
 
         {/* Configuracion */}
-          { (userGroup == "admin" || userGroup == "superAdmin") && <LinksConfiguracion getMenuItemActive={getMenuItemActive} />}
+          { (userGroup == "administradores" || userGroup == "superAdmin") && <LinksConfiguracion getMenuItemActive={getMenuItemActive} />}
         {/*end Configuracion */}
 
         {/*begin::1 Level*/}
