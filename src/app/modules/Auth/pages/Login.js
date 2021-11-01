@@ -5,7 +5,6 @@ import * as Yup from "yup";
 import {connect} from "react-redux";
 import {FormattedMessage, injectIntl} from "react-intl";
 import * as auth from "../_redux/authRedux";
-import MTCaptcha from "../../MtCaptcha/MTCaptcha";
 import {Form, Col, Row, Button} from "react-bootstrap";
 import AuthContext from "../../../store/auth-context";
 import axios from "axios";
@@ -105,12 +104,10 @@ function Login(props) {
 
       console.log("values", values);
 
-      const mtcaptcha = document.querySelector('[name="mtcaptcha-verifiedtoken"]').value;
-
       const axiosConfig = {
         headers: {
           Accept: 'application/vnd.api+json',
-          Authorization: `Basic ${btoa(`${values.tipo + values.user}:${values.password}:${mtcaptcha}`)}`
+          Authorization: `Basic ${btoa(`${values.tipo + values.user}:${values.password}`)}`
         }
       };
 
@@ -258,10 +255,6 @@ function Login(props) {
               <div className="fv-help-block">{formik.errors.password}</div>
             </div>
           ) : null}
-        </div>
-
-        <div className="form-group fv-plugins-icon-container">
-          <MTCaptcha/>
         </div>
 
         <div className="form-group fv-plugins-icon-container" style={styleCenter}>
