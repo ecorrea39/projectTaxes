@@ -19,7 +19,7 @@ function ReportsCertificateSolvency() {
     let contribuyente = contrib;
 
     const handleSubmit = async (values, actions) => {
-        setFormDataReports(values);
+        //setFormDataReports(values);
         let response = await submitReportsCertificateSolvency(values);
         actions.resetForm(initialValuesReportCertificateSolvency);
     };

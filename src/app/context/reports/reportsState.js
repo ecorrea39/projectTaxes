@@ -96,7 +96,7 @@ export const ReportsState = ({ children }) => {
                 icon: "success",
                 button: "Ok"
             }).then((value) => {
-                window.open(`https://127.0.0.1:8443/reports/certificado_solvencia/${valores.nrif}/${fecha}/`,'_blank');
+                window.open(process.env.REACT_APP_API_URL+"reports/certificado_solvencia/"+`${valores.nrif}/${fecha}`);
             });
         } catch (error) {
             console.log(error)
