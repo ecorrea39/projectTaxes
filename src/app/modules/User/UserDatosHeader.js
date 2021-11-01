@@ -15,6 +15,8 @@ const UserDatosHeader = (props) => {
           { props.formularioActual==3 && <img src={toAbsoluteUrl("/media/step-by-step-perfil/StepByStep3.png")} className="img-fluid" alt="Step by Step" /> }
 
           { props.formularioActual==4 && <img src={toAbsoluteUrl("/media/step-by-step-perfil/StepByStep4.png")} className="img-fluid" alt="Step by Step" /> }
+
+          { props.formularioActual==5 && <img src={toAbsoluteUrl("/media/step-by-step-perfil/StepByStep5.png")} className="img-fluid" alt="Step by Step" /> }
         </Col>
       </Row>
     </Fragment>

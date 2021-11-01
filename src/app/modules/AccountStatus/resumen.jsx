@@ -1,19 +1,46 @@
-import React, {useContext} from "react";
+import React, {useContext, useState, useEffect} from "react";
 
 import SVG from "react-inlinesvg";
 import { toAbsoluteUrl } from "../../../../src/_metronic/_helpers";
-import AccountStatusContext from "../../context/accountStatus/accountStatusContext";
+import {clientAxios} from "../../config/configAxios";
 
 function Resumen({className}) {
 
-    const { totalDeudaTrim, totalDeudaCxP, totalPagos, totalCreditoFisTemp, totalCreditoFisAprob } = useContext(AccountStatusContext);
     const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", padding: "20px 35px 20px 35px", marginTop: "3%" }
+
+    const [totalDeudaTrim, setTotalDeudaTrim] = useState();
+    const [totalDeudaCxP, setTotalDeudaCxP] = useState();
+    const [totalPagos, setTotalPagos] = useState();
+    const [totalCreditoFisTemp, setTotalCreditoFisTemp] = useState();
+    const [totalCreditoFisAprob, setTotalCreditoFisAprob] = useState();
+
+    const nrif = localStorage.getItem('rif');
+
+    useEffect(() => {
+        getResumen()
+    }, []);
 
     function FormatNumber(number) {
         return  new Intl.NumberFormat("ES-ES", {
             style: "currency",
             currency: "VEF"
         }).format(number)
+    }
+
+    const getResumen = async () => {
+
+        try {
+            const respuesta = await clientAxios.get(`/balance/${nrif}`);
+
+            (respuesta.data.data[0] !== null) ? setTotalDeudaTrim(respuesta.data.data[0].attributes.total): setTotalDeudaTrim(0);
+            (respuesta.data.data[1] !== null) ? setTotalDeudaCxP(respuesta.data.data[1].attributes.total): setTotalDeudaCxP(0);
+            (respuesta.data.data[2] !== null) ? setTotalPagos(respuesta.data.data[2].attributes.total): setTotalPagos(0);
+            (respuesta.data.data[3] !== null) ? setTotalCreditoFisTemp(respuesta.data.data[3].attributes.total): setTotalCreditoFisTemp(0);
+            (respuesta.data.data[4] !== null) ? setTotalCreditoFisAprob(respuesta.data.data[4].attributes.total): setTotalCreditoFisAprob(0);
+
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (
@@ -61,14 +88,14 @@ function Resumen({className}) {
                             <div className="col px-12 py-6">
                                 <div className="font-size-sm text-muted font-weight-bold">
                                     <SVG src={toAbsoluteUrl("/media/svg/icons/Layout/Layout-4-blocks.svg")} />
-                                    Total crédito fiscal | Saldo temporal
+                                    Total crédito fiscal | Saldo temporal a compensar
                                 </div>
                                 <div className="font-size-h4 font-weight-bolder">{FormatNumber(totalCreditoFisTemp)}</div>
                             </div>
                             <div className="col px-12 py-6">
                                 <div className="font-size-sm text-muted font-weight-bold">
                                     <SVG src={toAbsoluteUrl("/media/svg/icons/Layout/Layout-4-blocks.svg")} />
-                                    Total crédito fiscal | Saldo aprobado
+                                    Total crédito fiscal | Saldo aprobado certificado de crédito fiscal
                                 </div>
                                 <div className="font-size-h4 font-weight-bolder">{FormatNumber(totalCreditoFisAprob)}</div>
                             </div>

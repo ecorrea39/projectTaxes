@@ -1,26 +1,76 @@
 import { Field } from "formik";
-import React, { useContext, useEffect } from "react";
-import { Col, Row, Table } from "react-bootstrap";
+import React, { useContext, useEffect, useState } from "react";
+import { Button, Col, Row, Table } from "react-bootstrap";
 import TaxesContext from "../../context/taxes/taxesContext";
 import odb from "../../helpers/odb";
 import BaseInput from "../Forms/BaseInputs";
 
 export default function ReceiptPayment() {
 
-    const { formDataPayment, bancos, getUserData, userData, conceptos } = useContext(TaxesContext);
+    const { formDataPayment, bancos, getUserData, userData, conceptos, modalidadesPagos, formDataDeclaration, linkRecibo } = useContext(TaxesContext);
+
+    const [dataBanco, setDataBanco] = useState({nomBanco: "",numCuenta:""});
+    const [listConceptos, setListConceptos] = useState([]);
+
+    const createListConcepts = () => {
+
+        let conceptos = [];
+
+        if(formDataDeclaration.declaraciones) {
+            let taxes = formDataDeclaration.declaraciones;
+            taxes.map((element) =>{
+                let slcConcept =  selectConcepto(element.concepto_pago);
+                let jsonData = {
+                    clave: slcConcept.clave,
+                    concepto: slcConcept.name,
+                    anio: element.ano_declaracion,
+                    trimestre: element.trimestre,
+                    referencia: formDataPayment.nro_referencia,
+                    monto: element.monto_tributo
+                }
+                conceptos.push(jsonData)
+            });
+        }
+
+        formDataPayment.detallesConceptos.map((element) => {
+            let slcConcept =  selectConcepto(element.idConcepto);
+            let jsonData = {
+                clave: slcConcept.clave,
+                concepto: slcConcept.name,
+                anio: "N/A",
+                trimestre: "N/A",
+                referencia: formDataPayment.nro_referencia,
+                monto: element.detalle.monto
+            }
+            conceptos.push(jsonData)                                 
+        })
+        setListConceptos(conceptos);  
+    }
 
     const selectBanco = (b) => {
-        let banco = bancos.find(element => element.id == b );
-        let nombreBanco = banco.attributes.nom_banco;
+        let banco = bancos.find(element => element.id === b );
+        let nombreBanco = banco.attributes["id_banco_banco.nom_banco"];
         let trunBanco = nombreBanco.length > 30 ? nombreBanco.slice(0,30) + "..." : nombreBanco;
-        return trunBanco;
+        let numCuenta = banco.attributes.cuenta_nro;
+        setDataBanco({nomBanco: trunBanco,numCuenta:numCuenta});
     }
 
     const selectConcepto = (c) => {
-        let concepto = conceptos.find(element => element.id == c );
+        let concepto = conceptos.find(element => element.id === c );
         let nombreConcepto = concepto.name;
         let trunConcepto = nombreConcepto.length > 30 ? nombreConcepto.slice(0,30) + "..." : nombreConcepto;
-        return trunConcepto;
+        return {name:trunConcepto, clave: concepto.clave};
+    }
+
+    const selectTipoTransaccion = (tt) => {
+        let tipoTransaccion = modalidadesPagos.find(element => element.id === tt);
+        return tipoTransaccion.attributes.name;
+    }
+
+    const handlePrint = () => {
+
+        window.open(linkRecibo);
+
     }
 
     const rif = odb.get("rif");
@@ -28,7 +78,9 @@ export default function ReceiptPayment() {
     const phone = odb.get("phone_number_mobile");
 
     useEffect(() => {
+        createListConcepts();
         getUserData(rif);
+        selectBanco(formDataPayment.banco)
     },[]);
 
     return (
@@ -39,7 +91,7 @@ export default function ReceiptPayment() {
                 </Col>
             </Row>
             <Row>
-                <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6" className="mt-2 mb-4">
+                <Col xs="12" sm="4" md="4" lg="4" xl="4" xxl="4" className="mt-2 mb-4">
                     <label className="font-weight-bold">
                         RIF
                     </label>
@@ -49,7 +101,7 @@ export default function ReceiptPayment() {
                         </span>
                     </div>
                 </Col>
-                <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6" className="mt-2 mb-4">
+                <Col xs="12" sm="4" md="4" lg="4" xl="4" xxl="4" className="mt-2 mb-4">
                     <label className="font-weight-bold">
                         Nro. Registro
                     </label>
@@ -59,7 +111,17 @@ export default function ReceiptPayment() {
                         </span>
                     </div>
                 </Col>
-                <Col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12" className="mt-2 mb-4">
+                <Col xs="12" sm="4" md="4" lg="4" xl="4" xxl="4" className="mt-2 mb-4">
+                    <label className="font-weight-bold">
+                        Unidad Estadal de Tributos
+                    </label>
+                    <div className="form-control">
+                        <span>
+                            XXXXXX XXXX XXXX
+                        </span>
+                    </div>
+                </Col>
+                <Col xs="12" sm="8" md="8" lg="8" xl="8" xxl="8" className="mt-2 mb-4">
                     <label className="font-weight-bold">
                         Razon social
                     </label>
@@ -69,7 +131,7 @@ export default function ReceiptPayment() {
                         </span>
                     </div>
                 </Col>
-                <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6" className="mt-2 mb-4">
+                <Col xs="12" sm="4" md="4" lg="4" xl="4" xxl="4" className="mt-2 mb-4">
                     <label className="font-weight-bold">
                         Telefono
                     </label>
@@ -79,19 +141,9 @@ export default function ReceiptPayment() {
                         </span>
                     </div>
                 </Col>
-                <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6" className="mt-2 mb-4">
-                    <label className="font-weight-bold">
-                        Unidad Administracion Tributaria
-                    </label>
-                    <div className="form-control">
-                        <span>
-                            XXXXXX XXXX XXXX
-                        </span>
-                    </div>
-                </Col>
             </Row>
 
-            <Row>
+            <Row className="mt-6">
                 <Col xs="12">
                     <h5>Datos del Pago</h5>
                 </Col>
@@ -103,7 +155,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                            { selectBanco(formDataPayment.banco) }
+                            { dataBanco.nomBanco }
                         </span>
                     </div>
                 </Col>
@@ -113,7 +165,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                            {formDataPayment.nroReferencia}
+                            {formDataPayment.nro_referencia}
                         </span>
                     </div>
                 </Col>
@@ -133,7 +185,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                            {formDataPayment.nreferencia}
+                            { dataBanco.numCuenta }
                         </span>
                     </div>
                 </Col>
@@ -143,7 +195,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                            {formDataPayment.tipoTransaccion}
+                            { selectTipoTransaccion(formDataPayment.tipo_transaccion) }
                         </span>
                     </div>
                 </Col>
@@ -159,7 +211,7 @@ export default function ReceiptPayment() {
                 </Col>
             </Row>
             
-            <Row>
+            <Row className="mt-6">
                 <Col xs="12" className="mt-2 mb-2">
                     <h5>Conceptos de Pagos</h5>
                 </Col>
@@ -167,29 +219,47 @@ export default function ReceiptPayment() {
             <Row>
                 <Col xs="12">
                     <Table striped bordered hover>
-                        <tr>
-                            <th></th>
-                            <th>Clave</th>
-                            <th>Concepto</th>
-                            <th>Referencia</th>
-                            <th>Año</th>
-                            <th>Trimestre</th>
-                            <th>Monto (Bs)</th>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th>Clave</th>
+                                <th>Concepto</th>
+                                <th>Referencia</th>
+                                <th>Año</th>
+                                <th>Trimestre</th>
+                                <th>Monto (Bs)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         {
-                            formDataPayment.detallesConceptos.map((element) => (
-                                <tr>
-                                    <td>{element.idConcepto}</td>
-                                    <td>{ selectConcepto(element.idConcepto) }</td>
-                                    <td>{"N/A"}</td>
-                                    <td>{formDataPayment.nroReferencia}</td>
-                                    <td>{formDataPayment.fechaPago}</td>
-                                    <td>{"N/A"}</td>
-                                    <td>{element.detalle.monto}</td>
+                            listConceptos.map((element,index) => (
+                                <tr key={index}>
+                                    <td>{element.clave}</td>
+                                    <td>{element.concepto}</td>
+                                    <td>{element.referencia}</td>
+                                    <td>{element.anio}</td>
+                                    <td>{element.trimestre}</td>
+                                    <td>{element.monto}</td>
                                 </tr>                                    
                             ))
                         }
+                        </tbody>
                     </Table>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <div id="emailHelp" className="form-text">Nota: No es necesario imprimir este recibo de pago</div>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Button
+                        type="button"
+                        variant="primary"
+                        size="lg"
+                        className="w-100"
+                        onClick={()=>handlePrint()}
+                    >Imprimir Recibo</Button>
                 </Col>
             </Row>
         </>

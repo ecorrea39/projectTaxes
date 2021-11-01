@@ -5,8 +5,6 @@ import BaseInput from "../Forms/BaseInputs";
 
 export const InputsByConcepts = (props) => {
 
-    console.log(props)
-
     const Inputs = () => {
 
         switch(props.element.idConcepto) {

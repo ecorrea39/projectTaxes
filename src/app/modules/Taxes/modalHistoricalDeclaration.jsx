@@ -43,8 +43,7 @@ function ModalHistoricalDeclaration(props) {
                                     initialValues={{
                                         ano_declaracion: "",
                                         trimestre: "",
-                                        estatus: "",
-                                        searchText: "",
+                                        estatus: ""
                                     }}
                                     onSubmit={(values) => { filtarHistorico(values); }}
                                 >
@@ -129,24 +128,6 @@ function ModalHistoricalDeclaration(props) {
                                                         <b>Filtro</b> por trimestre
                                                     </small>
                                                 </div>
-                                                {/*
-                                                <div className="col-lg-4">
-                                                    <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        name="searchText"
-                                                        placeholder="Buscar"
-                                                        onBlur={handleBlur}
-                                                        value={values.searchText}
-                                                        onChange={(e) => {
-                                                            setFieldValue("searchText", e.target.value);
-                                                            handleSubmit();
-                                                        }}
-                                                    />
-                                                    <small className="form-text text-muted">
-                                                        <b>Filtro</b> todas las columnas
-                                                    </small>
-                                                </div>*/}
                                             </div>
                                         </form>
                                     )}
@@ -156,19 +137,20 @@ function ModalHistoricalDeclaration(props) {
                         <div className="tab-content px-5">
                                 <div className="table-responsive">
 
-                                    <Table className="table table-head-custom table-head-bg table-borderless table-vertical-center" pagination={ paginationFactory() }>
+                                    <Table responsive="sm" className="table-vertical-center table-head-bg" pagination={ paginationFactory() }>
                                         <thead>
-                                        <tr className="text-left text-uppercase">
-                                            <th style={{minWidth: "15px"}}></th>
-                                            <th style={{minWidth: "200px"}}>Concepto</th>
-                                            <th style={{minWidth: "50px"}}>Año</th>
-                                            <th style={{minWidth: "50px"}}>Trim.</th>
-                                            <th style={{minWidth: "100px"}}>Fecha declaración</th>
-                                            <th style={{minWidth: "100px"}}>Fecha emisión</th>
-                                            <th style={{minWidth: "100px"}}>Monto nómina</th>
-                                            <th style={{minWidth: "50px"}}>Cant. Trab.</th>
-                                            <th style={{minWidth: "100px"}}>Monto tributo</th>
-                                        </tr>
+                                            <tr className="text-left text-uppercase">
+                                                <th style={{minWidth: "15px"}}></th>
+                                                <th style={{minWidth: "180px"}}>Concepto</th>
+                                                <th style={{minWidth: "50px"}}>Año</th>
+                                                <th style={{minWidth: "50px"}}>Trim.</th>
+                                                <th style={{minWidth: "100px"}}>Fecha declaración</th>
+                                                <th style={{minWidth: "100px"}}>Fecha emisión</th>
+                                                <th style={{minWidth: "100px"}}>Monto nómina</th>
+                                                <th style={{minWidth: "50px"}}>Cant. Trab.</th>
+                                                <th style={{minWidth: "100px"}}>Monto tributo</th>
+                                                <th style={{minWidth: "100px"}}>Estatus</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
                                         {
@@ -186,7 +168,9 @@ function ModalHistoricalDeclaration(props) {
                                                         </td>
                                                         <td>
                                                             <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.concepto_pago_name}</span>
+                                                            {/*
                                                             <span className="text-muted font-weight-bold">Estatus: - {s.estatus_name} -</span>
+                                                            */}
                                                         </td>
                                                         <td>
                                                             <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.ano_declaracion}</span>
@@ -216,6 +200,11 @@ function ModalHistoricalDeclaration(props) {
                                                             <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{formatNumber(s.monto_tributo)}</span>
                                                             <span className="text-muted font-weight-bold"></span>
                                                         </td>
+                                                        <td>
+                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.estatus_name}</span>
+                                                            <span className="text-muted font-weight-bold"></span>
+                                                        </td>
+
                                                     </tr>
                                                 )
                                             })

@@ -29,7 +29,6 @@ function PagosCreditosTrimestresDeclarados({className}) {
                             initialValues={{
                                 ano_declaracion: "",
                                 trimestre: "",
-                                searchText: "",
                             }}
                             onSubmit={(values) => {
                                 filtarAccountStatus(values, 'pagostrim');
@@ -92,24 +91,6 @@ function PagosCreditosTrimestresDeclarados({className}) {
                                                 <b>Filtro</b> por trimestre
                                             </small>
                                         </div>
-                                        {/*
-                                                <div className="col-lg-4">
-                                                    <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        name="searchText"
-                                                        placeholder="Buscar"
-                                                        onBlur={handleBlur}
-                                                        value={values.searchText}
-                                                        onChange={(e) => {
-                                                            setFieldValue("searchText", e.target.value);
-                                                            handleSubmit();
-                                                        }}
-                                                    />
-                                                    <small className="form-text text-muted">
-                                                        <b>Filtro</b> todas las columnas
-                                                    </small>
-                                                </div>*/}
                                     </div>
                                 </form>
                             )}
@@ -119,16 +100,15 @@ function PagosCreditosTrimestresDeclarados({className}) {
                 <div className="card-body pt-0 pb-3">
                     <div className="tab-content">
                         <div className="table-responsive">
-                            <table
-                                className="table table-head-custom table-head-bg table-borderless table-vertical-center">
+                            <table className="table table-vertical-center table-head-bg">
                                 <thead>
                                 <tr className="text-left text-uppercase">
-                                    <th style={{minWidth: "150px"}}>Concepto</th>
+                                    <th style={{minWidth: "170px"}}>Concepto</th>
                                     <th style={{minWidth: "50px"}}>Año</th>
                                     <th style={{minWidth: "50px"}}>Trim.</th>
                                     <th style={{minWidth: "100px"}}>Fecha</th>
                                     <th style={{minWidth: "100px"}}>Banco</th>
-                                    <th style={{minWidth: "100px"}}>Referencia</th>
+                                    <th style={{minWidth: "80px"}}>Referencia</th>
                                     <th style={{minWidth: "100px"}}>Monto pagado</th>
                                     <th style={{minWidth: "50px"}}>Clave de pago</th>
                                 </tr>
@@ -177,6 +157,9 @@ function PagosCreditosTrimestresDeclarados({className}) {
                                 }
                                 </tbody>
                             </table>
+                            {
+                                detallePagoTrim.length == 0 && (<span className="text-muted">sin información para mostrar</span>)
+                            }
                         </div>
                     </div>
                 </div>

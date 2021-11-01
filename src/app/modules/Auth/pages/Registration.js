@@ -5,8 +5,9 @@ import * as Yup from "yup";
 import {Link, useHistory} from "react-router-dom";
 import {FormattedMessage, injectIntl} from "react-intl";
 import * as auth from "../_redux/authRedux";
-import {Col, Form} from "react-bootstrap";
+import {Col, Form, Row} from "react-bootstrap";
 import axios from "axios";
+import Util from "../../../helpers/Util";
 
 const initialValues = {
   tipo: "",
@@ -66,22 +67,16 @@ function Registration(props) {
         })
       ),
     user: Yup
-      .number().positive(
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.POSITIVE",
-        })
-      )
-      .test('len',
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.RANGELEN",
-        }, {min: 7, max: 9})
-        , val => !val || (val && (val.toString().length >= 7 && val.toString().length <= 9)))
+      .string()
       .required(
         intl.formatMessage({
             id: "AUTH.VALIDATION.REQUIRED",
           },
           {name: 'RIF'})
-      ),
+      )
+      .test('validarRif',
+        'El RIF no es válido',
+        val => Util.validarRif(formik.values.tipo + val)),
     email: Yup.string()
       .email(
         intl.formatMessage({
@@ -190,7 +185,7 @@ function Registration(props) {
 
       axios.post(`${API_URL}users/`, data, axiosConfig).then(function (res) {
 
-        console.log("registerRes", res);
+        //console.log("registerRes", res);
 
         disableLoading();
         setSubmitting(false);
@@ -249,65 +244,68 @@ function Registration(props) {
         )}
         {/* end: Alert */}
 
-        {/* begin: tipo */}
-        <Form.Group as={Col} controlId="tipo">
-          {/*<Form.Label>State</Form.Label>*/}
-          <Form.Control as="select"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.tipo}
-          >
+        <Row>
+          <Col md={3}>
+            {/* begin: tipo */}
+            <Form.Group controlId="tipo" className="p-0" >
+              {/*<Form.Label>State</Form.Label>*/}
+              <Form.Control as="select"
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.tipo}
+              >
 
-            <FormattedMessage id='AUTH.GENERAL.IDENTIFICATIONTYPE'>
-              {(message) => <option value="">{message}</option>}
-            </FormattedMessage>
+                <FormattedMessage id='AUTH.GENERAL.IDENTIFICATIONTYPE'>
+                  {(message) => <option value="">{message}</option>}
+                </FormattedMessage>
 
-            <option value="j">J</option>
-            <option value="v">V</option>
-            <option value="c">C</option>
-            <option value="e">E</option>
-            <option value="g">G</option>
-            <option value="p">P</option>
+                <option value="j">J</option>
+                <option value="v">V</option>
+                <option value="c">C</option>
+                <option value="e">E</option>
+                <option value="g">G</option>
+                <option value="p">P</option>
 
-          </Form.Control>
+              </Form.Control>
 
-          {formik.touched.tipo && formik.errors.tipo ? (
-            <div className="fv-plugins-message-container">
-              <div className="fv-help-block">{formik.errors.tipo}</div>
+              {formik.touched.tipo && formik.errors.tipo ? (
+                <div className="fv-plugins-message-container">
+                  <div className="fv-help-block">{formik.errors.tipo}</div>
+                </div>
+              ) : null}
+            </Form.Group>
+            {/* end: tipo */}
+          </Col>
+          <Col md={9}>
+            {/* begin: user */}
+            <div className="form-group fv-plugins-icon-container">
+              <input
+                placeholder="ingrese número de R.I.F."
+                type="text"
+                className={`form-control form-control-solid h-auto ${getInputClasses("user")}`}
+                name="user"
+                onChange={customHandleChange}
+                value={formik.values.user}
+                onBlur={formik.handleBlur}
+                maxLength="10"
+              />
+              {formik.touched.user && formik.errors.user ? (
+                <div className="fv-plugins-message-container">
+                  <div className="fv-help-block">{formik.errors.user}</div>
+                </div>
+              ) : null}
             </div>
-          ) : null}
-        </Form.Group>
-        {/* end: tipo */}
-
-        {/* begin: user */}
-        <div className="form-group fv-plugins-icon-container">
-          <input
-            placeholder="rif"
-            type="text"
-            className={`form-control form-control-solid h-auto py-5 px-6 ${getInputClasses(
-              "user"
-            )}`}
-            name="user"
-            onChange={customHandleChange}
-            value={formik.values.user}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.user && formik.errors.user ? (
-            <div className="fv-plugins-message-container">
-              <div className="fv-help-block">{formik.errors.user}</div>
-            </div>
-          ) : null}
-        </div>
-        {/* end: user */}
+            {/* end: user */}
+          </Col>
+        </Row>
 
         {/* begin: Email */}
         <div className="form-group fv-plugins-icon-container">
           <input
-            placeholder="Email"
+            placeholder="ingrese correo electrónico"
             type="email"
-            className={`form-control form-control-solid h-auto py-5 px-6 ${getInputClasses(
-              "email"
-            )}`}
+            maxLength="50"
+            className={`form-control form-control-solid h-auto ${getInputClasses("email")}`}
             name="email"
             {...formik.getFieldProps("email")}
           />
@@ -322,11 +320,10 @@ function Registration(props) {
         {/* begin: Password */}
         <div className="form-group fv-plugins-icon-container">
           <input
-            placeholder="Password"
+            placeholder="ingrese contraseña"
             type="password"
-            className={`form-control form-control-solid h-auto py-5 px-6 ${getInputClasses(
-              "password"
-            )}`}
+            maxLength="30"
+            className={`form-control form-control-solid h-auto ${getInputClasses("password")}`}
             name="password"
             {...formik.getFieldProps("password")}
           />
@@ -341,11 +338,10 @@ function Registration(props) {
         {/* begin: Confirm Password */}
         <div className="form-group fv-plugins-icon-container">
           <input
-            placeholder="Re Password"
+            placeholder="ingrese confirmación de contraseña"
             type="password"
-            className={`form-control form-control-solid h-auto py-5 px-6 ${getInputClasses(
-              "changepassword"
-            )}`}
+            maxLength="30"
+            className={`form-control form-control-solid h-auto ${getInputClasses("changepassword")}`}
             name="changepassword"
             {...formik.getFieldProps("changepassword")}
           />

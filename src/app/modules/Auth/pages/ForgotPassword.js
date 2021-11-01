@@ -5,8 +5,9 @@ import {Link, Redirect, useHistory} from "react-router-dom";
 import * as Yup from "yup";
 import {FormattedMessage, injectIntl} from "react-intl";
 import * as auth from "../_redux/authRedux";
-import {Col, Form} from "react-bootstrap";
+import {Col, Form, Row} from "react-bootstrap";
 import axios from "axios";
+import Util from "../../../helpers/Util";
 
 const initialValues = {
   tipo: "",
@@ -57,22 +58,16 @@ function ForgotPassword(props) {
         })
       ),
     user: Yup
-      .number().positive(
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.POSITIVE",
-        })
-      )
-      .test('len',
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.RANGELEN",
-        }, {min: 7, max: 9})
-        , val => !val || (val && (val.toString().length >= 7 && val.toString().length <= 9)))
+      .string()
       .required(
         intl.formatMessage({
             id: "AUTH.VALIDATION.REQUIRED",
           },
           {name: 'RIF'})
-      ),
+      )
+      .test('validarRif',
+        'El RIF no es válido',
+        val => Util.validarRif(formik.values.tipo + val)),
   });
 
   const getInputClasses = (fieldname) => {
@@ -180,56 +175,60 @@ function ForgotPassword(props) {
               </div>
             )}
 
-            {/* begin: tipo */}
-            <Form.Group as={Col} controlId="tipo">
-              {/*<Form.Label>State</Form.Label>*/}
-              <Form.Control as="select"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            value={formik.values.tipo}
-              >
+            <Row>
+              <Col md={3}>
+                {/* begin: tipo */}
+                <Form.Group as={Col} controlId="tipo" className="p-0" >
+                  {/*<Form.Label>State</Form.Label>*/}
+                  <Form.Control as="select"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.tipo}
+                  >
 
-                <FormattedMessage id='AUTH.GENERAL.IDENTIFICATIONTYPE'>
-                  {(message) => <option value="">{message}</option>}
-                </FormattedMessage>
+                    <FormattedMessage id='AUTH.GENERAL.IDENTIFICATIONTYPE'>
+                      {(message) => <option value="">{message}</option>}
+                    </FormattedMessage>
 
-                <option value="j">J</option>
-                <option value="v">V</option>
-                <option value="c">C</option>
-                <option value="e">E</option>
-                <option value="g">G</option>
-                <option value="p">P</option>
+                    <option value="j">J</option>
+                    <option value="v">V</option>
+                    <option value="c">C</option>
+                    <option value="e">E</option>
+                    <option value="g">G</option>
+                    <option value="p">P</option>
 
-              </Form.Control>
+                  </Form.Control>
 
-              {formik.touched.tipo && formik.errors.tipo ? (
-                <div className="fv-plugins-message-container">
-                  <div className="fv-help-block">{formik.errors.tipo}</div>
+                  {formik.touched.tipo && formik.errors.tipo ? (
+                    <div className="fv-plugins-message-container">
+                      <div className="fv-help-block">{formik.errors.tipo}</div>
+                    </div>
+                  ) : null}
+                </Form.Group>
+                {/* end: tipo */}
+              </Col>
+              <Col md={9}>
+                {/* begin: user */}
+                <div className="form-group fv-plugins-icon-container">
+                  <input
+                    placeholder="rif"
+                    type="text"
+                    className={`form-control form-control-solid h-auto ${getInputClasses("user")}`}
+                    name="user"
+                    onChange={customHandleChange}
+                    value={formik.values.user}
+                    onBlur={formik.handleBlur}
+                    maxLength="10"
+                  />
+                  {formik.touched.user && formik.errors.user ? (
+                    <div className="fv-plugins-message-container">
+                      <div className="fv-help-block">{formik.errors.user}</div>
+                    </div>
+                  ) : null}
                 </div>
-              ) : null}
-            </Form.Group>
-            {/* end: tipo */}
-
-            {/* begin: user */}
-            <div className="form-group fv-plugins-icon-container">
-              <input
-                placeholder="rif"
-                type="text"
-                className={`form-control form-control-solid h-auto py-5 px-6 ${getInputClasses(
-                  "user"
-                )}`}
-                name="user"
-                onChange={customHandleChange}
-                value={formik.values.user}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.user && formik.errors.user ? (
-                <div className="fv-plugins-message-container">
-                  <div className="fv-help-block">{formik.errors.user}</div>
-                </div>
-              ) : null}
-            </div>
-            {/* end: user */}
+                {/* end: user */}
+              </Col>
+            </Row>
 
             <div className="form-group d-flex flex-wrap flex-center">
               <button

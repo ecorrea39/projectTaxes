@@ -28,9 +28,9 @@ export function StickyToolbar() {
           <li className="nav-item mb-2" data-placement="left">
             <a
               className="btn btn-sm btn-icon btn-bg-light btn-text-warning btn-hover-warning"
-              target="_blank"
+              target="_self"
               rel="noopener noreferrer"
-              href="https://keenthemes.com/metronic/?page=docs&section=react-quick-start"
+              href="/"
             >
               <i className="flaticon2-telegram-logo"></i>
             </a>

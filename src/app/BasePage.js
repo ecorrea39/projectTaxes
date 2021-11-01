@@ -6,6 +6,8 @@ import { MyPage } from "./pages/MyPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import TaxesPage from "./pages/taxes";
 import AccountStatusPage from "./pages/accountStatus";
+import MasterTablesPage from "./pages/masterTables";
+import ReportsPage from './pages/reports';
 import { UserDatos } from "./modules/User/UserDatos";
 
 const GoogleMaterialPage = lazy(() =>
@@ -17,11 +19,23 @@ const ReactBootstrapPage = lazy(() =>
 const ECommercePage = lazy(() =>
   import("./modules/ECommerce/pages/eCommercePage")
 );
-const UserProfilepage = lazy(() =>
+const UserProfilePage = lazy(() =>
   import("./modules/UserProfile/UserProfilePage")
 );
-const UserDatospage = lazy(() =>
+const UserDatosPage = lazy(() =>
   import("./modules/User/UserDatos")
+);
+const MapaPage = lazy(() =>
+  import("./modules/Mapa/Mapa")
+);
+const FondosDeComercioPage = lazy(() =>
+  import("./modules/FondoDeComercio/FondoDeComercio")
+);
+const ReporteComprobanteDeInscripcionPage = lazy(() =>
+  import("./modules/Reports/ComprobanteDeInscripcion")
+);
+const CrearFondosDeComercioPage = lazy(() =>
+  import("./modules/FondoDeComercio/FondoDeComercioCrear")
 );
 
 export default function BasePage() {
@@ -40,13 +54,20 @@ export default function BasePage() {
         <ContentRoute path="/dashboard" component={DashboardPage} />
         <Route exact path="/tributos" component={TaxesPage}  />
         <Route exact path="/estado-cuentas" component={AccountStatusPage} />
+        <Route exact path="/tablas/:tabla" component={MasterTablesPage} />
+        <Route exact path="/reportes/:reporte" component={ReportsPage} />
         <ContentRoute path="/builder" component={BuilderPage} />
         <ContentRoute path="/my-page" component={MyPage} />
         <Route path="/google-material" component={GoogleMaterialPage} />
         <Route path="/react-bootstrap" component={ReactBootstrapPage} />
         <Route path="/e-commerce" component={ECommercePage} />
-        <Route path="/user-profile" component={UserProfilepage} />
-        <Route path="/user-datos" component={UserDatospage} />
+        <Route path="/user-profile" component={UserProfilePage} />
+        <Route path="/user-datos" component={UserDatosPage} />
+        <Route path="/mapa" component={MapaPage} />
+        <Route path="/fondosdecomercio" component={FondosDeComercioPage} />
+        <Route path="/comprobantedeinscripcion" component={ReporteComprobanteDeInscripcionPage} />
+        <Route path="/crearfondocomercio" component={CrearFondosDeComercioPage} />
+
         <Redirect to="error/error-v1" />
       </Switch>
     </Suspense>

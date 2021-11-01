@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef, useContext} from "react";
 import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import {FormattedMessage, useIntl} from "react-intl";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import GeneralContext from "../../store/general-context";
 
 const listaCodCelular = () => {
   const array = [
@@ -11,7 +12,62 @@ const listaCodCelular = () => {
     { "id": "0426", "code": "0426", "name": "0426" },
     { "id": "0414", "code": "0414", "name": "0414" },
     { "id": "0424", "code": "0424", "name": "0424" },
-    { "id": "0412", "code": "0412", "name": "0412" }
+    { "id": "0412", "code": "0412", "name": "0412" },
+    { "id": "0212", "code": "0212", "name": "0212" },
+    { "id": "0248", "code": "0248", "name": "0248" },
+    { "id": "0281", "code": "0281", "name": "0281" },
+    { "id": "0282", "code": "0282", "name": "0282" },
+    { "id": "0283", "code": "0283", "name": "0283" },
+    { "id": "0285", "code": "0285", "name": "0285" },
+    { "id": "0240", "code": "0240", "name": "0240" },
+    { "id": "0243", "code": "0243", "name": "0243" },
+    { "id": "0244", "code": "0244", "name": "0244" },
+    { "id": "0273", "code": "0273", "name": "0273" },
+    { "id": "0284", "code": "0284", "name": "0284" },
+    { "id": "0286", "code": "0286", "name": "0286" },
+    { "id": "0288", "code": "0288", "name": "0288" },
+    { "id": "0289", "code": "0289", "name": "0289" },
+    { "id": "0241", "code": "0241", "name": "0241" },
+    { "id": "0242", "code": "0242", "name": "0242" },
+    { "id": "0245", "code": "0245", "name": "0245" },
+    { "id": "0249", "code": "0249", "name": "0249" },
+    { "id": "0258", "code": "0258", "name": "0258" },
+    { "id": "0259", "code": "0259", "name": "0259" },
+    { "id": "0268", "code": "0268", "name": "0268" },
+    { "id": "0269", "code": "0269", "name": "0269" },
+    { "id": "0279", "code": "0279", "name": "0279" },
+    { "id": "0235", "code": "0235", "name": "0235" },
+    { "id": "0238", "code": "0238", "name": "0238" },
+    { "id": "0246", "code": "0246", "name": "0246" },
+    { "id": "0247", "code": "0247", "name": "0247" },
+    { "id": "0251", "code": "0251", "name": "0251" },
+    { "id": "0252", "code": "0252", "name": "0252" },
+    { "id": "0274", "code": "0274", "name": "0274" },
+    { "id": "0275", "code": "0275", "name": "0275" },
+    { "id": "0234", "code": "0234", "name": "0234" },
+    { "id": "0239", "code": "0239", "name": "0239" },
+    { "id": "0287", "code": "0287", "name": "0287" },
+    { "id": "0291", "code": "0291", "name": "0291" },
+    { "id": "0292", "code": "0292", "name": "0292" },
+    { "id": "0295", "code": "0295", "name": "0295" },
+    { "id": "0255", "code": "0255", "name": "0255" },
+    { "id": "0256", "code": "0256", "name": "0256" },
+    { "id": "0257", "code": "0257", "name": "0257" },
+    { "id": "0293", "code": "0293", "name": "0293" },
+    { "id": "0294", "code": "0294", "name": "0294" },
+    { "id": "0276", "code": "0276", "name": "0276" },
+    { "id": "0277", "code": "0277", "name": "0277" },
+    { "id": "0278", "code": "0278", "name": "0278" },
+    { "id": "0271", "code": "0271", "name": "0271" },
+    { "id": "0272", "code": "0272", "name": "0272" },
+    { "id": "0261", "code": "0261", "name": "0261" },
+    { "id": "0262", "code": "0261", "name": "0262" },
+    { "id": "0263", "code": "0263", "name": "0263" },
+    { "id": "0264", "code": "0264", "name": "0264" },
+    { "id": "0265", "code": "0265", "name": "0265" },
+    { "id": "0266", "code": "0266", "name": "0266" },
+    { "id": "0267", "code": "0267", "name": "0267" }
+
   ];
   return array.sort((a, b) => a.name < b.name ? -1 : +(a.name > b.name));
 };
@@ -51,7 +107,13 @@ const listaEdificacion = () => {
   return array.sort((a,b) => a.name < b.name ? -1 : +(a.name > b.name));
 };
 
+const textLabelColor = {
+  'color': '#5A5EFF',
+};
+
 const UserDatosFormStep3 = (props) => {
+
+  const generalCtx = useContext(GeneralContext);
 
   const [initialValues, setInitialValues] = useState({
     domicilio_fiscal: "",
@@ -69,6 +131,15 @@ const UserDatosFormStep3 = (props) => {
     numero_telefono_compania2:"",
     correo_empresa:""
   });
+
+  const estadoRef = useRef();
+  const municipioRef = useRef();
+  const parroquiaRef = useRef();
+  const sectorRef = useRef();
+  const vialidadRef = useRef();
+  const edificacionRef = useRef();
+  const codigo_telefono_compania1Ref = useRef();
+  const codigo_telefono_compania2Ref = useRef();
 
   const [loading, setLoading] = useState(false);
   const [estados, setEstados] = useState([]);
@@ -103,7 +174,7 @@ const UserDatosFormStep3 = (props) => {
         cargaDeParroquias().then((resolvedValueMunicipios) => {
           console.log("resolvedValueMunicipios", resolvedValueMunicipios);
 
-          axios.get(`${API_URL}user_geographic_data/${rif}/`, axiosConfig)
+          axios.get(`${API_URL}user_geographic_data/fondoporid/${generalCtx.theIdUserInformacionProfile}/`, axiosConfig)
             .then(function (res) {
               console.log("get_user_company::", res);
 
@@ -127,6 +198,8 @@ const UserDatosFormStep3 = (props) => {
                 };
 
                 setInitialValues(initialValuesJson);
+              } else {
+                alert("No existe información alguna registrada del usuario");
               }
 
               disableLoading();
@@ -175,8 +248,6 @@ const UserDatosFormStep3 = (props) => {
               "name": elemDataName
             };
 
-            console.log("rObjCargaDeEstados", rObj);
-
             return rObj;
           });
 
@@ -220,8 +291,6 @@ const UserDatosFormStep3 = (props) => {
               "name": elemDataName,
               "relacion": relacion
             };
-
-            console.log("rObjCargaDeMunicipios", rObj);
 
             return rObj;
           });
@@ -267,8 +336,6 @@ const UserDatosFormStep3 = (props) => {
               "name": elemDataName,
               "relacion": relacion
             };
-
-            console.log("rObjCargaDeParroquias", rObj);
 
             return rObj;
           });
@@ -552,19 +619,47 @@ const UserDatosFormStep3 = (props) => {
       console.log("rif", rif);
       console.log("authToken", token);
 
+      let jsonAttributes = formik.values;
+
+      jsonAttributes["user_information_id"] = generalCtx.theIdUserInformacionProfile;
+
       const data = {
         jsonapi: {version: '1.0'},
         data: {
           type: "userGeographicData",
           id: rif,
-          attributes: formik.values
+          attributes: jsonAttributes
         }
       };
 
       axios.post(`${API_URL}user_geographic_data/`, data, axiosConfig)
         .then(function (res) {
 
-          alert('Guardado exitosamente');
+          const estadoC = estadoRef.current.options[estadoRef.current.selectedIndex].text;
+          const municipioC = municipioRef.current.options[municipioRef.current.selectedIndex].text;
+          const parroquiaC = parroquiaRef.current.options[parroquiaRef.current.selectedIndex].text;
+          const sectorC = sectorRef.current.options[sectorRef.current.selectedIndex].text;
+          const vialidadC = vialidadRef.current.options[vialidadRef.current.selectedIndex].text;
+          const edificacionC = edificacionRef.current.options[edificacionRef.current.selectedIndex].text;
+          const codigo_telefono_compania1C = codigo_telefono_compania1Ref.current.options[codigo_telefono_compania1Ref.current.selectedIndex].text;
+          const codigo_telefono_compania2C = codigo_telefono_compania2Ref.current.options[codigo_telefono_compania2Ref.current.selectedIndex].text;
+
+          props.cambiarResumenFicha({
+            domicilio_fiscal: formik.values.domicilio_fiscal,
+            estado: estadoC,
+            municipio: municipioC,
+            parroquia: parroquiaC,
+            ciudad: formik.values.ciudad,
+            sector: sectorC,
+            vialidad: vialidadC,
+            edificacion: edificacionC,
+            local: formik.values.local,
+            codigo_telefono_compania1: codigo_telefono_compania1C,
+            numero_telefono_compania1: formik.values.numero_telefono_compania1,
+            codigo_telefono_compania2: codigo_telefono_compania2C,
+            numero_telefono_compania2: formik.values.numero_telefono_compania2,
+            correo_empresa: formik.values.correo_empresa
+          });
 
           setSubmitting(false);
           disableLoading();
@@ -575,35 +670,6 @@ const UserDatosFormStep3 = (props) => {
             setSiguiente(false);
             props.cambiarFormularioActual(4);
           }
-
-          // if (parciales) {
-          //   console.log('fechacontitucion ', fechacontitucion);
-          //   if (validateMulta(new Date(fechacontitucion), new Date(formData.fecha_registro_inces)) > 45) {
-          //     //procesar acto administrativo de la multa
-          //     toastTop = $f7.toast.create({
-          //       text: 'Se cargo multa según Artículo 35 del COT',
-          //       position: 'top',
-          //       horizontalPosition: 'center',
-          //       closeTimeout: 2000
-          //     });
-          //     toastTop.open();
-          //   }
-          // }
-          // ;
-          //
-          // let arreglo = odb.get('groups');
-          // if (!arreglo.find(x => x === 'contribuyentes')) {
-          //   arreglo.shift();
-          //   arreglo.push('contribuyentes');
-          //   odb.set('groups', arreglo);
-          // }
-          //
-          // setTimeout(() => {
-          //   window.location.href = '/dashboard';
-          //   $update();
-          // }, 2000);
-
-
         }).catch((err) => {
 
         console.log("errUserDatosFormStep3", err);
@@ -630,10 +696,12 @@ const UserDatosFormStep3 = (props) => {
               <Row>
                 <Col md={12}>
                   <Form.Group as={Col} controlId="domicilio_fiscal">
+                    <Form.Label style={textLabelColor}>Domicilio Fiscal</Form.Label>
                     <Form.Control size="lg" type="text" placeholder="Domicilio Fiscal"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.domicilio_fiscal}
+                                  maxLength="100"
                     />
 
                     {formik.touched.domicilio_fiscal && formik.errors.domicilio_fiscal ? (
@@ -650,10 +718,12 @@ const UserDatosFormStep3 = (props) => {
               <Row>
                 <Col md={4}>
                   <Form.Group controlId="estado">
+                    <Form.Label style={textLabelColor}>Estado</Form.Label>
                     <Form.Control as="select"
                                   onChange={handleChangeFiltrarMunicipios}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.estado}
+                                  ref={estadoRef}
                     >
                       <option key="0" value="">Seleccione el Estado</option>
 
@@ -673,10 +743,12 @@ const UserDatosFormStep3 = (props) => {
 
                 <Col md={4}>
                   <Form.Group controlId="municipio">
+                    <Form.Label style={textLabelColor}>Municipio</Form.Label>
                     <Form.Control as="select"
                                   onChange={handleChangeFiltrarParroquias}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.municipio}
+                                  ref={municipioRef}
                     >
                       <option key="0" relacion="" value="">Seleccione el Municipio</option>
 
@@ -696,10 +768,12 @@ const UserDatosFormStep3 = (props) => {
 
                 <Col md={4}>
                   <Form.Group controlId="parroquia">
+                    <Form.Label style={textLabelColor}>Parroquia</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.parroquia}
+                                  ref={parroquiaRef}
                     >
                       <option key="0" relacion="" value="">Seleccione el Parroquia</option>
 
@@ -723,10 +797,12 @@ const UserDatosFormStep3 = (props) => {
               <Row>
                 <Col md={4}>
                   <Form.Group as={Col} controlId="ciudad">
+                    <Form.Label style={textLabelColor}>Ciudad</Form.Label>
                     <Form.Control size="lg" type="text" placeholder="Ciudad"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.ciudad}
+                                  maxLength="30"
                     />
 
                     {formik.touched.ciudad && formik.errors.ciudad ? (
@@ -739,10 +815,12 @@ const UserDatosFormStep3 = (props) => {
 
                 <Col md={4}>
                   <Form.Group controlId="sector">
+                    <Form.Label style={textLabelColor}>Sector</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.sector}
+                                  ref={sectorRef}
                     >
                       <option key="0" value="">Seleccione el Sector</option>
 
@@ -762,10 +840,12 @@ const UserDatosFormStep3 = (props) => {
 
                 <Col md={4}>
                   <Form.Group controlId="vialidad">
+                    <Form.Label style={textLabelColor}>Vialidad</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.vialidad}
+                                  ref={vialidadRef}
                     >
                       <option key="0" value="">Seleccione la Vialidad</option>
 
@@ -789,10 +869,12 @@ const UserDatosFormStep3 = (props) => {
               <Row>
                 <Col md={6}>
                   <Form.Group controlId="edificacion">
+                    <Form.Label style={textLabelColor}>Edificación</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.edificacion}
+                                  ref={edificacionRef}
                     >
                       <option key="0" value="">Seleccione la Edificación</option>
 
@@ -812,10 +894,12 @@ const UserDatosFormStep3 = (props) => {
 
                 <Col md={6}>
                   <Form.Group as={Col} controlId="local">
+                    <Form.Label style={textLabelColor}>Local</Form.Label>
                     <Form.Control size="lg" type="text" placeholder="Local"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.local}
+                                  maxLength="20"
                     />
 
                     {formik.touched.local && formik.errors.local ? (
@@ -832,10 +916,12 @@ const UserDatosFormStep3 = (props) => {
               <Row>
                 <Col md={2}>
                   <Form.Group controlId="codigo_telefono_compania1">
+                    <Form.Label style={textLabelColor}>Código de área</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.codigo_telefono_compania1}
+                                  ref={codigo_telefono_compania1Ref}
                     >
                       <option key="0" value="">Seleccione el Código de Area</option>
 
@@ -855,6 +941,7 @@ const UserDatosFormStep3 = (props) => {
 
                 <Col md={4}>
                   <Form.Group as={Col} controlId="numero_telefono_compania1">
+                    <Form.Label style={textLabelColor}>Número de Teléfono 1</Form.Label>
                     <Form.Control size="lg" type="text" placeholder="Telefono 1"
                                   onChange={customHandleChangeNumeroDeTelefono1}
                                   onBlur={formik.handleBlur}
@@ -872,10 +959,12 @@ const UserDatosFormStep3 = (props) => {
 
                 <Col md={2}>
                   <Form.Group controlId="codigo_telefono_compania2">
+                    <Form.Label style={textLabelColor}>Código de área</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.codigo_telefono_compania2}
+                                  ref={codigo_telefono_compania2Ref}
                     >
                       <option key="0" value="">Seleccione el Código de Area</option>
 
@@ -895,6 +984,7 @@ const UserDatosFormStep3 = (props) => {
 
                 <Col md={4}>
                   <Form.Group as={Col} controlId="numero_telefono_compania2">
+                    <Form.Label style={textLabelColor}>Número de Teléfono 2</Form.Label>
                     <Form.Control size="lg" type="text" placeholder="Telefono 2"
                                   onChange={customHandleChangeNumeroDeTelefono2}
                                   onBlur={formik.handleBlur}
@@ -916,10 +1006,12 @@ const UserDatosFormStep3 = (props) => {
               <Row>
                 <Col md={12}>
                   <Form.Group as={Col} controlId="correo_empresa">
+                    <Form.Label style={textLabelColor}>Correo electrónico</Form.Label>
                     <Form.Control size="lg" type="text" placeholder="Correo Electrónico"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.correo_empresa}
+                                  maxLength="80"
                     />
 
                     {formik.touched.correo_empresa && formik.errors.correo_empresa ? (
@@ -934,18 +1026,18 @@ const UserDatosFormStep3 = (props) => {
               <br />
 
               <Row>
-                <Col md={4}>
-                  <Button variant="success" size="lg" block
-                          type="submit"
-                          disabled={
-                            formik.isSubmitting ||
-                            !formik.isValid
-                          }
-                  >
-                    Guardar
-                  </Button>
-                </Col>
-                <Col md={4}>
+                {/*<Col md={4}>*/}
+                {/*  <Button variant="success" size="lg" block*/}
+                {/*          type="submit"*/}
+                {/*          disabled={*/}
+                {/*            formik.isSubmitting ||*/}
+                {/*            !formik.isValid*/}
+                {/*          }*/}
+                {/*  >*/}
+                {/*    Guardar*/}
+                {/*  </Button>*/}
+                {/*</Col>*/}
+                <Col md={6}>
                   <Button variant="secondary" size="lg" block
                           type="button"
                           onClick={irAnterior}
@@ -953,7 +1045,7 @@ const UserDatosFormStep3 = (props) => {
                     Anterior
                   </Button>
                 </Col>
-                <Col md={4}>
+                <Col md={6}>
                   <Button variant="secondary" size="lg" block
                           type="button"
                           onClick={submitSiguiente}

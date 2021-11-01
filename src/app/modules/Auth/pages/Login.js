@@ -6,25 +6,18 @@ import {connect} from "react-redux";
 import {FormattedMessage, injectIntl} from "react-intl";
 import * as auth from "../_redux/authRedux";
 import MTCaptcha from "../../MtCaptcha/MTCaptcha";
-import {Form, Col} from "react-bootstrap";
+import {Form, Col, Row, Button} from "react-bootstrap";
 import AuthContext from "../../../store/auth-context";
 import axios from "axios";
-
-/*
-  INTL (i18n) docs:
-  https://github.com/formatjs/react-intl/blob/master/docs/Components.md#formattedmessage
-*/
-
-/*
-  Formik+YUP:
-  https://jaredpalmer.com/formik/docs/tutorial#getfieldprops
-*/
+import Util from "../../../helpers/Util";
 
 const initialValues = {
-  tipo: "j",
-  user: "333333332",
-  password: "inces123."
+  tipo: "",
+  user: "",
+  password: ""
 };
+
+const styleCenter = { "display":"flex", "justifyContent":"center", "alignItem":"center" }
 
 function Login(props) {
   const {intl} = props;
@@ -56,22 +49,16 @@ function Login(props) {
         })
       ),
     user: Yup
-      .number().positive(
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.POSITIVE",
-        })
-      )
-      .test('len',
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.RANGELEN",
-        }, {min: 7, max: 9})
-        , val => !val || (val && (val.toString().length >= 7 && val.toString().length <= 9)))
+      .string()
       .required(
         intl.formatMessage({
             id: "AUTH.VALIDATION.REQUIRED",
           },
           {name: 'RIF'})
-      ),
+      )
+      .test('validarRif',
+        'El RIF no es válido',
+        val => Util.validarRif(formik.values.tipo + val)),
     password: Yup.string()
       .min(8,
         intl.formatMessage({
@@ -129,7 +116,7 @@ function Login(props) {
 
       axios.get(`${API_URL}users/authentication/`, axiosConfig).then((res) => {
 
-        console.log("loginRes", res);
+        //console.log("loginRes", res);
 
         disableLoading();
         setSubmitting(false);
@@ -174,9 +161,7 @@ function Login(props) {
               txt = 'Error al registrar usuario';
           }
 
-          setStatus(
-            txt
-          );
+          setStatus(txt);
         } else {
           alert('Error de comunicación en el proceso de Inicio de Sesión');
         }
@@ -187,7 +172,7 @@ function Login(props) {
   return (
     <div className="login-form login-signin" id="kt_login_signin_form">
       {/* begin::Head */}
-      <div className="text-center mb-10 mb-lg-20">
+      <div className="text-center mb-5 mt-8">
         <h3 className="font-size-h1">
           <FormattedMessage id="AUTH.LOGIN.TITLE"/>
         </h3>
@@ -202,67 +187,69 @@ function Login(props) {
         onSubmit={formik.handleSubmit}
         className="form fv-plugins-bootstrap fv-plugins-framework"
       >
-        {formik.status ? (
-          <div className="mb-10 alert alert-custom alert-light-danger alert-dismissible">
-            <div className="alert-text font-weight-bold">{formik.status}</div>
-          </div>
-        ) : (
-          <Fragment/>
-        )}
-
-        <Form.Group as={Col} controlId="tipo">
-          {/*<Form.Label>State</Form.Label>*/}
-          <Form.Control as="select"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.tipo}
-          >
-
-            <FormattedMessage id='AUTH.GENERAL.IDENTIFICATIONTYPE'>
-              {(message) => <option value="">{message}</option>}
-            </FormattedMessage>
-
-            <option value="j">J</option>
-            <option value="v">V</option>
-            <option value="c">C</option>
-            <option value="e">E</option>
-            <option value="g">G</option>
-            <option value="p">P</option>
-
-          </Form.Control>
-
-          {formik.touched.tipo && formik.errors.tipo ? (
-            <div className="fv-plugins-message-container">
-              <div className="fv-help-block">{formik.errors.tipo}</div>
+        { formik.status ? (
+            <div className="mb-10 alert alert-custom alert-light-danger alert-dismissible">
+              <div className="alert-text font-weight-bold">{formik.status}</div>
             </div>
-          ) : null}
-        </Form.Group>
+          ) : (<Fragment/>)
+        }
 
         <div className="form-group fv-plugins-icon-container">
-          <input
-            placeholder="rif"
-            type="text"
-            className={`form-control form-control-solid h-auto py-5 px-6 ${getInputClasses(
-              "user"
-            )}`}
-            name="user"
-            onChange={customHandleChange}
-            value={formik.values.user}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.user && formik.errors.user ? (
-            <div className="fv-plugins-message-container">
-              <div className="fv-help-block">{formik.errors.user}</div>
-            </div>
-          ) : null}
+          <Row>
+            <Col md={3}>
+              <Form.Group controlId="tipo" className="p-0" >
+                {/*<Form.Label>State</Form.Label>*/}
+                <Form.Control as="select"
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              value={formik.values.tipo}
+                >
+
+                  <FormattedMessage id='AUTH.GENERAL.IDENTIFICATIONTYPE'>
+                    {(message) => <option value="">{message}</option>}
+                  </FormattedMessage>
+
+                  <option value="j">J</option>
+                  <option value="v">V</option>
+                  <option value="c">C</option>
+                  <option value="e">E</option>
+                  <option value="g">G</option>
+                  <option value="p">P</option>
+
+                </Form.Control>
+
+                {formik.touched.tipo && formik.errors.tipo ? (
+                  <div className="fv-plugins-message-container">
+                    <div className="fv-help-block">{formik.errors.tipo}</div>
+                  </div>
+                ) : null}
+              </Form.Group>
+            </Col>
+            <Col md={9}>
+              <input
+                placeholder="ingrese número de R.I.F."
+                type="text"
+                className={`form-control form-control-solid ${getInputClasses("user")}`}
+                name="user"
+                onChange={customHandleChange}
+                value={formik.values.user}
+                onBlur={formik.handleBlur}
+                maxLength="10"
+              />
+              {formik.touched.user && formik.errors.user ? (
+                <div className="fv-plugins-message-container">
+                  <div className="fv-help-block">{formik.errors.user}</div>
+                </div>
+              ) : null}
+            </Col>
+          </Row>
         </div>
         <div className="form-group fv-plugins-icon-container">
           <input
-            placeholder="Password"
+            placeholder="ingrese su contraseña"
             type="password"
-            className={`form-control form-control-solid h-auto py-5 px-6 ${getInputClasses(
-              "password"
-            )}`}
+            maxLength="30"
+            className={`form-control form-control-solid py-5 px-6 ${getInputClasses("password")}`}
             name="password"
             {...formik.getFieldProps("password")}
           />
@@ -277,24 +264,37 @@ function Login(props) {
           <MTCaptcha/>
         </div>
 
-        <div className="form-group d-flex flex-wrap justify-content-between align-items-center">
-          <Link
-            to="/auth/forgot-password"
-            className="text-dark-50 text-hover-primary my-3 mr-2"
-            id="kt_login_forgot"
-          >
-            <FormattedMessage id="AUTH.GENERAL.FORGOT_BUTTON"/>
-          </Link>
+        <div className="form-group fv-plugins-icon-container" style={styleCenter}>
           <button
-            id="kt_login_signin_submit"
-            type="submit"
-            disabled={formik.isSubmitting}
-            className={`btn btn-primary font-weight-bold px-9 py-4 my-3`}
+              id="kt_login_signin_submit"
+              type="submit"
+              disabled={formik.isSubmitting}
+              className={`btn btn-primary size-lg font-weight-bold`}
+              style={{"width": "100%"}}
           >
             <span><FormattedMessage id="AUTH.LOGIN.SIGNIN"/></span>
             {loading && <span className="ml-3 spinner spinner-white"></span>}
           </button>
         </div>
+
+        <div className="form-group d-flex flex-wrap" style={styleCenter}>
+              <span className="font-weight-bold text-dark-50">
+                <FormattedMessage id="AUTH.LOGIN.ASK" />
+              </span>
+          <Link to="/auth/registration" className="font-weight-bold ml-2" id="kt_login_signup">
+            <FormattedMessage id="AUTH.LOGIN.SIGNUP" />
+          </Link>
+        </div>
+        <div className="form-group d-flex flex-wrap" style={styleCenter}>
+          <Link
+              to="/auth/forgot-password"
+              className="text-dark-50 text-hover-primary my-3 mr-2"
+              id="kt_login_forgot"
+          >
+            <FormattedMessage id="AUTH.GENERAL.FORGOT_BUTTON"/>
+          </Link>
+        </div>
+
       </form>
       {/*end::Form*/}
     </div>
