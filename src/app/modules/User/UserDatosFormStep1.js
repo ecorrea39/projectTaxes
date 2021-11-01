@@ -327,8 +327,6 @@ const UserDatosFormStep1 = (props) => {
 
           generalCtx.iniIdUserInformacionProfile(res.data.data.id);
           setInitialValues(initialValuesJson);
-
-          alert("Información inicial cargada satisfactoriamente");
         } else {
           generalCtx.iniIdUserInformacionProfile("-");
           alert("No existe información alguna registrada del usuario");
@@ -498,6 +496,8 @@ const UserDatosFormStep1 = (props) => {
           disableLoading();
 
           console.log("resFormStep1", res);
+
+          alert("Información inicial cargada satisfactoriamente");
 
           if (siguiente) {
             setSiguiente(false);
