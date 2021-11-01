@@ -400,7 +400,7 @@ const UserDatosFormStep1 = (props) => {
         })
       ),
     numero_patronal: Yup.string()
-      .min(8,
+      .min(1,
         intl.formatMessage({
           id: "AUTH.VALIDATION.MIN_LENGTH",
         }, {min: 8})
@@ -408,7 +408,7 @@ const UserDatosFormStep1 = (props) => {
       .max(25,
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
-        }, {max: 25})
+        }, {max: 9})
       )
       .required(
         intl.formatMessage({
