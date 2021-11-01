@@ -8,9 +8,7 @@ export const ReportsState = ({ children }) => {
 
     const [formatoFechaFutura, setFormatoFechaFutura] = useState();
     const [formatoReporte, setFormatoReporte] = useState([]);
-    const [formDataReports, setFormDataReports] = useState({});
     const [contrib, setContrib ] = useState([]);
-    const nrif = odb.get('rif');
 
     useEffect(() => {
         getFechaFutura();
@@ -118,7 +116,6 @@ export const ReportsState = ({ children }) => {
         formatoFechaFutura,
         formatoReporte,
         submitReportsCertificateSolvency,
-        setFormDataReports,
         contrib
     }
 
