@@ -19,27 +19,19 @@ const listaCodCelular = () => {
     { "id": "0282", "code": "0282", "name": "0282" },
     { "id": "0283", "code": "0283", "name": "0283" },
     { "id": "0285", "code": "0285", "name": "0285" },
-    { "id": "0292", "code": "0292", "name": "0292" },
     { "id": "0240", "code": "0240", "name": "0240" },
-    { "id": "0247", "code": "0247", "name": "0247" },
-    { "id": "0278", "code": "0278", "name": "0278" },
     { "id": "0243", "code": "0243", "name": "0243" },
     { "id": "0244", "code": "0244", "name": "0244" },
-    { "id": "0246", "code": "0246", "name": "0246" },
     { "id": "0273", "code": "0273", "name": "0273" },
-    { "id": "0278", "code": "0278", "name": "0278" },
     { "id": "0284", "code": "0284", "name": "0284" },
-    { "id": "0285", "code": "0285", "name": "0285" },
     { "id": "0286", "code": "0286", "name": "0286" },
     { "id": "0288", "code": "0288", "name": "0288" },
     { "id": "0289", "code": "0289", "name": "0289" },
     { "id": "0241", "code": "0241", "name": "0241" },
     { "id": "0242", "code": "0242", "name": "0242" },
-    { "id": "0243", "code": "0243", "name": "0243" },
     { "id": "0245", "code": "0245", "name": "0245" },
     { "id": "0249", "code": "0249", "name": "0249" },
     { "id": "0258", "code": "0258", "name": "0258" },
-    { "id": "0287", "code": "0287", "name": "0287" },
     { "id": "0259", "code": "0259", "name": "0259" },
     { "id": "0268", "code": "0268", "name": "0268" },
     { "id": "0269", "code": "0269", "name": "0269" },
@@ -50,11 +42,8 @@ const listaCodCelular = () => {
     { "id": "0247", "code": "0247", "name": "0247" },
     { "id": "0251", "code": "0251", "name": "0251" },
     { "id": "0252", "code": "0252", "name": "0252" },
-    { "id": "0253", "code": "0253", "name": "0253" },
-    { "id": "0271", "code": "0271", "name": "0271" },
     { "id": "0274", "code": "0274", "name": "0274" },
     { "id": "0275", "code": "0275", "name": "0275" },
-    { "id": "0212", "code": "0212", "name": "0212" },
     { "id": "0234", "code": "0234", "name": "0234" },
     { "id": "0239", "code": "0239", "name": "0239" },
     { "id": "0287", "code": "0287", "name": "0287" },
@@ -64,28 +53,20 @@ const listaCodCelular = () => {
     { "id": "0255", "code": "0255", "name": "0255" },
     { "id": "0256", "code": "0256", "name": "0256" },
     { "id": "0257", "code": "0257", "name": "0257" },
-    { "id": "0272", "code": "0272", "name": "0272" },
     { "id": "0293", "code": "0293", "name": "0293" },
     { "id": "0294", "code": "0294", "name": "0294" },
-    { "id": "0275", "code": "0275", "name": "0275" },
     { "id": "0276", "code": "0276", "name": "0276" },
     { "id": "0277", "code": "0277", "name": "0277" },
     { "id": "0278", "code": "0278", "name": "0278" },
     { "id": "0271", "code": "0271", "name": "0271" },
     { "id": "0272", "code": "0272", "name": "0272" },
-    { "id": "0251", "code": "0251", "name": "0251" },
-    { "id": "0253", "code": "0253", "name": "0253" },
-    { "id": "0254", "code": "0254", "name": "0254" },
     { "id": "0261", "code": "0261", "name": "0261" },
     { "id": "0262", "code": "0261", "name": "0262" },
     { "id": "0263", "code": "0263", "name": "0263" },
     { "id": "0264", "code": "0264", "name": "0264" },
     { "id": "0265", "code": "0265", "name": "0265" },
     { "id": "0266", "code": "0266", "name": "0266" },
-    { "id": "0267", "code": "0267", "name": "0267" },
-    { "id": "0271", "code": "0271", "name": "0271" },
-    { "id": "0275", "code": "0275", "name": "0275" },
-    { "id": "0212", "code": "0212", "name": "0212" }
+    { "id": "0267", "code": "0267", "name": "0267" }
 
   ];
   return array.sort((a, b) => a.name < b.name ? -1 : +(a.name > b.name));
@@ -267,8 +248,6 @@ const UserDatosFormStep3 = (props) => {
               "name": elemDataName
             };
 
-            console.log("rObjCargaDeEstados", rObj);
-
             return rObj;
           });
 
@@ -312,8 +291,6 @@ const UserDatosFormStep3 = (props) => {
               "name": elemDataName,
               "relacion": relacion
             };
-
-            console.log("rObjCargaDeMunicipios", rObj);
 
             return rObj;
           });
@@ -359,8 +336,6 @@ const UserDatosFormStep3 = (props) => {
               "name": elemDataName,
               "relacion": relacion
             };
-
-            console.log("rObjCargaDeParroquias", rObj);
 
             return rObj;
           });

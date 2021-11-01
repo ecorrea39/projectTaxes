@@ -134,8 +134,6 @@ const UserDatosFormStep1 = (props) => {
               "name": elemDataName
             };
 
-            console.log("rObjCargaDeClasesDeEmpresa", rObj);
-
             return rObj;
           });
 
@@ -180,8 +178,6 @@ const UserDatosFormStep1 = (props) => {
               "name": elemDataName
             };
 
-            console.log("rObjCargaDeEstatus", rObj);
-
             return rObj;
           });
 
@@ -224,8 +220,6 @@ const UserDatosFormStep1 = (props) => {
               "id": id,
               "name": elemDataName
             };
-
-            console.log("rObjActividadesEconomicas", rObj);
 
             return rObj;
           });
