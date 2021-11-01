@@ -113,7 +113,7 @@ const UserDatosFormStep5 = (props) => {
     <Card bg="default" text="primary">
       <Card.Body>
         <Card.Title>
-          Resumen del Perfil
+          Ficha de Registro
         </Card.Title>
         <Card.Body>
           <Container>
