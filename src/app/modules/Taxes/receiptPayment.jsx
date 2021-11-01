@@ -48,7 +48,7 @@ export default function ReceiptPayment() {
     }
 
     const selectBanco = (b) => {
-        let banco = bancos.find(element => element.id == b );
+        let banco = bancos.find(element => element.id === b );
         let nombreBanco = banco.attributes["id_banco_banco.nom_banco"];
         let trunBanco = nombreBanco.length > 30 ? nombreBanco.slice(0,30) + "..." : nombreBanco;
         let numCuenta = banco.attributes.cuenta_nro;
@@ -56,14 +56,14 @@ export default function ReceiptPayment() {
     }
 
     const selectConcepto = (c) => {
-        let concepto = conceptos.find(element => element.id == c );
+        let concepto = conceptos.find(element => element.id === c );
         let nombreConcepto = concepto.name;
         let trunConcepto = nombreConcepto.length > 30 ? nombreConcepto.slice(0,30) + "..." : nombreConcepto;
         return {name:trunConcepto, clave: concepto.clave};
     }
 
     const selectTipoTransaccion = (tt) => {
-        let tipoTransaccion = modalidadesPagos.find(element => element.id == tt);
+        let tipoTransaccion = modalidadesPagos.find(element => element.id === tt);
         return tipoTransaccion.attributes.name;
     }
 

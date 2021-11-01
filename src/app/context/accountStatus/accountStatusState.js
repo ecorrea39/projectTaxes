@@ -43,6 +43,9 @@ export const AccountStatusState = ({ children }) => {
         getDetalleDeudaTrimestresDeclarados();
         getDetalleDeudaCtasEfectosPorPagar();
         getDetalleCreditoFiscal();
+        getDetallePagosTrimestresDeclarados();
+        getDetallePagosCtasEfectosPorPagar();
+
     },[]);
 
     const getAnos = async () => {
@@ -117,7 +120,7 @@ export const AccountStatusState = ({ children }) => {
                     {
                         "id": arreglo[i].id,
                         "concepto_pago": arreglo[i].concepto_pago,
-                        //"concepto_pago_name": arreglo[i].attributes['concepto_pago_concepto.name'],
+                        "nombre_concepto": arreglo[i].nombre_concepto,
                         "trimestre": arreglo[i].trimestre,
                         "ano_declaracion": arreglo[i].ano_declaracion,
                         "fecha_emision": arreglo[i].concepto_pago === 2 ? formatearfecha(new Date(arreglo[i].fecha_emision), 'DMY') : '',
@@ -148,14 +151,12 @@ export const AccountStatusState = ({ children }) => {
             const respuesta = await clientAxios.get(`/balance/detail/${nrif}`, clientAxios);
             arreglo = respuesta.data.data[0].attributes['deuda-efectos-cuentas'][0];
 
-            console.log(' arreglo ', arreglo )
-
             arreglo.map((x, i) => {
                 detalleCxP.push(
                     {
                         "id": arreglo[i].id,
                         "concepto": arreglo[i].concepto,
-                        //"concepto_pago_name": arreglo[i].attributes['concepto_pago_concepto.name'],
+                        "nombre_concepto": arreglo[i].nombre_concepto,
                         "componente": arreglo[i].componente,
                         "fecha_documento": formatearfecha(new Date(arreglo[i].fecha_documento), 'DMY'),
                         "numero_documento": arreglo[i].numero_documento,
@@ -182,7 +183,8 @@ export const AccountStatusState = ({ children }) => {
 
         try {
             const respuesta = await clientAxios.get(`/balance/detail/${nrif}`, clientAxios);
-            arreglo = respuesta.data.data[0].attributes['pagos-efectos-cuentas'][0];
+            //arreglo = respuesta.data.data[0].attributes['pagos-trimestres-declarados'][0];
+            arreglo = respuesta.data.data[0].attributes['pagos-saldos-pagados'][0];
 
             arreglo.map((x, i) => {
                 detallePagosTrim.push(
@@ -216,7 +218,8 @@ export const AccountStatusState = ({ children }) => {
 
         try {
             const respuesta = await clientAxios.get(`/balance/detail/${nrif}`, clientAxios);
-            arreglo = respuesta.data.data[0].attributes['pagos-efectos-cuentas'][0];
+            //arreglo = respuesta.data.data[0].attributes['pagos-efectos-cuentas'][0];
+            arreglo = respuesta.data.data[0].attributes['pagos-saldos-pagados'][0];
 
             arreglo.map((x, i) => {
                 detallePagosCxP.push(
@@ -273,7 +276,7 @@ export const AccountStatusState = ({ children }) => {
                 )
             });
 
-            setDetalleCreditoFis([]); //ojo esto falta por resolver samuel
+            setDetalleCreditoFis(detalleCreditoFiscal); //ojo esto falta por resolver samuel
         } catch (error) {
             console.log(error)
         }

@@ -155,11 +155,11 @@ function PagosCreditosTrimestresDeclarados({className}) {
                                         )
                                     })
                                 }
-                                {
-                                    detallePagoTrim.length == 0 && (<span className="text-muted">sin información para mostrar</span>)
-                                }
                                 </tbody>
                             </table>
+                            {
+                                detallePagoTrim.length == 0 && (<span className="text-muted">sin información para mostrar</span>)
+                            }
                         </div>
                     </div>
                 </div>

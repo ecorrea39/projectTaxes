@@ -102,13 +102,14 @@ function DeudasEfectosCuentasPagar({ className }) {
                             <table className="table table-vertical-center table-head-bg">
                                 <thead>
                                 <tr className="text-left text-uppercase">
-                                    <th style={{minWidth: "200px"}}>Concepto documento</th>
-                                    <th style={{minWidth: "200px"}}>Componentes</th>
-                                    <th style={{minWidth: "100px"}}>Fecha notificación</th>
-                                    <th style={{minWidth: "50px"}}>Número giro</th>
-                                    <th style={{minWidth: "50px"}}>Valor MMV</th>
-                                    <th style={{minWidth: "50px"}}>Número veces MMV</th>
-                                    <th style={{minWidth: "100px"}}>Monto</th>
+                                    <th style={{minWidth: "170px"}}>Concepto documento</th>
+                                    <th style={{minWidth: "120px"}}>Componentes</th>
+                                    <th style={{minWidth: "140px"}}>Nº doc.</th>
+                                    <th style={{minWidth: "70px"}}>Fecha notif.</th>
+                                    <th style={{minWidth: "30px"}}>Nº giro</th>
+                                    <th style={{minWidth: "40px"}}>Valor MMV</th>
+                                    <th style={{minWidth: "40px"}}>Nº veces MMV</th>
+                                    <th style={{minWidth: "70px"}}>Monto</th>
                                 </tr>
                                 </thead>
 
@@ -118,11 +119,15 @@ function DeudasEfectosCuentasPagar({ className }) {
                                         return (
                                             <tr key={i}>
                                                 <td>
-                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.concepto_pago_name}</span>
-                                                    <span className="text-muted font-weight-bold">{s.numero_documento}</span>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.nombre_concepto}</span>
+                                                    <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                                 <td>
                                                     <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.componente}</span>
+                                                    <span className="text-muted font-weight-bold"></span>
+                                                </td>
+                                                <td>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.numero_documento}</span>
                                                     <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                                 <td>
@@ -149,11 +154,11 @@ function DeudasEfectosCuentasPagar({ className }) {
                                         )
                                     })
                                 }
-                                {
-                                    detalleCxP.length == 0 && (<span className="text-muted">sin información para mostrar</span>)
-                                }
                                 </tbody>
                             </table>
+                            {
+                                detalleCxP.length == 0 && (<span className="text-muted">sin información para mostrar</span>)
+                            }
                         </div>
                     </div>
                 </div>

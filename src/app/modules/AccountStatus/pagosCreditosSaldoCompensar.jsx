@@ -35,9 +35,6 @@ function PagosCreditosSaldoCompensar({className}) {
                                 </thead>
 
                                 <tbody>
-                                {
-                                    <span className="text-muted">sin información para mostrar</span>
-                                }
                                 {/*
                                 <tr>
                                     <td>
@@ -59,6 +56,9 @@ function PagosCreditosSaldoCompensar({className}) {
                                 </tr>*/}
                                 </tbody>
                             </table>
+                            {
+                                detalleCreditoFiscal.length == 0 && (<span className="text-muted">sin información para mostrar</span>)
+                            }
                         </div>
                     </div>
                 </div>

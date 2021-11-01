@@ -299,9 +299,7 @@ export const BaseFormikStatementTaxes = ({ concepts, formik, anos, trimestres, f
 
             <Row>
                 <Col className="mt-1 mb-2" xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
-                    <a href="/dashboard" className="btn btn-danger font-size-lg w-100"
-                       onClick={() => setShow(true)}>Cancelar</a>
-
+                    <a href="/dashboard" className="btn btn-danger font-size-lg w-100">Cancelar</a>
                 </Col>
                 <Col className="mt-1 mb-2" xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
                     <Button type="submit" onClick={()=>console.log(formik.errors, formik.values)}
