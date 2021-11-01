@@ -120,7 +120,7 @@ function DeudasTrimestresDeclarados({className}) {
                                         return (
                                             <tr key={i}>
                                                 <td>
-                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.concepto_pago_name}</span>
+                                                    <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.nombre_concepto}</span>
                                                     <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                                 <td>
@@ -159,11 +159,11 @@ function DeudasTrimestresDeclarados({className}) {
                                         )
                                     })
                                 }
-                                {
-                                    detalleTrim.length == 0 && (<span className="text-muted">sin información para mostrar</span>)
-                                }
                                 </tbody>
                             </table>
+                            {
+                                detalleTrim.length == 0 || detalleTrim === null  && (<span className="text-muted">sin información para mostrar</span>)
+                            }
                         </div>
                     </div>
                 </div>

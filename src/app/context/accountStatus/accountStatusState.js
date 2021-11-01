@@ -43,6 +43,9 @@ export const AccountStatusState = ({ children }) => {
         getDetalleDeudaTrimestresDeclarados();
         getDetalleDeudaCtasEfectosPorPagar();
         getDetalleCreditoFiscal();
+        getDetallePagosTrimestresDeclarados();
+        getDetallePagosCtasEfectosPorPagar();
+
     },[]);
 
     const getAnos = async () => {
@@ -117,7 +120,7 @@ export const AccountStatusState = ({ children }) => {
                     {
                         "id": arreglo[i].id,
                         "concepto_pago": arreglo[i].concepto_pago,
-                        //"concepto_pago_name": arreglo[i].attributes['concepto_pago_concepto.name'],
+                        "nombre_concepto": arreglo[i].nombre_concepto,
                         "trimestre": arreglo[i].trimestre,
                         "ano_declaracion": arreglo[i].ano_declaracion,
                         "fecha_emision": arreglo[i].concepto_pago === 2 ? formatearfecha(new Date(arreglo[i].fecha_emision), 'DMY') : '',
@@ -152,16 +155,15 @@ export const AccountStatusState = ({ children }) => {
                 detalleCxP.push(
                     {
                         "id": arreglo[i].id,
-                        //"concepto_pago": arreglo[i].concepto_pago,
-                        //"concepto_pago_name": arreglo[i].attributes['concepto_pago_concepto.name'],
-                        //"componentes": arreglo[i].componentes,
+                        "concepto": arreglo[i].concepto,
+                        "nombre_concepto": arreglo[i].nombre_concepto,
+                        "componente": arreglo[i].componente,
                         "fecha_documento": formatearfecha(new Date(arreglo[i].fecha_documento), 'DMY'),
                         "numero_documento": arreglo[i].numero_documento,
                         "numero_giro": arreglo[i].numero_giro,
-                        "valor_mmv": 300.25,
-                        //"nveces_mmv": arreglo[i].nveces_mmv,
-                        "nveces_mmv": 50,
-                        "monto": 300.25 * 50,
+                        "valor_mmv": 5.25,
+                        "nveces_mmv": arreglo[i].nveces_mmv,
+                        "monto": 5.25 * arreglo[i].nveces_mmv,
                         "estatus": arreglo[i].estatus
                     }
                 )
@@ -181,7 +183,8 @@ export const AccountStatusState = ({ children }) => {
 
         try {
             const respuesta = await clientAxios.get(`/balance/detail/${nrif}`, clientAxios);
-            arreglo = respuesta.data.data[0].attributes['pagos-efectos-cuentas'][0];
+            //arreglo = respuesta.data.data[0].attributes['pagos-trimestres-declarados'][0];
+            arreglo = respuesta.data.data[0].attributes['pagos-saldos-pagados'][0];
 
             arreglo.map((x, i) => {
                 detallePagosTrim.push(
@@ -191,7 +194,6 @@ export const AccountStatusState = ({ children }) => {
                         "concepto_pago_name": arreglo[i].concepto_pago_name,
                         "ano_declaracion": arreglo[i].ano_declaracion,
                         "trimestre": arreglo[i].trimestre,
-
                         "fecha_pago": arreglo[i].fecha_pago,
                         "banco": arreglo[i].banco,
                         "banco_name": arreglo[i].banco_nombre,
@@ -216,7 +218,8 @@ export const AccountStatusState = ({ children }) => {
 
         try {
             const respuesta = await clientAxios.get(`/balance/detail/${nrif}`, clientAxios);
-            arreglo = respuesta.data.data[0].attributes['pagos-efectos-cuentas'][0];
+            //arreglo = respuesta.data.data[0].attributes['pagos-efectos-cuentas'][0];
+            arreglo = respuesta.data.data[0].attributes['pagos-saldos-pagados'][0];
 
             arreglo.map((x, i) => {
                 detallePagosCxP.push(
@@ -225,10 +228,9 @@ export const AccountStatusState = ({ children }) => {
                         "id": arreglo[i].id,
                         //"concepto_pago": arreglo[i].concepto_pago,
                         //"concepto_pago_name": arreglo[i].attributes['concepto_pago_concepto.name'],
-                        //"componentes": arreglo[i].componentes,
+                        "componentes": arreglo[i].componentes,
                         "numero_documento": arreglo[i].numero_documento,
                         "numero_giro": arreglo[i].numero_giro,
-
                         "fecha_pago": arreglo[i].fecha_pago,
                         "banco": arreglo[i].banco,
                         "banco_name": arreglo[i].banco_nombre,
@@ -258,14 +260,12 @@ export const AccountStatusState = ({ children }) => {
             arreglo.map((x, i) => {
                 detalleCreditoFiscal.push(
                     {
-
                         "id": arreglo[i].id,
                         //"concepto_pago": arreglo[i].concepto_pago,
                         //"concepto_pago_name": arreglo[i].attributes['concepto_pago_concepto.name'],
                         //"componentes": arreglo[i].componentes,
                         "numero_documento": arreglo[i].numero_documento,
                         "numero_giro": arreglo[i].numero_giro,
-
                         "fecha_pago": arreglo[i].fecha_pago,
                         "banco": arreglo[i].banco,
                         "banco_name": arreglo[i].banco_nombre,
@@ -276,7 +276,7 @@ export const AccountStatusState = ({ children }) => {
                 )
             });
 
-            setDetalleCreditoFis(detalleCreditoFiscal);
+            setDetalleCreditoFis(detalleCreditoFiscal); //ojo esto falta por resolver samuel
         } catch (error) {
             console.log(error)
         }

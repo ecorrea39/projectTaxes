@@ -8,9 +8,7 @@ export const ReportsState = ({ children }) => {
 
     const [formatoFechaFutura, setFormatoFechaFutura] = useState();
     const [formatoReporte, setFormatoReporte] = useState([]);
-    const [formDataReports, setFormDataReports] = useState({});
     const [contrib, setContrib ] = useState([]);
-    const nrif = odb.get('rif');
 
     useEffect(() => {
         getFechaFutura();
@@ -89,20 +87,16 @@ export const ReportsState = ({ children }) => {
 
         try {
 
-            let fecha = "2021.10.25";
-            const respuesta = await clientAxios.get(`/reports/certificado_solvencia/${valores.rif}/${fecha}/`);
+            let fecha = valores.fecha.replace(/-/g, ".");
+            const respuesta = await clientAxios.get(`/reports/certificado_solvencia/${valores.nrif}/${fecha}/`);
 
             Swal.fire({
                 title: "Reportes del Contribuyente",
                 text: "Certificado de solvencia ejecutado con éxito!",
                 icon: "success",
-                button: "Ok",
-                timer: 1500
+                button: "Ok"
             }).then((value) => {
-                /*
-                if (total > 0) {
-                    setStepTaxes(stepTaxes+1)
-                }*/
+                window.open(`https://127.0.0.1:8443/reports/certificado_solvencia/${valores.nrif}/${fecha}/`,'_blank');
             });
         } catch (error) {
             console.log(error)
@@ -122,7 +116,6 @@ export const ReportsState = ({ children }) => {
         formatoFechaFutura,
         formatoReporte,
         submitReportsCertificateSolvency,
-        setFormDataReports,
         contrib
     }
 

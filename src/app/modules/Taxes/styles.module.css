@@ -1,0 +1,7 @@
+.inputDisabled{
+    width: 100%;
+    border: solid 1px #dfdfdf;
+    border-radius: 5px;
+    padding: 8.45px 13px;
+    background-color: #F3F6F9;
+}

@@ -99,7 +99,7 @@ function PagosCreditosEfectosCuentasPagar({className}) {
                                             <tr key={i}>
                                                 <td>
                                                     <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.concepto_pago_name}</span>
-                                                    <span className="text-muted font-weight-bold">{s.numero_documento}</span>
+                                                    <span className="text-muted font-weight-bold"></span>
                                                 </td>
                                                 <td>
                                                     <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.componentes}</span>
@@ -133,11 +133,11 @@ function PagosCreditosEfectosCuentasPagar({className}) {
                                         )
                                     })
                                 }
-                                {
-                                    detallePagoCxP.length == 0 && (<span className="text-muted">sin información para mostrar</span>)
-                                }
                                 </tbody>
                             </table>
+                            {
+                                detallePagoCxP.length == 0 && (<span className="text-muted">sin información para mostrar</span>)
+                            }
                         </div>
                     </div>
                 </div>
