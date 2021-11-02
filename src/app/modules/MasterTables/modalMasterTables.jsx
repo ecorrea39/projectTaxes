@@ -112,7 +112,7 @@ function ModalMasterTables(props) {
                                             />
                                         }
 
-                                        <Row className="mb-4" style={{justifyContent: "center"}}>
+                                        <Row className="mb-2" style={{justifyContent: "center"}}>
                                             <Col className="mb-2" xs="6" sm="6" md="6" lg="6" xl="6" xxl="6" >
                                                 <Button onClick={() => props.onHide()}
                                                         className="btn btn-sm btn-danger font-size-sm w-100">Cerrar</Button>

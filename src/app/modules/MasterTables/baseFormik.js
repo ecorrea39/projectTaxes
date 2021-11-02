@@ -19,7 +19,7 @@ export const BaseFormik = ({formik, props}) => {
 
     return (
         <>
-            <Row className="mt-4 mb-4">
+            <Row className="mt-4 mb-8">
                 <Col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
                     <label htmlFor="name" className="font-weight-bold">Descripción</label>
                     <Field
@@ -30,6 +30,7 @@ export const BaseFormik = ({formik, props}) => {
                     />
                 </Col>
             </Row>
+            {/*
             <Row className="mt-4 mb-8">
                 <Col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
                     <label htmlFor="is_active" className="font-weight-bold">Estatus</label>
@@ -44,7 +45,7 @@ export const BaseFormik = ({formik, props}) => {
                         <option value="false">No activo</option>
                     </Field>
                 </Col>
-            </Row>
+            </Row>*/}
         </>
     )
 }

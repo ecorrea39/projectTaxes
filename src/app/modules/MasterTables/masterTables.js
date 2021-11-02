@@ -2,11 +2,14 @@ import React, {useContext, useEffect, useState} from "react";
 import { ReactDOM } from 'react-dom';
 import {Modal, Table} from "react-bootstrap";
 
+import DataTable  from 'react-data-table-component';
+
 import MasterTablesContext from "../../context/masterTables/masterTablesContext";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import SVG from "react-inlinesvg";
 import { toAbsoluteUrl } from "../../../_metronic/_helpers";
 import ModalMasterTables from "./modalMasterTables";
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
 
 function MasterTables({tabla}) {
 
@@ -17,53 +20,247 @@ function MasterTables({tabla}) {
     const [show, setShow] = useState(show);
     const [accion, setAccion] = useState("");
 
+    const sortIcon = <ArrowDownward />;
+
     let data = [];
     let titulo = '';
     let columnas = '';
+    let colTab = [];
+
+    const columnas01 = [
+        {
+            name: "ID",
+            selector: row => Number(row.id),
+            sortable: true,
+            grow: 0
+        },
+        {
+            name: "Descripción",
+            selector: row => row.name,
+            sortable: true,
+            grow: 2
+        },
+        {
+            name: "Acciones",
+            button: true,
+            cell: row => (
+                <>
+                    <a title="modificar" onClick={() => { setShow(true); setAccion('Modificar'); obtenerValores(row)}}
+                       style={styleBtn} className="btn btn-icon btn-hover-light btn-sm mx-3">
+                        <span className="svg-icon svg-icon-md svg-icon-info">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}/>
+                        </span>
+                    </a>
+
+                    <a title="eliminar" style={styleBtn} onClick={() => deleteMasterTables(tabla, titulo, row)}
+                       className="btn btn-icon btn-hover-light btn-sm">
+                        <span className="svg-icon svg-icon-md svg-icon-danger">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")}/>
+                        </span>
+                    </a>
+                </>
+            )
+        }
+    ];
+
+    const columnas02 = [
+        {
+            name: "ID",
+            selector: row => Number(row.id),
+            sortable: true,
+            grow: 0
+        },
+        {
+            name: "Banco",
+            selector: row => row.name,
+            sortable: true,
+            grow: 2
+        },
+        {
+            name: "Tipo cta.",
+            selector: row => row.cuenta_tipo,
+            sortable: true,
+            grow: 0
+        },
+        {
+            name: "Número cta.",
+            selector: row => row.cuenta_nro,
+            sortable: true
+        },
+        {
+            name: "Acciones",
+            button: true,
+            cell: row => (
+                <>
+                    <a title="modificar" onClick={() => { setShow(true); setAccion('Modificar'); obtenerValores(row)}}
+                       style={styleBtn} className="btn btn-icon btn-hover-light btn-sm mx-3">
+                        <span className="svg-icon svg-icon-md svg-icon-info">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}/>
+                        </span>
+                    </a>
+
+                    <a title="eliminar" style={styleBtn} onClick={() => deleteMasterTables(tabla, titulo, row)}
+                       className="btn btn-icon btn-hover-light btn-sm">
+                        <span className="svg-icon svg-icon-md svg-icon-danger">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")}/>
+                        </span>
+                    </a>
+                </>
+            ),
+            grow: 0
+        }
+    ];
+
+    const columnas03 = [
+        {
+            name: "ID",
+            selector: row => Number(row.id),
+            sortable: true,
+            grow: 0
+        },
+        {
+            name: "Nombre del banco",
+            selector: row => row.nom_banco,
+            sortable: true,
+            grow: 2
+        },
+        {
+            name: "Código banco",
+            selector: row => row.cod_banco,
+            sortable: true
+        },
+        {
+            name: "Acciones",
+            button: true,
+            cell: row => (
+                <>
+                    <a title="modificar" onClick={() => { setShow(true); setAccion('Modificar'); obtenerValores(row)}}
+                       style={styleBtn} className="btn btn-icon btn-hover-light btn-sm mx-3">
+                        <span className="svg-icon svg-icon-md svg-icon-info">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}/>
+                        </span>
+                    </a>
+
+                    <a title="eliminar" style={styleBtn} onClick={() => deleteMasterTables(tabla, titulo, row)}
+                       className="btn btn-icon btn-hover-light btn-sm">
+                        <span className="svg-icon svg-icon-md svg-icon-danger">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")}/>
+                        </span>
+                    </a>
+                </>
+            )
+        }
+    ];
+
+    const columnas04 = [
+        {
+            name: "ID",
+            selector: row => Number(row.id),
+            sortable: true,
+            grow: 0
+        },
+        {
+            name: "Nombre",
+            selector: row => row.name,
+            sortable: true,
+            grow: 2
+        },
+        {
+            name: "Acciones",
+            button: true,
+            cell: row => (
+                <>
+                    <a title="modificar" onClick={() => { setShow(true); setAccion('Modificar'); obtenerValores(row)}}
+                       style={styleBtn} className="btn btn-icon btn-hover-light btn-sm mx-3">
+                        <span className="svg-icon svg-icon-md svg-icon-info">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}/>
+                        </span>
+                    </a>
+
+                    <a title="eliminar" style={styleBtn} onClick={() => deleteMasterTables(tabla, titulo, row)}
+                       className="btn btn-icon btn-hover-light btn-sm">
+                        <span className="svg-icon svg-icon-md svg-icon-danger">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")}/>
+                        </span>
+                    </a>
+                </>
+            )
+        }
+    ];
 
     switch (tabla) {
         case "trimestre":
             titulo = "Trimestres";
             data = trimestres;
             columnas = "col-1";
+            colTab = columnas01;
             break;
 
         case "forma-pago":
             titulo = "Forma de Pago";
             data = formasPago;
-            columnas = "col-1";
+            columnas = 'col-1';
+            colTab = columnas01;
             break;
 
         case "estatus-entidad-trabajo":
             titulo = "Estatus Entidad de Trabajo";
             data = estatus;
-            columnas = "col-1";
+            columnas = 'col-1';
+            colTab = columnas01;
             break;
 
         case "cuentas-recaudadoras":
             titulo = "Cuentas Recaudadoras";
             data = cuentasRecaudadoras;
-            columnas = "col-2";
+            columnas = 'col-2';
+            colTab = columnas02;
             break;
 
         case "bancos-recaudadores":
             titulo = "Bancos Recaudadores";
             data = bancos;
             columnas = "col-3";
+            colTab = columnas03;
             break;
 
         case "clase-empresa":
             titulo = "Clase Entidad de Trabajo";
             data = claseEmpresa;
             columnas = "col-4";
+            colTab = columnas04;
             break;
 
         default:
             break;
     }
 
-    useEffect(() => {
-    },[]);
+    const paginationOptions = {
+        rowsPerPageText: "Filas por página",
+        rangeSeparatorText: "de",
+        selectAllRowsItem: true,
+        selectAllRowsItemText: "Todos"
+    };
+
+    const customStyles = {
+        rows: {
+            style: {
+                minHeight: '40px',
+            }
+        },
+        headCells: {
+            style: {
+                paddingLeft: '8px',
+                paddingRight: '8px',
+            },
+        },
+        cells: {
+            style: {
+                paddingLeft: '8px',
+                paddingRight: '8px',
+            },
+        },
+    };
 
     return (
         <>
@@ -74,126 +271,19 @@ function MasterTables({tabla}) {
                         <span>+</span>
                     </a>
 
-                    <Table responsive="sm" className="table-vertical-center table-head-bg" pagination={paginationFactory()}>
-                        <thead variant="outline-info">
-                            <tr className="text-left text-uppercase">
-                                {
-                                    columnas === 'col-1' &&
-                                        <>
-                                            <th style={{minWidth: "15px"}}></th>
-                                            <th style={{minWidth: "15px"}}>id</th>
-                                            <th style={{minWidth: "300px"}}>Descripción</th>
-                                            <th style={{minWidth: "100px"}}>Estatus</th>
-                                            <th style={{minWidth: "50px"}}>Acciones</th>
-                                        </>
-                                }
-                                {
-                                    columnas === 'col-2' &&
-                                    <>
-                                        <th style={{minWidth: "15px"}}></th>
-                                        <th style={{minWidth: "15px"}}>id</th>
-                                        <th style={{minWidth: "200px"}}>Banco</th>
-                                        <th style={{minWidth: "50px"}}>Tipo Cta.</th>
-                                        <th style={{minWidth: "50px"}}>Número Cta.</th>
-                                        <th style={{minWidth: "50px"}}>Estatus</th>
-                                        <th style={{minWidth: "50px"}}>Acciones</th>
-                                    </>
-                                }
-                                {
-                                    columnas === 'col-3' &&
-                                    <>
-                                        <th style={{minWidth: "15px"}}></th>
-                                        <th style={{minWidth: "15px"}}>id</th>
-                                        <th style={{minWidth: "200px"}}>Nombre del banco</th>
-                                        <th style={{minWidth: "100px"}}>Código banco</th>
-                                        <th style={{minWidth: "100px"}}>Estatus</th>
-                                        <th style={{minWidth: "50px"}}>Acciones</th>
-                                    </>
-                                }
-                                {
-                                    columnas === 'col-4' &&
-                                    <>
-                                        <th style={{minWidth: "15px"}}></th>
-                                        <th style={{minWidth: "15px"}}>id</th>
-                                        <th style={{minWidth: "200px"}}>Nombre</th>
-                                        <th style={{minWidth: "100px"}}>Estatus</th>
-                                        <th style={{minWidth: "50px"}}>Acciones</th>
-                                    </>
-                                }
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {
-                            data.map((s, i) => {
-                                return (
-                                    <tr key={i}>
-                                        <td style={{padding: "0rem", paddingLeft: "0.75rem"}}></td>
-                                        <td style={{padding: "0rem", paddingLeft: "0.75rem"}}>
-                                            <span className="text-dark-75 d-block font-size-sm">{s.id}</span>
-                                        </td>
-                                        {
-                                            columnas === 'col-1' &&
-                                            <>
-                                                <td style={{padding: "0rem", paddingLeft: "0.75rem"}}>
-                                                    <span className="text-dark-75 font-size-sm">{s.name}</span>
-                                                </td>
-                                            </>
-                                        }
-                                        {
-                                            columnas === 'col-4'&&
-                                            <>
-                                                <td style={{padding: "0rem", paddingLeft: "0.75rem"}}>
-                                                    <span className="text-dark-75 font-size-sm">{s.name}</span>
-                                                </td>
-                                            </>
-                                        }
-                                        {
-                                            columnas === 'col-3' &&
-                                            <>
-                                                <td style={{padding: "0rem", paddingLeft: "0.75rem"}}>
-                                                    <span className="text-dark-75 font-size-sm">{s.nom_banco}</span>
-                                                </td>
-                                                <td style={{padding: "0rem", paddingLeft: "0.75rem"}}>
-                                                    <span className="text-dark-75 font-size-sm">{s.cod_banco}</span>
-                                                </td>
-                                            </>
-                                        }
-                                        {
-                                            columnas === 'col-2' &&
-                                            <>
-                                                <td style={{padding: "0rem", paddingLeft: "0.75rem"}}>
-                                                    <span className="text-dark-75 font-size-sm">{s.name}</span>
-                                                </td>
-                                                <td style={{padding: "0rem", paddingLeft: "0.75rem"}}>
-                                                    <span className="text-dark-75 font-size-sm">{s.cuenta_tipo}</span>
-                                                </td>
-                                                <td style={{padding: "0rem", paddingLeft: "0.75rem"}}>
-                                                    <span className="text-dark-75 font-size-sm">{s.cuenta_nro}</span>
-                                                </td>
-                                            </>
-                                        }
-                                        <td style={{padding: "0rem", paddingLeft: "0.75rem"}}>
-                                            <span className="text-dark-75 font-size-sm">{s.is_active == true ? 'Activo': 'No activo'}</span>
-                                        </td>
-                                        <td style={{padding: "0rem", paddingLeft: "0.75rem"}}>
-                                            <a title="modificar" onClick={() => {setShow(true); setAccion('Modificar'); obtenerValores(s) }} style={styleBtn} className="btn btn-icon btn-hover-light btn-sm mx-3">
-                                                <span className="svg-icon svg-icon-md svg-icon-info">
-                                                  <SVG src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}/>
-                                                </span>
-                                            </a>
-
-                                            <a title="eliminar" style={styleBtn} onClick={()=>deleteMasterTables(tabla, titulo, s)} className="btn btn-icon btn-hover-light btn-sm">
-                                                <span className="svg-icon svg-icon-md svg-icon-danger">
-                                                  <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")}/>
-                                                </span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                )
-                            })
-                        }
-                        </tbody>
-                    </Table>
+                    <DataTable
+                        columns={colTab}
+                        data={data}
+                        pagination
+                        paginationComponentOptions={paginationOptions}
+                        fixedHeader
+                        fixedHeaderScrollHeight="500px"
+                        paginationPerPage={5}
+                        paginationRowsPerPageOptions={[5, 10, 25, 50]}
+                        sortIcon={sortIcon}
+                        customStyles={customStyles}
+                        responsive={true}
+                    />
                 </div>
             </div>
 

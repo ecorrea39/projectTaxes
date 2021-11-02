@@ -27,7 +27,7 @@ function MasterTablesModule() {
             break;
 
         case "clase-empresa":
-            title = "Estatus entidad de trabajo";
+            title = "Clases entidad de trabajo";
             break;
 
         case "bancos-recaudadores":

@@ -31,7 +31,7 @@ export const BaseFormikClaseEmpresas = ({formik, props}) => {
                     />
                 </Col>
             </Row>
-            <Row className="mt-4 mb-4">
+            <Row className="mt-4 mb-8">
                 <Col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
                     <label htmlFor="descripcion" className="font-weight-bold">Descripción</label>
                     <Field
@@ -39,10 +39,10 @@ export const BaseFormikClaseEmpresas = ({formik, props}) => {
                         id="descripcion"
                         name="descripcion"
                         component={BaseInput}
-                        onKeyUp={(e) => validarDescripcion(e, props)}
                     />
                 </Col>
             </Row>
+            {/*
             <Row className="mt-4 mb-8">
                 <Col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
                     <label htmlFor="is_active" className="font-weight-bold">Estatus</label>
@@ -57,7 +57,7 @@ export const BaseFormikClaseEmpresas = ({formik, props}) => {
                         <option value="false">No activo</option>
                     </Field>
                 </Col>
-            </Row>
+            </Row>*/}
         </>
     )
 }

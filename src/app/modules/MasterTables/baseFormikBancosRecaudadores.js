@@ -31,7 +31,7 @@ export const BaseFormikBancosRecaudadores = ({formik, props}) => {
                     />
                 </Col>
             </Row>
-            <Row className="mt-4 mb-4">
+            <Row className="mt-4 mb-8">
                 <Col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
                     <label htmlFor="cod_banco" className="font-weight-bold">Código banco</label>
                     <Field
@@ -41,6 +41,7 @@ export const BaseFormikBancosRecaudadores = ({formik, props}) => {
                     />
                 </Col>
             </Row>
+            {/*
             <Row className="mt-4 mb-8">
                 <Col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
                     <label htmlFor="is_active" className="font-weight-bold">Estatus</label>
@@ -55,7 +56,7 @@ export const BaseFormikBancosRecaudadores = ({formik, props}) => {
                         <option value="false">No activo</option>
                     </Field>
                 </Col>
-            </Row>
+            </Row>*/}
         </>
     )
 }
