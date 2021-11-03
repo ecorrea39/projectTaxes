@@ -40,7 +40,7 @@ export function LinksConfiguracion({getMenuItemActive}) {
                 <i className="menu-bullet menu-bullet-dot">
                   <span/>
                 </i>
-                <span className="menu-text">Formas de pago</span>
+                <span className="menu-text">Formas de Pago</span>
               </NavLink>
             </li>
 
@@ -49,7 +49,7 @@ export function LinksConfiguracion({getMenuItemActive}) {
                 <i className="menu-bullet menu-bullet-dot">
                   <span/>
                 </i>
-                <span className="menu-text">Bancos recaudadores</span>
+                <span className="menu-text">Bancos Recaudadores</span>
               </NavLink>
             </li>
 
@@ -67,7 +67,7 @@ export function LinksConfiguracion({getMenuItemActive}) {
                 <i className="menu-bullet menu-bullet-dot">
                   <span/>
                 </i>
-                <span className="menu-text">Estatus entidad de trabajo</span>
+                <span className="menu-text">Estatus Entidad de Trabajo</span>
               </NavLink>
             </li>
 
@@ -76,7 +76,23 @@ export function LinksConfiguracion({getMenuItemActive}) {
                 <i className="menu-bullet menu-bullet-dot">
                   <span/>
                 </i>
-                <span className="menu-text">Clase de entidad de trabajo</span>
+                <span className="menu-text">Clase de Entidad de Trabajo</span>
+              </NavLink>
+            </li>
+            <li className={`menu-item ${getMenuItemActive("/tablas/motores-productivos")}`} aria-haspopup="true">
+              <NavLink className="menu-link" to="/tablas/motores-productivos">
+                <i className="menu-bullet menu-bullet-dot">
+                  <span/>
+                </i>
+                <span className="menu-text">Motores Productivos</span>
+              </NavLink>
+            </li>
+            <li className={`menu-item ${getMenuItemActive("/tablas/actividad-economica")}`} aria-haspopup="true">
+              <NavLink className="menu-link" to="/tablas/actividad-economica">
+                <i className="menu-bullet menu-bullet-dot">
+                  <span/>
+                </i>
+                <span className="menu-text">Actividades Económicas</span>
               </NavLink>
             </li>
           </ul>

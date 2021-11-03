@@ -9,16 +9,17 @@ import BaseInput from "../Forms/BaseInputs";
 import BaseSelect from "../Forms/BaseSelect";
 import Checkbox from "../Forms/BaseCheckbox";
 import ModalHeader from "react-bootstrap/ModalHeader";
-import { initialValuesTablesCol1, initialValuesTablesCol2, initialValuesTablesCol3, initialValuesTablesCol4 } from "./initialValues";
-import { SchemaTablesCol1, SchemaTablesCol2, SchemaTablesCol3, SchemaTablesCol4  } from "./validateSchemas";
+import { initialValuesTablesCol1, initialValuesTablesCol2, initialValuesTablesCol3, initialValuesTablesCol4, initialValuesTablesCol5 } from "./initialValues";
+import { SchemaTablesCol1, SchemaTablesCol2, SchemaTablesCol3, SchemaTablesCol4, SchemaTablesCol5  } from "./validateSchemas";
 import { BaseFormik } from "./baseFormik";
 import { BaseFormikBancosRecaudadores } from "./baseFormikBancosRecaudadores";
 import { BaseFormikClaseEmpresas } from "./baseFormikClaseEmpresas";
 import { BaseFormikCuentasRecaudadoras } from "./baseFormikCuentasRecaudadoras";
+import { BaseFormikActividadEconomica } from "./baseFormikActividadEconomica"
 
 function ModalMasterTables(props) {
 
-    const { bancos, submitMasterTables, setFormDataTables, registroSeleccionado } = useContext(MasterTablesContext);
+    const { bancos, motores, submitMasterTables, setFormDataTables, registroSeleccionado } = useContext(MasterTablesContext);
 
     let initialValuesTables = "";
     let schemaTables = ""
@@ -52,6 +53,16 @@ function ModalMasterTables(props) {
         case "cuentas-recaudadoras":
             initialValuesTables = initialValuesTablesCol2;
             schemaTables = SchemaTablesCol2;
+            break;
+
+        case "motores-productivos":
+            initialValuesTables = initialValuesTablesCol1;
+            schemaTables = SchemaTablesCol1;
+            break;
+
+        case "actividad-economica":
+            initialValuesTables = initialValuesTablesCol5;
+            schemaTables = SchemaTablesCol5;
             break;
 
         default:
@@ -109,6 +120,14 @@ function ModalMasterTables(props) {
                                             <BaseFormikClaseEmpresas
                                                 formik={formik}
                                                 props={props}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-5' &&
+                                            <BaseFormikActividadEconomica
+                                                formik={formik}
+                                                props={props}
+                                                motores={motores}
                                             />
                                         }
 

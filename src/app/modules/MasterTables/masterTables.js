@@ -13,7 +13,7 @@ import ArrowDownward from '@material-ui/icons/ArrowDownward';
 
 function MasterTables({tabla}) {
 
-    const { deleteMasterTables, trimestres, formasPago, cuentasRecaudadoras, estatus, bancos, claseEmpresa, obtenerValores } = useContext(MasterTablesContext);
+    const { deleteMasterTables, trimestres, formasPago, cuentasRecaudadoras, estatus, bancos, claseEmpresa, motores, actividadesEconomicas,  obtenerValores } = useContext(MasterTablesContext);
     const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", padding: "20px 35px 20px 35px"}
     const [isSwitchOn, setIsSwitchOn] = useState(false);
     const styleBtn = { borderRadius: '100%'}
@@ -188,6 +188,54 @@ function MasterTables({tabla}) {
         }
     ];
 
+    const columnas05 = [
+        {
+            name: "ID",
+            selector: row => Number(row.id),
+            sortable: true,
+            grow: 0
+        },
+        {
+            name: "Descripción",
+            selector: row => row.name,
+            sortable: true,
+            grow: 2
+        },
+        {
+            name: "Código",
+            selector: row => row.codigo,
+            sortable: true,
+            grow: 0
+        },
+        {
+            name: "Motor productivo",
+            selector: row => row.motor,
+            sortable: true
+        },
+        {
+            name: "Acciones",
+            button: true,
+            cell: row => (
+                <>
+                    <a title="modificar" onClick={() => { setShow(true); setAccion('Modificar'); obtenerValores(row)}}
+                       style={styleBtn} className="btn btn-icon btn-hover-light btn-sm mx-3">
+                        <span className="svg-icon svg-icon-md svg-icon-info">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}/>
+                        </span>
+                    </a>
+
+                    <a title="eliminar" style={styleBtn} onClick={() => deleteMasterTables(tabla, titulo, row)}
+                       className="btn btn-icon btn-hover-light btn-sm">
+                        <span className="svg-icon svg-icon-md svg-icon-danger">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")}/>
+                        </span>
+                    </a>
+                </>
+            ),
+            grow: 0
+        }
+    ];
+
     switch (tabla) {
         case "trimestre":
             titulo = "Trimestres";
@@ -208,6 +256,20 @@ function MasterTables({tabla}) {
             data = estatus;
             columnas = 'col-1';
             colTab = columnas01;
+            break;
+
+        case "motores-productivos":
+            titulo = "Motores Productivos";
+            data = motores;
+            columnas = 'col-1';
+            colTab = columnas01;
+            break;
+
+        case "actividad-economica":
+            titulo = "Actividades Económica";
+            data = actividadesEconomicas;
+            columnas = 'col-5';
+            colTab = columnas05;
             break;
 
         case "cuentas-recaudadoras":
@@ -283,6 +345,7 @@ function MasterTables({tabla}) {
                         sortIcon={sortIcon}
                         customStyles={customStyles}
                         responsive={true}
+                        noDataComponent="No existe datos para mostrar"
                     />
                 </div>
             </div>
