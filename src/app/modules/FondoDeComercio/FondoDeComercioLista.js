@@ -160,6 +160,7 @@ const FondoDeComercioLista = (props) => {
               fixedHeader
               fixedHeaderScrollHeight="600px"
               progressPending={pending}
+              noDataComponent="No existe datos para mostrar"
               // onRowClicked={onRowClicked}
               // selectableRows={true}
               // selectableRowsSingle={true}
