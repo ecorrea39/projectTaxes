@@ -161,11 +161,11 @@ const FondoDeComercioLista = (props) => {
               fixedHeaderScrollHeight="600px"
               progressPending={pending}
               // onRowClicked={onRowClicked}
-              selectableRows={true}
-              selectableRowsSingle={true}
-              selectableRowsHighlight={true}
-              contextActions={contextActions}
-              onSelectedRowsChange={handleRowSelected}
+              // selectableRows={true}
+              // selectableRowsSingle={true}
+              // selectableRowsHighlight={true}
+              // contextActions={contextActions}
+              // onSelectedRowsChange={handleRowSelected}
             />
           </div>
         </Card.Body>

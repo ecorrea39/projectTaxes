@@ -3,6 +3,7 @@ import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import {useIntl} from "react-intl";
 import axios from "axios";
 import GeneralContext from "../../store/general-context";
+import {useHistory} from "react-router-dom";
 
 const UserDatosFormStep5 = (props) => {
 
@@ -15,6 +16,8 @@ const UserDatosFormStep5 = (props) => {
 
   const token = localStorage.getItem('authToken');
   const rif = localStorage.getItem('rif');
+
+  const history = useHistory();
 
   const axiosConfig = {
     headers: {
@@ -56,13 +59,13 @@ const UserDatosFormStep5 = (props) => {
 
         console.log("resFormStep5", res);
 
-        alert('Guardado exitosamente');
+        // alert('Guardado exitosamente');
 
-        window.open(API_URL + 'reports/comprobante_inscripcion/' + generalCtx.theIdUserInformacionProfile,'_blank');
+        // window.open(API_URL + 'reports/comprobante_inscripcion/' + generalCtx.theIdUserInformacionProfile,'_blank');
 
         disableLoading();
 
-
+        history.replace('/dashboard');
 
         // if (parciales) {
         //   console.log('fechacontitucion ', fechacontitucion);

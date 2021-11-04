@@ -255,25 +255,27 @@ const UserDatosFormStep1 = (props) => {
 
           const arrayData = Array.from(res.data.data);
 
+          let companiesArray = [];
+
           if (arrayData.length > 0) {
+            companiesArray = arrayData.map(elemData => {
+              let id = elemData.id;
+              let elemDataName = elemData.attributes.razon_social;
+
+              let rObj = {
+                "id": id,
+                "name": elemDataName
+              };
+
+              console.log("rObjCompanies", rObj);
+
+              return rObj;
+            });
+
             setMostrarComboEmpresas(true);
           } else {
             setMostrarComboEmpresas(false);
           }
-
-          let companiesArray = arrayData.map(elemData => {
-            let id = elemData.id;
-            let elemDataName = elemData.attributes.razon_social;
-
-            let rObj = {
-              "id": id,
-              "name": elemDataName
-            };
-
-            console.log("rObjCompanies", rObj);
-
-            return rObj;
-          });
 
           setUserCompanies(companiesArray);
           console.log("companiesArray::", companiesArray);
@@ -461,6 +463,8 @@ const UserDatosFormStep1 = (props) => {
 
       let jsonAttributes = formik.values;
 
+      console.log("generalCtx.theIdUserInformacionProfile", generalCtx.theIdUserInformacionProfile);
+
       jsonAttributes["user_information_id"] = generalCtx.theIdUserInformacionProfile;
 
       const data = {
@@ -474,15 +478,23 @@ const UserDatosFormStep1 = (props) => {
 
       axios.post(`${API_URL}user_company/`, data, axiosConfig)
         .then(function (res) {
-          localStorage.setItem('name', formik.values.razon_social);
-          localStorage.setItem('surname', formik.values.nombre_comercial);
+          console.log("resFormStep1::::", res);
+
+          console.log("res.data.data.id", res.data.data.id);
+
+          generalCtx.iniIdUserInformacionProfile(res.data.data.id);
+
+          if (res.data.data.attributes.tipo == "PRINCIPAL") {
+            localStorage.setItem('name', formik.values.razon_social);
+            localStorage.setItem('surname', formik.values.nombre_comercial);
+          }
 
           const clase_de_empresaC = clase_de_empresaRef.current.options[clase_de_empresaRef.current.selectedIndex].text;
           const actividad_economicaC = actividad_economicaRef.current.options[actividad_economicaRef.current.selectedIndex].text;
           const estatusC = estatusRef.current.options[estatusRef.current.selectedIndex].text;
 
           props.cambiarResumenFicha({
-            tipo: "PRINCIPAL",
+            tipo: res.data.data.attributes.tipo,
             razon_social: formik.values.razon_social,
             nombre_comercial: formik.values.nombre_comercial,
             clase_de_empresa: clase_de_empresaC,
@@ -494,8 +506,6 @@ const UserDatosFormStep1 = (props) => {
 
           setSubmitting(false);
           disableLoading();
-
-          console.log("resFormStep1", res);
 
           alert("Información inicial cargada satisfactoriamente");
 
