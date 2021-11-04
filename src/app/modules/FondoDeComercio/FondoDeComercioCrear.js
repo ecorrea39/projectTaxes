@@ -113,8 +113,6 @@ const FondoDeComercioCrear = (props) => {
 
       axios.post(`${API_URL}user_company/crearfondo/`, data, axiosConfig)
         .then(function (res) {
-          localStorage.setItem('name', formik.values.razon_social);
-          localStorage.setItem('surname', formik.values.nombre_comercial);
 
           setSubmitting(false);
 
