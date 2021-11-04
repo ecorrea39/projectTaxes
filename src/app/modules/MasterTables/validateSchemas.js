@@ -48,5 +48,13 @@ export const SchemaTablesCol5 = Yup.object().shape({
         .required('- Campo obligatorio -')
 });
 
+export const SchemaTablesCol6 = Yup.object().shape({
+    name: Yup.string()
+        .required('- Campo obligatorio -'),
+    clave: Yup.string()
+        .required('- Campo obligatorio -')
+});
+
+
 
 

@@ -9,13 +9,14 @@ import BaseInput from "../Forms/BaseInputs";
 import BaseSelect from "../Forms/BaseSelect";
 import Checkbox from "../Forms/BaseCheckbox";
 import ModalHeader from "react-bootstrap/ModalHeader";
-import { initialValuesTablesCol1, initialValuesTablesCol2, initialValuesTablesCol3, initialValuesTablesCol4, initialValuesTablesCol5 } from "./initialValues";
-import { SchemaTablesCol1, SchemaTablesCol2, SchemaTablesCol3, SchemaTablesCol4, SchemaTablesCol5  } from "./validateSchemas";
+import { initialValuesTablesCol1, initialValuesTablesCol2, initialValuesTablesCol3, initialValuesTablesCol4, initialValuesTablesCol5, initialValuesTablesCol6 } from "./initialValues";
+import { SchemaTablesCol1, SchemaTablesCol2, SchemaTablesCol3, SchemaTablesCol4, SchemaTablesCol5, SchemaTablesCol6  } from "./validateSchemas";
 import { BaseFormik } from "./baseFormik";
 import { BaseFormikBancosRecaudadores } from "./baseFormikBancosRecaudadores";
 import { BaseFormikClaseEmpresas } from "./baseFormikClaseEmpresas";
 import { BaseFormikCuentasRecaudadoras } from "./baseFormikCuentasRecaudadoras";
-import { BaseFormikActividadEconomica } from "./baseFormikActividadEconomica"
+import { BaseFormikActividadEconomica } from "./baseFormikActividadEconomica";
+import { BaseFormikConceptos } from "./baseFormikConceptos";
 
 function ModalMasterTables(props) {
 
@@ -63,6 +64,11 @@ function ModalMasterTables(props) {
         case "actividad-economica":
             initialValuesTables = initialValuesTablesCol5;
             schemaTables = SchemaTablesCol5;
+            break;
+
+        case "conceptos":
+            initialValuesTables = initialValuesTablesCol6;
+            schemaTables = SchemaTablesCol6;
             break;
 
         default:
@@ -130,7 +136,13 @@ function ModalMasterTables(props) {
                                                 motores={motores}
                                             />
                                         }
-
+                                        {
+                                            props.columnas === 'col-6' &&
+                                            <BaseFormikConceptos
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
                                         <Row className="mb-2" style={{justifyContent: "center"}}>
                                             <Col className="mb-2" xs="6" sm="6" md="6" lg="6" xl="6" xxl="6" >
                                                 <Button onClick={() => props.onHide()}

@@ -14,6 +14,7 @@ export const MasterTablesState = ({ children }) => {
     const [claseEmpresa, setClaseEmpresa] = useState([]);
     const [motores, setMotores] = useState([]);
     const [actividadesEconomicas, setActividadesEconomicas] = useState([]);
+    const [conceptos, setConceptos] = useState([]);
     const [formDataTables, setFormDataTables] = useState({});
     const [registroSeleccionado, setRegistroSeleccionado] = useState({});
 
@@ -26,6 +27,7 @@ export const MasterTablesState = ({ children }) => {
         getClaseEmpresa();
         getMotores();
         getActividadesEconomicas();
+        getConceptos();
     },[]);
 
     const getBancos = async () => {
@@ -111,7 +113,6 @@ export const MasterTablesState = ({ children }) => {
             let arreglo = [];
             let lista = [];
             arreglo = respuesta.data.data;
-            console.log('arreglo 1 ', arreglo)
             arreglo.map((x, i) => {
                 lista.push(
                     {
@@ -239,6 +240,33 @@ export const MasterTablesState = ({ children }) => {
 
     }
 
+    const getConceptos = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/payment_concepts/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            console.log('conceptos ', arreglo);
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "name": arreglo[i].attributes.name,
+                        "clave": arreglo[i].attributes.clave
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setConceptos(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
     const obtenerValores = (valores) => {
         setRegistroSeleccionado(valores);
     }
@@ -309,6 +337,14 @@ export const MasterTablesState = ({ children }) => {
                 });
                 break;
 
+            case "conceptos":
+                conceptos.map((x) => {
+                    if(x.name.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
             default:
                 break;
         }
@@ -373,6 +409,10 @@ export const MasterTablesState = ({ children }) => {
                             urlTabla = `/economic_activity/${valores.id}`;
                             break;
 
+                        case "conceptos":
+                            urlTabla = `/payment_concepts/${valores.id}`;
+                            break;
+
                         default:
                             break;
                     }
@@ -417,6 +457,10 @@ export const MasterTablesState = ({ children }) => {
 
                             case "actividad-economica":
                                 getActividadesEconomicas();
+                                break;
+
+                            case "conceptos":
+                                getConceptos();
                                 break;
 
                             default:
@@ -484,6 +528,11 @@ export const MasterTablesState = ({ children }) => {
                     urlTabla = "/economic_activity/";
                     break;
 
+                case "conceptos":
+                    dataType = "payment_concepts";
+                    urlTabla = "/payment_concepts/";
+                    break;
+
                 default:
                     break;
             }
@@ -541,6 +590,10 @@ export const MasterTablesState = ({ children }) => {
                         getActividadesEconomicas();
                         break;
 
+                    case "conceptos":
+                        getConceptos();
+                        break;
+
                     default:
                         break;
                 }
@@ -566,6 +619,7 @@ export const MasterTablesState = ({ children }) => {
         claseEmpresa,
         motores,
         actividadesEconomicas,
+        conceptos,
         submitMasterTables,
         setFormDataTables,
         deleteMasterTables,

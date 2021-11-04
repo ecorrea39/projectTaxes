@@ -42,6 +42,10 @@ function MasterTablesModule() {
             title = "Actividades Económicas";
             break;
 
+        case "conceptos":
+            title = "Conceptos";
+            break;
+
         default:
             break;
     }

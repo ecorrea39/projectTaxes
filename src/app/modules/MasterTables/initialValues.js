@@ -30,5 +30,12 @@ export const initialValuesTablesCol5 = {
     is_active: true
 }
 
+export const initialValuesTablesCol6 = {
+    name: "",
+    descripcion: "",
+    clave: ""
+}
+
+
 
 
