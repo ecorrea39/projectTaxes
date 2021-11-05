@@ -23,15 +23,27 @@ function MasterTablesModule() {
             break;
 
         case "estatus-entidad-trabajo":
-            title = "Estatus entidad de trabajo";
+            title = "Estatus Entidad de Trabajo";
             break;
 
         case "clase-empresa":
-            title = "Clases entidad de trabajo";
+            title = "Clases Entidad de Trabajo";
             break;
 
         case "bancos-recaudadores":
-            title = "Bancos recaudadores";
+            title = "Bancos Recaudadores";
+            break;
+
+        case "motores-productivos":
+            title = "Motores Productivos";
+            break;
+
+        case "actividad-economica":
+            title = "Actividades Económicas";
+            break;
+
+        case "conceptos":
+            title = "Conceptos";
             break;
 
         default:

@@ -12,6 +12,9 @@ export const MasterTablesState = ({ children }) => {
     const [estatus, setEstatus] = useState([]);
     const [cuentasRecaudadoras, setCuentasRecaudadoras] = useState([]);
     const [claseEmpresa, setClaseEmpresa] = useState([]);
+    const [motores, setMotores] = useState([]);
+    const [actividadesEconomicas, setActividadesEconomicas] = useState([]);
+    const [conceptos, setConceptos] = useState([]);
     const [formDataTables, setFormDataTables] = useState({});
     const [registroSeleccionado, setRegistroSeleccionado] = useState({});
 
@@ -22,6 +25,9 @@ export const MasterTablesState = ({ children }) => {
         getCuentasRecaudadoras();
         getEstatus();
         getClaseEmpresa();
+        getMotores();
+        getActividadesEconomicas();
+        getConceptos();
     },[]);
 
     const getBancos = async () => {
@@ -181,6 +187,86 @@ export const MasterTablesState = ({ children }) => {
 
     }
 
+    const getMotores = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/engines/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "name": arreglo[i].attributes.name
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setMotores(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getActividadesEconomicas = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/economic_activity/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "name": arreglo[i].attributes.name,
+                        "codigo": arreglo[i].attributes.codigo,
+                        "id_motor": arreglo[i].attributes.id_motor,
+                        "motor": arreglo[i].attributes['motor_motore.name']
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setActividadesEconomicas(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getConceptos = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/payment_concepts/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            console.log('conceptos ', arreglo);
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "name": arreglo[i].attributes.name,
+                        "clave": arreglo[i].attributes.clave
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setConceptos(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
     const obtenerValores = (valores) => {
         setRegistroSeleccionado(valores);
     }
@@ -230,6 +316,30 @@ export const MasterTablesState = ({ children }) => {
             case "bancos-recaudadores":
                 bancos.map((x) => {
                     if(x.nom_banco.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "motores-productivos":
+                motores.map((x) => {
+                    if(x.name.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "actividad-economica":
+                actividadesEconomicas.map((x) => {
+                    if(x.name.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "conceptos":
+                conceptos.map((x) => {
+                    if(x.name.toUpperCase().trim() === valor.trim()) {
                         busqueda = true;
                     }
                 });
@@ -291,6 +401,18 @@ export const MasterTablesState = ({ children }) => {
                             urlTabla = `/banks/${valores.id}`;
                             break;
 
+                        case "motores-productivos":
+                            urlTabla = `/engines/${valores.id}`;
+                            break;
+
+                        case "actividad-economica":
+                            urlTabla = `/economic_activity/${valores.id}`;
+                            break;
+
+                        case "conceptos":
+                            urlTabla = `/payment_concepts/${valores.id}`;
+                            break;
+
                         default:
                             break;
                     }
@@ -327,6 +449,18 @@ export const MasterTablesState = ({ children }) => {
 
                             case "bancos-recaudadores":
                                 getBancos();
+                                break;
+
+                            case "motores-productivos":
+                                getMotores();
+                                break;
+
+                            case "actividad-economica":
+                                getActividadesEconomicas();
+                                break;
+
+                            case "conceptos":
+                                getConceptos();
                                 break;
 
                             default:
@@ -384,6 +518,21 @@ export const MasterTablesState = ({ children }) => {
                     urlTabla = "/banks/";
                     break;
 
+                case "motores-productivos":
+                    dataType = "saveEngines";
+                    urlTabla = "/engines/";
+                    break;
+
+                case "actividad-economica":
+                    dataType = "saveEconomicActivity";
+                    urlTabla = "/economic_activity/";
+                    break;
+
+                case "conceptos":
+                    dataType = "payment_concepts";
+                    urlTabla = "/payment_concepts/";
+                    break;
+
                 default:
                     break;
             }
@@ -433,6 +582,18 @@ export const MasterTablesState = ({ children }) => {
                         getBancos();
                         break;
 
+                    case "motores-productivos":
+                        getMotores();
+                        break;
+
+                    case "actividad-economica":
+                        getActividadesEconomicas();
+                        break;
+
+                    case "conceptos":
+                        getConceptos();
+                        break;
+
                     default:
                         break;
                 }
@@ -456,6 +617,9 @@ export const MasterTablesState = ({ children }) => {
         cuentasRecaudadoras,
         estatus,
         claseEmpresa,
+        motores,
+        actividadesEconomicas,
+        conceptos,
         submitMasterTables,
         setFormDataTables,
         deleteMasterTables,
