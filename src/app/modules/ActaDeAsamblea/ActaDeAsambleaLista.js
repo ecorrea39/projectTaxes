@@ -200,7 +200,7 @@ const ActaDeAsambleaLista = (props) => {
             <DataTable
               columns={columnas}
               data={rowsData}
-              title="Fondos de Comercio"
+              title="Actas de Asamblea"
               pagination
               paginationComponentOptions={paginationOptions}
               fixedHeader
