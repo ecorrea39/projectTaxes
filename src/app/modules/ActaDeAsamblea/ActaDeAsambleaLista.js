@@ -25,7 +25,7 @@ const columnas = [
   },
   {
     name: "Oficina",
-    selector: row => row.nombre_comercial,
+    selector: row => row.oficina,
     sortable: true
   },
   {
