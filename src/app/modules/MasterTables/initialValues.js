@@ -23,4 +23,19 @@ export const initialValuesTablesCol4 = {
     is_active: true
 }
 
+export const initialValuesTablesCol5 = {
+    name: "",
+    codigo: "",
+    id_motor: "",
+    is_active: true
+}
+
+export const initialValuesTablesCol6 = {
+    name: "",
+    descripcion: "",
+    clave: ""
+}
+
+
+
 
