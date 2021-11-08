@@ -104,16 +104,7 @@ const ActaDeAsambleaLista = (props) => {
 
   const handleClickCrear = () => {
 
-    const tipoIdentificacion = rif.substring(0, 1);
-    if (tipoIdentificacion == 'v' || tipoIdentificacion == 'e') {
-      if (rowsData.length < 3) {
-        history.replace('/crearfondocomercio');
-      } else {
-        alert("No puede crear más Fondos de Comercio (Máximo 3)");
-      }
-    } else {
-      alert("Solo los naturales o extranjeros pueden crear fondos de comercio");
-    }
+    props.cambiarVistaActual("crear");
   };
 
   useEffect(() => {
@@ -178,7 +169,7 @@ const ActaDeAsambleaLista = (props) => {
     };
 
     return (
-      <Button key="edit" onClick={handleEditar} style={{backgroundColor: 'red'}} icon>
+      <Button key="edit" onClick={handleEditar} style={{backgroundColor: 'red'}}>
         Editar
       </Button>
     );
@@ -188,7 +179,7 @@ const ActaDeAsambleaLista = (props) => {
     <Fragment>
       <Row>
         <Col md={12}>
-          <Button key="crear" onClick={handleClickCrear} style={{backgroundColor: 'default'}} icon>
+          <Button key="crear" onClick={handleClickCrear} style={{backgroundColor: 'default'}}>
             Crear
           </Button>
         </Col>
