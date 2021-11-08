@@ -61,6 +61,20 @@ export function LinksTributos({getMenuItemActive}) {
           <span className="menu-text">Fondos de Comercio</span>
         </NavLink>
       </li>
+
+      <li
+        className={`menu-item ${getMenuItemActive(
+          "/e-commerce/products"
+        )}`}
+        aria-haspopup="true"
+      >
+        <NavLink className="menu-link" to="/actasdeasamblea">
+          <i className="menu-bullet menu-bullet-dot">
+            <span/>
+          </i>
+          <span className="menu-text">Actas de Asamblea</span>
+        </NavLink>
+      </li>
     </>
   );
 }

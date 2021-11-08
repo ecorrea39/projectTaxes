@@ -11,9 +11,9 @@ import axios from "axios";
 import Util from "../../../helpers/Util";
 
 const initialValues = {
-  tipo: "",
-  user: "",
-  password: ""
+  tipo: "j",
+  user: "333333332",
+  password: "inces123."
 };
 
 const styleCenter = { "display":"flex", "justifyContent":"center", "alignItem":"center" }
