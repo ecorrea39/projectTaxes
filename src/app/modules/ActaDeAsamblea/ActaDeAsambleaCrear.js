@@ -545,7 +545,7 @@ const ActaDeAsambleaCrear = (props) => {
         }
       };
 
-      axios.post(`${API_URL}add_acta_asamblea/`, data, axiosConfig)
+      axios.post(`${API_URL}acta_asamblea/`, data, axiosConfig)
         .then(function (res) {
 
           setSubmitting(false);

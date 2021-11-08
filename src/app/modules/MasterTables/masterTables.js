@@ -396,7 +396,7 @@ function MasterTables({tabla}) {
                         sortIcon={sortIcon}
                         customStyles={customStyles}
                         responsive={true}
-                        noDataComponent="No existe datos para mostrar"
+                        noDataComponent="No existen datos para mostrar"
                     />
                 </div>
             </div>
