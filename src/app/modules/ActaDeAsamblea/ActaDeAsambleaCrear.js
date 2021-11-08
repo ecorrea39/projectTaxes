@@ -308,6 +308,7 @@ const listaOficinas = () => {
 const ActaDeAsambleaCrear = (props) => {
 
   const [initialValues, setInitialValues] = useState({
+    users_information_id: "",
     oficina: "",
     numero_de_documento: "",
     numero_de_tomo: "",
@@ -370,7 +371,6 @@ const ActaDeAsambleaCrear = (props) => {
       alert(error);
     });
   }, []);
-
 
   const handleClickedCrear = (event) => {
     formik.submitForm();
@@ -439,6 +439,8 @@ const ActaDeAsambleaCrear = (props) => {
 
   const LoginSchema = Yup.object().shape({
 
+    users_information_id: Yup.string()
+      .required("Debe seleccionar la empresa"),
     oficina: Yup.string()
       .required(
         intl.formatMessage({
@@ -534,28 +536,21 @@ const ActaDeAsambleaCrear = (props) => {
 
       let jsonAttributes = formik.values;
 
-      jsonAttributes["user_information_id"] = "0";
-      jsonAttributes["clase_de_empresa"] = "0";
-      jsonAttributes["actividad_economica"] = "0";
-      jsonAttributes["estatus"] = "0";
-      jsonAttributes["numero_patronal"] = "0";
-      jsonAttributes["numero_de_trabajadores"] = "0";
-
       const data = {
         jsonapi: {version: '1.0'},
         data: {
-          type: "userCompany",
+          type: "saveActaAsamblea",
           id: rif,
           attributes: jsonAttributes
         }
       };
 
-      axios.post(`${API_URL}user_company/crearfondo/`, data, axiosConfig)
+      axios.post(`${API_URL}add_acta_asamblea/`, data, axiosConfig)
         .then(function (res) {
 
           setSubmitting(false);
 
-          console.log("resFormStep1", res);
+          console.log("resFormStep1-add_acta_asamblea", res);
 
           props.cambiarVistaActual("lista");
         }).catch((err) => {
@@ -582,14 +577,27 @@ const ActaDeAsambleaCrear = (props) => {
             <Container>
               <Row>
                 <Col md={12}>
-                  <Form.Group controlId="fondoComercio">
-                    <Form.Control as="select" >
+                  <Form.Group controlId="users_information_id">
+                    <Form.Label style={textLabelColor}>Empresa</Form.Label>
+                    <Form.Control as="select"
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  value={formik.values.users_information_id}
+                    >
+
+                      <option key="0" value="">Seleccione la Empresa</option>
 
                       {userCompanies.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
                       )}
 
                     </Form.Control>
+
+                    {formik.touched.users_information_id && formik.errors.users_information_id ? (
+                      <div className="fv-plugins-message-container">
+                        <div className="fv-help-block">{formik.errors.users_information_id}</div>
+                      </div>
+                    ) : null}
                   </Form.Group>
                 </Col>
               </Row>
