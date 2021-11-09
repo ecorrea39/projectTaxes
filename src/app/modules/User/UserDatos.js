@@ -11,6 +11,8 @@ import UserDatosFormStep5 from "./UserDatosFormStep5";
 const UserDatos = (props) => {
 
   const [step, setStep] = useState(1);
+  const [registrado, setRegistrado] = useState(false);
+  const [actaEdicion, setActaEdicion] = useState(false);
   const [valoresParaFichaDeRegistro, setValoresParaFichaDeRegistro] = useState({
     tipo: "",
     razon_social: "",
@@ -62,6 +64,14 @@ const UserDatos = (props) => {
     correo_electronico_representante_legal3: "",
     cargo_representante_legal3: ""
   });
+
+  const cambiarRegistrado = (valor) => {
+    setRegistrado(valor);
+  }
+
+  const cambiarActaEdicion = (valor) => {
+    setActaEdicion(valor);
+  }
 
   const cambiarStep = (paso) => {
     setStep(paso);
@@ -166,15 +176,51 @@ const UserDatos = (props) => {
 
       <br/>
 
-      { step===1 && <UserDatosFormStep1 formularioActual={step} cambiarFormularioActual={cambiarStep} cambiarResumenFicha={cambiarResumenFichaRegistro1} /> }
+      { step===1 && <UserDatosFormStep1
+        formularioActual={step}
+        cambiarFormularioActual={cambiarStep}
+        cambiarResumenFicha={cambiarResumenFichaRegistro1}
+        cambiarRegistrado={cambiarRegistrado}
+        cambiarActaEdicion={cambiarActaEdicion}
+        registradoValor={registrado}
+        actaEdicion={actaEdicion} />
+      }
 
-      { step===2 && <UserDatosFormStep2 formularioActual={step} cambiarFormularioActual={cambiarStep} cambiarResumenFicha={cambiarResumenFichaRegistro2} /> }
+      { step===2 && <UserDatosFormStep2
+        formularioActual={step}
+        cambiarFormularioActual={cambiarStep}
+        cambiarResumenFicha={cambiarResumenFichaRegistro2}
+        cambiarRegistrado={cambiarRegistrado}
+        cambiarActaEdicion={cambiarActaEdicion}
+        registradoValor={registrado}
+        actaEdicion={actaEdicion} />
+      }
 
-      { step===3 && <UserDatosFormStep3 formularioActual={step} cambiarFormularioActual={cambiarStep} cambiarResumenFicha={cambiarResumenFichaRegistro3} /> }
+      { step===3 && <UserDatosFormStep3
+        formularioActual={step}
+        cambiarFormularioActual={cambiarStep}
+        cambiarResumenFicha={cambiarResumenFichaRegistro3}
+        cambiarRegistrado={cambiarRegistrado}
+        cambiarActaEdicion={cambiarActaEdicion}
+        registradoValor={registrado}
+        actaEdicion={actaEdicion} />
+      }
 
-      { step===4 && <UserDatosFormStep4 formularioActual={step} cambiarFormularioActual={cambiarStep} cambiarResumenFicha={cambiarResumenFichaRegistro4} /> }
+      { step===4 && <UserDatosFormStep4
+        formularioActual={step}
+        cambiarFormularioActual={cambiarStep}
+        cambiarResumenFicha={cambiarResumenFichaRegistro4}
+        cambiarRegistrado={cambiarRegistrado}
+        cambiarActaEdicion={cambiarActaEdicion}
+        registradoValor={registrado}
+        actaEdicion={actaEdicion} />
+      }
 
-      { step===5 && <UserDatosFormStep5 formularioActual={step} cambiarFormularioActual={cambiarStep} resumenFichaRegistro={valoresParaFichaDeRegistro} /> }
+      { step===5 && <UserDatosFormStep5
+        formularioActual={step}
+        cambiarFormularioActual={cambiarStep}
+        resumenFichaRegistro={valoresParaFichaDeRegistro} />
+      }
 
     </Fragment>
   );

@@ -11,9 +11,9 @@ import axios from "axios";
 import Util from "../../../helpers/Util";
 
 const initialValues = {
-  tipo: "j",
-  user: "333333332",
-  password: "inces123."
+  tipo: "",
+  user: "",
+  password: ""
 };
 
 const styleCenter = { "display":"flex", "justifyContent":"center", "alignItem":"center" }
@@ -142,18 +142,15 @@ function Login(props) {
         if (err.response !== undefined && err.response !== null) {
           let txt = '';
           switch (err.response.status) {
-            case 423:
-              txt = 'Actualización de contraseña requerida';
-              break;
             case 401:
               txt = 'Credenciales inválidas';
               break;
-            case 424:
-              txt = 'Desafío captcha usado. Por favor resuélvalo nuevamente';
-              setTimeout(() => {
-                window.location.href = '/signin';
-              }, 3000);
-              break;
+            // case 424:
+            //   txt = 'Desafío captcha usado. Por favor resuélvalo nuevamente';
+            //   setTimeout(() => {
+            //     window.location.href = '/signin';
+            //   }, 3000);
+            //   break;
             default:
               txt = 'Error al registrar usuario';
           }
