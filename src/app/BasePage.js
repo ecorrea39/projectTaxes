@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, useContext, useState, useEffect } from "react";
 import { Redirect, Switch, Route } from "react-router-dom";
 import { LayoutSplashScreen, ContentRoute } from "../_metronic/layout";
 import { BuilderPage } from "./pages/BuilderPage";
@@ -9,6 +9,10 @@ import AccountStatusPage from "./pages/accountStatus";
 import MasterTablesPage from "./pages/masterTables";
 import ReportsPage from './pages/reports';
 import { UserDatos } from "./modules/User/UserDatos";
+import { AuthPage, Logout } from "./modules/Auth";
+import ErrorsPage from "./modules/ErrorsExamples/ErrorsPage";
+import { PrivateRoute } from "./router/helperRoute";
+import AuthContext from "./store/auth-context";
 
 const GoogleMaterialPage = lazy(() =>
   import("./modules/GoogleMaterialExamples/GoogleMaterialPage")
@@ -39,37 +43,36 @@ const CrearFondosDeComercioPage = lazy(() =>
 );
 
 export default function BasePage() {
-  // useEffect(() => {
-  //   console.log('Base page');
-  // }, []) // [] - is required if you need only one call
-  // https://reactjs.org/docs/hooks-reference.html#useeffect
+
+
+  const authCtx = useContext(AuthContext);
+  const [isAuthorized, setAuthorized] = useState(authCtx.isLoggedIn);
+
+  console.log(isAuthorized);
+
+  useEffect(()=>{
+    setAuthorized(authCtx.isLoggedIn)
+  },[authCtx.isLoggedIn])
 
   return (
     <Suspense fallback={<LayoutSplashScreen />}>
-      <Switch>
-        {
-          /* Redirect from root URL to /dashboard. */
-          <Redirect exact from="/" to="/dashboard" />
-        }
-        <ContentRoute path="/dashboard" component={DashboardPage} />
-        <Route exact path="/tributos" component={TaxesPage}  />
-        <Route exact path="/estado-cuentas" component={AccountStatusPage} />
-        <Route exact path="/tablas/:tabla" component={MasterTablesPage} />
-        <Route exact path="/reportes/:reporte" component={ReportsPage} />
-        <ContentRoute path="/builder" component={BuilderPage} />
-        <ContentRoute path="/my-page" component={MyPage} />
-        <Route path="/google-material" component={GoogleMaterialPage} />
-        <Route path="/react-bootstrap" component={ReactBootstrapPage} />
-        <Route path="/e-commerce" component={ECommercePage} />
-        <Route path="/user-profile" component={UserProfilePage} />
-        <Route path="/user-datos" component={UserDatosPage} />
-        <Route path="/mapa" component={MapaPage} />
-        <Route path="/fondosdecomercio" component={FondosDeComercioPage} />
-        <Route path="/comprobantedeinscripcion" component={ReporteComprobanteDeInscripcionPage} />
-        <Route path="/crearfondocomercio" component={CrearFondosDeComercioPage} />
+    <Switch>
+      <PrivateRoute exact path="/dashboard" component={DashboardPage} isAuth={isAuthorized} />
+      <PrivateRoute exact path="/tributos" component={TaxesPage} isAuth={isAuthorized} />
+      <PrivateRoute exact path="/estado-cuentas" component={AccountStatusPage} isAuth={isAuthorized} />
+      <PrivateRoute exact path="/tablas/:tabla" component={MasterTablesPage} isAuth={isAuthorized} />
+      <PrivateRoute exact path="/reportes/:reporte" component={ReportsPage} isAuth={isAuthorized} />
+      <PrivateRoute exact path="/user-profile" component={UserProfilePage} isAuth={isAuthorized} />
+      <PrivateRoute exact path="/user-datos" component={UserDatosPage} isAuth={isAuthorized} />
+      <PrivateRoute exact path="/mapa" component={MapaPage} isAuth={isAuthorized} />
+      <PrivateRoute exact path="/fondosdecomercio" component={FondosDeComercioPage} isAuth={isAuthorized} />
+      <PrivateRoute exact path="/comprobantedeinscripcion" component={ReporteComprobanteDeInscripcionPage} isAuth={isAuthorized} />
+      <PrivateRoute exact path="/crearfondocomercio" component={CrearFondosDeComercioPage} isAuth={isAuthorized} />
+      <Route exact path="/" render={() =>{
+        return <Redirect to={isAuthorized ? "/dashboard" : "/auth/login"} />
+      }} />
 
-        <Redirect to="error/error-v1" />
-      </Switch>
-    </Suspense>
+    </Switch>
+  </Suspense>
   );
 }
