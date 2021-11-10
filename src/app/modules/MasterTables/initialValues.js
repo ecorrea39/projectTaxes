@@ -36,6 +36,22 @@ export const initialValuesTablesCol6 = {
     clave: ""
 }
 
+export const initialValuesTablesCol7 = {
+    id_estado: "",
+    registradores: "",
+    oficina: "",
+    direccion_oficina: "",
+    telefono_contacto: "",
+    correo: ""
+}
+
+export const initialValuesTablesCol8 = {
+    fecha: new Date(),
+    valor: ""
+}
+
+
+
 
 
 

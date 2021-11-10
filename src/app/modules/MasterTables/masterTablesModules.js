@@ -46,6 +46,14 @@ function MasterTablesModule() {
             title = "Conceptos";
             break;
 
+        case "registros-mercantiles":
+            title = "Registros Mercantiles";
+            break;
+
+        case "medida-valor":
+            title = "Medida Valor";
+            break;
+
         default:
             break;
     }

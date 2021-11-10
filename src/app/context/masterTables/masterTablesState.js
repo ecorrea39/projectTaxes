@@ -15,6 +15,9 @@ export const MasterTablesState = ({ children }) => {
     const [motores, setMotores] = useState([]);
     const [actividadesEconomicas, setActividadesEconomicas] = useState([]);
     const [conceptos, setConceptos] = useState([]);
+    const [estados, setEstados] = useState([]);
+    const [registrosMercantiles, setRegistrosMercantiles] = useState([]);
+    const [medidaValor, setMedidaValor] = useState([]);
     const [formDataTables, setFormDataTables] = useState({});
     const [registroSeleccionado, setRegistroSeleccionado] = useState({});
 
@@ -28,6 +31,9 @@ export const MasterTablesState = ({ children }) => {
         getMotores();
         getActividadesEconomicas();
         getConceptos();
+        getRegistrosMercantiles();
+        getEstados();
+        getMedidaValor();
     },[]);
 
     const getBancos = async () => {
@@ -248,7 +254,6 @@ export const MasterTablesState = ({ children }) => {
             let arreglo = [];
             let lista = [];
             arreglo = respuesta.data.data;
-            console.log('conceptos ', arreglo);
             arreglo.map((x, i) => {
                 lista.push(
                     {
@@ -260,6 +265,88 @@ export const MasterTablesState = ({ children }) => {
             });
             lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
             setConceptos(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getRegistrosMercantiles = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/oficinas_saren/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "id_estado": arreglo[i].attributes.id_estado,
+                        "estado_name": arreglo[i].attributes['id_estado_estado.descripcion'],
+                        "registradores": arreglo[i].attributes.registradores,
+                        "oficina": arreglo[i].attributes.oficina,
+                        "direccion_oficina": arreglo[i].attributes.direccion_oficina,
+                        "telefono_contacto": arreglo[i].attributes.telefono_contacto,
+                        "correo": arreglo[i].attributes.correo
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setRegistrosMercantiles(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getEstados = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/geographic_data_estados/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "cod_estado": arreglo[i].attributes.cod_estado,
+                        "descripcion": arreglo[i].attributes.descripcion
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setEstados(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getMedidaValor = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/medida_valor/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "fecha": arreglo[i].attributes.fecha,
+                        "valor": arreglo[i].attributes.valor
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setMedidaValor(lista);
 
         } catch (error) {
             console.log(error)
@@ -413,6 +500,14 @@ export const MasterTablesState = ({ children }) => {
                             urlTabla = `/payment_concepts/${valores.id}`;
                             break;
 
+                        case "registros-mercantiles":
+                            urlTabla = `/oficinas_saren/${valores.id}`;
+                            break;
+
+                        case "medida-valor":
+                            urlTabla = `/medida_valor/${valores.id}`;
+                            break;
+
                         default:
                             break;
                     }
@@ -461,6 +556,14 @@ export const MasterTablesState = ({ children }) => {
 
                             case "conceptos":
                                 getConceptos();
+                                break;
+
+                            case "registros-mercantiles":
+                                getRegistrosMercantiles();
+                                break;
+
+                            case "medida-valor":
+                                getMedidaValor();
                                 break;
 
                             default:
@@ -533,6 +636,16 @@ export const MasterTablesState = ({ children }) => {
                     urlTabla = "/payment_concepts/";
                     break;
 
+                case "registros-mercantiles":
+                    dataType = "oficinas_saren";
+                    urlTabla = "/oficinas_saren/";
+                    break;
+
+                case "medida-valor":
+                    dataType = "saveMedidaValor";
+                    urlTabla = "/medida_valor/";
+                    break;
+
                 default:
                     break;
             }
@@ -594,6 +707,14 @@ export const MasterTablesState = ({ children }) => {
                         getConceptos();
                         break;
 
+                    case "registros-mercantiles":
+                        getRegistrosMercantiles();
+                        break;
+
+                    case "medida-valor":
+                        getMedidaValor();
+                        break;
+
                     default:
                         break;
                 }
@@ -620,6 +741,9 @@ export const MasterTablesState = ({ children }) => {
         motores,
         actividadesEconomicas,
         conceptos,
+        registrosMercantiles,
+        estados,
+        medidaValor,
         submitMasterTables,
         setFormDataTables,
         deleteMasterTables,

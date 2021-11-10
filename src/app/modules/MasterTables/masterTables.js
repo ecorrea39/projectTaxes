@@ -13,7 +13,7 @@ import ArrowDownward from '@material-ui/icons/ArrowDownward';
 
 function MasterTables({tabla}) {
 
-    const { deleteMasterTables, trimestres, formasPago, cuentasRecaudadoras, estatus, bancos, claseEmpresa, motores, actividadesEconomicas, conceptos, obtenerValores } = useContext(MasterTablesContext);
+    const { deleteMasterTables, trimestres, formasPago, cuentasRecaudadoras, estatus, bancos, claseEmpresa, motores, actividadesEconomicas, conceptos, registrosMercantiles, medidaValor, obtenerValores } = useContext(MasterTablesContext);
     const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", padding: "20px 35px 20px 35px"}
     const [isSwitchOn, setIsSwitchOn] = useState(false);
     const styleBtn = { borderRadius: '100%'}
@@ -280,6 +280,90 @@ function MasterTables({tabla}) {
         }
     ];
 
+    const columnas07 = [
+        {
+            name: "ID",
+            selector: row => Number(row.id),
+            sortable: true,
+            maxWidth: "100px"
+        },
+        {
+            name: "Estado",
+            selector: row => row.estado_name,
+            sortable: true,
+            maxWidth: "200px"
+        },
+        {
+            name: "Oficina",
+            selector: row => row.oficina,
+            sortable: true,
+            maxWidth: "600px"
+        },
+        {
+            name: "Acciones",
+            button: true,
+            cell: row => (
+                <>
+                    <a title="modificar" onClick={() => { setShow(true); setAccion('Modificar'); obtenerValores(row)}}
+                       style={styleBtn} className="btn btn-icon btn-hover-light btn-sm mx-3">
+                        <span className="svg-icon svg-icon-md svg-icon-info">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}/>
+                        </span>
+                    </a>
+
+                    <a title="eliminar" style={styleBtn} onClick={() => deleteMasterTables(tabla, titulo, row)}
+                       className="btn btn-icon btn-hover-light btn-sm">
+                        <span className="svg-icon svg-icon-md svg-icon-danger">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")}/>
+                        </span>
+                    </a>
+                </>
+            )
+        }
+    ];
+
+    const columnas08 = [
+        {
+            name: "ID",
+            selector: row => Number(row.id),
+            sortable: true,
+            maxWidth: "100px"
+        },
+        {
+            name: "Fecha",
+            selector: row => row.fecha,
+            sortable: true,
+            maxWidth: "300px"
+        },
+        {
+            name: "Valor",
+            selector: row => row.valor,
+            sortable: true,
+            maxWidth: "400px"
+        },
+        {
+            name: "Acciones",
+            button: true,
+            cell: row => (
+                <>
+                    <a title="modificar" onClick={() => { setShow(true); setAccion('Modificar'); obtenerValores(row)}}
+                       style={styleBtn} className="btn btn-icon btn-hover-light btn-sm mx-3">
+                        <span className="svg-icon svg-icon-md svg-icon-info">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}/>
+                        </span>
+                    </a>
+
+                    <a title="eliminar" style={styleBtn} onClick={() => deleteMasterTables(tabla, titulo, row)}
+                       className="btn btn-icon btn-hover-light btn-sm">
+                        <span className="svg-icon svg-icon-md svg-icon-danger">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")}/>
+                        </span>
+                    </a>
+                </>
+            )
+        }
+    ];
+
     switch (tabla) {
         case "trimestre":
             titulo = "Trimestres";
@@ -342,6 +426,20 @@ function MasterTables({tabla}) {
             data = conceptos;
             columnas = "col-6";
             colTab = columnas06;
+            break;
+
+        case "registros-mercantiles":
+            titulo = "Registros Mercantiles";
+            data = registrosMercantiles;
+            columnas = "col-7";
+            colTab = columnas07;
+            break;
+
+        case "medida-valor":
+            titulo = "Medida Valor";
+            data = medidaValor;
+            columnas = "col-8";
+            colTab = columnas08;
             break;
 
         default:
