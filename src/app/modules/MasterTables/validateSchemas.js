@@ -80,3 +80,11 @@ export const SchemaTablesCol9 = Yup.object().shape({
         .min(0, '- valor mínimo es cero -')
 });
 
+export const SchemaTablesCol10 = Yup.object().shape({
+    ano: Yup.number()
+        .required('- Campo obligatorio -'),
+    fecha: Yup.date()
+        .required('- Campo obligatorio -')
+});
+
+

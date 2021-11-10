@@ -13,7 +13,7 @@ import ArrowDownward from '@material-ui/icons/ArrowDownward';
 
 function MasterTables({tabla}) {
 
-    const { deleteMasterTables, trimestres, formasPago, cuentasRecaudadoras, estatus, bancos, claseEmpresa, motores, actividadesEconomicas, conceptos, registrosMercantiles, medidaValor, motivoSancion, obtenerValores } = useContext(MasterTablesContext);
+    const { deleteMasterTables, trimestres, formasPago, cuentasRecaudadoras, estatus, bancos, claseEmpresa, motores, actividadesEconomicas, conceptos, registrosMercantiles, medidaValor, motivoSancion, diasFestivos, obtenerValores } = useContext(MasterTablesContext);
     const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", padding: "20px 35px 20px 35px"}
     const [isSwitchOn, setIsSwitchOn] = useState(false);
     const styleBtn = { borderRadius: '100%'}
@@ -405,6 +405,47 @@ function MasterTables({tabla}) {
         }
     ];
 
+    const columnas10 = [
+        {
+            name: "ID",
+            selector: row => Number(row.id),
+            sortable: true,
+            maxWidth: "100px"
+        },
+        {
+            name: "Año",
+            selector: row => Number(row.ano),
+            sortable: true,
+            maxWidth: "350px"
+        },
+        {
+            name: "Día festivo",
+            selector: row => row.fecha,
+            maxWidth: "350px"
+        },
+        {
+            name: "Acciones",
+            button: true,
+            cell: row => (
+                <>
+                    <a title="modificar" onClick={() => { setShow(true); setAccion('Modificar'); obtenerValores(row)}}
+                       style={styleBtn} className="btn btn-icon btn-hover-light btn-sm mx-3">
+                        <span className="svg-icon svg-icon-md svg-icon-info">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}/>
+                        </span>
+                    </a>
+
+                    <a title="eliminar" style={styleBtn} onClick={() => deleteMasterTables(tabla, titulo, row)}
+                       className="btn btn-icon btn-hover-light btn-sm">
+                        <span className="svg-icon svg-icon-md svg-icon-danger">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")}/>
+                        </span>
+                    </a>
+                </>
+            )
+        }
+    ];
+
     switch (tabla) {
         case "trimestre":
             titulo = "Trimestres";
@@ -488,6 +529,13 @@ function MasterTables({tabla}) {
             data = motivoSancion;
             columnas = "col-9";
             colTab = columnas09;
+            break;
+
+        case "dias-festivos":
+            titulo = "Días Festivos";
+            data = diasFestivos;
+            columnas = "col-10";
+            colTab = columnas10;
             break;
 
         default:

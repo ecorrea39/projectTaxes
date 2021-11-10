@@ -9,25 +9,27 @@ import BaseInput from "../Forms/BaseInputs";
 import BaseSelect from "../Forms/BaseSelect";
 import Checkbox from "../Forms/BaseCheckbox";
 import ModalHeader from "react-bootstrap/ModalHeader";
-import {    initialValuesTablesCol1,
-            initialValuesTablesCol2,
-            initialValuesTablesCol3,
-            initialValuesTablesCol4,
-            initialValuesTablesCol5,
-            initialValuesTablesCol6,
-            initialValuesTablesCol7,
-            initialValuesTablesCol8,
-            initialValuesTablesCol9 } from "./initialValues";
+import { initialValuesTablesCol1,
+         initialValuesTablesCol2,
+         initialValuesTablesCol3,
+         initialValuesTablesCol4,
+         initialValuesTablesCol5,
+         initialValuesTablesCol6,
+         initialValuesTablesCol7,
+         initialValuesTablesCol8,
+         initialValuesTablesCol9,
+         initialValuesTablesCol10 } from "./initialValues";
 
-import {    SchemaTablesCol1,
-            SchemaTablesCol2,
-            SchemaTablesCol3,
-            SchemaTablesCol4,
-            SchemaTablesCol5,
-            SchemaTablesCol6,
-            SchemaTablesCol7,
-            SchemaTablesCol8,
-            SchemaTablesCol9 } from "./validateSchemas";
+import { SchemaTablesCol1,
+         SchemaTablesCol2,
+         SchemaTablesCol3,
+         SchemaTablesCol4,
+         SchemaTablesCol5,
+         SchemaTablesCol6,
+         SchemaTablesCol7,
+         SchemaTablesCol8,
+         SchemaTablesCol9,
+         SchemaTablesCol10 } from "./validateSchemas";
 
 import { BaseFormik } from "./baseFormik";
 import { BaseFormikBancosRecaudadores } from "./baseFormikBancosRecaudadores";
@@ -38,6 +40,7 @@ import { BaseFormikConceptos } from "./baseFormikConceptos";
 import { BaseFormikRegistrosMercantiles } from './baseFormikRegistrosMercantiles';
 import { BaseFormikMedidaValor } from './baseFormikMedidaValor';
 import { BaseFormikMotivoSancion } from './baseFormikMotivoSancion';
+import { BaseFormikDiasFestivos } from "./baseFormikDiasFestivos";
 
 function ModalMasterTables(props) {
 
@@ -105,6 +108,11 @@ function ModalMasterTables(props) {
         case "motivo-sancion":
             initialValuesTables = initialValuesTablesCol9;
             schemaTables = SchemaTablesCol9;
+            break;
+
+        case "dias-festivos":
+            initialValuesTables = initialValuesTablesCol10;
+            schemaTables = SchemaTablesCol10;
             break;
 
         default:
@@ -197,6 +205,13 @@ function ModalMasterTables(props) {
                                         {
                                             props.columnas === 'col-9' &&
                                             <BaseFormikMotivoSancion
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-10' &&
+                                            <BaseFormikDiasFestivos
                                                 formik={formik}
                                                 props={props}
                                             />

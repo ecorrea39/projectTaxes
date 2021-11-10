@@ -19,6 +19,7 @@ export const MasterTablesState = ({ children }) => {
     const [registrosMercantiles, setRegistrosMercantiles] = useState([]);
     const [medidaValor, setMedidaValor] = useState([]);
     const [motivoSancion, setMotivoSancion] = useState([]);
+    const [diasFestivos, setDiasFestivos] = useState([]);
     const [formDataTables, setFormDataTables] = useState({});
     const [registroSeleccionado, setRegistroSeleccionado] = useState({});
 
@@ -36,6 +37,7 @@ export const MasterTablesState = ({ children }) => {
         getEstados();
         getMedidaValor();
         getMotivoSancion();
+        getDiasFestivos();
     },[]);
 
     const getBancos = async () => {
@@ -382,6 +384,32 @@ export const MasterTablesState = ({ children }) => {
 
     }
 
+    const getDiasFestivos = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/dias_festivos/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "ano": arreglo[i].attributes.ano,
+                        "fecha": arreglo[i].attributes.fecha
+                    }
+                )
+            });
+            lista.sort((a, b) => a.ano - b.ano ? -1 : +(a.ano > b.ano));
+            setDiasFestivos(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
     const obtenerValores = (valores) => {
         setRegistroSeleccionado(valores);
     }
@@ -547,6 +575,10 @@ export const MasterTablesState = ({ children }) => {
                             urlTabla = `/motivo_sancion/${valores.id}`;
                             break;
 
+                        case "dias-festivos":
+                            urlTabla = `/dias_festivos/${valores.id}`;
+                            break;
+
                         default:
                             break;
                     }
@@ -607,6 +639,10 @@ export const MasterTablesState = ({ children }) => {
 
                             case "motivo-sancion":
                                 getMotivoSancion();
+                                break;
+
+                            case "dias-festivos":
+                                getDiasFestivos();
                                 break;
 
                             default:
@@ -694,6 +730,11 @@ export const MasterTablesState = ({ children }) => {
                     urlTabla = "/motivo_sancion/";
                     break;
 
+                case "dias-festivos":
+                    dataType = "saveDiasFestivos";
+                    urlTabla = "/dias_festivos/";
+                    break;
+
                 default:
                     break;
             }
@@ -767,6 +808,10 @@ export const MasterTablesState = ({ children }) => {
                         getMotivoSancion();
                         break;
 
+                    case "dias-festivos":
+                        getDiasFestivos();
+                        break;
+
                     default:
                         break;
                 }
@@ -797,6 +842,7 @@ export const MasterTablesState = ({ children }) => {
         estados,
         medidaValor,
         motivoSancion,
+        diasFestivos,
         submitMasterTables,
         setFormDataTables,
         deleteMasterTables,

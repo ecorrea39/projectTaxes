@@ -55,6 +55,12 @@ export const initialValuesTablesCol9 = {
     nveces_mmv: ""
 }
 
+export const initialValuesTablesCol10 = {
+    ano: "",
+    fecha: ""
+}
+
+
 
 
 

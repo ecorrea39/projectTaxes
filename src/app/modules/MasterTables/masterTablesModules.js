@@ -58,6 +58,10 @@ function MasterTablesModule() {
             title = "Motivo de Sanción";
             break;
 
+        case "dias-festivos":
+            title = "Días Festivos";
+            break;
+
         default:
             break;
     }
