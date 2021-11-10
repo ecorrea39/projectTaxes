@@ -5,13 +5,13 @@ const FondoDeComercio = () => {
 
   const [vistaActual, setVistaActual] = useState("lista");
 
-  const cambiarVistaActualFuction = (vista) => {
+  const cambiarVistaActualFunction = (vista) => {
     setVistaActual(vista);
   }
 
   return (
     <Fragment>
-      { vistaActual==="lista" && <FondoDeComercioLista cambiarVistaActual={cambiarVistaActualFuction} /> }
+      { vistaActual==="lista" && <FondoDeComercioLista cambiarVistaActual={cambiarVistaActualFunction} /> }
     </Fragment>
   );
 }

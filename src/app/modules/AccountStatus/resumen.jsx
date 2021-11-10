@@ -64,14 +64,14 @@ function Resumen({className}) {
                                     <SVG src={toAbsoluteUrl("/media/svg/icons/Layout/Layout-arrange.svg")} />
                                     Total deuda trimestres declarados
                                 </div>
-                                <div className="font-size-h4 font-weight-bolder">{FormatNumber(totalDeudaTrim)}</div>
+                                <div className="font-size-h4 font-weight-bolder">{typeof totalDeudaTrim !== "undefined" ? FormatNumber(totalDeudaTrim) : FormatNumber(0)}</div>
                             </div>
                             <div className="col px-12 py-6">
                                 <div className="font-size-sm text-muted font-weight-bold">
                                     <SVG src={toAbsoluteUrl("/media/svg/icons/Layout/Layout-4-blocks.svg")} />
                                     Total deuda efectos y cuentas por pagar
                                 </div>
-                                <div className="font-size-h4 font-weight-bolder">{FormatNumber(totalDeudaCxP)}</div>
+                                <div className="font-size-h4 font-weight-bolder">{typeof totalDeudaCxP !== "undefined" ? FormatNumber(totalDeudaCxP) : FormatNumber(0)}</div>
                             </div>
                         </div>
                         <div className="row m-0">
@@ -80,7 +80,7 @@ function Resumen({className}) {
                                     <SVG src={toAbsoluteUrl("/media/svg/icons/Layout/Layout-4-blocks.svg")} />
                                     Total saldos pagados
                                 </div>
-                                <div className="font-size-h4 font-weight-bolder">{FormatNumber(totalPagos)}</div>
+                                <div className="font-size-h4 font-weight-bolder">{typeof totalPagos !== "undefined" ? FormatNumber(totalPagos) : FormatNumber(0)}</div>
                             </div>
                             <div className="col px-12 py-6"></div>
                         </div>
@@ -90,14 +90,14 @@ function Resumen({className}) {
                                     <SVG src={toAbsoluteUrl("/media/svg/icons/Layout/Layout-4-blocks.svg")} />
                                     Total crédito fiscal | Saldo temporal a compensar
                                 </div>
-                                <div className="font-size-h4 font-weight-bolder">{FormatNumber(totalCreditoFisTemp)}</div>
+                                <div className="font-size-h4 font-weight-bolder">{typeof totalCreditoFisTemp !== "undefined" ? FormatNumber(totalCreditoFisTemp) : FormatNumber(0)}</div>
                             </div>
                             <div className="col px-12 py-6">
                                 <div className="font-size-sm text-muted font-weight-bold">
                                     <SVG src={toAbsoluteUrl("/media/svg/icons/Layout/Layout-4-blocks.svg")} />
                                     Total crédito fiscal | Saldo aprobado certificado de crédito fiscal
                                 </div>
-                                <div className="font-size-h4 font-weight-bolder">{FormatNumber(totalCreditoFisAprob)}</div>
+                                <div className="font-size-h4 font-weight-bolder">{typeof totalCreditoFisAprob !== "undefined" ? FormatNumber(totalCreditoFisAprob) : FormatNumber(0)}</div>
                             </div>
                         </div>
                     </div>
