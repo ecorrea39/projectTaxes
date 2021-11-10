@@ -512,11 +512,11 @@ const ActaDeAsambleaLista = (props) => {
               progressPending={pending}
               noDataComponent="No existen datos para mostrar"
               // onRowClicked={onRowClicked}
-              selectableRows={true}
-              selectableRowsSingle={true}
-              selectableRowsHighlight={true}
-              contextActions={contextActions}
-              onSelectedRowsChange={handleRowSelected}
+              // selectableRows={true}
+              // selectableRowsSingle={true}
+              // selectableRowsHighlight={true}
+              // contextActions={contextActions}
+              // onSelectedRowsChange={handleRowSelected}
             />
           </div>
         </Card.Body>

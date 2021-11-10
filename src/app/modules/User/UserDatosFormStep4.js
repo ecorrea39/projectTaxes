@@ -719,6 +719,7 @@ const UserDatosFormStep4 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.cedula_representante_legal1}
                                   maxLength="8"
+                                  disabled={props.registradoValor ? "disabled" : ""}
                     />
 
                     {formik.touched.cedula_representante_legal1 && formik.errors.cedula_representante_legal1 ? (
@@ -737,6 +738,7 @@ const UserDatosFormStep4 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.nombre_representante_legal1}
                                   maxLength="30"
+                                  disabled={props.registradoValor ? "disabled" : ""}
                     />
 
                     {formik.touched.nombre_representante_legal1 && formik.errors.nombre_representante_legal1 ? (
@@ -755,6 +757,7 @@ const UserDatosFormStep4 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.apellido_representante_legal1}
                                   maxLength="30"
+                                  disabled={props.registradoValor ? "disabled" : ""}
                     />
 
                     {formik.touched.apellido_representante_legal1 && formik.errors.apellido_representante_legal1 ? (
@@ -838,6 +841,7 @@ const UserDatosFormStep4 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.cargo_representante_legal1}
                                   maxLength="30"
+                                  disabled={props.registradoValor ? "disabled" : ""}
                     />
 
                     {formik.touched.cargo_representante_legal1 && formik.errors.cargo_representante_legal1 ? (
@@ -864,6 +868,7 @@ const UserDatosFormStep4 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.cedula_representante_legal2}
                                   maxLength="8"
+                                  disabled={props.registradoValor ? "disabled" : ""}
                     />
 
                     {formik.touched.cedula_representante_legal2 && formik.errors.cedula_representante_legal2 ? (
@@ -882,6 +887,7 @@ const UserDatosFormStep4 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.nombre_representante_legal2}
                                   maxLength="30"
+                                  disabled={props.registradoValor ? "disabled" : ""}
                     />
 
                     {formik.touched.nombre_representante_legal2 && formik.errors.nombre_representante_legal2 ? (
@@ -900,6 +906,7 @@ const UserDatosFormStep4 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.apellido_representante_legal2}
                                   maxLength="30"
+                                  disabled={props.registradoValor ? "disabled" : ""}
                     />
 
                     {formik.touched.apellido_representante_legal2 && formik.errors.apellido_representante_legal2 ? (
@@ -983,6 +990,7 @@ const UserDatosFormStep4 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.cargo_representante_legal2}
                                   maxLength="30"
+                                  disabled={props.registradoValor ? "disabled" : ""}
                     />
 
                     {formik.touched.cargo_representante_legal2 && formik.errors.cargo_representante_legal2 ? (
@@ -1009,6 +1017,7 @@ const UserDatosFormStep4 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.cedula_representante_legal3}
                                   maxLength="8"
+                                  disabled={props.registradoValor ? "disabled" : ""}
                     />
 
                     {formik.touched.cedula_representante_legal3 && formik.errors.cedula_representante_legal3 ? (
@@ -1027,6 +1036,7 @@ const UserDatosFormStep4 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.nombre_representante_legal3}
                                   maxLength="30"
+                                  disabled={props.registradoValor ? "disabled" : ""}
                     />
 
                     {formik.touched.nombre_representante_legal3 && formik.errors.nombre_representante_legal3 ? (
@@ -1045,6 +1055,7 @@ const UserDatosFormStep4 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.apellido_representante_legal3}
                                   maxLength="30"
+                                  disabled={props.registradoValor ? "disabled" : ""}
                     />
 
                     {formik.touched.apellido_representante_legal3 && formik.errors.apellido_representante_legal3 ? (
@@ -1128,6 +1139,7 @@ const UserDatosFormStep4 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.cargo_representante_legal3}
                                   maxLength="30"
+                                  disabled={props.registradoValor ? "disabled" : ""}
                     />
 
                     {formik.touched.cargo_representante_legal3 && formik.errors.cargo_representante_legal3 ? (

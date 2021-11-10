@@ -52,6 +52,8 @@ const UserDatosFormStep1 = (props) => {
 
   useEffect(() => {
 
+    console.log("registradoValor::", props.registradoValor);
+
     cargaDeClasesDeEmpresa().then((resolvedValueCargaDeClasesDeEmpresa) => {
       console.log("resolvedValueCargaDeClasesDeEmpresa", resolvedValueCargaDeClasesDeEmpresa);
 
@@ -82,8 +84,15 @@ const UserDatosFormStep1 = (props) => {
 
                   generalCtx.iniIdUserInformacionProfile(res.data.data.id);
                   setInitialValues(initialValuesJson);
+
+                  if (res.data.data.attributes.fecha_registro_inces != null) {
+                    props.cambiarRegistrado(true);
+                  } else {
+                    props.cambiarRegistrado(false);
+                  }
                 } else {
                   generalCtx.iniIdUserInformacionProfile("-");
+                  props.cambiarRegistrado(false);
                   alert("No existe información alguna registrada del usuario");
                 }
 
@@ -184,7 +193,6 @@ const UserDatosFormStep1 = (props) => {
           estatusArray.sort((a, b) => a.name < b.name ? -1 : 1);
           setEstatus(estatusArray);
           console.log("estatus::", estatus);
-
           disableLoading();
 
           resolve('Clases de Empresa cargado Exitosamente');
@@ -329,8 +337,15 @@ const UserDatosFormStep1 = (props) => {
 
           generalCtx.iniIdUserInformacionProfile(res.data.data.id);
           setInitialValues(initialValuesJson);
+
+          if (res.data.data.attributes.fecha_registro_inces != null) {
+            props.cambiarRegistrado(true);
+          } else {
+            props.cambiarRegistrado(false);
+          }
         } else {
           generalCtx.iniIdUserInformacionProfile("-");
+          props.cambiarRegistrado(false);
           alert("No existe información alguna registrada del usuario");
         }
 
@@ -570,6 +585,7 @@ const UserDatosFormStep1 = (props) => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values.razon_social}
                                     maxLength="100"
+                                    disabled={props.registradoValor ? "disabled" : ""}
                       />
 
                       {formik.touched.razon_social && formik.errors.razon_social ? (
@@ -588,6 +604,7 @@ const UserDatosFormStep1 = (props) => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values.nombre_comercial}
                                     maxLength="100"
+                                    disabled={props.registradoValor ? "disabled" : ""}
                       />
 
                       {formik.touched.nombre_comercial && formik.errors.nombre_comercial ? (
@@ -608,6 +625,7 @@ const UserDatosFormStep1 = (props) => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values.clase_de_empresa}
                                     ref={clase_de_empresaRef}
+                                    disabled={props.registradoValor ? "disabled" : ""}
                       >
 
                         <option key="0" value="">Seleccione la Clase de Empresa</option>
@@ -634,6 +652,7 @@ const UserDatosFormStep1 = (props) => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values.actividad_economica}
                                     ref={actividad_economicaRef}
+                                    disabled={props.registradoValor ? "disabled" : ""}
                       >
 
                         <option key="0" value="">Seleccione la Actividad Económica</option>
@@ -662,6 +681,7 @@ const UserDatosFormStep1 = (props) => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values.estatus}
                                     ref={estatusRef}
+                                    disabled={props.registradoValor ? "disabled" : ""}
                       >
 
                         <option key="0" value="">Seleccione el Estatus</option>
@@ -700,6 +720,7 @@ const UserDatosFormStep1 = (props) => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values.numero_patronal}
                                     maxLength="20"
+                                    disabled={props.registradoValor ? "disabled" : ""}
                       />
 
                       {formik.touched.numero_patronal && formik.errors.numero_patronal ? (
@@ -718,6 +739,7 @@ const UserDatosFormStep1 = (props) => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values.numero_de_trabajadores}
                                     maxLength="7"
+                                    disabled={props.registradoValor ? "disabled" : ""}
                       />
 
                       {formik.touched.numero_de_trabajadores && formik.errors.numero_de_trabajadores ? (
