@@ -72,3 +72,11 @@ export const SchemaTablesCol8 = Yup.object().shape({
     valor: Yup.string()
         .required('- Campo obligatorio -')
 });
+
+export const SchemaTablesCol9 = Yup.object().shape({
+    name: Yup.string()
+        .required('- Campo obligatorio -'),
+    neveces_mmv: Yup.number()
+        .min(0, '- valor mínimo es cero -')
+});
+

@@ -50,6 +50,12 @@ export const initialValuesTablesCol8 = {
     valor: ""
 }
 
+export const initialValuesTablesCol9 = {
+    name: "",
+    nveces_mmv: ""
+}
+
+
 
 
 

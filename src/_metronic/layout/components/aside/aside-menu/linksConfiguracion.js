@@ -119,6 +119,14 @@ export function LinksConfiguracion({getMenuItemActive}) {
                 <span className="menu-text">Medida Valor</span>
               </NavLink>
             </li>
+            <li className={`menu-item ${getMenuItemActive("/tablas/motivo-sancion")}`} aria-haspopup="true">
+              <NavLink className="menu-link" to="/tablas/motivo-sancion">
+                <i className="menu-bullet menu-bullet-dot">
+                  <span/>
+                </i>
+                <span className="menu-text">Motivo Sanción</span>
+              </NavLink>
+            </li>
           </ul>
         </div>
       </li>

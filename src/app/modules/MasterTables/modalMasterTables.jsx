@@ -16,7 +16,8 @@ import {    initialValuesTablesCol1,
             initialValuesTablesCol5,
             initialValuesTablesCol6,
             initialValuesTablesCol7,
-            initialValuesTablesCol8 } from "./initialValues";
+            initialValuesTablesCol8,
+            initialValuesTablesCol9 } from "./initialValues";
 
 import {    SchemaTablesCol1,
             SchemaTablesCol2,
@@ -25,7 +26,8 @@ import {    SchemaTablesCol1,
             SchemaTablesCol5,
             SchemaTablesCol6,
             SchemaTablesCol7,
-            SchemaTablesCol8  } from "./validateSchemas";
+            SchemaTablesCol8,
+            SchemaTablesCol9 } from "./validateSchemas";
 
 import { BaseFormik } from "./baseFormik";
 import { BaseFormikBancosRecaudadores } from "./baseFormikBancosRecaudadores";
@@ -35,6 +37,7 @@ import { BaseFormikActividadEconomica } from "./baseFormikActividadEconomica";
 import { BaseFormikConceptos } from "./baseFormikConceptos";
 import { BaseFormikRegistrosMercantiles } from './baseFormikRegistrosMercantiles';
 import { BaseFormikMedidaValor } from './baseFormikMedidaValor';
+import { BaseFormikMotivoSancion } from './baseFormikMotivoSancion';
 
 function ModalMasterTables(props) {
 
@@ -97,6 +100,11 @@ function ModalMasterTables(props) {
         case "medida-valor":
             initialValuesTables = initialValuesTablesCol8;
             schemaTables = SchemaTablesCol8;
+            break;
+
+        case "motivo-sancion":
+            initialValuesTables = initialValuesTablesCol9;
+            schemaTables = SchemaTablesCol9;
             break;
 
         default:
@@ -182,6 +190,13 @@ function ModalMasterTables(props) {
                                         {
                                             props.columnas === 'col-8' &&
                                             <BaseFormikMedidaValor
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-9' &&
+                                            <BaseFormikMotivoSancion
                                                 formik={formik}
                                                 props={props}
                                             />

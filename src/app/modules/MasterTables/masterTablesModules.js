@@ -54,6 +54,10 @@ function MasterTablesModule() {
             title = "Medida Valor";
             break;
 
+        case "motivo-sancion":
+            title = "Motivo de Sanción";
+            break;
+
         default:
             break;
     }

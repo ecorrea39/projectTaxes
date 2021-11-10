@@ -18,6 +18,7 @@ export const MasterTablesState = ({ children }) => {
     const [estados, setEstados] = useState([]);
     const [registrosMercantiles, setRegistrosMercantiles] = useState([]);
     const [medidaValor, setMedidaValor] = useState([]);
+    const [motivoSancion, setMotivoSancion] = useState([]);
     const [formDataTables, setFormDataTables] = useState({});
     const [registroSeleccionado, setRegistroSeleccionado] = useState({});
 
@@ -34,6 +35,7 @@ export const MasterTablesState = ({ children }) => {
         getRegistrosMercantiles();
         getEstados();
         getMedidaValor();
+        getMotivoSancion();
     },[]);
 
     const getBancos = async () => {
@@ -354,6 +356,32 @@ export const MasterTablesState = ({ children }) => {
 
     }
 
+    const getMotivoSancion = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/motivo_sancion/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "name": arreglo[i].attributes.name,
+                        "nveces_mmv": arreglo[i].attributes.nveces_mmv
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setMotivoSancion(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
     const obtenerValores = (valores) => {
         setRegistroSeleccionado(valores);
     }
@@ -426,6 +454,13 @@ export const MasterTablesState = ({ children }) => {
 
             case "conceptos":
                 conceptos.map((x) => {
+                    if(x.name.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+            case "motivo-sancion":
+                motivoSancion.map((x) => {
                     if(x.name.toUpperCase().trim() === valor.trim()) {
                         busqueda = true;
                     }
@@ -508,6 +543,10 @@ export const MasterTablesState = ({ children }) => {
                             urlTabla = `/medida_valor/${valores.id}`;
                             break;
 
+                        case "motivo-sancion":
+                            urlTabla = `/motivo_sancion/${valores.id}`;
+                            break;
+
                         default:
                             break;
                     }
@@ -564,6 +603,10 @@ export const MasterTablesState = ({ children }) => {
 
                             case "medida-valor":
                                 getMedidaValor();
+                                break;
+
+                            case "motivo-sancion":
+                                getMotivoSancion();
                                 break;
 
                             default:
@@ -646,6 +689,11 @@ export const MasterTablesState = ({ children }) => {
                     urlTabla = "/medida_valor/";
                     break;
 
+                case "motivo-sancion":
+                    dataType = "saveMotivoSancion";
+                    urlTabla = "/motivo_sancion/";
+                    break;
+
                 default:
                     break;
             }
@@ -715,6 +763,10 @@ export const MasterTablesState = ({ children }) => {
                         getMedidaValor();
                         break;
 
+                    case "motivo-sancion":
+                        getMotivoSancion();
+                        break;
+
                     default:
                         break;
                 }
@@ -744,6 +796,7 @@ export const MasterTablesState = ({ children }) => {
         registrosMercantiles,
         estados,
         medidaValor,
+        motivoSancion,
         submitMasterTables,
         setFormDataTables,
         deleteMasterTables,
