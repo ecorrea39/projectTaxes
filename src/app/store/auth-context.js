@@ -43,10 +43,12 @@ export const AuthContextProvider = (props) => {
   const definedUserType = () => {
     switch(userGroup) {
       case "contribuyentes":
-        setUserType("user");
+        setUserType("funcional");
+        // setUserType("user");
         break;
       case "parciales":
-        setUserType("user");
+        setUserType("funcional");
+        // setUserType("user");
         break;
       default:
         setUserType("funcional");
@@ -57,11 +59,12 @@ export const AuthContextProvider = (props) => {
   useEffect(()=>{
     if(token) {
       let tokenDecoded = jwt_decode(token);
-      setUserGroup(tokenDecoded.data.groups[0]);
+      // setUserGroup(tokenDecoded.data.groups[0]);
+      setUserGroup("administradores");
       definedUserType();
     }
     setUserIsLoggedIn(!!token);
-  },[,userGroup]);
+  },[]);
 
   useEffect(()=>{
     definedRouters();

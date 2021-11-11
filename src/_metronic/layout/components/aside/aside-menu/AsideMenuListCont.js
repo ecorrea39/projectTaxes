@@ -1,23 +1,12 @@
 import React from "react";
-import { useLocation } from "react-router";
-import { checkIsActive } from "../../../../_helpers";
-import { LinksTributos } from "./linksTributos";
-import { LinksPerfil } from "./linksPerfil";
-import { LinksRepotes } from "./linksReportes";
 import { NavLink } from "react-router-dom";
 
 export function AsideMenuListCont({ userGroup, links }) {
 
-    const location = useLocation();
-    const getMenuItemActive = (url, hasSubmenu = false) => {
-        return checkIsActive(location, url)
-        ? ` ${!hasSubmenu && "menu-item-active"} menu-item-open menu-item-not-hightlighted` : "";
-    };
-
     const CreateLink = ({link}) => {
 
         return (
-            <>
+        <>
             { link.groups.indexOf(userGroup) > -1 &&
             <>
                 <li className="menu-section">
@@ -38,10 +27,8 @@ export function AsideMenuListCont({ userGroup, links }) {
                 }
             </>
             }
-            </>
+        </>
         )
-        
-
     }
 
     return ( 

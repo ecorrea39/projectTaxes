@@ -46,6 +46,7 @@ export const RouterPublic = ({isAuth}) => {
 };
 
 export const RouterPrivate = ({isAuth,pathList}) => {
+  console.log(pathList)
     return (
         <>
         {
@@ -56,10 +57,10 @@ export const RouterPrivate = ({isAuth,pathList}) => {
               ))
             }
               <Route exact path="/" render={() =>{
-                return <Redirect to="/dashboard" />
+                return <Redirect to="/panel" />
               }} />
               <Route path="/auth" render={() =>{
-                return <Redirect from="/auth" to="/dashboard" />
+                return <Redirect from="/auth" to="/panel" />
               }} />
               <PrivateRoute exact path="/logout" component={Logout} isAuth={isAuth} />
               <PrivateRoute exact path="/error/pagina-no-encontrada" component={ErrorPage1} isAuth={isAuth} />

@@ -35,6 +35,9 @@ const TaxesPage = lazy(() =>
 const AccountStatusPage = lazy(() =>
   import ("../pages/accountStatus")
 );
+const GroupsPage = lazy(() =>
+  import ("../pages/panelAdmin/groups")
+);
 
 
 /**
@@ -121,6 +124,18 @@ export const PathListContribuyente = [
 
 export const PathListFuncional = [
   {
+    path: "/panel",
+    groups: ["administradores"],
+    name: "Panel Dashboard",
+    component: DashboardPage
+  },
+  {
+    path: "/panel/grupos",
+    groups: ["administradores"],
+    name: "Grupos usuarios",
+    component: GroupsPage
+  },
+  {
     path: "/tablas/:tabla",
     groups: ["administradores"],
     name: "Trimestres",
@@ -143,6 +158,21 @@ export const PathListFuncional = [
  */
 export const navFuncional = [
   {
+    titleSection: "Configuración",
+    title: "Usuarios",
+    groups: ["administradores"],
+    icon: "",
+    childrens: [
+      {
+        title: "Grupos",
+        url: "/panel/grupos",
+        icon: "",
+        slug: "panel-grupos",
+      }
+    ]
+  },
+  {
+    titleSection: "Configuración",
     title: "Tablas Maestras",
     groups: ["administradores"],
     icon: "",
@@ -186,6 +216,7 @@ export const navFuncional = [
     ]
   },
   {
+    titleSection: "Generar Repotes",
     title: "Reportes",
     groups: ["administradores"],
     icon: "",

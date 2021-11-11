@@ -6,7 +6,7 @@ import SVG from "react-inlinesvg";
 import { toAbsoluteUrl } from "../../../../_helpers";
 import { AsideMenuListCont } from "./AsideMenuListCont";
 import AuthContext from "../../../../../app/store/auth-context";
-import { navContribuyentes } from "../../../../../app/router/helperRoute";
+import { navContribuyentes, navFuncional } from "../../../../../app/router/helperRoute";
 
 export function AsideMenu({disableScroll}) {
 
@@ -49,7 +49,7 @@ export function AsideMenu({disableScroll}) {
           {/*end::1 Level*/}
           {
             userType == "funcional" ? 
-              <AsideMenuListFunc userGroup={userGroup} />
+              <AsideMenuListFunc userGroup={userGroup} links={navFuncional} />
             : <AsideMenuListCont links={navContribuyentes} userGroup={userGroup} />
           }
         
