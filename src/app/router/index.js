@@ -8,15 +8,29 @@ import MasterTablesPage from "../pages/masterTables";
 import ReportsPage from "../pages/reports";
 import { PrivateRoute, PublicRoute } from "./helperRoute";
 import { ErrorPage1 } from "../modules/ErrorsExamples/ErrorPage1";
+import UserVerificationRequest from "../modules/Auth/pages/UserVerificationRequest";
+import VerificationCodeRequest from "../modules/Auth/pages/VerificationCodeRequest";
+import Registration from "../modules/Auth/pages/Registration";
+import ForgotPassword from "../modules/Auth/pages/ForgotPassword";
 
 export const RouterPublic = ({isAuth}) => {
     return (
         <>
         {
           <Switch>
-
+            {/*
             <PublicRoute exact path="/" component={AuthPage} isAuth={isAuth} />
             <PublicRoute exact path="/auth/login" component={AuthPage} isAuth={isAuth} />
+            <PublicRoute exact path="/auth/forgot-password" component={ForgotPassword} isAuth={isAuth} />
+            <PublicRoute exact path="/auth/registration" component={Registration} isAuth={isAuth} />
+            <PublicRoute exact path="/auth/user-verification-request" component={UserVerificationRequest} isAuth={isAuth} />
+            <PublicRoute exact path="/auth/verification-code-request" component={VerificationCodeRequest} isAuth={isAuth} />
+            */}
+            {/** ESTO SE DEBE CAMBIAR - PARA CAMBIAR ESTO SE DEBE DE MEJORAR LOS COMPONENES/PAGINAS DE AUTHPAGE */}
+            <Route>
+              <AuthPage />
+            </Route>
+            
             <Route exact path="/auth" render={() =>{
               return <Redirect to="/auth/login" />
             }} />

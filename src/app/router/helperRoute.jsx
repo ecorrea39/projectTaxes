@@ -203,7 +203,7 @@ export const navFuncional = [
 export const navContribuyentes = [
   {
     title: "Tributos",
-    groups: ["Contribuyentes"],
+    groups: ["contribuyentes"],
     icon: "",
     childrens: [
       {
@@ -240,7 +240,7 @@ export const navContribuyentes = [
   },
   {
     title: "Reportes",
-    groups: ["Contribuyentes"],
+    groups: ["contribuyentes"],
     childrens: [
       {
         title: "Comprobante de inscripción",
@@ -258,7 +258,7 @@ export const navContribuyentes = [
   },
   {
     title: "Perfil del contribuyente",
-    groups: ["Contribuyentes", "parciales"],
+    groups: ["contribuyentes", "parciales"],
     childrens: [
       {
         title: "Modificar perfil",
@@ -282,7 +282,7 @@ export const navContribuyentes = [
   },
   {
     title: "Tributos",
-    groups: ["Contribuyentes"],
+    groups: ["contribuyentes"],
     childrens: []
   }
 ];
