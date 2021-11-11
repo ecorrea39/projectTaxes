@@ -102,8 +102,6 @@ function Login(props) {
     onSubmit: (values, {setStatus, setSubmitting}) => {
       enableLoading();
 
-      console.log("values", values);
-
       const axiosConfig = {
         headers: {
           Accept: 'application/vnd.api+json',
@@ -112,8 +110,6 @@ function Login(props) {
       };
 
       axios.get(`${API_URL}users/authentication/`, axiosConfig).then((res) => {
-
-        //console.log("loginRes", res);
 
         disableLoading();
         setSubmitting(false);
@@ -130,8 +126,8 @@ function Login(props) {
         localStorage.setItem('phone_number_mobile', attr.phone_number_mobile);
         localStorage.setItem('groups', attr.groups);
 
-        // window.location.href = '/dashboard';
         authCtx.login(attr.authorization.token);
+        window.location.href = '/dashboard';
 
       }).catch((err) => {
         console.log("errorEnConsulta", err);
