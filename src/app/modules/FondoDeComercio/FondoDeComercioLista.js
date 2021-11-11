@@ -132,7 +132,7 @@ const FondoDeComercioLista = (props) => {
     };
 
     return (
-      <Button key="edit" onClick={handleEditar} style={{backgroundColor: 'red'}} icon>
+      <Button key="edit" onClick={handleEditar} style={{backgroundColor: 'red'}} icon="true">
         Editar
       </Button>
     );
@@ -142,7 +142,7 @@ const FondoDeComercioLista = (props) => {
     <Fragment>
       <Row>
         <Col md={12}>
-          <Button key="crear" onClick={handleClickCrear} style={{backgroundColor: 'default'}} icon>
+          <Button key="crear" onClick={handleClickCrear} style={{backgroundColor: 'default'}} icon="true">
             Crear
           </Button>
         </Col>
@@ -160,6 +160,7 @@ const FondoDeComercioLista = (props) => {
               fixedHeader
               fixedHeaderScrollHeight="600px"
               progressPending={pending}
+              noDataComponent="No existen datos para mostrar"
               // onRowClicked={onRowClicked}
               // selectableRows={true}
               // selectableRowsSingle={true}

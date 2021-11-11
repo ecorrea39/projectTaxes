@@ -138,18 +138,15 @@ function Login(props) {
         if (err.response !== undefined && err.response !== null) {
           let txt = '';
           switch (err.response.status) {
-            case 423:
-              txt = 'Actualización de contraseña requerida';
-              break;
             case 401:
               txt = 'Credenciales inválidas';
               break;
-            case 424:
-              txt = 'Desafío captcha usado. Por favor resuélvalo nuevamente';
-              setTimeout(() => {
-                window.location.href = '/signin';
-              }, 3000);
-              break;
+            // case 424:
+            //   txt = 'Desafío captcha usado. Por favor resuélvalo nuevamente';
+            //   setTimeout(() => {
+            //     window.location.href = '/signin';
+            //   }, 3000);
+            //   break;
             default:
               txt = 'Error al registrar usuario';
           }

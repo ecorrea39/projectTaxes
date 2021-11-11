@@ -41,6 +41,9 @@ const ReporteComprobanteDeInscripcionPage = lazy(() =>
 const CrearFondosDeComercioPage = lazy(() =>
   import("./modules/FondoDeComercio/FondoDeComercioCrear")
 );
+  const ActasDeAsambleaPage = lazy(() =>
+    import("./modules/ActaDeAsamblea/ActaDeAsamblea")
+  );
 
 export default function BasePage() {
 
@@ -56,21 +59,28 @@ export default function BasePage() {
 
   return (
     <Suspense fallback={<LayoutSplashScreen />}>
-    <Switch>
-      <PrivateRoute exact path="/dashboard" component={DashboardPage} isAuth={isAuthorized} />
-      <PrivateRoute exact path="/tributos" component={TaxesPage} isAuth={isAuthorized} />
-      <PrivateRoute exact path="/estado-cuentas" component={AccountStatusPage} isAuth={isAuthorized} />
-      <PrivateRoute exact path="/tablas/:tabla" component={MasterTablesPage} isAuth={isAuthorized} />
-      <PrivateRoute exact path="/reportes/:reporte" component={ReportsPage} isAuth={isAuthorized} />
-      <PrivateRoute exact path="/user-profile" component={UserProfilePage} isAuth={isAuthorized} />
-      <PrivateRoute exact path="/user-datos" component={UserDatosPage} isAuth={isAuthorized} />
-      <PrivateRoute exact path="/mapa" component={MapaPage} isAuth={isAuthorized} />
-      <PrivateRoute exact path="/fondosdecomercio" component={FondosDeComercioPage} isAuth={isAuthorized} />
-      <PrivateRoute exact path="/comprobantedeinscripcion" component={ReporteComprobanteDeInscripcionPage} isAuth={isAuthorized} />
-      <PrivateRoute exact path="/crearfondocomercio" component={CrearFondosDeComercioPage} isAuth={isAuthorized} />
-      <Route exact path="/" render={() =>{
-        return <Redirect to={isAuthorized ? "/dashboard" : "/auth/login"} />
-      }} />
+      <Switch>
+        {
+          /* Redirect from root URL to /dashboard. */
+          <Redirect exact from="/" to="/dashboard" />
+        }
+        <ContentRoute path="/dashboard" component={DashboardPage} />
+        <Route exact path="/tributos" component={TaxesPage}  />
+        <Route exact path="/estado-cuentas" component={AccountStatusPage} />
+        <Route exact path="/tablas/:tabla" component={MasterTablesPage} />
+        <Route exact path="/reportes/:reporte" component={ReportsPage} />
+        <ContentRoute path="/builder" component={BuilderPage} />
+        <ContentRoute path="/my-page" component={MyPage} />
+        <Route path="/google-material" component={GoogleMaterialPage} />
+        <Route path="/react-bootstrap" component={ReactBootstrapPage} />
+        <Route path="/e-commerce" component={ECommercePage} />
+        <Route path="/user-profile" component={UserProfilePage} />
+        <Route path="/user-datos" component={UserDatosPage} />
+        <Route path="/mapa" component={MapaPage} />
+        <Route path="/fondosdecomercio" component={FondosDeComercioPage} />
+        <Route path="/comprobantedeinscripcion" component={ReporteComprobanteDeInscripcionPage} />
+        <Route path="/crearfondocomercio" component={CrearFondosDeComercioPage} />
+        <Route path="/actasdeasamblea" component={ActasDeAsambleaPage} />
 
     </Switch>
   </Suspense>

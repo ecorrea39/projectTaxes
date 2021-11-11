@@ -1,10 +1,6 @@
 import React, { lazy } from 'react';
 import {Redirect, Route} from 'react-router-dom';
-import AccountStatusPage from '../pages/accountStatus';
 import { DashboardPage } from "../pages/DashboardPage";
-import MasterTablesPage from '../pages/masterTables';
-import ReportsPage from '../pages/reports';
-import TaxesPage from '../pages/taxes';
 
 const UserDatosPage = lazy(() =>
   import("../modules/User/UserDatos")
@@ -21,6 +17,25 @@ const ReporteComprobanteDeInscripcionPage = lazy(() =>
 const CrearFondosDeComercioPage = lazy(() =>
   import("../modules/FondoDeComercio/FondoDeComercioCrear")
 );
+const ActasDeAsambleaPage = lazy(() =>
+  import("../modules/ActaDeAsamblea/ActaDeAsamblea")
+);
+const UserProfilePage = lazy(() =>
+  import("../modules/UserProfile/UserProfilePage")
+);
+const MasterTablesPage = lazy(() =>
+  import("../pages/masterTables")
+);
+const ReportsPage = lazy(() =>
+  import ("../pages/reports")
+);
+const TaxesPage = lazy(() =>
+  import ("../pages/taxes")
+);
+const AccountStatusPage = lazy(() =>
+  import ("../pages/accountStatus")
+);
+
 
 /**
  * En este objeto se definen la estrutura de las rutas que se crearan segun el grupo del usuario que se logea en la app.
@@ -49,7 +64,7 @@ export const PathListContribuyente = [
     component: AccountStatusPage
   },
   {
-    path: "/fondosdecomercio",
+    path: "/fondos-de-comercio",
     groups: ["contribuyentes"],
     name: "Fondos de Comercio",
     component: FondosDeComercioPage
@@ -61,13 +76,19 @@ export const PathListContribuyente = [
     component: CrearFondosDeComercioPage
   },
   {
+    path: "/actas-de-asamblea",
+    groups: ["contribuyentes"],
+    name: "Crear Fondos de Comercio",
+    component: ActasDeAsambleaPage
+  },
+  {
     path: "/user-datos",
     groups: ["contribuyentes"],
     name: "Entidad de trabajo",
     component: UserDatosPage
   },
   {
-    path: "/comprobantedeinscripcion",
+    path: "/comprobante-de-inscripcion",
     groups: ["contribuyentes"],
     name: "Comprobante de inscripción",
     component: ReporteComprobanteDeInscripcionPage
@@ -75,7 +96,7 @@ export const PathListContribuyente = [
   {
     path: "/reportes/certificado-solvencia",
     groups: ["contribuyentes"],
-    name: "Certificado de solvencian",
+    name: "Certificado de solvencia",
     component: ReportsPage
   },
   {
@@ -83,6 +104,12 @@ export const PathListContribuyente = [
     groups: ["contribuyentes", "parciales"],
     name: "Modificar perfil",
     component: UserDatosPage
+  },
+  {
+    path: "/user-profile",
+    groups: ["contribuyentes", "parciales"],
+    name: "user-profile",
+    component: UserProfilePage
   },
   {
     path: "/user-datos",
@@ -155,12 +182,6 @@ export const navFuncional = [
         url: "/tablas/clase-empresa",
         icon: "",
         slug: "tablas-clase-empresa",
-      },
-      {
-        title: "Clase de entidad de trabajo",
-        url: "/tablas/clase-empresa",
-        icon: "",
-        slug: "tablas-clase-empresa",
       }
     ]
   },
@@ -205,9 +226,15 @@ export const navContribuyentes = [
       },
       {
         title: "Fondos de Comercio",
-        url: "/fondosdecomercio",
+        url: "/fondo-de-comercio",
         icon: "",
         slug: "fondos-de-Comercio",
+      },
+      {
+        title: "Actas de asamblea",
+        url: "/actas-de-asamblea",
+        icon: "",
+        slug: "actas-de-asamblea",
       }
     ]
   },
@@ -217,7 +244,7 @@ export const navContribuyentes = [
     childrens: [
       {
         title: "Comprobante de inscripción",
-        url: "/comprobantedeinscripcion",
+        url: "/comprobante-de-inscripcion",
         icon: "",
         slug: "comprobante-de-inscripción",
       },
@@ -238,6 +265,12 @@ export const navContribuyentes = [
         url: "/user-datos",
         icon: "",
         slug: "modificar-perfil",
+      },
+      {
+        title: "user-profile",
+        url: "/user-profile",
+        icon: "",
+        slug: "user-profile",
       },
       {
         title: "Cambiar clave",

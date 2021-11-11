@@ -2,31 +2,38 @@ import React, { useContext, useEffect, useState } from "react";
 import { Field } from "formik";
 import { Button, Col, Row } from "react-bootstrap";
 import BaseInput from "../Forms/BaseInputs";
-import BaseSelect from "../Forms/BaseSelect";
 import MasterTablesContext from "../../context/masterTables/masterTablesContext";
 
-export const BaseFormik = ({formik, props}) => {
+export const BaseFormikMedidaValor = ({formik, props}) => {
 
     const { registroSeleccionado, validarDescripcion } = useContext(MasterTablesContext);
 
     useEffect(() => {
         if(props.accion === 'Modificar') {
             formik.setFieldValue("id", registroSeleccionado.id);
-            formik.setFieldValue("name", registroSeleccionado.name);
-            formik.setFieldValue("is_active", registroSeleccionado.is_active);
+            formik.setFieldValue("fecha", registroSeleccionado.fecha);
+            formik.setFieldValue("valor", registroSeleccionado.valor);
         }
     },[]);
 
     return (
         <>
             <Row className="mt-4 mb-8">
-                <Col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
-                    <label htmlFor="name" className="font-weight-bold">Descripción</label>
+                <Col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12" className="mb-4">
+                    <label htmlFor="fecha" className="font-weight-bold">Fecha</label>
                     <Field
-                        id="name"
-                        name="name"
+                        id="fecha"
+                        name="fecha"
                         component={BaseInput}
-                        onKeyUp={(e) => validarDescripcion(e, props)}
+                        type="date"
+                    />
+                </Col>
+                <Col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
+                    <label htmlFor="valor" className="font-weight-bold">Valor</label>
+                    <Field
+                        id="valor"
+                        name="valor"
+                        component={BaseInput}
                     />
                 </Col>
             </Row>

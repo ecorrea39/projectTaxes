@@ -9,16 +9,42 @@ import BaseInput from "../Forms/BaseInputs";
 import BaseSelect from "../Forms/BaseSelect";
 import Checkbox from "../Forms/BaseCheckbox";
 import ModalHeader from "react-bootstrap/ModalHeader";
-import { initialValuesTablesCol1, initialValuesTablesCol2, initialValuesTablesCol3, initialValuesTablesCol4 } from "./initialValues";
-import { SchemaTablesCol1, SchemaTablesCol2, SchemaTablesCol3, SchemaTablesCol4  } from "./validateSchemas";
+import { initialValuesTablesCol1,
+         initialValuesTablesCol2,
+         initialValuesTablesCol3,
+         initialValuesTablesCol4,
+         initialValuesTablesCol5,
+         initialValuesTablesCol6,
+         initialValuesTablesCol7,
+         initialValuesTablesCol8,
+         initialValuesTablesCol9,
+         initialValuesTablesCol10 } from "./initialValues";
+
+import { SchemaTablesCol1,
+         SchemaTablesCol2,
+         SchemaTablesCol3,
+         SchemaTablesCol4,
+         SchemaTablesCol5,
+         SchemaTablesCol6,
+         SchemaTablesCol7,
+         SchemaTablesCol8,
+         SchemaTablesCol9,
+         SchemaTablesCol10 } from "./validateSchemas";
+
 import { BaseFormik } from "./baseFormik";
 import { BaseFormikBancosRecaudadores } from "./baseFormikBancosRecaudadores";
 import { BaseFormikClaseEmpresas } from "./baseFormikClaseEmpresas";
 import { BaseFormikCuentasRecaudadoras } from "./baseFormikCuentasRecaudadoras";
+import { BaseFormikActividadEconomica } from "./baseFormikActividadEconomica";
+import { BaseFormikConceptos } from "./baseFormikConceptos";
+import { BaseFormikRegistrosMercantiles } from './baseFormikRegistrosMercantiles';
+import { BaseFormikMedidaValor } from './baseFormikMedidaValor';
+import { BaseFormikMotivoSancion } from './baseFormikMotivoSancion';
+import { BaseFormikDiasFestivos } from "./baseFormikDiasFestivos";
 
 function ModalMasterTables(props) {
 
-    const { bancos, submitMasterTables, setFormDataTables, registroSeleccionado } = useContext(MasterTablesContext);
+    const { bancos, motores, estados, submitMasterTables, setFormDataTables, registroSeleccionado } = useContext(MasterTablesContext);
 
     let initialValuesTables = "";
     let schemaTables = ""
@@ -52,6 +78,41 @@ function ModalMasterTables(props) {
         case "cuentas-recaudadoras":
             initialValuesTables = initialValuesTablesCol2;
             schemaTables = SchemaTablesCol2;
+            break;
+
+        case "motores-productivos":
+            initialValuesTables = initialValuesTablesCol1;
+            schemaTables = SchemaTablesCol1;
+            break;
+
+        case "actividad-economica":
+            initialValuesTables = initialValuesTablesCol5;
+            schemaTables = SchemaTablesCol5;
+            break;
+
+        case "conceptos":
+            initialValuesTables = initialValuesTablesCol6;
+            schemaTables = SchemaTablesCol6;
+            break;
+
+        case "registros-mercantiles":
+            initialValuesTables = initialValuesTablesCol7;
+            schemaTables = SchemaTablesCol7;
+            break;
+
+        case "medida-valor":
+            initialValuesTables = initialValuesTablesCol8;
+            schemaTables = SchemaTablesCol8;
+            break;
+
+        case "motivo-sancion":
+            initialValuesTables = initialValuesTablesCol9;
+            schemaTables = SchemaTablesCol9;
+            break;
+
+        case "dias-festivos":
+            initialValuesTables = initialValuesTablesCol10;
+            schemaTables = SchemaTablesCol10;
             break;
 
         default:
@@ -111,7 +172,50 @@ function ModalMasterTables(props) {
                                                 props={props}
                                             />
                                         }
-
+                                        {
+                                            props.columnas === 'col-5' &&
+                                            <BaseFormikActividadEconomica
+                                                formik={formik}
+                                                props={props}
+                                                motores={motores}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-6' &&
+                                            <BaseFormikConceptos
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-7' &&
+                                            <BaseFormikRegistrosMercantiles
+                                                formik={formik}
+                                                props={props}
+                                                estados={estados}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-8' &&
+                                            <BaseFormikMedidaValor
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-9' &&
+                                            <BaseFormikMotivoSancion
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-10' &&
+                                            <BaseFormikDiasFestivos
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
                                         <Row className="mb-2" style={{justifyContent: "center"}}>
                                             <Col className="mb-2" xs="6" sm="6" md="6" lg="6" xl="6" xxl="6" >
                                                 <Button onClick={() => props.onHide()}
