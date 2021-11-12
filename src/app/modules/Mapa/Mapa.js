@@ -53,6 +53,21 @@ const Mapa = (props) => {
 
           setMostrarRespuesta(true);
 
+
+
+          //Bloque que se deja de ejemplo para guiarse al extraer una unidad estadal por el id guardado en la tabla estado
+          axios.get(`${API_URL}unidad_estadal/3/`, axiosConfig)
+            .then(function (res) {
+              console.log("unidad_estadal::", res);
+            })
+            .catch((err) => {
+              console.log("err", err);
+              alert("Error en la carga de unidad_estadal");
+            });
+
+
+
+
         } catch (err) {
           console.warn(err);
         }
@@ -118,7 +133,9 @@ const Mapa = (props) => {
 
         &&
 
-        <h4><span style={textLabelColor}>En {estadoSeleccionado}, de {cantidadDeEmpresas} empresa(s) tributan {cantidadDeEmpresasQueTributan} ({porcentajeDeEmpresasQueTributan})</span></h4>
+        <h4><span
+          style={textLabelColor}>En {estadoSeleccionado}, de {cantidadDeEmpresas} empresa(s) tributan {cantidadDeEmpresasQueTributan} ({porcentajeDeEmpresasQueTributan})</span>
+        </h4>
       }
 
 
