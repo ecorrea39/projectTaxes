@@ -1,17 +1,8 @@
-import React, { lazy } from "react";
+import React from "react";
 import {  Switch, Route, Redirect } from 'react-router-dom'
 import { AuthPage, Logout } from "../modules/Auth";
-import { DashboardPage } from "../pages/DashboardPage";
-import TaxesPage from "../pages/taxes";
-import AccountStatusPage from "../pages/accountStatus";
-import MasterTablesPage from "../pages/masterTables";
-import ReportsPage from "../pages/reports";
 import { PrivateRoute, PublicRoute } from "./helperRoute";
 import { ErrorPage1 } from "../modules/ErrorsExamples/ErrorPage1";
-import UserVerificationRequest from "../modules/Auth/pages/UserVerificationRequest";
-import VerificationCodeRequest from "../modules/Auth/pages/VerificationCodeRequest";
-import Registration from "../modules/Auth/pages/Registration";
-import ForgotPassword from "../modules/Auth/pages/ForgotPassword";
 
 export const RouterPublic = ({isAuth}) => {
     return (
@@ -45,8 +36,7 @@ export const RouterPublic = ({isAuth}) => {
       )
 };
 
-export const RouterPrivate = ({isAuth,pathList}) => {
-  console.log(pathList)
+export const RouterPrivate = ({isAuth,pathList,urlDash}) => {
     return (
         <>
         {
@@ -57,7 +47,7 @@ export const RouterPrivate = ({isAuth,pathList}) => {
               ))
             }
               <Route exact path="/" render={() =>{
-                return <Redirect to="/panel" />
+                return <Redirect to={urlDash} />
               }} />
               <Route path="/auth" render={() =>{
                 return <Redirect from="/auth" to="/panel" />

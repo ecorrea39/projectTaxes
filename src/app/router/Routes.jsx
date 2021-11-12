@@ -8,11 +8,12 @@ export const Routes = () => {
   const authCtx = useContext(AuthContext);
   let isAuthorized = authCtx.isLoggedIn;
   const PathList = authCtx.accesRouters;
+  const urlDash = authCtx.urlDash;
 
     return (
       <>
         {isAuthorized
-          ? <Layout> <RouterPrivate isAuth={isAuthorized} pathList={PathList} /> </Layout>
+          ? <Layout> <RouterPrivate isAuth={isAuthorized} pathList={PathList} urlDash={urlDash} /> </Layout>
           : <RouterPublic isAuth={isAuthorized} pathList={PathList} />
         }
       </>

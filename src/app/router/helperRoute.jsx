@@ -11,9 +11,6 @@ const MapaPage = lazy(() =>
 const FondosDeComercioPage = lazy(() =>
   import("../modules/FondoDeComercio/FondoDeComercio")
 );
-const ReporteComprobanteDeInscripcionPage = lazy(() =>
-  import("../modules/Reports/ComprobanteDeInscripcion")
-);
 const CrearFondosDeComercioPage = lazy(() =>
   import("../modules/FondoDeComercio/FondoDeComercioCrear")
 );
@@ -91,13 +88,7 @@ export const PathListContribuyente = [
     component: UserDatosPage
   },
   {
-    path: "/comprobante-de-inscripcion",
-    groups: ["contribuyentes"],
-    name: "Comprobante de inscripción",
-    component: ReporteComprobanteDeInscripcionPage
-  },
-  {
-    path: "/reportes/certificado-solvencia",
+    path: "/reportes/:reporte",
     groups: ["contribuyentes"],
     name: "Certificado de solvencia",
     component: ReportsPage
@@ -323,7 +314,7 @@ export const navContribuyentes = [
     childrens: [
       {
         title: "Comprobante de inscripción",
-        url: "/comprobante-de-inscripcion",
+        url: "/reportes/comprobante-de-inscripcion",
         icon: "",
         slug: "comprobante-de-inscripción",
       },

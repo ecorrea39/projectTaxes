@@ -127,11 +127,7 @@ function Login(props) {
         localStorage.setItem('groups', attr.groups);
 
         authCtx.login(attr.authorization.token);
-        if(authCtx.userType == "user") {
-          window.location.href = '/dashboard';
-        } else {
-          window.location.href = '/panel';
-        }
+        window.location.href = '/';
 
       }).catch((err) => {
         console.log("errorEnConsulta", err);

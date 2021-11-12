@@ -3,6 +3,7 @@ import ReportsContext from "../../context/reports/reportsContext";
 import TitleFormReports from "./titleFormReports";
 import ReportsCertificateSolvency from './reportsCertificateSolvency';
 import { useParams } from 'react-router-dom';
+import ComprobanteDeInscripcion from "./ComprobanteDeInscripcion";
 
 function ReportsModule() {
 
@@ -20,9 +21,8 @@ function ReportsModule() {
                     </div>
                     {/* Body */}
                     <div className="card-body d-flex flex-column">
-                        {
-                            (reporte === 'certificado-solvencia') ? <ReportsCertificateSolvency /> : ''
-                        }
+                        { reporte === 'certificado-solvencia' && <ReportsCertificateSolvency /> }
+                        { reporte === 'comprobante-de-inscripcion' && <ComprobanteDeInscripcion /> }
                     </div>
                 </div>
             </div>
