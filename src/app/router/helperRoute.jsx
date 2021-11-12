@@ -181,37 +181,85 @@ export const navFuncional = [
         title: "Trimestres",
         url: "/tablas/trimestre",
         icon: "",
-        slug: "tablas-trimestre",
+        slug: "tablas-trimestre"
       },
       {
-        title: "Formas de pago",
+        title: "Formas de Pago",
         url: "/tablas/forma-pago",
         icon: "",
-        slug: "tablas-forma-pago",
+        slug: "tablas-forma-pago"
       },
       {
-        title: "Bancos recaudadores",
+        title: "Bancos Recaudadores",
         url: "/tablas/bancos-recaudadores",
         icon: "",
-        slug: "tablas-bancos-recaudadores",
+        slug: "tablas-bancos-recaudadores"
       },
       {
         title: "Cuentas Recaudadoras",
         url: "/tablas/cuentas-recaudadoras",
         icon: "",
-        slug: "tablas-cuentas-recaudadoras",
+        slug: "tablas-cuentas-recaudadoras"
       },
       {
-        title: "Estatus entidad de trabajo",
+        title: "Estatus Entidad de Trabajo",
         url: "/tablas/estatus-entidad-trabajo",
         icon: "",
-        slug: "tablas-estatus-entidad-trabajo",
+        slug: "tablas-estatus-entidad-trabajo"
       },
       {
-        title: "Clase de entidad de trabajo",
+        title: "Clase de Entidad de Trabajo",
         url: "/tablas/clase-empresa",
         icon: "",
-        slug: "tablas-clase-empresa",
+        slug: "tablas-clase-empresa"
+      },
+      {
+        title: "Motores Productivos",
+        url: "/tablas/motores-productivos",
+        icon: "",
+        slug: "tablas-motores-productivos"
+      },
+      {
+        title: "Actividades Económicas",
+        url: "/tablas/actividad-economica",
+        icon: "",
+        slug: "tablas-actividad-economica"
+      },
+      {
+        title: "Conceptos",
+        url: "/tablas/conceptos",
+        icon: "",
+        slug: "tablas-conceptos"
+      },
+      {
+        title: "Registros Mercantiles",
+        url: "/tablas/registros-mercantiles",
+        icon: "",
+        slug: "tablas-registros-mercantiles"
+      },
+      {
+        title: "Medida Valor",
+        url: "/tablas/medida-valor",
+        icon: "",
+        slug: "tablas-medida-valor"
+      },
+      {
+        title: "Motivos de Sanción",
+        url: "/tablas/motivo-sancion",
+        icon: "",
+        slug: "tablas-motivo-sancion"
+      },
+      {
+        title: "Días Festivos",
+        url: "/tablas/dias-festivos",
+        icon: "",
+        slug: "tablas-dias-festivos"
+      },
+      {
+        title: "Tasas de Intereses",
+        url: "/tablas/tasa-intereses",
+        icon: "",
+        slug: "tablas-tasa-intereses"
       }
     ]
   },

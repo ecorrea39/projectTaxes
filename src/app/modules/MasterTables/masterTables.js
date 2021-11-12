@@ -594,7 +594,7 @@ function MasterTables({tabla}) {
             break;
 
         case "motivo-sancion":
-            titulo = "Motivo de Sanción";
+            titulo = "Motivos de Sanción";
             data = motivoSancion;
             columnas = "col-9";
             colTab = columnas09;

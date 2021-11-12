@@ -55,7 +55,7 @@ function MasterTablesModule() {
             break;
 
         case "motivo-sancion":
-            title = "Motivo de Sanción";
+            title = "Motivos de Sanción";
             break;
 
         case "dias-festivos":
