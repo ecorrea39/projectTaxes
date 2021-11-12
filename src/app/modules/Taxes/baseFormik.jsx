@@ -21,6 +21,7 @@ export const BaseFormik = ({conceptos,formik,listDeclaraciones}) => {
     const calcularCreditoFiscal = (montoPagado) => {
         
         let resta = parseInt(montoPagado) - parseInt(totalTributoDeclarado);
+        console.log(totalTributoDeclarado)
         let array = formik.values.conceptos;
         let indice = array.indexOf("12");
         
@@ -48,14 +49,11 @@ export const BaseFormik = ({conceptos,formik,listDeclaraciones}) => {
         if (totalTributoDeclarado != null) {
             formik.setFieldValue("montoTributo", totalTributoDeclarado );
         }
+        calcularCreditoFiscal(formik.values.monto);
     },[totalTributoDeclarado]);
-
     useEffect(()=>{
-        if(totalTributoDeclarado > 0) {
-            calcularCreditoFiscal(formik.values.monto);
-        }
+        calcularCreditoFiscal(formik.values.monto);
     },[formik.values.monto]);
-
     useEffect(()=>{
         formik.setFieldValue("tributos", declaracionesRealizadas);
     },[]);
@@ -148,7 +146,7 @@ export const BaseFormik = ({conceptos,formik,listDeclaraciones}) => {
             </Row>
 
             {
-                formDataDeclaration.declaraciones && <InputsTaxes listDeclaraciones={listDeclaraciones} formik={formik} />
+                formDataDeclaration.declaraciones && <InputsTaxes listDeclaraciones={listDeclaraciones} formik={formik} calcularCreditoFiscal={calcularCreditoFiscal}/>
             }
             
             {
