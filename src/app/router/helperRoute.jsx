@@ -296,7 +296,7 @@ export const navContribuyentes = [
       },
       {
         title: "Fondos de Comercio",
-        url: "/fondo-de-comercio",
+        url: "/fondos-de-comercio",
         icon: "",
         slug: "fondos-de-Comercio",
       },
