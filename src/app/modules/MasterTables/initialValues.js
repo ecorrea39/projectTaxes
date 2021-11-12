@@ -60,10 +60,12 @@ export const initialValuesTablesCol10 = {
     fecha: ""
 }
 
-
-
-
-
-
-
-
+export const initialValuesTablesCol11 = {
+    ano: "",
+    mes: "",
+    tasa_bcv: "",
+    recargo_cot: "",
+    tasa_intereses_mora: "",
+    ngaceta: "",
+    fecha_gaceta: ""
+}

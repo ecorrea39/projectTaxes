@@ -18,7 +18,8 @@ import { initialValuesTablesCol1,
          initialValuesTablesCol7,
          initialValuesTablesCol8,
          initialValuesTablesCol9,
-         initialValuesTablesCol10 } from "./initialValues";
+         initialValuesTablesCol10,
+         initialValuesTablesCol11 } from "./initialValues";
 
 import { SchemaTablesCol1,
          SchemaTablesCol2,
@@ -29,7 +30,8 @@ import { SchemaTablesCol1,
          SchemaTablesCol7,
          SchemaTablesCol8,
          SchemaTablesCol9,
-         SchemaTablesCol10 } from "./validateSchemas";
+         SchemaTablesCol10,
+         SchemaTablesCol11 } from "./validateSchemas";
 
 import { BaseFormik } from "./baseFormik";
 import { BaseFormikBancosRecaudadores } from "./baseFormikBancosRecaudadores";
@@ -41,10 +43,11 @@ import { BaseFormikRegistrosMercantiles } from './baseFormikRegistrosMercantiles
 import { BaseFormikMedidaValor } from './baseFormikMedidaValor';
 import { BaseFormikMotivoSancion } from './baseFormikMotivoSancion';
 import { BaseFormikDiasFestivos } from "./baseFormikDiasFestivos";
+import { BaseFormikTasaIntereses } from './baseFormikTasaIntereses';
 
 function ModalMasterTables(props) {
 
-    const { bancos, motores, estados, submitMasterTables, setFormDataTables, registroSeleccionado } = useContext(MasterTablesContext);
+    const { bancos, motores, estados, anos, submitMasterTables, setFormDataTables, registroSeleccionado } = useContext(MasterTablesContext);
 
     let initialValuesTables = "";
     let schemaTables = ""
@@ -113,6 +116,11 @@ function ModalMasterTables(props) {
         case "dias-festivos":
             initialValuesTables = initialValuesTablesCol10;
             schemaTables = SchemaTablesCol10;
+            break;
+
+        case "tasa-intereses":
+            initialValuesTables = initialValuesTablesCol11;
+            schemaTables = SchemaTablesCol11;
             break;
 
         default:
@@ -214,6 +222,15 @@ function ModalMasterTables(props) {
                                             <BaseFormikDiasFestivos
                                                 formik={formik}
                                                 props={props}
+                                                anos={anos}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-11' &&
+                                            <BaseFormikTasaIntereses
+                                                formik={formik}
+                                                props={props}
+                                                anos={anos}
                                             />
                                         }
                                         <Row className="mb-2" style={{justifyContent: "center"}}>

@@ -20,6 +20,8 @@ export const MasterTablesState = ({ children }) => {
     const [medidaValor, setMedidaValor] = useState([]);
     const [motivoSancion, setMotivoSancion] = useState([]);
     const [diasFestivos, setDiasFestivos] = useState([]);
+    const [anos, setAnos] = useState([]);
+    const [tasaIntereses, setTasaIntereses] = useState([]);
     const [formDataTables, setFormDataTables] = useState({});
     const [registroSeleccionado, setRegistroSeleccionado] = useState({});
 
@@ -38,6 +40,8 @@ export const MasterTablesState = ({ children }) => {
         getMedidaValor();
         getMotivoSancion();
         getDiasFestivos();
+        getTasaIntereses();
+        getAnos();
     },[]);
 
     const getBancos = async () => {
@@ -410,6 +414,54 @@ export const MasterTablesState = ({ children }) => {
 
     }
 
+    const getTasaIntereses = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/tasa_intereses/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "ano": arreglo[i].attributes.ano,
+                        "mes": arreglo[i].attributes.mes,
+                        "tasa_bcv": arreglo[i].attributes.tasa_bcv,
+                        "recargo_cot": arreglo[i].attributes.recargo_cot,
+                        "tasa_intereses_mora": arreglo[i].attributes.tasa_intereses_mora,
+                        "ngaceta": arreglo[i].attributes.ngaceta,
+                        "fecha_gaceta": arreglo[i].attributes.fecha_gaceta
+                    }
+                )
+            });
+            lista.sort((a, b) => a.ano - b.ano ? -1 : +(a.ano > b.ano));
+            setTasaIntereses(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getAnos = async () => {
+
+        try {
+            let fecha = new Date();
+            let ano = Number(fecha.getFullYear())+1;
+            let res = [];
+            for (let i = 0; i < 11; i++) {
+                res.push(ano);
+                ano--;
+            }
+            setAnos(res);
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
     const obtenerValores = (valores) => {
         setRegistroSeleccionado(valores);
     }
@@ -579,6 +631,10 @@ export const MasterTablesState = ({ children }) => {
                             urlTabla = `/dias_festivos/${valores.id}`;
                             break;
 
+                        case "tasa-intereses":
+                            urlTabla = `/tasa_intereses/${valores.id}`;
+                            break;
+
                         default:
                             break;
                     }
@@ -592,62 +648,7 @@ export const MasterTablesState = ({ children }) => {
                         button: "Ok",
                         timer: 1500
                     }).then((value) => {
-                        switch (tabla) {
-                            case "trimestre":
-                                getTrimestres();
-                                break;
-
-                            case "forma-pago":
-                                getFormasPago();
-                                break;
-
-                            case "cuentas-recaudadoras":
-                                getCuentasRecaudadoras();
-                                break;
-
-                            case "estatus-entidad-trabajo":
-                                getEstatus();
-                                break;
-
-                            case "clase-empresa":
-                                getClaseEmpresa();
-                                break;
-
-                            case "bancos-recaudadores":
-                                getBancos();
-                                break;
-
-                            case "motores-productivos":
-                                getMotores();
-                                break;
-
-                            case "actividad-economica":
-                                getActividadesEconomicas();
-                                break;
-
-                            case "conceptos":
-                                getConceptos();
-                                break;
-
-                            case "registros-mercantiles":
-                                getRegistrosMercantiles();
-                                break;
-
-                            case "medida-valor":
-                                getMedidaValor();
-                                break;
-
-                            case "motivo-sancion":
-                                getMotivoSancion();
-                                break;
-
-                            case "dias-festivos":
-                                getDiasFestivos();
-                                break;
-
-                            default:
-                                break;
-                        }
+                        actualizarTablas(tabla);
                     });
                 }
             });
@@ -735,6 +736,11 @@ export const MasterTablesState = ({ children }) => {
                     urlTabla = "/dias_festivos/";
                     break;
 
+                case "tasa-intereses":
+                    dataType = "saveTasaIntereses";
+                    urlTabla = "/tasa_intereses/";
+                    break;
+
                 default:
                     break;
             }
@@ -759,62 +765,7 @@ export const MasterTablesState = ({ children }) => {
                 button: "Ok",
                 timer: 1500
             }).then((value) => {
-                switch (props.tabla) {
-                    case "trimestre":
-                        getTrimestres();
-                        break;
-
-                    case "forma-pago":
-                        getFormasPago();
-                        break;
-
-                    case "cuentas-recaudadoras":
-                        getCuentasRecaudadoras();
-                        break;
-
-                    case "estatus-entidad-trabajo":
-                        getEstatus();
-                        break;
-
-                    case "clase-empresa":
-                        getClaseEmpresa();
-                        break;
-
-                    case "bancos-recaudadores":
-                        getBancos();
-                        break;
-
-                    case "motores-productivos":
-                        getMotores();
-                        break;
-
-                    case "actividad-economica":
-                        getActividadesEconomicas();
-                        break;
-
-                    case "conceptos":
-                        getConceptos();
-                        break;
-
-                    case "registros-mercantiles":
-                        getRegistrosMercantiles();
-                        break;
-
-                    case "medida-valor":
-                        getMedidaValor();
-                        break;
-
-                    case "motivo-sancion":
-                        getMotivoSancion();
-                        break;
-
-                    case "dias-festivos":
-                        getDiasFestivos();
-                        break;
-
-                    default:
-                        break;
-                }
+                actualizarTablas(props.tabla);
             });
         } catch (error) {
             console.log(error)
@@ -825,6 +776,74 @@ export const MasterTablesState = ({ children }) => {
                 button: "Ok",
                 timer: 2000
             });
+        }
+    }
+
+    const actualizarTablas = (tablaName) => {
+        console.log('tablaName ', tablaName);
+        switch (tablaName) {
+            case "trimestre":
+                getTrimestres();
+                break;
+
+            case "forma-pago":
+                getFormasPago();
+                break;
+
+            case "cuentas-recaudadoras":
+                getCuentasRecaudadoras();
+                break;
+
+            case "estatus-entidad-trabajo":
+                getEstatus();
+                break;
+
+            case "clase-empresa":
+                getClaseEmpresa();
+                break;
+
+            case "bancos-recaudadores":
+                getBancos();
+                break;
+
+            case "motores-productivos":
+                getMotores();
+                break;
+
+            case "actividad-economica":
+                getActividadesEconomicas();
+                break;
+
+            case "conceptos":
+                getConceptos();
+                break;
+
+            case "registros-mercantiles":
+                getRegistrosMercantiles();
+                break;
+
+            case "medida-valor":
+                getMedidaValor();
+                break;
+
+            case "motivo-sancion":
+                getMotivoSancion();
+                break;
+
+            case "dias-festivos":
+                getDiasFestivos();
+                break;
+
+            case "dias-festivos":
+                getTasaIntereses();
+                break;
+
+            case "tasa-intereses":
+                getTasaIntereses();
+                break;
+
+            default:
+                break;
         }
     }
 
@@ -843,6 +862,8 @@ export const MasterTablesState = ({ children }) => {
         medidaValor,
         motivoSancion,
         diasFestivos,
+        tasaIntereses,
+        anos,
         submitMasterTables,
         setFormDataTables,
         deleteMasterTables,

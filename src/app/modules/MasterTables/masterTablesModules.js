@@ -62,6 +62,10 @@ function MasterTablesModule() {
             title = "Días Festivos";
             break;
 
+        case "tasa-intereses":
+            title = "Tasa de Intereses";
+            break;
+
         default:
             break;
     }

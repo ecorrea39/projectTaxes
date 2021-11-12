@@ -135,6 +135,14 @@ export function LinksConfiguracion({getMenuItemActive}) {
                 <span className="menu-text">Días Festivos</span>
               </NavLink>
             </li>
+            <li className={`menu-item ${getMenuItemActive("/tablas/tasa-intereses")}`} aria-haspopup="true">
+              <NavLink className="menu-link" to="/tablas/tasa-intereses">
+                <i className="menu-bullet menu-bullet-dot">
+                  <span/>
+                </i>
+                <span className="menu-text">Tasa de Intereses</span>
+              </NavLink>
+            </li>
           </ul>
         </div>
       </li>

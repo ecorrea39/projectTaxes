@@ -87,4 +87,20 @@ export const SchemaTablesCol10 = Yup.object().shape({
         .required('- Campo obligatorio -')
 });
 
+export const SchemaTablesCol11 = Yup.object().shape({
+    ano: Yup.number()
+        .required('- Campo obligatorio -'),
+    mes: Yup.number()
+        .required('- Campo obligatorio -'),
+    tasa_bcv: Yup.string()
+        .required('- Campo obligatorio -'),
+    recargo_cot: Yup.string()
+        .required('- Campo obligatorio -'),
+    tasa_intereses_mora: Yup.string()
+        .required('- Campo obligatorio -'),
+    ngaceta: Yup.string()
+        .required('- Campo obligatorio -'),
+    fecha_gaceta: Yup.date()
+        .required('- Campo obligatorio -')
+});
 
