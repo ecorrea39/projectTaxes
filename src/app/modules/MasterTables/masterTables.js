@@ -14,7 +14,7 @@ import Search from '@material-ui/icons/Search';
 
 function MasterTables({tabla}) {
 
-    const { deleteMasterTables, trimestres, formasPago, cuentasRecaudadoras, estatus, bancos, claseEmpresa, motores, actividadesEconomicas, conceptos, registrosMercantiles, medidaValor, motivoSancion, diasFestivos, tasaIntereses, obtenerValores } = useContext(MasterTablesContext);
+    const { deleteMasterTables, trimestres, formasPago, cuentasRecaudadoras, estatus, bancos, claseEmpresa, motores, actividadesEconomicas, conceptos, registrosMercantiles, medidaValor, motivoSancion, diasFestivos, tasaIntereses, sectores, obtenerValores } = useContext(MasterTablesContext);
     const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", padding: "20px 35px 20px 35px"}
     const [isSwitchOn, setIsSwitchOn] = useState(false);
     const styleBtn = { borderRadius: '100%'}
@@ -612,6 +612,13 @@ function MasterTables({tabla}) {
             data = tasaIntereses;
             columnas = "col-11";
             colTab = columnas11;
+            break;
+
+        case "sectores":
+            titulo = "Sectores";
+            data = sectores;
+            columnas = "col-1";
+            colTab = columnas01;
             break;
 
         default:

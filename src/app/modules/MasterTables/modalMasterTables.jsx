@@ -123,6 +123,11 @@ function ModalMasterTables(props) {
             schemaTables = SchemaTablesCol11;
             break;
 
+        case "sectores":
+            initialValuesTables = initialValuesTablesCol1;
+            schemaTables = SchemaTablesCol1;
+            break;
+
         default:
             break;
     }

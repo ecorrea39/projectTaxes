@@ -66,6 +66,10 @@ function MasterTablesModule() {
             title = "Tasa de Intereses";
             break;
 
+        case "sectores":
+            title = "Sectores";
+            break;
+
         default:
             break;
     }

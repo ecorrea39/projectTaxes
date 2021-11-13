@@ -13,7 +13,7 @@ import BaseSelect from "../Forms/BaseSelect";
 
 function ReportsCertificateSolvency() {
 
-    const { formatoFechaFutura, formatoReporte, submitReportsCertificateSolvency, setFormDataReports, contrib  } = useContext(ReportsContext);
+    const { formatoFechaFutura, formatoReporte, anos, trimestres, submitReportsCertificateSolvency, setFormDataReports, contrib  } = useContext(ReportsContext);
     const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", padding: "20px 35px 20px 35px"}
     const formato = formatoReporte;
     let contribuyente = contrib;
@@ -58,6 +58,39 @@ function ReportsCertificateSolvency() {
                                             {
                                                 contribuyente.map((s) => {
                                                     return <option key={s.rif} value={s.rif}>{s.rif + " | " + s.nombre}</option>
+                                                })
+                                            }
+                                        </Field>
+                                    </Col>
+
+                                    <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6" className="mb-6">
+                                        <label htmlFor="ano_declaracion" className="font-weight-bold">Año</label>
+                                        <Field
+                                            id="ano"
+                                            name="ano"
+                                            type="select"
+                                            component={BaseSelect}
+                                        >
+                                            <option value="" disabled>seleccione</option>
+                                            {
+                                                anos.map((s, i) => {
+                                                    return <option key={i} value={s}>{s}</option>
+                                                })
+                                            }
+                                        </Field>
+                                    </Col>
+                                    <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6" className="mb-6">
+                                        <label htmlFor="trimestre" className="font-weight-bold">Trimestre</label>
+                                        <Field
+                                            id="trimestre"
+                                            name="trimestre"
+                                            type="select"
+                                            component={BaseSelect}
+                                        >
+                                            <option value="" disabled>seleccione</option>
+                                            {
+                                                trimestres.map((s) => {
+                                                    return <option key={s.id} value={s.id}>{s.name}</option>
                                                 })
                                             }
                                         </Field>

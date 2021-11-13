@@ -251,6 +251,12 @@ export const navFuncional = [
         url: "/tablas/tasa-intereses",
         icon: "",
         slug: "tablas-tasa-intereses"
+      },
+      {
+        title: "Sectores",
+        url: "/tablas/sectores",
+        icon: "",
+        slug: "sectores"
       }
     ]
   },
