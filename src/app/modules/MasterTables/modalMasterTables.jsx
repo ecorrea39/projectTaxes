@@ -128,6 +128,11 @@ function ModalMasterTables(props) {
             schemaTables = SchemaTablesCol1;
             break;
 
+        case "vialidades":
+            initialValuesTables = initialValuesTablesCol1;
+            schemaTables = SchemaTablesCol1;
+            break;
+
         default:
             break;
     }

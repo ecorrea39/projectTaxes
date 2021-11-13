@@ -23,6 +23,7 @@ export const MasterTablesState = ({ children }) => {
     const [anos, setAnos] = useState([]);
     const [tasaIntereses, setTasaIntereses] = useState([]);
     const [sectores, setSectores] = useState([]);
+    const [vialidades, setVialidades] = useState([]);
     const [formDataTables, setFormDataTables] = useState({});
     const [registroSeleccionado, setRegistroSeleccionado] = useState({});
 
@@ -44,6 +45,7 @@ export const MasterTablesState = ({ children }) => {
         getTasaIntereses();
         getAnos();
         getSectores();
+        getVialidades();
     },[]);
 
     const getBancos = async () => {
@@ -489,6 +491,31 @@ export const MasterTablesState = ({ children }) => {
 
     }
 
+    const getVialidades = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/vialidades/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "name": arreglo[i].attributes.name
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setVialidades(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
     const obtenerValores = (valores) => {
         setRegistroSeleccionado(valores);
     }
@@ -576,6 +603,14 @@ export const MasterTablesState = ({ children }) => {
 
             case "sectores":
                 sectores.map((x) => {
+                    if(x.name.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "vialidades":
+                vialidades.map((x) => {
                     if(x.name.toUpperCase().trim() === valor.trim()) {
                         busqueda = true;
                     }
@@ -672,6 +707,10 @@ export const MasterTablesState = ({ children }) => {
 
                         case "sectores":
                             urlTabla = `/sectores/${valores.id}`;
+                            break;
+
+                        case "vialidades":
+                            urlTabla = `/vialidades/${valores.id}`;
                             break;
 
                         default:
@@ -785,6 +824,11 @@ export const MasterTablesState = ({ children }) => {
                     urlTabla = "/sectores/";
                     break;
 
+                case "vialidades":
+                    dataType = "saveVialidades";
+                    urlTabla = "/vialidades/";
+                    break;
+
                 default:
                     break;
             }
@@ -890,6 +934,10 @@ export const MasterTablesState = ({ children }) => {
                 getSectores();
                 break;
 
+            case "vialidades":
+                getVialidades();
+                break;
+
             default:
                 break;
         }
@@ -913,6 +961,7 @@ export const MasterTablesState = ({ children }) => {
         tasaIntereses,
         anos,
         sectores,
+        vialidades,
         submitMasterTables,
         setFormDataTables,
         deleteMasterTables,

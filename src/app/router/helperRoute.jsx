@@ -257,6 +257,12 @@ export const navFuncional = [
         url: "/tablas/sectores",
         icon: "",
         slug: "sectores"
+      },
+      {
+        title: "Vialidades",
+        url: "/tablas/vialidades",
+        icon: "",
+        slug: "vialidades"
       }
     ]
   },

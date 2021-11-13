@@ -70,6 +70,10 @@ function MasterTablesModule() {
             title = "Sectores";
             break;
 
+        case "vialidades":
+            title = "Vialidades";
+            break;
+
         default:
             break;
     }
