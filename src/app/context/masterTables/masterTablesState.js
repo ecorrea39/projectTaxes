@@ -24,6 +24,7 @@ export const MasterTablesState = ({ children }) => {
     const [tasaIntereses, setTasaIntereses] = useState([]);
     const [sectores, setSectores] = useState([]);
     const [vialidades, setVialidades] = useState([]);
+    const [locales, setLocales] = useState([]);
     const [formDataTables, setFormDataTables] = useState({});
     const [registroSeleccionado, setRegistroSeleccionado] = useState({});
 
@@ -46,6 +47,7 @@ export const MasterTablesState = ({ children }) => {
         getAnos();
         getSectores();
         getVialidades();
+        getLocales();
     },[]);
 
     const getBancos = async () => {
@@ -516,6 +518,31 @@ export const MasterTablesState = ({ children }) => {
 
     }
 
+    const getLocales = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/locales/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "name": arreglo[i].attributes.name
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setLocales(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
     const obtenerValores = (valores) => {
         setRegistroSeleccionado(valores);
     }
@@ -617,6 +644,14 @@ export const MasterTablesState = ({ children }) => {
                 });
                 break;
 
+            case "locales":
+                locales.map((x) => {
+                    if(x.name.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
             default:
                 break;
         }
@@ -711,6 +746,10 @@ export const MasterTablesState = ({ children }) => {
 
                         case "vialidades":
                             urlTabla = `/vialidades/${valores.id}`;
+                            break;
+
+                        case "locales":
+                            urlTabla = `/locales/${valores.id}`;
                             break;
 
                         default:
@@ -829,6 +868,11 @@ export const MasterTablesState = ({ children }) => {
                     urlTabla = "/vialidades/";
                     break;
 
+                case "locales":
+                    dataType = "saveLocales";
+                    urlTabla = "/locales/";
+                    break;
+
                 default:
                     break;
             }
@@ -938,6 +982,10 @@ export const MasterTablesState = ({ children }) => {
                 getVialidades();
                 break;
 
+            case "locales":
+                getLocales();
+                break;
+
             default:
                 break;
         }
@@ -962,6 +1010,7 @@ export const MasterTablesState = ({ children }) => {
         anos,
         sectores,
         vialidades,
+        locales,
         submitMasterTables,
         setFormDataTables,
         deleteMasterTables,

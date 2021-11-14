@@ -74,6 +74,10 @@ function MasterTablesModule() {
             title = "Vialidades";
             break;
 
+        case "locales":
+            title = "Locales";
+            break;
+
         default:
             break;
     }
