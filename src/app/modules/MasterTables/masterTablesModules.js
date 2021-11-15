@@ -46,6 +46,26 @@ function MasterTablesModule() {
             title = "Conceptos";
             break;
 
+        case "registros-mercantiles":
+            title = "Registros Mercantiles";
+            break;
+
+        case "medida-valor":
+            title = "Medida Valor";
+            break;
+
+        case "motivo-sancion":
+            title = "Motivos de Sanción";
+            break;
+
+        case "dias-festivos":
+            title = "Días Festivos";
+            break;
+
+        case "tasa-intereses":
+            title = "Tasa de Intereses";
+            break;
+
         default:
             break;
     }

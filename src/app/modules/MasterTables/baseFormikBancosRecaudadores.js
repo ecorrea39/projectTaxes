@@ -41,22 +41,6 @@ export const BaseFormikBancosRecaudadores = ({formik, props}) => {
                     />
                 </Col>
             </Row>
-            {/*
-            <Row className="mt-4 mb-8">
-                <Col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
-                    <label htmlFor="is_active" className="font-weight-bold">Estatus</label>
-                    <Field
-                        id="is_active"
-                        name="is_active"
-                        type="select"
-                        component={BaseSelect}
-                        disabled={props.accion === 'Agregar' ? true : false}>
-                        <option value="" disabled>seleccione</option>
-                        <option value="true">Activo</option>
-                        <option value="false">No activo</option>
-                    </Field>
-                </Col>
-            </Row>*/}
         </>
     )
 }

@@ -103,6 +103,46 @@ export function LinksConfiguracion({getMenuItemActive}) {
                 <span className="menu-text">Conceptos</span>
               </NavLink>
             </li>
+            <li className={`menu-item ${getMenuItemActive("/tablas/registros-mercantiles")}`} aria-haspopup="true">
+              <NavLink className="menu-link" to="/tablas/registros-mercantiles">
+                <i className="menu-bullet menu-bullet-dot">
+                  <span/>
+                </i>
+                <span className="menu-text">Registros Mercantiles</span>
+              </NavLink>
+            </li>
+            <li className={`menu-item ${getMenuItemActive("/tablas/medida-valor")}`} aria-haspopup="true">
+              <NavLink className="menu-link" to="/tablas/medida-valor">
+                <i className="menu-bullet menu-bullet-dot">
+                  <span/>
+                </i>
+                <span className="menu-text">Medida Valor</span>
+              </NavLink>
+            </li>
+            <li className={`menu-item ${getMenuItemActive("/tablas/motivo-sancion")}`} aria-haspopup="true">
+              <NavLink className="menu-link" to="/tablas/motivo-sancion">
+                <i className="menu-bullet menu-bullet-dot">
+                  <span/>
+                </i>
+                <span className="menu-text">Motivo Sanción</span>
+              </NavLink>
+            </li>
+            <li className={`menu-item ${getMenuItemActive("/tablas/dias-festivos")}`} aria-haspopup="true">
+              <NavLink className="menu-link" to="/tablas/dias-festivos">
+                <i className="menu-bullet menu-bullet-dot">
+                  <span/>
+                </i>
+                <span className="menu-text">Días Festivos</span>
+              </NavLink>
+            </li>
+            <li className={`menu-item ${getMenuItemActive("/tablas/tasa-intereses")}`} aria-haspopup="true">
+              <NavLink className="menu-link" to="/tablas/tasa-intereses">
+                <i className="menu-bullet menu-bullet-dot">
+                  <span/>
+                </i>
+                <span className="menu-text">Tasa de Intereses</span>
+              </NavLink>
+            </li>
           </ul>
         </div>
       </li>

@@ -15,6 +15,13 @@ export const MasterTablesState = ({ children }) => {
     const [motores, setMotores] = useState([]);
     const [actividadesEconomicas, setActividadesEconomicas] = useState([]);
     const [conceptos, setConceptos] = useState([]);
+    const [estados, setEstados] = useState([]);
+    const [registrosMercantiles, setRegistrosMercantiles] = useState([]);
+    const [medidaValor, setMedidaValor] = useState([]);
+    const [motivoSancion, setMotivoSancion] = useState([]);
+    const [diasFestivos, setDiasFestivos] = useState([]);
+    const [anos, setAnos] = useState([]);
+    const [tasaIntereses, setTasaIntereses] = useState([]);
     const [formDataTables, setFormDataTables] = useState({});
     const [registroSeleccionado, setRegistroSeleccionado] = useState({});
 
@@ -28,6 +35,13 @@ export const MasterTablesState = ({ children }) => {
         getMotores();
         getActividadesEconomicas();
         getConceptos();
+        getRegistrosMercantiles();
+        getEstados();
+        getMedidaValor();
+        getMotivoSancion();
+        getDiasFestivos();
+        getTasaIntereses();
+        getAnos();
     },[]);
 
     const getBancos = async () => {
@@ -248,7 +262,6 @@ export const MasterTablesState = ({ children }) => {
             let arreglo = [];
             let lista = [];
             arreglo = respuesta.data.data;
-            console.log('conceptos ', arreglo);
             arreglo.map((x, i) => {
                 lista.push(
                     {
@@ -261,6 +274,188 @@ export const MasterTablesState = ({ children }) => {
             lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
             setConceptos(lista);
 
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getRegistrosMercantiles = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/oficinas_saren/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "id_estado": arreglo[i].attributes.id_estado,
+                        "estado_name": arreglo[i].attributes['id_estado_estado.descripcion'],
+                        "registradores": arreglo[i].attributes.registradores,
+                        "oficina": arreglo[i].attributes.oficina,
+                        "direccion_oficina": arreglo[i].attributes.direccion_oficina,
+                        "telefono_contacto": arreglo[i].attributes.telefono_contacto,
+                        "correo": arreglo[i].attributes.correo
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setRegistrosMercantiles(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getEstados = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/geographic_data_estados/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "cod_estado": arreglo[i].attributes.cod_estado,
+                        "descripcion": arreglo[i].attributes.descripcion
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setEstados(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getMedidaValor = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/medida_valor/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "fecha": arreglo[i].attributes.fecha,
+                        "valor": arreglo[i].attributes.valor
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setMedidaValor(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getMotivoSancion = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/motivo_sancion/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "name": arreglo[i].attributes.name,
+                        "nveces_mmv": arreglo[i].attributes.nveces_mmv
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setMotivoSancion(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getDiasFestivos = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/dias_festivos/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "ano": arreglo[i].attributes.ano,
+                        "fecha": arreglo[i].attributes.fecha
+                    }
+                )
+            });
+            lista.sort((a, b) => a.ano - b.ano ? -1 : +(a.ano > b.ano));
+            setDiasFestivos(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getTasaIntereses = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/tasa_intereses/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "ano": arreglo[i].attributes.ano,
+                        "mes": arreglo[i].attributes.mes,
+                        "tasa_bcv": arreglo[i].attributes.tasa_bcv,
+                        "recargo_cot": arreglo[i].attributes.recargo_cot,
+                        "tasa_intereses_mora": arreglo[i].attributes.tasa_intereses_mora,
+                        "ngaceta": arreglo[i].attributes.ngaceta,
+                        "fecha_gaceta": arreglo[i].attributes.fecha_gaceta
+                    }
+                )
+            });
+            lista.sort((a, b) => a.ano - b.ano ? -1 : +(a.ano > b.ano));
+            setTasaIntereses(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getAnos = async () => {
+
+        try {
+            let fecha = new Date();
+            let ano = Number(fecha.getFullYear())+1;
+            let res = [];
+            for (let i = 0; i < 11; i++) {
+                res.push(ano);
+                ano--;
+            }
+            setAnos(res);
         } catch (error) {
             console.log(error)
         }
@@ -344,6 +539,13 @@ export const MasterTablesState = ({ children }) => {
                     }
                 });
                 break;
+            case "motivo-sancion":
+                motivoSancion.map((x) => {
+                    if(x.name.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
 
             default:
                 break;
@@ -413,6 +615,26 @@ export const MasterTablesState = ({ children }) => {
                             urlTabla = `/payment_concepts/${valores.id}`;
                             break;
 
+                        case "registros-mercantiles":
+                            urlTabla = `/oficinas_saren/${valores.id}`;
+                            break;
+
+                        case "medida-valor":
+                            urlTabla = `/medida_valor/${valores.id}`;
+                            break;
+
+                        case "motivo-sancion":
+                            urlTabla = `/motivo_sancion/${valores.id}`;
+                            break;
+
+                        case "dias-festivos":
+                            urlTabla = `/dias_festivos/${valores.id}`;
+                            break;
+
+                        case "tasa-intereses":
+                            urlTabla = `/tasa_intereses/${valores.id}`;
+                            break;
+
                         default:
                             break;
                     }
@@ -426,46 +648,7 @@ export const MasterTablesState = ({ children }) => {
                         button: "Ok",
                         timer: 1500
                     }).then((value) => {
-                        switch (tabla) {
-                            case "trimestre":
-                                getTrimestres();
-                                break;
-
-                            case "forma-pago":
-                                getFormasPago();
-                                break;
-
-                            case "cuentas-recaudadoras":
-                                getCuentasRecaudadoras();
-                                break;
-
-                            case "estatus-entidad-trabajo":
-                                getEstatus();
-                                break;
-
-                            case "clase-empresa":
-                                getClaseEmpresa();
-                                break;
-
-                            case "bancos-recaudadores":
-                                getBancos();
-                                break;
-
-                            case "motores-productivos":
-                                getMotores();
-                                break;
-
-                            case "actividad-economica":
-                                getActividadesEconomicas();
-                                break;
-
-                            case "conceptos":
-                                getConceptos();
-                                break;
-
-                            default:
-                                break;
-                        }
+                        actualizarTablas(tabla);
                     });
                 }
             });
@@ -533,6 +716,31 @@ export const MasterTablesState = ({ children }) => {
                     urlTabla = "/payment_concepts/";
                     break;
 
+                case "registros-mercantiles":
+                    dataType = "oficinas_saren";
+                    urlTabla = "/oficinas_saren/";
+                    break;
+
+                case "medida-valor":
+                    dataType = "saveMedidaValor";
+                    urlTabla = "/medida_valor/";
+                    break;
+
+                case "motivo-sancion":
+                    dataType = "saveMotivoSancion";
+                    urlTabla = "/motivo_sancion/";
+                    break;
+
+                case "dias-festivos":
+                    dataType = "saveDiasFestivos";
+                    urlTabla = "/dias_festivos/";
+                    break;
+
+                case "tasa-intereses":
+                    dataType = "saveTasaIntereses";
+                    urlTabla = "/tasa_intereses/";
+                    break;
+
                 default:
                     break;
             }
@@ -557,46 +765,7 @@ export const MasterTablesState = ({ children }) => {
                 button: "Ok",
                 timer: 1500
             }).then((value) => {
-                switch (props.tabla) {
-                    case "trimestre":
-                        getTrimestres();
-                        break;
-
-                    case "forma-pago":
-                        getFormasPago();
-                        break;
-
-                    case "cuentas-recaudadoras":
-                        getCuentasRecaudadoras();
-                        break;
-
-                    case "estatus-entidad-trabajo":
-                        getEstatus();
-                        break;
-
-                    case "clase-empresa":
-                        getClaseEmpresa();
-                        break;
-
-                    case "bancos-recaudadores":
-                        getBancos();
-                        break;
-
-                    case "motores-productivos":
-                        getMotores();
-                        break;
-
-                    case "actividad-economica":
-                        getActividadesEconomicas();
-                        break;
-
-                    case "conceptos":
-                        getConceptos();
-                        break;
-
-                    default:
-                        break;
-                }
+                actualizarTablas(props.tabla);
             });
         } catch (error) {
             console.log(error)
@@ -610,6 +779,74 @@ export const MasterTablesState = ({ children }) => {
         }
     }
 
+    const actualizarTablas = (tablaName) => {
+        console.log('tablaName ', tablaName);
+        switch (tablaName) {
+            case "trimestre":
+                getTrimestres();
+                break;
+
+            case "forma-pago":
+                getFormasPago();
+                break;
+
+            case "cuentas-recaudadoras":
+                getCuentasRecaudadoras();
+                break;
+
+            case "estatus-entidad-trabajo":
+                getEstatus();
+                break;
+
+            case "clase-empresa":
+                getClaseEmpresa();
+                break;
+
+            case "bancos-recaudadores":
+                getBancos();
+                break;
+
+            case "motores-productivos":
+                getMotores();
+                break;
+
+            case "actividad-economica":
+                getActividadesEconomicas();
+                break;
+
+            case "conceptos":
+                getConceptos();
+                break;
+
+            case "registros-mercantiles":
+                getRegistrosMercantiles();
+                break;
+
+            case "medida-valor":
+                getMedidaValor();
+                break;
+
+            case "motivo-sancion":
+                getMotivoSancion();
+                break;
+
+            case "dias-festivos":
+                getDiasFestivos();
+                break;
+
+            case "dias-festivos":
+                getTasaIntereses();
+                break;
+
+            case "tasa-intereses":
+                getTasaIntereses();
+                break;
+
+            default:
+                break;
+        }
+    }
+
     const valuesContext = {
         bancos,
         trimestres,
@@ -620,6 +857,13 @@ export const MasterTablesState = ({ children }) => {
         motores,
         actividadesEconomicas,
         conceptos,
+        registrosMercantiles,
+        estados,
+        medidaValor,
+        motivoSancion,
+        diasFestivos,
+        tasaIntereses,
+        anos,
         submitMasterTables,
         setFormDataTables,
         deleteMasterTables,

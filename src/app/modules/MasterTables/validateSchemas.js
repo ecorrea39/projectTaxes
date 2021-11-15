@@ -55,6 +55,52 @@ export const SchemaTablesCol6 = Yup.object().shape({
         .required('- Campo obligatorio -')
 });
 
+export const SchemaTablesCol7 = Yup.object().shape({
+    id_estado: Yup.string()
+        .required('- Campo obligatorio -'),
+    registradores: Yup.string(),
+    oficina: Yup.string()
+        .required('- Campo obligatorio -'),
+    direccion_oficina: Yup.string(),
+    telefono_contacto: Yup.string(),
+    correo: Yup.string()
+});
 
+export const SchemaTablesCol8 = Yup.object().shape({
+    fecha: Yup.date()
+        .required('- Campo obligatorio -'),
+    valor: Yup.string()
+        .required('- Campo obligatorio -')
+});
 
+export const SchemaTablesCol9 = Yup.object().shape({
+    name: Yup.string()
+        .required('- Campo obligatorio -'),
+    neveces_mmv: Yup.number()
+        .min(0, '- valor mínimo es cero -')
+});
+
+export const SchemaTablesCol10 = Yup.object().shape({
+    ano: Yup.number()
+        .required('- Campo obligatorio -'),
+    fecha: Yup.date()
+        .required('- Campo obligatorio -')
+});
+
+export const SchemaTablesCol11 = Yup.object().shape({
+    ano: Yup.number()
+        .required('- Campo obligatorio -'),
+    mes: Yup.number()
+        .required('- Campo obligatorio -'),
+    tasa_bcv: Yup.string()
+        .required('- Campo obligatorio -'),
+    recargo_cot: Yup.string()
+        .required('- Campo obligatorio -'),
+    tasa_intereses_mora: Yup.string()
+        .required('- Campo obligatorio -'),
+    ngaceta: Yup.string()
+        .required('- Campo obligatorio -'),
+    fecha_gaceta: Yup.date()
+        .required('- Campo obligatorio -')
+});
 

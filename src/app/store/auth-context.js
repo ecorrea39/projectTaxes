@@ -1,6 +1,9 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import { PathListContribuyente, PathListFuncional } from "../router/helperRoute";
+import jwt_decode from "jwt-decode";
 
 const AuthContext = React.createContext({
+  
   token: '',
   isLoggedIn: false,
   login: (token) => {
@@ -11,11 +14,71 @@ const AuthContext = React.createContext({
 
 export const AuthContextProvider = (props) => {
 
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem("authToken"));
+  const [userIsLoggedIn, setUserIsLoggedIn] = useState(!!token);
+  const [accesRouters, setAccessRouters] = useState(null);
+  const [userGroup, setUserGroup] = useState(localStorage.getItem("groups"));
+  const [userType, setUserType] = useState(null);
+  const [urlDash, setUrlDash] = useState("/");
 
-  const userIsLoggedIn = !!token;
+  const definedRouters = () => {
 
-  const loginHandler = (token) => {
+    let routers = [];
+    if(userType == "user") {
+      PathListContribuyente.map((router) => {
+        if(router.groups.indexOf(userGroup) > -1) {
+          routers.push(router);
+        }
+      });
+    }
+    if(userType == "funcional") {
+      PathListFuncional.map((router) => {
+        if(router.groups.indexOf(userGroup) > -1) {
+          routers.push(router);
+        }
+      });
+    }
+    setAccessRouters(routers);
+  }
+
+  const definedUserType = (redired) => {
+    switch(userGroup) {
+      case "contribuyentes":
+        // setUserType("funcional");
+        setUserType("user");
+        setUrlDash("/dashboard");
+        break;
+      case "parciales":
+        // setUserType("funcional");
+        setUserType("user");
+        setUrlDash("/dashboard");
+        break;
+      default:
+        setUserType("funcional");
+        setUrlDash("/panel");
+        break;
+    }
+    return;
+  }
+  useEffect(()=>{
+    if(token) {
+      let tokenDecoded = jwt_decode(token);
+      setUserGroup(tokenDecoded.data.groups[0]);
+      // setUserGroup("administradores");
+      definedUserType(false);
+    }
+    setUserIsLoggedIn(!!token);
+  },[]);
+
+  useEffect(()=>{
+    definedRouters();
+  },[userType]);
+
+  const loginHandler = async (token) => {
+    let tokenDecoded = jwt_decode(token);
+    setUserGroup(tokenDecoded.data.groups[0]);
+    await definedUserType();
+    window.location.href = urlDash;
     setToken(token);
   };
 
@@ -25,7 +88,11 @@ export const AuthContextProvider = (props) => {
 
   const contextValue = {
     token: token,
+    urlDash: urlDash,
     isLoggedIn: userIsLoggedIn,
+    accesRouters: accesRouters,
+    userGroup: userGroup,
+    userType: userType,
     login: loginHandler,
     logout: logoutHandler
   }
