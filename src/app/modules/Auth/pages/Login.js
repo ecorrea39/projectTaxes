@@ -10,16 +10,16 @@ import AuthContext from "../../../store/auth-context";
 import axios from "axios";
 import Util from "../../../helpers/Util";
 
-// const initialValues = {
-//   tipo: "",
-//   user: "",
-//   password: ""
-// };
 const initialValues = {
-  tipo: "v",
-  user: "103469666",
-  password: "inces123."
+  tipo: "",
+  user: "",
+  password: ""
 };
+// const initialValues = {
+//   tipo: "v",
+//   user: "103469666",
+//   password: "inces123."
+// };
 
 const styleCenter = { "display":"flex", "justifyContent":"center", "alignItem":"center" }
 
