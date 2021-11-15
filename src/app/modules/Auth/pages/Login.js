@@ -15,6 +15,11 @@ const initialValues = {
   user: "",
   password: ""
 };
+// const initialValues = {
+//   tipo: "v",
+//   user: "103469666",
+//   password: "inces123."
+// };
 
 const styleCenter = { "display":"flex", "justifyContent":"center", "alignItem":"center" }
 

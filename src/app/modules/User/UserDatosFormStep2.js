@@ -668,6 +668,7 @@ const UserDatosFormStep2 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.fecha_constitucion}
                                   disabled={props.registradoValor ? "disabled" : ""}
+                                  max={new Date().toISOString().split("T")[0]}
                     />
 
                     {formik.touched.fecha_constitucion && formik.errors.fecha_constitucion ? (
