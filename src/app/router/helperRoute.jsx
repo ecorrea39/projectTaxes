@@ -35,7 +35,9 @@ const AccountStatusPage = lazy(() =>
 const GroupsPage = lazy(() =>
   import ("../pages/panelAdmin/groups")
 );
-
+const PnaPage = lazy(() =>
+    import ("../pages/pna")
+);
 
 /**
  * En este objeto se definen la estrutura de las rutas que se crearan segun el grupo del usuario que se logea en la app.
@@ -129,7 +131,7 @@ export const PathListFuncional = [
   {
     path: "/tablas/:tabla",
     groups: ["administradores"],
-    name: "Trimestres",
+    name: "Tablas Maestras",
     component: MasterTablesPage
   },
   {
@@ -137,6 +139,12 @@ export const PathListFuncional = [
     groups: ["administradores"],
     name: "Mapa",
     component: MapaPage
+  },
+  {
+    path: "/pna_certificado",
+    groups: ["administradores"],
+    name: "PNA Certificados",
+    component: PnaPage
   }
 ];
 
@@ -217,7 +225,7 @@ export const navFuncional = [
         slug: "tablas-actividad-economica"
       },
       {
-        title: "Conceptos",
+        title: "Conceptos de Pago",
         url: "/tablas/conceptos",
         icon: "",
         slug: "tablas-conceptos"
@@ -279,10 +287,24 @@ export const navFuncional = [
     icon: "",
     childrens: [
       {
-        title: "Trimestres",
+        title: "Mapa",
         url: "/mapa",
         icon: "",
         slug: "mapa",
+      }
+    ]
+  },
+  {
+    titleSection: "PNA",
+    title: "PNA",
+    groups: ["administradores"],
+    icon: "",
+    childrens: [
+      {
+        title: "PNA Certificado",
+        url: "/pna_certificado",
+        icon: "",
+        slug: "pna-certificado",
       }
     ]
   }

@@ -43,7 +43,7 @@ function MasterTablesModule() {
             break;
 
         case "conceptos":
-            title = "Conceptos";
+            title = "Conceptos de Pago";
             break;
 
         case "registros-mercantiles":
@@ -93,7 +93,9 @@ function MasterTablesModule() {
                     {/* Body */}
                     <div className="card-body d-flex flex-column">
                         {
-                            <MasterTables tabla={tabla} />
+                            <MasterTables
+                                tabla={tabla}
+                                titulo={title} />
                         }
                     </div>
                 </div>

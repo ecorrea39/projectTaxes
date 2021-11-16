@@ -23,7 +23,7 @@ function Resumen({className}) {
     function FormatNumber(number) {
         return  new Intl.NumberFormat("ES-ES", {
             style: "currency",
-            currency: "VEF"
+            currency: "VED"
         }).format(number)
     }
 
