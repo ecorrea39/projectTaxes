@@ -370,7 +370,6 @@ export const TaxesState = ({ children }) => {
                 text: "Su Pago fue registrado con Éxito.",
                 button: "Ok",
                 icon: 'success',
-                title: 'Su Pago fue registrado con Éxito.',
                 showConfirmButton: false,
                 timer: 2000
             });
