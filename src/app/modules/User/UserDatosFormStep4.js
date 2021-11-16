@@ -320,12 +320,23 @@ const UserDatosFormStep4 = (props) => {
           id: "AUTH.VALIDATION.RANGELEN",
         }, {min: 1, max: 8})
         , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 8)))
-      .required(
-        intl.formatMessage({
-            id: "AUTH.VALIDATION.REQUIRED",
-          },
-          {name: 'Número de Documento'})
-      ),
+      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
+        const tipoIdentificacionConst = rif.substring(0, 1);
+
+        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
+        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
+        console.log("value::::", value);
+        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
+
+          if (value == '' || typeof value === 'undefined') {
+            return false;
+          } else {
+            return true;
+          }
+        } else {
+          return true;
+        }
+      }),
     nombre_representante_legal1: Yup.string()
       .min(1,
         intl.formatMessage({
@@ -354,12 +365,23 @@ const UserDatosFormStep4 = (props) => {
           id: "AUTH.VALIDATION.MAX_LENGTH",
         }, {max: 30})
       )
-      .required(
-        intl.formatMessage({
-            id: "AUTH.VALIDATION.REQUIRED",
-          },
-          {name: 'Nombre'})
-      ),
+      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
+        const tipoIdentificacionConst = rif.substring(0, 1);
+
+        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
+        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
+        console.log("value::::", value);
+        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
+
+          if (value == '' || typeof value === 'undefined') {
+            return false;
+          } else {
+            return true;
+          }
+        } else {
+          return true;
+        }
+      }),
     nombre_representante_legal3: Yup.string()
       .min(1,
         intl.formatMessage({
@@ -371,12 +393,23 @@ const UserDatosFormStep4 = (props) => {
           id: "AUTH.VALIDATION.MAX_LENGTH",
         }, {max: 30})
       )
-      .required(
-        intl.formatMessage({
-            id: "AUTH.VALIDATION.REQUIRED",
-          },
-          {name: 'Nombre'})
-      ),
+      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
+        const tipoIdentificacionConst = rif.substring(0, 1);
+
+        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
+        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
+        console.log("value::::", value);
+        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
+
+          if (value == '' || typeof value === 'undefined') {
+            return false;
+          } else {
+            return true;
+          }
+        } else {
+          return true;
+        }
+      }),
     apellido_representante_legal1: Yup.string()
       .min(1,
         intl.formatMessage({
@@ -405,12 +438,23 @@ const UserDatosFormStep4 = (props) => {
           id: "AUTH.VALIDATION.MAX_LENGTH",
         }, {max: 30})
       )
-      .required(
-        intl.formatMessage({
-            id: "AUTH.VALIDATION.REQUIRED",
-          },
-          {name: 'Apellido'})
-      ),
+      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
+        const tipoIdentificacionConst = rif.substring(0, 1);
+
+        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
+        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
+        console.log("value::::", value);
+        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
+
+          if (value == '' || typeof value === 'undefined') {
+            return false;
+          } else {
+            return true;
+          }
+        } else {
+          return true;
+        }
+      }),
     apellido_representante_legal3: Yup.string()
       .min(1,
         intl.formatMessage({
@@ -422,12 +466,23 @@ const UserDatosFormStep4 = (props) => {
           id: "AUTH.VALIDATION.MAX_LENGTH",
         }, {max: 30})
       )
-      .required(
-        intl.formatMessage({
-            id: "AUTH.VALIDATION.REQUIRED",
-          },
-          {name: 'Apellido'})
-      ),
+      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
+        const tipoIdentificacionConst = rif.substring(0, 1);
+
+        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
+        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
+        console.log("value::::", value);
+        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
+
+          if (value == '' || typeof value === 'undefined') {
+            return false;
+          } else {
+            return true;
+          }
+        } else {
+          return true;
+        }
+      }),
     codigo_de_area_representante_legal1: Yup.string()
       .required(
         intl.formatMessage({
@@ -435,17 +490,41 @@ const UserDatosFormStep4 = (props) => {
         })
       ),
     codigo_de_area_representante_legal2: Yup.string()
-      .required(
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.REQUIRED_FIELD",
-        })
-      ),
+      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
+        const tipoIdentificacionConst = rif.substring(0, 1);
+
+        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
+        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
+        console.log("value::::", value);
+        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
+
+          if (value == '' || typeof value === 'undefined') {
+            return false;
+          } else {
+            return true;
+          }
+        } else {
+          return true;
+        }
+      }),
     codigo_de_area_representante_legal3: Yup.string()
-      .required(
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.REQUIRED_FIELD",
-        })
-      ),
+      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
+        const tipoIdentificacionConst = rif.substring(0, 1);
+
+        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
+        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
+        console.log("value::::", value);
+        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
+
+          if (value == '' || typeof value === 'undefined') {
+            return false;
+          } else {
+            return true;
+          }
+        } else {
+          return true;
+        }
+      }),
     telefono_representante_legal1: Yup
       .number().positive(
         intl.formatMessage({
@@ -474,12 +553,23 @@ const UserDatosFormStep4 = (props) => {
           id: "AUTH.VALIDATION.RANGELEN",
         }, {min: 1, max: 7})
         , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 7)))
-      .required(
-        intl.formatMessage({
-            id: "AUTH.VALIDATION.REQUIRED",
-          },
-          {name: 'Teléfono'})
-      ),
+      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
+        const tipoIdentificacionConst = rif.substring(0, 1);
+
+        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
+        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
+        console.log("value::::", value);
+        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
+
+          if (value == '' || typeof value === 'undefined') {
+            return false;
+          } else {
+            return true;
+          }
+        } else {
+          return true;
+        }
+      }),
     telefono_representante_legal3: Yup
       .number().positive(
         intl.formatMessage({
@@ -491,12 +581,23 @@ const UserDatosFormStep4 = (props) => {
           id: "AUTH.VALIDATION.RANGELEN",
         }, {min: 1, max: 7})
         , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 7)))
-      .required(
-        intl.formatMessage({
-            id: "AUTH.VALIDATION.REQUIRED",
-          },
-          {name: 'Teléfono'})
-      ),
+      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
+        const tipoIdentificacionConst = rif.substring(0, 1);
+
+        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
+        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
+        console.log("value::::", value);
+        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
+
+          if (value == '' || typeof value === 'undefined') {
+            return false;
+          } else {
+            return true;
+          }
+        } else {
+          return true;
+        }
+      }),
     correo_electronico_representante_legal1: Yup.string()
       .email(
         intl.formatMessage({
@@ -535,12 +636,23 @@ const UserDatosFormStep4 = (props) => {
           id: "AUTH.VALIDATION.MAX_LENGTH",
         }, {max: 80})
       )
-      .required(
-        intl.formatMessage({
-            id: "AUTH.VALIDATION.REQUIRED",
-          },
-          {name: 'Correo'})
-      ),
+      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
+        const tipoIdentificacionConst = rif.substring(0, 1);
+
+        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
+        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
+        console.log("value::::", value);
+        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
+
+          if (value == '' || typeof value === 'undefined') {
+            return false;
+          } else {
+            return true;
+          }
+        } else {
+          return true;
+        }
+      }),
     correo_electronico_representante_legal3: Yup.string()
       .email(
         intl.formatMessage({
@@ -557,12 +669,23 @@ const UserDatosFormStep4 = (props) => {
           id: "AUTH.VALIDATION.MAX_LENGTH",
         }, {max: 80})
       )
-      .required(
-        intl.formatMessage({
-            id: "AUTH.VALIDATION.REQUIRED",
-          },
-          {name: 'Correo'})
-      ),
+      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
+        const tipoIdentificacionConst = rif.substring(0, 1);
+
+        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
+        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
+        console.log("value::::", value);
+        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
+
+          if (value == '' || typeof value === 'undefined') {
+            return false;
+          } else {
+            return true;
+          }
+        } else {
+          return true;
+        }
+      }),
     cargo_representante_legal1: Yup.string()
       .min(1,
         intl.formatMessage({
@@ -591,12 +714,23 @@ const UserDatosFormStep4 = (props) => {
           id: "AUTH.VALIDATION.MAX_LENGTH",
         }, {max: 30})
       )
-      .required(
-        intl.formatMessage({
-            id: "AUTH.VALIDATION.REQUIRED",
-          },
-          {name: 'Cargo'})
-      ),
+      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
+        const tipoIdentificacionConst = rif.substring(0, 1);
+
+        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
+        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
+        console.log("value::::", value);
+        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
+
+          if (value == '' || typeof value === 'undefined') {
+            return false;
+          } else {
+            return true;
+          }
+        } else {
+          return true;
+        }
+      }),
     cargo_representante_legal3: Yup.string()
       .min(1,
         intl.formatMessage({
@@ -608,12 +742,23 @@ const UserDatosFormStep4 = (props) => {
           id: "AUTH.VALIDATION.MAX_LENGTH",
         }, {max: 30})
       )
-      .required(
-        intl.formatMessage({
-            id: "AUTH.VALIDATION.REQUIRED",
-          },
-          {name: 'Cargo'})
-      ),
+      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
+        const tipoIdentificacionConst = rif.substring(0, 1);
+
+        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
+        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
+        console.log("value::::", value);
+        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
+
+          if (value == '' || typeof value === 'undefined') {
+            return false;
+          } else {
+            return true;
+          }
+        } else {
+          return true;
+        }
+      }),
   });
 
   const enableLoading = () => {
