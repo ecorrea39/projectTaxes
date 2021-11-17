@@ -1,5 +1,7 @@
 
 export const initialValues = {
-    name: "",
-    is_active: true
+    tipo: "",
+    rif: "",
+    cumple_obligacion: "",
+    numero_certificado: ""
 }

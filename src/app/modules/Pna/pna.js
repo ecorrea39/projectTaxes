@@ -10,7 +10,7 @@ import ModalPna from "./modalPna";
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Search from '@material-ui/icons/Search';
 
-function Pna({}) {
+function Pna({titulo}) {
 
     const { deletePna, pna, obtenerValores } = useContext(PnaContext);
     const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", padding: "20px 35px 20px 35px"}
@@ -52,19 +52,19 @@ function Pna({}) {
             name: "ID",
             selector: row => Number(row.id),
             sortable: true,
-            maxWidth: "50px"
+            maxWidth: "30px"
         },
         {
             name: "Nº R.I.F.",
             selector: row => row.uid,
             sortable: true,
-            maxWidth: "80px"
+            maxWidth: "50px"
         },
         {
             name: "Contribuyente",
             selector: row => row.name,
             sortable: true,
-            maxWidth: "300px"
+            maxWidth: "370px"
         },
         {
             name: "Cumple obligación",
@@ -76,7 +76,7 @@ function Pna({}) {
             name: "Nº certificado",
             selector: row => row.numero_certificado,
             sortable: true,
-            maxWidth: "150px"
+            maxWidth: "120px"
         },
         {
             name: "Acciones",
@@ -101,7 +101,7 @@ function Pna({}) {
         }
     ];
 
-    const titulo = titulo;
+    titulo = titulo;
     const data = pna;
     const colTab = columnas;
 
@@ -144,7 +144,7 @@ function Pna({}) {
 
                     <div style={barraBusqueda}>
                         <input
-                            type="text"
+                           type="text"
                             placeholder="Buscar"
                             style={textField}
                             name="busqueda"

@@ -69,3 +69,9 @@ export const initialValuesTablesCol11 = {
     ngaceta: "",
     fecha_gaceta: ""
 }
+
+export const initialValuesTablesCol12 = {
+    codigo: "",
+    name: ""
+}
+

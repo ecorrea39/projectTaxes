@@ -264,19 +264,31 @@ export const navFuncional = [
         title: "Sectores",
         url: "/tablas/sectores",
         icon: "",
-        slug: "sectores"
+        slug: "tablas-sectores"
       },
       {
         title: "Vialidades",
         url: "/tablas/vialidades",
         icon: "",
-        slug: "vialidades"
+        slug: "tablas-vialidades"
       },
       {
-        title: "Locales",
+        title: "Nomenclatura",
         url: "/tablas/locales",
         icon: "",
-        slug: "locales"
+        slug: "tablas-locales"
+      },
+      {
+        title: "Edificaciones",
+        url: "/tablas/edificaciones",
+        icon: "",
+        slug: "tablas-edificaciones"
+      },
+      {
+        title: "Tipos de Documento",
+        url: "/tablas/tipo-documentos",
+        icon: "",
+        slug: "tablas-tipo-documentos"
       }
     ]
   },

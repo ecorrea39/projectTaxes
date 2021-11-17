@@ -25,6 +25,8 @@ export const MasterTablesState = ({ children }) => {
     const [sectores, setSectores] = useState([]);
     const [vialidades, setVialidades] = useState([]);
     const [locales, setLocales] = useState([]);
+    const [edificaciones, setEdificaciones] = useState([]);
+    const [tipoDocumento, setTipoDocumento] = useState([]);
     const [formDataTables, setFormDataTables] = useState({});
     const [registroSeleccionado, setRegistroSeleccionado] = useState({});
 
@@ -48,6 +50,8 @@ export const MasterTablesState = ({ children }) => {
         getSectores();
         getVialidades();
         getLocales();
+        getEdificaciones();
+        getTipoDocumento();
     },[]);
 
     const getBancos = async () => {
@@ -543,6 +547,57 @@ export const MasterTablesState = ({ children }) => {
 
     }
 
+    const getEdificaciones = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/edificaciones/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "name": arreglo[i].attributes.name
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setEdificaciones(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getTipoDocumento = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/tipo_documento/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "codigo": arreglo[i].attributes.codigo,
+                        "name": arreglo[i].attributes.name
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setTipoDocumento(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
     const obtenerValores = (valores) => {
         setRegistroSeleccionado(valores);
     }
@@ -652,6 +707,22 @@ export const MasterTablesState = ({ children }) => {
                 });
                 break;
 
+            case "edificaciones":
+                edificaciones.map((x) => {
+                    if(x.name.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "tipo_documento":
+                tipoDocumento.map((x) => {
+                    if(x.name.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
             default:
                 break;
         }
@@ -750,6 +821,14 @@ export const MasterTablesState = ({ children }) => {
 
                         case "locales":
                             urlTabla = `/locales/${valores.id}`;
+                            break;
+
+                        case "edificaciones":
+                            urlTabla = `/edificaciones/${valores.id}`;
+                            break;
+
+                        case "tipo-documentos":
+                            urlTabla = `/tipo_documento/${valores.id}`;
                             break;
 
                         default:
@@ -873,6 +952,16 @@ export const MasterTablesState = ({ children }) => {
                     urlTabla = "/locales/";
                     break;
 
+                case "edificaciones":
+                    dataType = "saveEdificaciones";
+                    urlTabla = "/edificaciones/";
+                    break;
+
+                case "tipo-documentos":
+                    dataType = "saveTipoDocumento";
+                    urlTabla = "/tipo_documento/";
+                    break;
+
                 default:
                     break;
             }
@@ -912,7 +1001,7 @@ export const MasterTablesState = ({ children }) => {
     }
 
     const actualizarTablas = (tablaName) => {
-        console.log('tablaName ', tablaName);
+
         switch (tablaName) {
             case "trimestre":
                 getTrimestres();
@@ -986,6 +1075,14 @@ export const MasterTablesState = ({ children }) => {
                 getLocales();
                 break;
 
+            case "edificaciones":
+                getEdificaciones();
+                break;
+
+            case "tipo-documentos":
+                getTipoDocumento();
+                break;
+
             default:
                 break;
         }
@@ -1011,6 +1108,8 @@ export const MasterTablesState = ({ children }) => {
         sectores,
         vialidades,
         locales,
+        edificaciones,
+        tipoDocumento,
         submitMasterTables,
         setFormDataTables,
         deleteMasterTables,

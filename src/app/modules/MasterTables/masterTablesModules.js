@@ -75,7 +75,15 @@ function MasterTablesModule() {
             break;
 
         case "locales":
-            title = "Locales";
+            title = "Nomenclatura";
+            break;
+
+        case "edificaciones":
+            title = "Edificaciones";
+            break;
+
+        case "tipo-documentos":
+            title = "Tipo de Documentos";
             break;
 
         default:

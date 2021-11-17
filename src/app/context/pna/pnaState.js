@@ -28,8 +28,8 @@ export const PnaState = ({ children }) => {
                         "cumple_obligacion": arreglo[i].attributes.cumple_obligacion,
                         "cumple": arreglo[i].attributes.cumple_obligacion === true ? 'Cumple' : 'No cumple',
                         "numero_certificado": arreglo[i].attributes.numero_certificado,
-                        "uid": arreglo[i].attributes.uid,
-                        "name": arreglo[i].attributes.name
+                        "uid": arreglo[i].attributes['user.uid'],
+                        "name": arreglo[i].attributes['user.name']
                     }
                 )
             });
@@ -50,14 +50,13 @@ export const PnaState = ({ children }) => {
         setRegistroSeleccionado({});
     }
 
-    const deletePna = async (tabla, titulo, valores) => {
+    const deletePna = async (valores) => {
 
-        let dataType = "";
-        let urlTabla = ""
+        const dataType = "savePnaCertificado";
 
         try {
             Swal.fire({
-                title: titulo,
+                title: 'PNA Certificado',
                 text: 'Esta seguro de eliminar el registro?',
                 icon: 'info',
                 showDenyButton: true,
@@ -66,12 +65,12 @@ export const PnaState = ({ children }) => {
             }).then((result) => {
 
                 if (result.isConfirmed) {
-                    urlTabla = `/trimestres/${valores.id}`;
+                    const urlTabla = `/pna_certificado/${valores.id}`;
 
                     const respuesta = clientAxios.delete(urlTabla, requestConfig);
 
                     Swal.fire({
-                        title: titulo,
+                        title: 'PNA Certificado',
                         text: "Registro elimnado con éxito!",
                         icon: "success",
                         button: "Ok",
@@ -84,7 +83,7 @@ export const PnaState = ({ children }) => {
         } catch (error) {
             console.log(error)
             Swal.fire({
-                title: titulo,
+                title: 'PNA Certificado',
                 text: "Error al intentar eliminar registro!",
                 icon: "error",
                 button: "Ok",
@@ -101,7 +100,9 @@ export const PnaState = ({ children }) => {
 
             requestConfig.data.type = dataType;
             requestConfig.data.attributes = valores;
-            requestConfig.data.id = (props.accion !== 'Agregar') ? valores.id : '';
+            requestConfig.data.id = (props.accion !== 'Agregar') ? valores.id : valores.tipo.trim() + valores.rif.trim();
+
+            console.log('requestConfig ', requestConfig)
 
             if(props.accion === 'Agregar') {
                 const respuesta = await clientAxios.post(urlTabla, requestConfig);

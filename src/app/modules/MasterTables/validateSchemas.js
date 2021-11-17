@@ -104,3 +104,13 @@ export const SchemaTablesCol11 = Yup.object().shape({
         .required('- Campo obligatorio -')
 });
 
+export const SchemaTablesCol12 = Yup.object().shape({
+    codigo: Yup.string()
+        .required('- Campo obligatorio -')
+        .min(3, '- Debe ingresar un mínimo de 3 digitos -')
+        .max(3, '- Debe ingresar un máximo de 3 digitos -'),
+    name: Yup.string()
+        .required('- Campo obligatorio -')
+});
+
+
