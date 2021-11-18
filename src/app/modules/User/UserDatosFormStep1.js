@@ -534,7 +534,20 @@ const UserDatosFormStep1 = (props) => {
         setSubmitting(false);
         disableLoading();
 
-        alert("Error al guardar los Datos de la Empresa");
+        if (err.response !== undefined && err.response !== null) {
+          let txt = '';
+          switch (err.response.status) {
+            case 401:
+              txt = 'No puede crear el fondo de comercio porque ya existen empresas con ese nombre';
+              break;
+            default:
+              alert("Error al guardar los Datos de la Empresa");
+          }
+
+          alert(txt);
+        } else {
+          alert("Error al guardar los Datos de la Empresa");
+        }
       });
     },
   });
