@@ -261,7 +261,6 @@ const UserDatosFormStep3 = (props) => {
           });
 
           estadosArray.sort((a, b) => a.name < b.name ? -1 : 1);
-          console.log("estadosArray", estadosArray);
           setEstados(estadosArray);
 
           disableLoading();
@@ -305,7 +304,6 @@ const UserDatosFormStep3 = (props) => {
           });
 
           municipiosArray.sort((a, b) => a.name < b.name ? -1 : 1);
-          console.log("municipiosArray", municipiosArray);
           setMunicipios(municipiosArray);
           setMunicipiosTotales(municipiosArray);
 
@@ -350,7 +348,6 @@ const UserDatosFormStep3 = (props) => {
           });
 
           parroquiasArray.sort((a, b) => a.name < b.name ? -1 : 1);
-          console.log("parroquiasArray", parroquiasArray);
           setParroquias(parroquiasArray);
           setParroquiasTotales(parroquiasArray);
 
@@ -395,7 +392,6 @@ const UserDatosFormStep3 = (props) => {
           });
 
           ciudadesArray.sort((a, b) => a.name < b.name ? -1 : 1);
-          console.log("ciudadesArray", ciudadesArray);
           setCiudades(ciudadesArray);
           setCiudadesTotales(ciudadesArray);
 
