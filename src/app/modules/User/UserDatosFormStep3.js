@@ -768,7 +768,7 @@ const UserDatosFormStep3 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.domicilio_fiscal}
                                   maxLength="100"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.domicilio_fiscal && formik.errors.domicilio_fiscal ? (
@@ -791,7 +791,7 @@ const UserDatosFormStep3 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.estado}
                                   ref={estadoRef}
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
                     >
                       <option key="0" value="">Seleccione el Estado</option>
 
@@ -817,7 +817,7 @@ const UserDatosFormStep3 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.municipio}
                                   ref={municipioRef}
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
                     >
                       <option key="0" relacion="" value="">Seleccione el Municipio</option>
 
@@ -843,7 +843,7 @@ const UserDatosFormStep3 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.parroquia}
                                   ref={parroquiaRef}
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
                     >
                       <option key="0" relacion="" value="">Seleccione el Parroquia</option>
 
@@ -873,7 +873,7 @@ const UserDatosFormStep3 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.municipio}
                                   ref={municipioRef}
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
                     >
                       <option key="0" relacion="" value="">Seleccione la Ciudadad</option>
 
@@ -899,7 +899,7 @@ const UserDatosFormStep3 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.sector}
                                   ref={sectorRef}
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
                     >
                       <option key="0" value="">Seleccione el Sector</option>
 
@@ -925,7 +925,7 @@ const UserDatosFormStep3 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.vialidad}
                                   ref={vialidadRef}
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
                     >
                       <option key="0" value="">Seleccione la Vialidad</option>
 
@@ -955,7 +955,7 @@ const UserDatosFormStep3 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.edificacion}
                                   ref={edificacionRef}
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
                     >
                       <option key="0" value="">Seleccione la Edificación</option>
 
@@ -981,7 +981,7 @@ const UserDatosFormStep3 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.local}
                                   maxLength="20"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.local && formik.errors.local ? (

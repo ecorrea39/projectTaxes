@@ -714,6 +714,7 @@ const ActaDeAsambleaCrear = (props) => {
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.fecha_protocolizacion}
+                                  max={new Date().toISOString().split("T")[0]}
                     />
 
                     {formik.touched.fecha_protocolizacion && formik.errors.fecha_protocolizacion ? (

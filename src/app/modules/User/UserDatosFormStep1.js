@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef, useContext} from "react";
-import {Button, Card, Col, Container, Dropdown, DropdownButton, Form, Row, SplitButton} from "react-bootstrap";
+import {Button, Card, Col, Container, Dropdown, DropdownButton, Form, Modal, Row, SplitButton} from "react-bootstrap";
 import {FormattedMessage, useIntl} from "react-intl";
 import * as Yup from "yup";
 import {useFormik} from "formik";
@@ -27,6 +27,8 @@ const UserDatosFormStep1 = (props) => {
   const clase_de_empresaRef = useRef();
   const actividad_economicaRef = useRef();
   const estatusRef = useRef();
+  const fondoComercioRef = useRef();
+  const actaAsambleaRef = useRef();
 
   const [loading, setLoading] = useState(false);
   const [clasesEmpresa, setClasesEmpresa] = useState([]);
@@ -35,6 +37,8 @@ const UserDatosFormStep1 = (props) => {
   const [userCompanies, setUserCompanies] = useState([]);
   const [siguiente, setSiguiente] = useState(false);
   const [mostrarComboEmpresas, setMostrarComboEmpresas] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [actasDeAsamblea, setActasDeAsamblea] = useState([]);
 
   const intl = useIntl();
   const API_URL = `${process.env.REACT_APP_API_URL}`;
@@ -364,6 +368,69 @@ const UserDatosFormStep1 = (props) => {
     formik.submitForm();
   }
 
+  const handleEditar = () => {
+
+    axios.get(`${API_URL}acta_asamblea/${rif}/`, axiosConfig)
+      .then(function (res) {
+        console.log("get_user_company_acta_asamblea::", res);
+
+        const arrayData = Array.from(res.data.data);
+
+        let actasArray = [];
+
+        if (arrayData.length > 0) {
+          actasArray = arrayData.map(elemData => {
+
+            const fondoComercioRefC = fondoComercioRef.current.value;
+
+            console.log("fondoComercioRefC::", fondoComercioRefC);
+            console.log("elemData.attributes.users_information_id::", elemData.attributes.users_information_id);
+
+            if (elemData.attributes.users_information_id == fondoComercioRefC) {
+              let id = elemData.id;
+              let elemNumeroDeDocumento = elemData.attributes.numero_de_documento;
+              let elemFecha = elemData.attributes.fecha_protocolizacion;
+
+              let rObj = {
+                "id": id,
+                "name": elemNumeroDeDocumento + "-" + new Date(elemFecha).toISOString().split("T")[0]
+              };
+
+              return rObj;
+            }
+
+          });
+
+        }
+
+        setActasDeAsamblea(actasArray);
+
+        setShowModal(true);
+      }).catch((err) => {
+
+      console.log("errCargandoActasDeAsamblea", err);
+      alert("Error buscando datos de las actas de asamblea")
+    });
+
+  }
+
+  const handleClose = () => {
+    setShowModal(false);
+  }
+
+  const handleAceptar = () => {
+
+    const actaAsambleaRefC = actaAsambleaRef.current.value;
+
+    console.log("actaAsambleaRefC:::", actaAsambleaRefC);
+
+    if (actaAsambleaRefC != "") {
+      props.cambiarActaEdicion(true);
+    }
+
+    setShowModal(false);
+  }
+
   const LoginSchema = Yup.object().shape({
 
     razon_social: Yup.string()
@@ -569,7 +636,9 @@ const UserDatosFormStep1 = (props) => {
               {mostrarComboEmpresas &&
                 <form>
                   <Form.Group controlId="fondoComercio">
-                    <Form.Control as="select" onChange={companiesChangeHandler}>
+                    <Form.Control as="select" onChange={companiesChangeHandler}
+                                  ref={fondoComercioRef}
+                    >
 
                       {userCompanies.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
@@ -582,6 +651,48 @@ const UserDatosFormStep1 = (props) => {
             </Col>
           </Row>
 
+
+        <Row>
+          <Col md={12}>
+            <Button variant="secondary" size="lg" block
+                    type="button"
+                    onClick={handleEditar}
+            >
+              Editar Información de la Empresa mediante un Acta de Asamblea
+            </Button>
+
+            <Modal show={showModal} onHide={handleClose}>
+              <Modal.Header closeButton>
+                <Modal.Title>Modal heading</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <form>
+                  <Form.Group controlId="actasDeAsamblea">
+                    <Form.Control as="select"
+                                  ref={actaAsambleaRef}
+                    >
+
+                      <option key="0" value="">Seleccione el acta de Asamblea</option>
+
+                      { actasDeAsamblea.map((elemento) =>
+                        <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
+                      )}
+
+                    </Form.Control>
+                  </Form.Group>
+                </form>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                  Cerrar
+                </Button>
+                <Button variant="primary" onClick={handleAceptar}>
+                  Aceptar
+                </Button>
+              </Modal.Footer>
+            </Modal>
+          </Col>
+        </Row>
 
           <Card.Body>
             <form
@@ -598,7 +709,7 @@ const UserDatosFormStep1 = (props) => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values.razon_social}
                                     maxLength="100"
-                                    disabled={props.registradoValor ? "disabled" : ""}
+                                    disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
                       />
 
                       {formik.touched.razon_social && formik.errors.razon_social ? (
@@ -617,7 +728,7 @@ const UserDatosFormStep1 = (props) => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values.nombre_comercial}
                                     maxLength="100"
-                                    disabled={props.registradoValor ? "disabled" : ""}
+                                    disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
                       />
 
                       {formik.touched.nombre_comercial && formik.errors.nombre_comercial ? (
@@ -638,7 +749,7 @@ const UserDatosFormStep1 = (props) => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values.clase_de_empresa}
                                     ref={clase_de_empresaRef}
-                                    disabled={props.registradoValor ? "disabled" : ""}
+                                    disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
                       >
 
                         <option key="0" value="">Seleccione la Clase de Empresa</option>
@@ -665,7 +776,7 @@ const UserDatosFormStep1 = (props) => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values.actividad_economica}
                                     ref={actividad_economicaRef}
-                                    disabled={props.registradoValor ? "disabled" : ""}
+                                    disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
                       >
 
                         <option key="0" value="">Seleccione la Actividad Económica</option>
@@ -694,7 +805,7 @@ const UserDatosFormStep1 = (props) => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values.estatus}
                                     ref={estatusRef}
-                                    disabled={props.registradoValor ? "disabled" : ""}
+                                    disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
                       >
 
                         <option key="0" value="">Seleccione el Estatus</option>
@@ -733,7 +844,7 @@ const UserDatosFormStep1 = (props) => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values.numero_patronal}
                                     maxLength="20"
-                                    disabled={props.registradoValor ? "disabled" : ""}
+                                    disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
                       />
 
                       {formik.touched.numero_patronal && formik.errors.numero_patronal ? (
@@ -752,7 +863,7 @@ const UserDatosFormStep1 = (props) => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values.numero_de_trabajadores}
                                     maxLength="7"
-                                    disabled={props.registradoValor ? "disabled" : ""}
+                                    disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
                       />
 
                       {formik.touched.numero_de_trabajadores && formik.errors.numero_de_trabajadores ? (
