@@ -349,12 +349,6 @@ export const navContribuyentes = [
         slug: "modificar-perfil",
       },
       {
-        title: "user-profile",
-        url: "/user-profile",
-        icon: "",
-        slug: "user-profile",
-      },
-      {
         title: "Cambiar clave",
         url: "/user-datos",
         icon: "",
