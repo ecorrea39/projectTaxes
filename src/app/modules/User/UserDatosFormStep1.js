@@ -437,9 +437,11 @@ const UserDatosFormStep1 = (props) => {
   }
 
   const handleConsultarEmpresa = () => {
+    resetFields();
+
     const tipoRifRefC = tipoRifRef.current.value;
     const numeroRifRefC = numeroRifRef.current.value;
-    rifToSearch = tipoRifRefC+numeroRifRefC;
+    rifToSearch = tipoRifRefC + numeroRifRefC;
 
     console.log("tipoRifRefC", tipoRifRefC);
     console.log("numeroRifRefC", numeroRifRefC);
@@ -456,9 +458,23 @@ const UserDatosFormStep1 = (props) => {
     });
   }
 
+  const resetFields = () => {
+
+    formik.values.razon_social = "";
+    formik.values.nombre_comercial = "";
+    formik.values.clase_de_empresa = "";
+    formik.values.actividad_economica = "";
+    formik.values.estatus = "";
+    formik.values.numero_patronal = "";
+    formik.values.numero_de_trabajadores = "";
+  }
+
   const handleResetRif = () => {
+
     tipoRifRef.current.value = "";
     numeroRifRef.current.value = "";
+
+    resetFields();
 
     const rif = localStorage.getItem('rif');
     rifToSearch = rif;
@@ -704,7 +720,7 @@ const UserDatosFormStep1 = (props) => {
           &&
           <Row>
             <Col md={2}>
-              <Form.Group controlId="tipo" className="p-0" >
+              <Form.Group controlId="tipo" className="p-0">
                 {/*<Form.Label>State</Form.Label>*/}
                 <Form.Control as="select"
                               ref={tipoRifRef}
@@ -753,7 +769,7 @@ const UserDatosFormStep1 = (props) => {
           </Row>
         }
 
-        <br />
+        <br/>
 
         <Row>
           <Col md={4}>
