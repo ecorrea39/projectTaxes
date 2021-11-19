@@ -456,6 +456,25 @@ const UserDatosFormStep1 = (props) => {
     });
   }
 
+  const handleResetRif = () => {
+    tipoRifRef.current.value = "";
+    numeroRifRef.current.value = "";
+
+    const rif = localStorage.getItem('rif');
+    rifToSearch = rif;
+
+    localStorage.setItem('rifToSearch', rifToSearch);
+
+    cargaDeEmpresas().then((resolvedValueCargaDeEmpresas) => {
+      console.log("resolvedValueCargaDeEmpresas", resolvedValueCargaDeEmpresas);
+
+      cargarDataInicial();
+    }, (error) => {
+      console.log("cargaDeEmpresasFallido", error);
+      alert(error);
+    });
+  }
+
   const handleClose = () => {
     setShowModal(false);
   }
@@ -705,7 +724,7 @@ const UserDatosFormStep1 = (props) => {
                 </Form.Control>
               </Form.Group>
             </Col>
-            <Col md={6}>
+            <Col md={3}>
               <input
                 placeholder="ingrese número de R.I.F."
                 type="text"
@@ -721,6 +740,14 @@ const UserDatosFormStep1 = (props) => {
                       onClick={handleConsultarEmpresa}
               >
                 Consultar Empresa
+              </Button>
+            </Col>
+            <Col md={3}>
+              <Button variant="secondary" size="lg" block
+                      type="button"
+                      onClick={handleResetRif}
+              >
+                Usar mi RIF
               </Button>
             </Col>
           </Row>
