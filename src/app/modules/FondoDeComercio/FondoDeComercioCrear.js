@@ -118,7 +118,7 @@ const FondoDeComercioCrear = (props) => {
 
           console.log("resFormStep1", res);
 
-          history.replace('/fondosdecomercio');
+          props.cambiarVistaActual("lista");
 
         }).catch((err) => {
 

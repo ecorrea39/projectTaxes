@@ -29,6 +29,8 @@ const UserDatosFormStep1 = (props) => {
   const estatusRef = useRef();
   const fondoComercioRef = useRef();
   const actaAsambleaRef = useRef();
+  const tipoRifRef = useRef();
+  const numeroRifRef = useRef();
 
   const [loading, setLoading] = useState(false);
   const [clasesEmpresa, setClasesEmpresa] = useState([]);
@@ -45,6 +47,15 @@ const UserDatosFormStep1 = (props) => {
 
   const token = localStorage.getItem('authToken');
   const rif = localStorage.getItem('rif');
+  let rifToSearch = localStorage.getItem('rifToSearch');
+  const [rifActual, setRifActual] = useState('');
+  const groups = localStorage.getItem('groups');
+
+  if (groups == 'administradores') {
+    props.cambiarAdminEdicion(true);
+  }
+
+  console.log("groups:::", groups);
 
   const axiosConfig = {
     headers: {
@@ -55,6 +66,9 @@ const UserDatosFormStep1 = (props) => {
   };
 
   useEffect(() => {
+
+    console.log("tipo", rif.substring(0, 1));
+    console.log("number", rif.substring(1));
 
     console.log("registradoValor::", props.registradoValor);
 
@@ -70,44 +84,7 @@ const UserDatosFormStep1 = (props) => {
           cargaDeEmpresas().then((resolvedValueCargaDeEmpresas) => {
             console.log("resolvedValueCargaDeEmpresas", resolvedValueCargaDeEmpresas);
 
-            axios.get(`${API_URL}user_company/${rif}/`, axiosConfig)
-              .then(function (res) {
-                console.log("get_user_company::", res);
-
-                if (res.data.data != null) {
-
-                  let initialValuesJson = {
-                    "razon_social": res.data.data.attributes.razon_social != null ? res.data.data.attributes.razon_social : "",
-                    "nombre_comercial": res.data.data.attributes.nombre_comercial != null ? res.data.data.attributes.nombre_comercial : "",
-                    "clase_de_empresa": res.data.data.attributes.clase_de_empresa != null ? res.data.data.attributes.clase_de_empresa : "",
-                    "actividad_economica": res.data.data.attributes.actividad_economica != null ? res.data.data.attributes.actividad_economica : "",
-                    "estatus": res.data.data.attributes.estatus != null ? res.data.data.attributes.estatus : "",
-                    "numero_patronal": res.data.data.attributes.numero_patronal != null ? res.data.data.attributes.numero_patronal : "",
-                    "numero_de_trabajadores": res.data.data.attributes.numero_de_trabajadores != null ? res.data.data.attributes.numero_de_trabajadores : ""
-                  };
-
-                  generalCtx.iniIdUserInformacionProfile(res.data.data.id);
-                  setInitialValues(initialValuesJson);
-
-                  if (res.data.data.attributes.fecha_registro_inces != null) {
-                    props.cambiarRegistrado(true);
-                  } else {
-                    props.cambiarRegistrado(false);
-                  }
-                } else {
-                  generalCtx.iniIdUserInformacionProfile("-");
-                  props.cambiarRegistrado(false);
-                  alert("No existe información alguna registrada del usuario");
-                }
-
-                disableLoading();
-              }).catch((err) => {
-
-              console.log("errGetUserCompany", err);
-              alert("Error buscando datos de la empresa del usuario")
-              disableLoading();
-
-            });
+            cargarDataInicial();
           }, (error) => {
             console.log("cargaDeEmpresasFallido", error);
             alert(error);
@@ -126,6 +103,47 @@ const UserDatosFormStep1 = (props) => {
     });
 
   }, []);
+
+  const cargarDataInicial = () => {
+    axios.get(`${API_URL}user_company/${rifToSearch}/`, axiosConfig)
+      .then(function (res) {
+        console.log("get_user_company::", res);
+
+        if (res.data.data != null) {
+
+          let initialValuesJson = {
+            "razon_social": res.data.data.attributes.razon_social != null ? res.data.data.attributes.razon_social : "",
+            "nombre_comercial": res.data.data.attributes.nombre_comercial != null ? res.data.data.attributes.nombre_comercial : "",
+            "clase_de_empresa": res.data.data.attributes.clase_de_empresa != null ? res.data.data.attributes.clase_de_empresa : "",
+            "actividad_economica": res.data.data.attributes.actividad_economica != null ? res.data.data.attributes.actividad_economica : "",
+            "estatus": res.data.data.attributes.estatus != null ? res.data.data.attributes.estatus : "",
+            "numero_patronal": res.data.data.attributes.numero_patronal != null ? res.data.data.attributes.numero_patronal : "",
+            "numero_de_trabajadores": res.data.data.attributes.numero_de_trabajadores != null ? res.data.data.attributes.numero_de_trabajadores : ""
+          };
+
+          generalCtx.iniIdUserInformacionProfile(res.data.data.id);
+          setInitialValues(initialValuesJson);
+
+          if (res.data.data.attributes.fecha_registro_inces != null) {
+            props.cambiarRegistrado(true);
+          } else {
+            props.cambiarRegistrado(false);
+          }
+        } else {
+          generalCtx.iniIdUserInformacionProfile("-");
+          props.cambiarRegistrado(false);
+          alert("No existe información alguna registrada del usuario");
+        }
+
+        disableLoading();
+      }).catch((err) => {
+
+      console.log("errGetUserCompany", err);
+      alert("Error buscando datos de la empresa del usuario")
+      disableLoading();
+
+    });
+  }
 
   const cargaDeClasesDeEmpresa = () => {
 
@@ -261,7 +279,11 @@ const UserDatosFormStep1 = (props) => {
     let p = new Promise(function (resolve, reject) {
       enableLoading();
 
-      axios.get(`${API_URL}user_company/fondos/${rif}/`, axiosConfig)
+      const rifToSearch = localStorage.getItem('rifToSearch');
+      setRifActual(rifToSearch);
+      console.log("rifTosearch:::::", rifToSearch);
+
+      axios.get(`${API_URL}user_company/fondos/${rifToSearch}/`, axiosConfig)
         .then(function (res) {
           console.log("resFormStep1_fondos", res);
 
@@ -414,6 +436,26 @@ const UserDatosFormStep1 = (props) => {
 
   }
 
+  const handleConsultarEmpresa = () => {
+    const tipoRifRefC = tipoRifRef.current.value;
+    const numeroRifRefC = numeroRifRef.current.value;
+    rifToSearch = tipoRifRefC+numeroRifRefC;
+
+    console.log("tipoRifRefC", tipoRifRefC);
+    console.log("numeroRifRefC", numeroRifRefC);
+
+    localStorage.setItem('rifToSearch', rifToSearch);
+
+    cargaDeEmpresas().then((resolvedValueCargaDeEmpresas) => {
+      console.log("resolvedValueCargaDeEmpresas", resolvedValueCargaDeEmpresas);
+
+      cargarDataInicial();
+    }, (error) => {
+      console.log("cargaDeEmpresasFallido", error);
+      alert(error);
+    });
+  }
+
   const handleClose = () => {
     setShowModal(false);
   }
@@ -526,6 +568,19 @@ const UserDatosFormStep1 = (props) => {
     setLoading(false);
   };
 
+  const customHandleChange = (event) => {
+    const value = event.currentTarget.value;
+
+    if (value === '') {
+      formik.setFieldValue('user', value);
+    } else {
+      const regex = /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/;
+      if (regex.test(value.toString())) {
+        formik.setFieldValue('user', value);
+      }
+    }
+  }
+
   const formik = useFormik({
     initialValues,
     enableReinitialize: true,
@@ -548,12 +603,13 @@ const UserDatosFormStep1 = (props) => {
       console.log("generalCtx.theIdUserInformacionProfile", generalCtx.theIdUserInformacionProfile);
 
       jsonAttributes["user_information_id"] = generalCtx.theIdUserInformacionProfile;
+      const rifToSearch = localStorage.getItem('rifToSearch');
 
       const data = {
         jsonapi: {version: '1.0'},
         data: {
           type: "userCompany",
-          id: rif,
+          id: rifToSearch,
           attributes: jsonAttributes
         }
       };
@@ -623,292 +679,345 @@ const UserDatosFormStep1 = (props) => {
     <Card bg="default" text="success">
       <Card.Body>
 
+        {
+          groups == 'administradores'
+          // groups == 'contribuyentes'
+          &&
           <Row>
+            <Col md={2}>
+              <Form.Group controlId="tipo" className="p-0" >
+                {/*<Form.Label>State</Form.Label>*/}
+                <Form.Control as="select"
+                              ref={tipoRifRef}
+                >
+
+                  <FormattedMessage id='AUTH.GENERAL.IDENTIFICATIONTYPE'>
+                    {(message) => <option value="">{message}</option>}
+                  </FormattedMessage>
+
+                  <option value="j">J</option>
+                  <option value="v">V</option>
+                  <option value="c">C</option>
+                  <option value="e">E</option>
+                  <option value="g">G</option>
+                  <option value="p">P</option>
+
+                </Form.Control>
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <input
+                placeholder="ingrese número de R.I.F."
+                type="text"
+                className={`form-control form-control-solid`}
+                name="user"
+                maxLength="10"
+                ref={numeroRifRef}
+              />
+            </Col>
             <Col md={4}>
-              <Card.Title>
-                Datos de la Empresa
-              </Card.Title>
-            </Col>
-            <Col md={3} style={textLabelColor}>
-              {mostrarComboEmpresas && 'Empresa Principal y Fondos de Comercio'}
-            </Col>
-            <Col md={5}>
-              {mostrarComboEmpresas &&
-                <form>
-                  <Form.Group controlId="fondoComercio">
-                    <Form.Control as="select" onChange={companiesChangeHandler}
-                                  ref={fondoComercioRef}
-                    >
-
-                      {userCompanies.map((elemento) =>
-                        <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
-                      )}
-
-                    </Form.Control>
-                  </Form.Group>
-                </form>
-              }
+              <Button variant="secondary" size="lg" block
+                      type="button"
+                      onClick={handleConsultarEmpresa}
+              >
+                Consultar Empresa
+              </Button>
             </Col>
           </Row>
+        }
 
+        <br />
 
         <Row>
-          <Col md={12}>
-            <Button variant="secondary" size="lg" block
-                    type="button"
-                    onClick={handleEditar}
-            >
-              Editar Información de la Empresa mediante un Acta de Asamblea
-            </Button>
+          <Col md={4}>
+            <Card.Title>
+              Datos de la Empresa <span>({rifActual})</span>
+            </Card.Title>
+          </Col>
+          <Col md={3} style={textLabelColor}>
+            {mostrarComboEmpresas && 'Empresa Principal y Fondos de Comercio'}
+          </Col>
+          <Col md={5}>
+            {mostrarComboEmpresas &&
+            <form>
+              <Form.Group controlId="fondoComercio">
+                <Form.Control as="select" onChange={companiesChangeHandler}
+                              ref={fondoComercioRef}
+                >
 
-            <Modal show={showModal} onHide={handleClose}>
-              <Modal.Header closeButton>
-                <Modal.Title>Modal heading</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <form>
-                  <Form.Group controlId="actasDeAsamblea">
-                    <Form.Control as="select"
-                                  ref={actaAsambleaRef}
-                    >
+                  {userCompanies.map((elemento) =>
+                    <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
+                  )}
 
-                      <option key="0" value="">Seleccione el acta de Asamblea</option>
-
-                      { actasDeAsamblea.map((elemento) =>
-                        <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
-                      )}
-
-                    </Form.Control>
-                  </Form.Group>
-                </form>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                  Cerrar
-                </Button>
-                <Button variant="primary" onClick={handleAceptar}>
-                  Aceptar
-                </Button>
-              </Modal.Footer>
-            </Modal>
+                </Form.Control>
+              </Form.Group>
+            </form>
+            }
           </Col>
         </Row>
 
-          <Card.Body>
-            <form
-              onSubmit={formik.handleSubmit}
-              className="form fv-plugins-bootstrap fv-plugins-framework"
-            >
-              <Container>
-                <Row>
-                  <Col md={6}>
-                    <Form.Group as={Col} controlId="razon_social">
-                      <Form.Label style={textLabelColor}>Razón Social</Form.Label>
-                      <Form.Control size="lg" type="text" placeholder="Razón Social"
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    value={formik.values.razon_social}
-                                    maxLength="100"
-                                    disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
-                      />
+        {
+          // groups == 'administradores'
+          groups == 'contribuyentes'
+          &&
+          <Row>
+            <Col md={12}>
+              <Button variant="secondary" size="lg" block
+                      type="button"
+                      onClick={handleEditar}
+              >
+                Editar Información de la Empresa mediante un Acta de Asamblea
+              </Button>
 
-                      {formik.touched.razon_social && formik.errors.razon_social ? (
-                        <div className="fv-plugins-message-container">
-                          <div className="fv-help-block">{formik.errors.razon_social}</div>
-                        </div>
-                      ) : null}
-                    </Form.Group>
-                  </Col>
-
-                  <Col md={6}>
-                    <Form.Group as={Col} controlId="nombre_comercial">
-                      <Form.Label style={textLabelColor}>Nombre Comercial</Form.Label>
-                      <Form.Control size="lg" type="text" placeholder="Nombre Comercial"
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    value={formik.values.nombre_comercial}
-                                    maxLength="100"
-                                    disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
-                      />
-
-                      {formik.touched.nombre_comercial && formik.errors.nombre_comercial ? (
-                        <div className="fv-plugins-message-container">
-                          <div className="fv-help-block">{formik.errors.nombre_comercial}</div>
-                        </div>
-                      ) : null}
-                    </Form.Group>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col md={6}>
-                    <Form.Group controlId="clase_de_empresa">
-                      <Form.Label style={textLabelColor}>Clase de Empresa</Form.Label>
+              <Modal show={showModal} onHide={handleClose}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Modal heading</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <form>
+                    <Form.Group controlId="actasDeAsamblea">
                       <Form.Control as="select"
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    value={formik.values.clase_de_empresa}
-                                    ref={clase_de_empresaRef}
-                                    disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
+                                    ref={actaAsambleaRef}
                       >
 
-                        <option key="0" value="">Seleccione la Clase de Empresa</option>
+                        <option key="0" value="">Seleccione el acta de Asamblea</option>
 
-                        {clasesEmpresa.map((elemento) =>
+                        {actasDeAsamblea.map((elemento) =>
                           <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
                         )}
 
                       </Form.Control>
-
-                      {formik.touched.clase_de_empresa && formik.errors.clase_de_empresa ? (
-                        <div className="fv-plugins-message-container">
-                          <div className="fv-help-block">{formik.errors.clase_de_empresa}</div>
-                        </div>
-                      ) : null}
                     </Form.Group>
-                  </Col>
+                  </form>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={handleClose}>
+                    Cerrar
+                  </Button>
+                  <Button variant="primary" onClick={handleAceptar}>
+                    Aceptar
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+            </Col>
+          </Row>
+        }
 
-                  <Col md={6}>
-                    <Form.Group controlId="actividad_economica">
-                      <Form.Label style={textLabelColor}>Actividad Económica</Form.Label>
-                      <Form.Control as="select"
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    value={formik.values.actividad_economica}
-                                    ref={actividad_economicaRef}
-                                    disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
-                      >
+        <Card.Body>
+          <form
+            onSubmit={formik.handleSubmit}
+            className="form fv-plugins-bootstrap fv-plugins-framework"
+          >
+            <Container>
+              <Row>
+                <Col md={6}>
+                  <Form.Group as={Col} controlId="razon_social">
+                    <Form.Label style={textLabelColor}>Razón Social</Form.Label>
+                    <Form.Control size="lg" type="text" placeholder="Razón Social"
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  value={formik.values.razon_social}
+                                  maxLength="100"
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
+                    />
 
-                        <option key="0" value="">Seleccione la Actividad Económica</option>
+                    {formik.touched.razon_social && formik.errors.razon_social ? (
+                      <div className="fv-plugins-message-container">
+                        <div className="fv-help-block">{formik.errors.razon_social}</div>
+                      </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
 
-                        {actividadesEconomicas.map((elemento) =>
-                          <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
-                        )}
+                <Col md={6}>
+                  <Form.Group as={Col} controlId="nombre_comercial">
+                    <Form.Label style={textLabelColor}>Nombre Comercial</Form.Label>
+                    <Form.Control size="lg" type="text" placeholder="Nombre Comercial"
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  value={formik.values.nombre_comercial}
+                                  maxLength="100"
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
+                    />
 
-                      </Form.Control>
+                    {formik.touched.nombre_comercial && formik.errors.nombre_comercial ? (
+                      <div className="fv-plugins-message-container">
+                        <div className="fv-help-block">{formik.errors.nombre_comercial}</div>
+                      </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
+              </Row>
 
-                      {formik.touched.actividad_economica && formik.errors.actividad_economica ? (
-                        <div className="fv-plugins-message-container">
-                          <div className="fv-help-block">{formik.errors.actividad_economica}</div>
-                        </div>
-                      ) : null}
-                    </Form.Group>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col md={6}>
-                    <Form.Group controlId="estatus">
-                      <Form.Label style={textLabelColor}>Estatus</Form.Label>
-                      <Form.Control as="select"
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    value={formik.values.estatus}
-                                    ref={estatusRef}
-                                    disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
-                      >
-
-                        <option key="0" value="">Seleccione el Estatus</option>
-
-                        {estatus.map((elemento) =>
-                          <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
-                        )}
-
-                      </Form.Control>
-
-                      {formik.touched.estatus && formik.errors.estatus ? (
-                        <div className="fv-plugins-message-container">
-                          <div className="fv-help-block">{formik.errors.estatus}</div>
-                        </div>
-                      ) : null}
-                    </Form.Group>
-                  </Col>
-
-                  <Col md={6}>
-
-                  </Col>
-                </Row>
-
-                <br/>
-
-                <Card.Subtitle>Datos de IVSS</Card.Subtitle>
-
-                <br/>
-
-                <Row>
-                  <Col md={6}>
-                    <Form.Group as={Col} controlId="numero_patronal">
-                      <Form.Label style={textLabelColor}>Número Patronal</Form.Label>
-                      <Form.Control size="lg" type="text" placeholder="Número Patronal"
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    value={formik.values.numero_patronal}
-                                    maxLength="20"
-                                    disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
-                      />
-
-                      {formik.touched.numero_patronal && formik.errors.numero_patronal ? (
-                        <div className="fv-plugins-message-container">
-                          <div className="fv-help-block">{formik.errors.numero_patronal}</div>
-                        </div>
-                      ) : null}
-                    </Form.Group>
-                  </Col>
-
-                  <Col md={6}>
-                    <Form.Group as={Col} controlId="numero_de_trabajadores">
-                      <Form.Label style={textLabelColor}>Número de Trabajadores</Form.Label>
-                      <Form.Control size="lg" type="text" placeholder="Número de Trabajadores"
-                                    onChange={customHandleChangeNumeroDeTrabajadores}
-                                    onBlur={formik.handleBlur}
-                                    value={formik.values.numero_de_trabajadores}
-                                    maxLength="7"
-                                    disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
-                      />
-
-                      {formik.touched.numero_de_trabajadores && formik.errors.numero_de_trabajadores ? (
-                        <div className="fv-plugins-message-container">
-                          <div className="fv-help-block">{formik.errors.numero_de_trabajadores}</div>
-                        </div>
-                      ) : null}
-                    </Form.Group>
-                  </Col>
-                </Row>
-
-                <br/>
-
-                <Row>
-                  {/*<Col md={6}>*/}
-                  {/*  <Button variant="success" size="lg" block*/}
-                  {/*          type="submit"*/}
-                  {/*          disabled={*/}
-                  {/*            formik.isSubmitting ||*/}
-                  {/*            !formik.isValid*/}
-                  {/*          }*/}
-                  {/*  >*/}
-                  {/*    Guardar*/}
-                  {/*  </Button>*/}
-                  {/*</Col>*/}
-
-                  <Col md={12}>
-                    <Button variant="secondary" size="lg" block
-                            type="button"
-                            onClick={submitSiguiente}
-                            disabled={
-                              formik.isSubmitting ||
-                              !formik.isValid
-                            }
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId="clase_de_empresa">
+                    <Form.Label style={textLabelColor}>Clase de Empresa</Form.Label>
+                    <Form.Control as="select"
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  value={formik.values.clase_de_empresa}
+                                  ref={clase_de_empresaRef}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     >
-                      Siguiente
-                    </Button>
-                  </Col>
-                </Row>
-              </Container>
-            </form>
-          </Card.Body>
+
+                      <option key="0" value="">Seleccione la Clase de Empresa</option>
+
+                      {clasesEmpresa.map((elemento) =>
+                        <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
+                      )}
+
+                    </Form.Control>
+
+                    {formik.touched.clase_de_empresa && formik.errors.clase_de_empresa ? (
+                      <div className="fv-plugins-message-container">
+                        <div className="fv-help-block">{formik.errors.clase_de_empresa}</div>
+                      </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
+
+                <Col md={6}>
+                  <Form.Group controlId="actividad_economica">
+                    <Form.Label style={textLabelColor}>Actividad Económica</Form.Label>
+                    <Form.Control as="select"
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  value={formik.values.actividad_economica}
+                                  ref={actividad_economicaRef}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
+                    >
+
+                      <option key="0" value="">Seleccione la Actividad Económica</option>
+
+                      {actividadesEconomicas.map((elemento) =>
+                        <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
+                      )}
+
+                    </Form.Control>
+
+                    {formik.touched.actividad_economica && formik.errors.actividad_economica ? (
+                      <div className="fv-plugins-message-container">
+                        <div className="fv-help-block">{formik.errors.actividad_economica}</div>
+                      </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId="estatus">
+                    <Form.Label style={textLabelColor}>Estatus</Form.Label>
+                    <Form.Control as="select"
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  value={formik.values.estatus}
+                                  ref={estatusRef}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
+                    >
+
+                      <option key="0" value="">Seleccione el Estatus</option>
+
+                      {estatus.map((elemento) =>
+                        <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
+                      )}
+
+                    </Form.Control>
+
+                    {formik.touched.estatus && formik.errors.estatus ? (
+                      <div className="fv-plugins-message-container">
+                        <div className="fv-help-block">{formik.errors.estatus}</div>
+                      </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
+
+                <Col md={6}>
+
+                </Col>
+              </Row>
+
+              <br/>
+
+              <Card.Subtitle>Datos de IVSS</Card.Subtitle>
+
+              <br/>
+
+              <Row>
+                <Col md={6}>
+                  <Form.Group as={Col} controlId="numero_patronal">
+                    <Form.Label style={textLabelColor}>Número Patronal</Form.Label>
+                    <Form.Control size="lg" type="text" placeholder="Número Patronal"
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  value={formik.values.numero_patronal}
+                                  maxLength="20"
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
+                    />
+
+                    {formik.touched.numero_patronal && formik.errors.numero_patronal ? (
+                      <div className="fv-plugins-message-container">
+                        <div className="fv-help-block">{formik.errors.numero_patronal}</div>
+                      </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
+
+                <Col md={6}>
+                  <Form.Group as={Col} controlId="numero_de_trabajadores">
+                    <Form.Label style={textLabelColor}>Número de Trabajadores</Form.Label>
+                    <Form.Control size="lg" type="text" placeholder="Número de Trabajadores"
+                                  onChange={customHandleChangeNumeroDeTrabajadores}
+                                  onBlur={formik.handleBlur}
+                                  value={formik.values.numero_de_trabajadores}
+                                  maxLength="7"
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
+                    />
+
+                    {formik.touched.numero_de_trabajadores && formik.errors.numero_de_trabajadores ? (
+                      <div className="fv-plugins-message-container">
+                        <div className="fv-help-block">{formik.errors.numero_de_trabajadores}</div>
+                      </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <br/>
+
+              <Row>
+                {/*<Col md={6}>*/}
+                {/*  <Button variant="success" size="lg" block*/}
+                {/*          type="submit"*/}
+                {/*          disabled={*/}
+                {/*            formik.isSubmitting ||*/}
+                {/*            !formik.isValid*/}
+                {/*          }*/}
+                {/*  >*/}
+                {/*    Guardar*/}
+                {/*  </Button>*/}
+                {/*</Col>*/}
+
+                <Col md={12}>
+                  <Button variant="secondary" size="lg" block
+                          type="button"
+                          onClick={submitSiguiente}
+                          disabled={
+                            formik.isSubmitting ||
+                            !formik.isValid
+                          }
+                  >
+                    Siguiente
+                  </Button>
+                </Col>
+              </Row>
+            </Container>
+          </form>
+        </Card.Body>
       </Card.Body>
     </Card>
-);
+  );
 }
 
 export default UserDatosFormStep1;

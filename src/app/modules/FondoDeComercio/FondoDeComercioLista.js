@@ -78,7 +78,7 @@ const FondoDeComercioLista = (props) => {
     const tipoIdentificacion = rif.substring(0, 1);
     if (tipoIdentificacion == 'v' || tipoIdentificacion == 'e') {
       if (rowsData.length < 3) {
-        history.replace('/crearfondocomercio');
+        props.cambiarVistaActual("crear");
       } else {
         alert("No puede crear más Fondos de Comercio (Máximo 3)");
       }

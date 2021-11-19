@@ -558,7 +558,7 @@ const UserDatosFormStep2 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.oficina}
                                   ref={oficinaRef}
-                                  disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     >
                       <option key="0" value="">Seleccione la Oficina</option>
 
@@ -584,7 +584,7 @@ const UserDatosFormStep2 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.numero_de_documento}
                                   maxLength="20"
-                                  disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.numero_de_documento && formik.errors.numero_de_documento ? (
@@ -607,7 +607,7 @@ const UserDatosFormStep2 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.numero_de_tomo}
                                   maxLength="20"
-                                  disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.numero_de_tomo && formik.errors.numero_de_tomo ? (
@@ -626,7 +626,7 @@ const UserDatosFormStep2 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.numero_de_folio}
                                   maxLength="20"
-                                  disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.numero_de_folio && formik.errors.numero_de_folio ? (
@@ -649,7 +649,7 @@ const UserDatosFormStep2 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.numero_de_protocolo}
                                   maxLength="20"
-                                  disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.numero_de_protocolo && formik.errors.numero_de_protocolo ? (
@@ -667,7 +667,7 @@ const UserDatosFormStep2 = (props) => {
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.fecha_constitucion}
-                                  disabled={props.registradoValor && !props.actaEdicion ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                                   max={new Date().toISOString().split("T")[0]}
                     />
 
