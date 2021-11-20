@@ -12,7 +12,7 @@ import Search from '@material-ui/icons/Search';
 
 function MasterTables({tabla, titulo}) {
 
-    const { deleteMasterTables, trimestres, formasPago, cuentasRecaudadoras, estatus, bancos, claseEmpresa, motores, actividadesEconomicas, conceptos, registrosMercantiles, medidaValor, motivoSancion, diasFestivos, tasaIntereses, sectores, vialidades, locales, edificaciones, tipoDocumento, obtenerValores } = useContext(MasterTablesContext);
+    const { deleteMasterTables, trimestres, formasPago, cuentasRecaudadoras, estatus, bancos, claseEmpresa, motores, actividadesEconomicas, conceptos, registrosMercantiles, medidaValor, motivoSancion, diasFestivos, tasaIntereses, sectores, vialidades, locales, edificaciones, tipoDocumento, obtenerValores, filtrarElementos } = useContext(MasterTablesContext);
     const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", padding: "20px 35px 20px 35px"}
     const [isSwitchOn, setIsSwitchOn] = useState(false);
     const styleBtn = { borderRadius: '100%'}
@@ -724,6 +724,7 @@ function MasterTables({tabla, titulo}) {
         selectAllRowsItemText: "Todos"
     };
 
+    /*
     const filtrarElementos = () => {
         setDataAux(data);
         let search = dataAux.filter(item => {
@@ -735,15 +736,15 @@ function MasterTables({tabla, titulo}) {
         actualizarData(search);
         console.log('data ', search)
 
+    }*/
+
+    const onChange = (e) => {
+        e.persist();
+        setBusqueda(e.target.value);
+        filtrarElementos(tabla, e.target.value, columnas);
     }
 
-    const actualizarData = (d) => { data = d }
 
-    const onChange = async (e) => {
-        //e.persist();
-        await setBusqueda(e.target.value);
-        filtrarElementos();
-    }
 
     return (
         <>
@@ -764,7 +765,6 @@ function MasterTables({tabla, titulo}) {
                             onChange={onChange}
                         />
                         <button type="button" style={btnBuscar}>
-                            {" "}
                             <Search />
                         </button>
                     </div>

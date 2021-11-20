@@ -7,7 +7,7 @@ import PnaContext from "../../context/pna/pnaContext";
 
 export const BaseFormik = ({formik, props}) => {
 
-    const { registroSeleccionado, validarDescripcion } = useContext(PnaContext);
+    const { registroSeleccionado, validarNroTrabajadores } = useContext(PnaContext);
 
     useEffect(() => {
         if(props.accion === 'Modificar') {
@@ -54,6 +54,7 @@ export const BaseFormik = ({formik, props}) => {
                         id="rif"
                         name="rif"
                         component={BaseInput}
+                        onBlur={() => validarNroTrabajadores(formik)}
                     />
                 </Col>
             </Row>

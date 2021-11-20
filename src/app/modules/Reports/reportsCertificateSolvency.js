@@ -131,7 +131,7 @@ function ReportsCertificateSolvency() {
                                     </Col>
                                     <Col className="mt-1 mb-2" xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
                                         <Button type="submit" onClick={()=>console.log(formik.errors, formik.values)}
-                                        variant="success" className="btn btn-success font-size-lg w-100">Reporte</Button>
+                                        variant="success" className="btn btn-success font-size-lg w-100">Generar Reporte</Button>
                                     </Col>
                                 </Row>
                             </Form>

@@ -91,6 +91,52 @@ export const PnaState = ({ children }) => {
         }
     }
 
+    const validarNroTrabajadores = async (formik, props) => {
+
+        let rif = formik.values.tipo + formik.values.rif;
+
+        requestConfig.data.id = rif;
+        requestConfig.data.type = "userCompany";
+
+        try {
+            //const respuesta = await clientAxios.get(`/user_company/${rif}/`, requestConfig);
+            const respuesta = await clientAxios.get(`/users/${rif}`, requestConfig);
+
+            console.log('respuesta ', respuesta);
+
+            if (respuesta.data.data != null) {
+                if(respuesta.data.data.numero_de_trabajadores < 15) {
+                    Swal.fire({
+                        title: 'PNA Certificado',
+                        text: `Contribuyente no posee 15 trabajadores`,
+                        icon: "warning",
+                        button: "Ok",
+                        timer: 2000
+                    });
+                }
+            }
+
+            if (respuesta.data.data === null) {
+                Swal.fire({
+                    title: 'PNA Certificado',
+                    text: `Contribuyente no esta registrado en RNCP`,
+                    icon: "error",
+                    button: "Ok",
+                    timer: 2000
+                });
+            }
+        } catch (error) {
+            console.log(error)
+            Swal.fire({
+                title: 'PNA Certificado',
+                text: `Error al validar número de rif del contribuyente !`,
+                icon: "error",
+                button: "Ok",
+                timer: 2000
+            });
+        }
+    }
+
     const submitPna = async (valores, props) => {
 
         const dataType = "savePnaCertificado";
@@ -102,8 +148,6 @@ export const PnaState = ({ children }) => {
             requestConfig.data.attributes = valores;
             requestConfig.data.id = (props.accion !== 'Agregar') ? valores.id : valores.tipo.trim() + valores.rif.trim();
 
-            console.log('requestConfig ', requestConfig)
-
             if(props.accion === 'Agregar') {
                 const respuesta = await clientAxios.post(urlTabla, requestConfig);
             } else {
@@ -112,7 +156,7 @@ export const PnaState = ({ children }) => {
 
             props.onHide();
             Swal.fire({
-                title: props.titulo,
+                title: 'PNA Certificado',
                 text: `Datos ${ props.accion === 'Agregar'? 'guadados' : 'actualizados' } con éxito!`,
                 icon: "success",
                 button: "Ok",
@@ -123,7 +167,7 @@ export const PnaState = ({ children }) => {
         } catch (error) {
             console.log(error)
             Swal.fire({
-                title: props.titulo,
+                title: 'PNA Certificado',
                 text: `Error al intentar ${ props.accion === 'Agregar' ? 'guardar' : 'actualizar' } registro!`,
                 icon: "error",
                 button: "Ok",
@@ -139,7 +183,8 @@ export const PnaState = ({ children }) => {
         deletePna,
         registroSeleccionado,
         obtenerValores,
-        limpiarSeleccionado
+        limpiarSeleccionado,
+        validarNroTrabajadores
     }
 
     return (
