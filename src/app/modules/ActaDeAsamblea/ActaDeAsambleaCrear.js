@@ -393,7 +393,9 @@ const ActaDeAsambleaCrear = (props) => {
           let companiesArray = [];
 
           if (arrayData.length > 0) {
-            companiesArray = arrayData.map(elemData => {
+
+            arrayData.forEach(function(elemData) {
+
               let id = elemData.id;
               let elemDataName = elemData.attributes.razon_social;
 
@@ -404,9 +406,8 @@ const ActaDeAsambleaCrear = (props) => {
 
               console.log("rObjCompanies", rObj);
 
-              return rObj;
+              companiesArray.push(rObj);
             });
-
           } else {
             alert("Aún no hay compañías con un perfil registrado");
           }

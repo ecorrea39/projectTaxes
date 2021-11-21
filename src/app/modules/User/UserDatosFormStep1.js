@@ -157,7 +157,9 @@ const UserDatosFormStep1 = (props) => {
 
           const arrayData = Array.from(res.data.data);
 
-          let clasesEmpresaArray = arrayData.map(elemData => {
+          let clasesEmpresaArray = [];
+
+          arrayData.forEach(function(elemData) {
             let id = elemData.id;
             let elemDataName = elemData.attributes.name;
 
@@ -166,7 +168,7 @@ const UserDatosFormStep1 = (props) => {
               "name": elemDataName
             };
 
-            return rObj;
+            clasesEmpresaArray.push(rObj);
           });
 
           clasesEmpresaArray.sort((a, b) => a.name < b.name ? -1 : 1);
@@ -201,7 +203,10 @@ const UserDatosFormStep1 = (props) => {
 
           const arrayData = Array.from(res.data.data);
 
-          let estatusArray = arrayData.map(elemData => {
+          let estatusArray = [];
+
+          arrayData.forEach(function(elemData) {
+
             let id = elemData.id;
             let elemDataName = elemData.attributes.name;
 
@@ -210,7 +215,7 @@ const UserDatosFormStep1 = (props) => {
               "name": elemDataName
             };
 
-            return rObj;
+            estatusArray.push(rObj);
           });
 
           estatusArray.sort((a, b) => a.name < b.name ? -1 : 1);
@@ -243,7 +248,10 @@ const UserDatosFormStep1 = (props) => {
 
           const arrayData = Array.from(res.data.data);
 
-          let actividadesEconomicasArray = arrayData.map(elemData => {
+          let actividadesEconomicasArray = [];
+
+          arrayData.forEach(function(elemData) {
+
             let id = elemData.id;
             let elemDataName = elemData.attributes.name;
 
@@ -252,7 +260,7 @@ const UserDatosFormStep1 = (props) => {
               "name": elemDataName
             };
 
-            return rObj;
+            actividadesEconomicasArray.push(rObj);
           });
 
           actividadesEconomicasArray.sort((a, b) => a.name < b.name ? -1 : 1);
@@ -293,7 +301,9 @@ const UserDatosFormStep1 = (props) => {
           let companiesArray = [];
 
           if (arrayData.length > 0) {
-            companiesArray = arrayData.map(elemData => {
+
+            arrayData.forEach(function(elemData) {
+
               let id = elemData.id;
               let elemDataName = elemData.attributes.razon_social;
 
@@ -304,7 +314,7 @@ const UserDatosFormStep1 = (props) => {
 
               console.log("rObjCompanies", rObj);
 
-              return rObj;
+              companiesArray.push(rObj);
             });
 
             setMostrarComboEmpresas(true);
@@ -402,8 +412,7 @@ const UserDatosFormStep1 = (props) => {
         let actasArray = [];
 
         if (arrayData.length > 0) {
-          actasArray = arrayData.map(elemData => {
-
+          arrayData.forEach(function(elemData) {
             const fondoComercioRefC = fondoComercioRef.current.value;
 
             console.log("fondoComercioRefC::", fondoComercioRefC);
@@ -419,16 +428,19 @@ const UserDatosFormStep1 = (props) => {
                 "name": elemNumeroDeDocumento + "-" + new Date(elemFecha).toISOString().split("T")[0]
               };
 
-              return rObj;
+              actasArray.push(rObj);
             }
-
           });
-
         }
 
         setActasDeAsamblea(actasArray);
 
-        setShowModal(true);
+        if (actasArray.length == 0) {
+          alert("No tiene actas de asamblea cargadas en el módulo de Actas de Asambleas");
+        } else {
+          setShowModal(true);
+        }
+
       }).catch((err) => {
 
       console.log("errCargandoActasDeAsamblea", err);

@@ -38,7 +38,10 @@ function ComprobanteDeInscripcion() {
           setMostrarComboEmpresas(false);
         }
 
-        let companiesArray = arrayData.map(elemData => {
+        let companiesArray = [];
+
+        arrayData.forEach(function(elemData) {
+
           let id = elemData.id;
           let elemDataName = elemData.attributes.razon_social;
 
@@ -47,9 +50,7 @@ function ComprobanteDeInscripcion() {
             "name": elemDataName
           };
 
-          console.log("rObjCompanies", rObj);
-
-          return rObj;
+          companiesArray.push(rObj);
         });
 
         setUserCompaniesArray(companiesArray);

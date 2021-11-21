@@ -248,7 +248,10 @@ const UserDatosFormStep3 = (props) => {
 
           const arrayData = Array.from(res.data.data);
 
-          let estadosArray = arrayData.map(elemData => {
+          let estadosArray = [];
+
+          arrayData.forEach(function(elemData) {
+
             let id = elemData.attributes.cod_estado;
             let elemDataName = elemData.attributes.descripcion;
 
@@ -257,7 +260,7 @@ const UserDatosFormStep3 = (props) => {
               "name": elemDataName
             };
 
-            return rObj;
+            estadosArray.push(rObj);
           });
 
           estadosArray.sort((a, b) => a.name < b.name ? -1 : 1);
@@ -289,7 +292,10 @@ const UserDatosFormStep3 = (props) => {
 
           const arrayData = Array.from(res.data.data);
 
-          let municipiosArray = arrayData.map(elemData => {
+          let municipiosArray = [];
+
+          arrayData.forEach(function(elemData) {
+
             let id = elemData.attributes.cod_municipio;
             let elemDataName = elemData.attributes.descripcion;
             let relacion = elemData.attributes.cod_municipio + '-' + elemData.attributes.id_estado;
@@ -300,7 +306,7 @@ const UserDatosFormStep3 = (props) => {
               "relacion": relacion
             };
 
-            return rObj;
+            municipiosArray.push(rObj);
           });
 
           municipiosArray.sort((a, b) => a.name < b.name ? -1 : 1);
@@ -333,7 +339,10 @@ const UserDatosFormStep3 = (props) => {
 
           const arrayData = Array.from(res.data.data);
 
-          let parroquiasArray = arrayData.map(elemData => {
+          let parroquiasArray = [];
+
+          arrayData.forEach(function(elemData) {
+
             let id = elemData.id;
             let elemDataName = elemData.attributes.descripcion;
             let relacion = elemData.id + '-' + elemData.attributes.id_municipio;
@@ -344,7 +353,7 @@ const UserDatosFormStep3 = (props) => {
               "relacion": relacion
             };
 
-            return rObj;
+            parroquiasArray.push(rObj);
           });
 
           parroquiasArray.sort((a, b) => a.name < b.name ? -1 : 1);
@@ -377,7 +386,10 @@ const UserDatosFormStep3 = (props) => {
 
           const arrayData = Array.from(res.data.data);
 
-          let ciudadesArray = arrayData.map(elemData => {
+          let ciudadesArray = [];
+
+          arrayData.forEach(function(elemData) {
+
             let id = elemData.id;
             let elemDataName = elemData.attributes.descripcion;
             let relacion = elemData.attributes.id_estado;
@@ -388,7 +400,7 @@ const UserDatosFormStep3 = (props) => {
               "relacion": relacion
             };
 
-            return rObj;
+            ciudadesArray.push(rObj);
           });
 
           ciudadesArray.sort((a, b) => a.name < b.name ? -1 : 1);
