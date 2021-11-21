@@ -77,10 +77,10 @@ const FondoDeComercioLista = (props) => {
 
     const tipoIdentificacion = rif.substring(0, 1);
     if (tipoIdentificacion == 'v' || tipoIdentificacion == 'e') {
-      if (rowsData.length < 3) {
+      if (rowsData.length < 10) {
         props.cambiarVistaActual("crear");
       } else {
-        alert("No puede crear más Fondos de Comercio (Máximo 3)");
+        alert("No puede crear más Fondos de Comercio (Máximo 10)");
       }
     } else {
       alert("Solo los naturales o extranjeros pueden crear fondos de comercio");

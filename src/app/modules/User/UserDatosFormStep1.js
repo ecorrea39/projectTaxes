@@ -105,6 +105,7 @@ const UserDatosFormStep1 = (props) => {
   }, []);
 
   const cargarDataInicial = () => {
+    rifToSearch = localStorage.getItem('rifToSearch');
     axios.get(`${API_URL}user_company/${rifToSearch}/`, axiosConfig)
       .then(function (res) {
         console.log("get_user_company::", res);
@@ -372,7 +373,7 @@ const UserDatosFormStep1 = (props) => {
         } else {
           generalCtx.iniIdUserInformacionProfile("-");
           props.cambiarRegistrado(false);
-          alert("No existe información alguna registrada del usuario");
+          alert("No existe información alguna registrada del usuario.");
         }
 
         disableLoading();
