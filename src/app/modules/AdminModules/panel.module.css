@@ -1,0 +1,17 @@
+.btnAddItem{
+    top: 25px;
+    position: absolute;
+    right: 35px;
+    box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+}
+
+.titleAddPermisos{
+    color:#0091ea;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.titleModule{
+    font-size: 13px;
+    font-weight: 500;
+}

@@ -121,7 +121,7 @@ export const PathListFuncional = [
     component: DashboardPage
   },
   {
-    path: "/panel/grupos",
+    path: "/panel/grupos/:url?",
     groups: ["administradores"],
     name: "Grupos usuarios",
     component: GroupsPage
@@ -156,7 +156,7 @@ export const navFuncional = [
     childrens: [
       {
         title: "Grupos",
-        url: "/panel/grupos",
+        url: "/panel/grupos/",
         icon: "",
         slug: "panel-grupos",
       }

@@ -1,5 +1,5 @@
 import React from "react";
-import {  Switch, Route, Redirect } from 'react-router-dom'
+import {  Switch, Route, Redirect } from 'react-router-dom';
 import { AuthPage, Logout } from "../modules/Auth";
 import { PrivateRoute, PublicRoute } from "./helperRoute";
 import { ErrorPage1 } from "../modules/ErrorsExamples/ErrorPage1";

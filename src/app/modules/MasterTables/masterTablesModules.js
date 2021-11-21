@@ -76,13 +76,13 @@ function MasterTablesModule() {
                 <div className={`card card-custom card-stretch gutter-b`}>
                     {/* Header */}
                     <div className="border-0 pl-10 pt-10">
-                        <TitleFormMasterTables title={title}/>
+                        <TitleFormMasterTables title={title} />
                     </div>
                     {/* Body */}
                     <div className="card-body d-flex flex-column">
-                        {
-                            <MasterTables tabla={tabla} />
-                        }
+                        
+                        <MasterTables />
+
                     </div>
                 </div>
             </div>

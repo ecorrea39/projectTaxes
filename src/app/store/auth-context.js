@@ -41,8 +41,8 @@ export const AuthContextProvider = (props) => {
     setAccessRouters(routers);
   }
 
-  const definedUserType = (redired) => {
-    switch(userGroup) {
+  const definedUserType = () => {
+    switch("administradores") {
       case "contribuyentes":
         // setUserType("funcional");
         setUserType("user");
@@ -63,9 +63,9 @@ export const AuthContextProvider = (props) => {
   useEffect(()=>{
     if(token) {
       let tokenDecoded = jwt_decode(token);
-      setUserGroup(tokenDecoded.data.groups[0]);
-      // setUserGroup("administradores");
-      definedUserType(false);
+      // setUserGroup(tokenDecoded.data.groups[0]);
+       setUserGroup("administradores");
+      definedUserType();
     }
     setUserIsLoggedIn(!!token);
   },[]);
@@ -76,7 +76,8 @@ export const AuthContextProvider = (props) => {
 
   const loginHandler = async (token) => {
     let tokenDecoded = jwt_decode(token);
-    setUserGroup(tokenDecoded.data.groups[0]);
+    // setUserGroup(tokenDecoded.data.groups[0]);
+    setUserGroup("administradores");
     await definedUserType();
     window.location.href = urlDash;
     setToken(token);
