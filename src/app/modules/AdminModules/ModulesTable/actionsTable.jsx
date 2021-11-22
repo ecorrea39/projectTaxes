@@ -6,8 +6,9 @@ import BlockIcon from '@material-ui/icons/Block';
 import { Tooltip } from "@material-ui/core";
 import VpnKeyOutlinedIcon from '@material-ui/icons/VpnKeyOutlined';
 import { NavLink } from "react-router-dom";
+import PrintIcon from '@material-ui/icons/Print';
 
-export const ActionsRowGroups = ({row, actionsRow,alertNotice,permissions}) => {
+export const ActionsTable = ({row, actionsRow,alertNotice,permissions,urlUpdate,printInfo}) => {
 
     const statusAction = row.status == "0" ? "Desactivar" : row.status == "1" ? "Activar" : "Deshabilitado";
 
@@ -16,7 +17,7 @@ export const ActionsRowGroups = ({row, actionsRow,alertNotice,permissions}) => {
             <Tooltip title="Modificar" arrow placement="top">
                 <NavLink className="btn btn-icon btn-hover-light btn-sm mx-3"
                         onClick={() => actionsRow(row)}
-                        to="grupos/modificar">
+                        to={urlUpdate}>
                     <ListAltOutlinedIcon style={{color:"#0091ea"}} />
                 </NavLink>
             </Tooltip>
@@ -30,12 +31,26 @@ export const ActionsRowGroups = ({row, actionsRow,alertNotice,permissions}) => {
                 </a>
             </Tooltip>
 
-            <Tooltip title="Permisos" arrow placement="top">
-                <a onClick={() => permissions(row)}
-                    className="btn btn-icon btn-hover-light btn-sm mx-3">
-                    <VpnKeyOutlinedIcon style={{color:"#263238"}} />
-                </a>
-            </Tooltip>
+            {
+                permissions && 
+                <Tooltip title="Permisos" arrow placement="top">
+                    <a onClick={() => permissions(row)}
+                        className="btn btn-icon btn-hover-light btn-sm mx-3">
+                        <VpnKeyOutlinedIcon style={{color:"#263238"}} />
+                    </a>
+                </Tooltip>
+            }
+            
+            {
+                printInfo && 
+                <Tooltip title="Imprimir información" arrow placement="top">
+                    <a onClick={() => printInfo(row.id)}
+                        className="btn btn-icon btn-hover-light btn-sm mx-3">
+                        <PrintIcon style={{color:"#263238"}} />
+                    </a>
+                </Tooltip>
+            }
+            
         </>
     )
 }

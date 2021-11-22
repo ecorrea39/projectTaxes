@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { useParams } from "react-router";
 import { BtnAddTable } from "../ModulesTable/btnAddtable";
-import { CreateGroup } from "./createGroup";
-import { UserGroupsTable } from "./UserGropusTable";
+import { CreateUser } from "./createUser";
+import { UserTable } from "./userTable";
+import { useParams } from "react-router";
 
-export const GroupsModule = () => {
-
+export const UsersModule = () => {
+    
     const [title, setTitle] = useState("Grupos de usuarios");
     const { url } = useParams();
     const [action, setAction] = useState("");
@@ -14,17 +14,17 @@ export const GroupsModule = () => {
     const ComponentAction = () => {
         switch(url) {
             case "crear-nuevo":
-                setTitle("Crear Nuevo Grupo");
+                setTitle("Crear Nuevo Usuario");
                 setAction("add");
                 setIcon("back");
                 break;
             case "modificar":
-                setTitle("Modificar Grupo");
+                setTitle("Modificar Usuario");
                 setAction("update");
                 setIcon("back");
                 break;
             default:
-                setTitle("Grupos de usuarios");
+                setTitle("Lista de usuarios");
                 setAction("list");
                 setIcon("add");
                 break;
@@ -40,9 +40,9 @@ export const GroupsModule = () => {
                 {/* Body */}
                 <div className="card-body d-flex flex-column">
                     <div className="tab-content">
-                        <BtnAddTable link={!url ? "/panel/grupos/crear-nuevo" : "/panel/grupos/"} icon={icon} />
-                        { (url == "crear-nuevo" || url == "modificar") && <CreateGroup action={action} />}
-                        {!url && <UserGroupsTable url={url} />}
+                        <BtnAddTable link={!url ? "/panel/usuarios/crear-nuevo" : "/panel/usuarios/"} icon={icon} />
+                        { (url == "crear-nuevo" || url == "modificar") && <CreateUser action={action} />}
+                        {!url && <UserTable url={url} />}
                     </div>
                 </div>
             </div>

@@ -10,17 +10,18 @@ export const GroupsState = ({ children }) => {
     const [userGroupsList, setUserGroupsList] = useState([]);
     const [groupSlct, setGroupSlct] = useState("");
     const [redired, setRedired] = useState(false);
+    const [loadingTable, setLoadingTable] = useState(false);
     const [statusList, setStatusList] = useState([
         {
             status: "1",
             name: "Activo"
         },
         {
-            status: "2",
-            name: "Desactivar"
+            status: "0",
+            name: "Desactivado"
         },
         {
-            status: "3",
+            status: "2",
             name: "Deshabilitado"
         }
     ]);
@@ -117,9 +118,9 @@ export const GroupsState = ({ children }) => {
     const getUserGroups = async () => {
 
         try {
-
+            setLoadingTable(true);
             const respuesta = await clientAxios.get('/access_control/');
-            //setUserGroupsList(respuesta.data.data);
+            setUserGroupsList(respuesta.data.data);
             setUserGroupsList([
                 {
                     id: 1,
@@ -127,6 +128,7 @@ export const GroupsState = ({ children }) => {
                     fecha_creacion: '01/01/2021',
                     cant_usuarios: '06',
                     status: "1",
+                    permisos: []
                 },
                 {
                     id: 2,
@@ -134,6 +136,7 @@ export const GroupsState = ({ children }) => {
                     fecha_creacion: '02/01/2021',
                     cant_usuarios: '10',
                     status: "0",
+                    permisos: []
                 },
                 {
                     id: 3,
@@ -141,9 +144,12 @@ export const GroupsState = ({ children }) => {
                     fecha_creacion: '02/01/2021',
                     cant_usuarios: '2',
                     status: "2",
+                    permisos: []
                 }
             ]);
+            setLoadingTable(false);
         } catch (error) {
+            setLoadingTable(false);
             console.log(error)
         }
     }
@@ -195,6 +201,7 @@ export const GroupsState = ({ children }) => {
         permissions,
         formPermisos,
         redired,
+        loadingTable,   
         setRedired,
         setFormPermisos,
         setPermissions,

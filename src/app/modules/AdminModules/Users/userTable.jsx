@@ -1,15 +1,15 @@
 import React, { useContext, useState } from "react";
-import GroupsContext from "../../../context/groups/groupsContext";
+import UsersContext from "../../../context/users/usersContext";
+import Swal from "sweetalert2";
 import { MyDataTable } from "../ModulesTable/MyDataTable";
 import { ActionsTable } from "../ModulesTable/actionsTable";
-import Swal from "sweetalert2";
 
-export const UserGroupsTable = ({url}) => {
+export const UserTable = () => {
 
-    const { loadingTable, setGroupSlct, userGroupsList, updateStatus, statusList } = useContext(GroupsContext);
+    const { setUserSlct, usersList, statusList, loadingTable, updateUserStatus, printInfoUser } = useContext(UsersContext);
 
     const actionsRow = (row) => {
-        setGroupSlct(row);
+        setUserSlct(row);
     }
 
     const selectStatus = (id) => {
@@ -23,27 +23,31 @@ export const UserGroupsTable = ({url}) => {
             <>
             { row.status == 0 || row.status == 1 ?
                 Swal.fire({
-                    title: `${action} grupo`,
-                    text: `Esta seguro que desea ${action} el grupo ${row.name}`,
+                    title: `${action} usuario`,
+                    text: `Esta seguro que desea ${action} el usuario ${row.nombre + " " + row.apellido}`,
                     icon: 'info',
                     showDenyButton: true,
                     denyButtonText: `Cancelar`,
                     confirmButtonText: 'Confirmar',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        updateStatus({id_group:row.id, name: row.name, status: action == "Activar" ? "0" : "1"});
+                        updateUserStatus({id_guser:row.id, status: action == "Activar" ? "0" : "1"});
                     }
                 })
 
                 :
                 Swal.fire({
-                    title: `Grupo ${action}`,
-                    text: `El grupo ${row.name} se encuentra con status Deshabilitado. No requiere ninguna otra acción`,
+                    title: `Usuario ${action}`,
+                    text: `El usuario ${row.nombre + " " + row.apellido} se encuentra con status Deshabilitado. No requiere ninguna otra acción`,
                     icon: 'info'
                 })
             }
             </>
         )
+    }
+
+    const printInfo = (Userid) => {
+        printInfoUser({user_id: Userid});
     }
 
     const columns = [
@@ -54,27 +58,31 @@ export const UserGroupsTable = ({url}) => {
             width: '50px'
         },
         {
-            name: 'Nombre del grupo',
-            selector: row => row.name,
+            name: 'Nombre y Apellido',
+            selector: row => row.nombre + " " + row.apellido,
             sortable: true,
         },
         {
-            name: 'Fecha de creacion',
-            selector: row => row.fecha_creacion,
+            name: 'Correo',
+            selector: row => row.correo,
             sortable: true,
         },
         {
-            name: 'Cant. Usuarios Asignados',
-            selector: row => row.cant_usuarios,
+            name: 'Usuario',
+            selector: row => row.usuario,
             sortable: true,
         },
         {
             name: 'Status',
-            selector: row => row.status,
             sortable: true,
             cell: row => (
                 <>{selectStatus(row.status)}</>
             )
+        },
+        {
+            name: 'Fecha de creación',
+            selector: row => row.fecha_creacion,
+            sortable: true,
         },
         {
             name: 'Acciones',
@@ -84,22 +92,20 @@ export const UserGroupsTable = ({url}) => {
                     row={row}
                     actionsRow={actionsRow}
                     alertNotice={alertNotice}
-                    urlUpdate={"/panel/grupos/modificar"}
-                />
+                    urlUpdate={"/panel/usuarios/modificar"}
+                    printInfo={printInfo} />
             )
         }
     ];
 
     return (
         <div className="table-responsive">
-
             <MyDataTable
                 actionsRow={actionsRow}
                 columns={columns}
-                data={userGroupsList}
+                data={usersList}
                 loadingTable={loadingTable}
             />
-
         </div>
     )
 }

@@ -35,6 +35,9 @@ const AccountStatusPage = lazy(() =>
 const GroupsPage = lazy(() =>
   import ("../pages/panelAdmin/groups")
 );
+const UsersPage = lazy(() =>
+  import ("../pages/panelAdmin/users")
+);
 
 
 /**
@@ -127,6 +130,12 @@ export const PathListFuncional = [
     component: GroupsPage
   },
   {
+    path: "/panel/usuarios/:url?",
+    groups: ["administradores"],
+    name: "Usuarios",
+    component: UsersPage
+  },
+  {
     path: "/tablas/:tabla",
     groups: ["administradores"],
     name: "Trimestres",
@@ -154,6 +163,12 @@ export const navFuncional = [
     groups: ["administradores"],
     icon: "",
     childrens: [
+      {
+        title: "Usuarios",
+        url: "/panel/usuarios/",
+        icon: "",
+        slug: "panel-usuarios",
+      },
       {
         title: "Grupos",
         url: "/panel/grupos/",
@@ -357,9 +372,9 @@ export const navContribuyentes = [
   }
 ];
 
-export const PublicRoute = ({component, isAuth, ...options}) => {
+export const PublicRoute = ({component, urlDash, isAuth, ...options}) => {
   if (!isAuth) return <Route {...options} component={component} />
-  return <Redirect to="/dashboard" />
+  return <Redirect to={urlDash} />
 }
 
 export const PrivateRoute = ({component,isAuth, ...options}) => {
