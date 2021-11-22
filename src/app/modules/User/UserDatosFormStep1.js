@@ -479,7 +479,6 @@ const UserDatosFormStep1 = (props) => {
 
   const handleCrearEmpresa = () => {
 
-
     setShowCrearModal(true);
   }
 
@@ -538,7 +537,7 @@ const UserDatosFormStep1 = (props) => {
   }
 
   const handleAceptarCrear = () => {
-    alert("Crear");
+
     const tipoIdentificacionRefC = tipoIdentificacionRef.current.value;
     const numeroIdentificacionRefC = numeroIdentificacionRef.current.value;
     const emailRefC = emailRef.current.value;
@@ -548,6 +547,63 @@ const UserDatosFormStep1 = (props) => {
     console.log("numeroIdentificacionRefC", numeroIdentificacionRefC);
     console.log("emailRefC", emailRefC);
     console.log("passwordRefC", passwordRefC);
+
+    const dataCrear = {
+      jsonapi: {version: '1.0'},
+      data: {
+        type: 'newUser',
+        id: tipoIdentificacionRefC + numeroIdentificacionRefC,
+        attributes: {
+          uid: tipoIdentificacionRefC + numeroIdentificacionRefC,
+          mail: emailRefC,
+          pass: passwordRefC
+        }
+      }
+    };
+
+    const axiosConfigCrear = {
+      headers: {
+        Accept: 'application/vnd.api+json',
+        'Content-Type': 'application/vnd.api+json',
+        Authorization: `Bearer ${token}`
+      }
+    };
+
+    axios.post(`${API_URL}users/crear/`, dataCrear, axiosConfigCrear).then(function (res) {
+
+      console.log("registerResCrear", res);
+
+      localStorage.setItem('rifToSearch', tipoIdentificacionRefC + numeroIdentificacionRefC);
+      setRifActual(tipoIdentificacionRefC + numeroIdentificacionRefC);
+
+      cargaDeEmpresas().then((resolvedValueCargaDeEmpresas) => {
+        console.log("resolvedValueCargaDeEmpresasCrearUsuario", resolvedValueCargaDeEmpresas);
+
+        cargarDataInicial();
+      }, (error) => {
+        console.log("cargaDeEmpresasFallido", error);
+        alert(error);
+      });
+
+    }).catch((err) => {
+      console.log("err", err);
+
+      if (err.response !== undefined && err.response !== null) {
+
+        let txt = '';
+        switch (err.response.status) {
+          case 409:
+            txt = 'El usuario ya se encuentra registrado';
+            break;
+          default:
+            txt = 'Error al registrar usuario';
+        }
+
+        alert(txt);
+      } else {
+        alert('Error de comunicación en el proceso de Registro');
+      }
+    });
 
     setShowCrearModal(false);
   }
