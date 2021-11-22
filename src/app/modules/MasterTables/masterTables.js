@@ -18,7 +18,6 @@ function MasterTables({tabla, titulo}) {
     const styleBtn = { borderRadius: '100%'}
     const [show, setShow] = useState(show);
     const [accion, setAccion] = useState("");
-    const [dataAux, setDataAux] = useState([]);
     const [busqueda, setBusqueda] = useState("");
 
     const sortIcon = <ArrowDownward />;
@@ -724,27 +723,11 @@ function MasterTables({tabla, titulo}) {
         selectAllRowsItemText: "Todos"
     };
 
-    /*
-    const filtrarElementos = () => {
-        setDataAux(data);
-        let search = dataAux.filter(item => {
-            if(item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,"").includes(busqueda)) {
-                return item;
-            }
-        });
-        console.log('busqueda ', busqueda)
-        actualizarData(search);
-        console.log('data ', search)
-
-    }*/
-
     const onChange = (e) => {
         e.persist();
         setBusqueda(e.target.value);
         filtrarElementos(tabla, e.target.value, columnas);
     }
-
-
 
     return (
         <>

@@ -54,7 +54,6 @@ export const BaseFormik = ({formik, props}) => {
                         id="rif"
                         name="rif"
                         component={BaseInput}
-                        onBlur={() => validarNroTrabajadores(formik)}
                     />
                 </Col>
             </Row>

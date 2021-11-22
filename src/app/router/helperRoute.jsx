@@ -249,7 +249,7 @@ export const navFuncional = [
         slug: "tablas-motivo-sancion"
       },
       {
-        title: "Días Festivos",
+        title: "Días Hábiles",
         url: "/tablas/dias-festivos",
         icon: "",
         slug: "tablas-dias-festivos"
