@@ -1,8 +1,8 @@
 import React, {useState, useEffect, useRef, useContext} from "react";
-import {Button, Card, Col, Container, Dropdown, DropdownButton, Form, Modal, Row, SplitButton} from "react-bootstrap";
+import {Button, Card, Col, Container, Form, Modal, Row, SplitButton} from "react-bootstrap";
 import {FormattedMessage, useIntl} from "react-intl";
 import * as Yup from "yup";
-import {useFormik} from "formik";
+import {useFormik, Formik, Field} from "formik";
 import axios from "axios";
 import GeneralContext from "../../store/general-context";
 
@@ -32,6 +32,11 @@ const UserDatosFormStep1 = (props) => {
   const tipoRifRef = useRef();
   const numeroRifRef = useRef();
 
+  const tipoIdentificacionRef = useRef();
+  const numeroIdentificacionRef = useRef();
+  const emailRef = useRef();
+  const passwordRef = useRef();
+
   const [loading, setLoading] = useState(false);
   const [clasesEmpresa, setClasesEmpresa] = useState([]);
   const [estatus, setEstatus] = useState([]);
@@ -41,6 +46,7 @@ const UserDatosFormStep1 = (props) => {
   const [mostrarComboEmpresas, setMostrarComboEmpresas] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [actasDeAsamblea, setActasDeAsamblea] = useState([]);
+  const [showCrearModal, setShowCrearModal] = useState(false);
 
   const intl = useIntl();
   const API_URL = `${process.env.REACT_APP_API_URL}`;
@@ -159,7 +165,7 @@ const UserDatosFormStep1 = (props) => {
 
           let clasesEmpresaArray = [];
 
-          arrayData.forEach(function(elemData) {
+          arrayData.forEach(function (elemData) {
             let id = elemData.id;
             let elemDataName = elemData.attributes.name;
 
@@ -205,7 +211,7 @@ const UserDatosFormStep1 = (props) => {
 
           let estatusArray = [];
 
-          arrayData.forEach(function(elemData) {
+          arrayData.forEach(function (elemData) {
 
             let id = elemData.id;
             let elemDataName = elemData.attributes.name;
@@ -250,7 +256,7 @@ const UserDatosFormStep1 = (props) => {
 
           let actividadesEconomicasArray = [];
 
-          arrayData.forEach(function(elemData) {
+          arrayData.forEach(function (elemData) {
 
             let id = elemData.id;
             let elemDataName = elemData.attributes.name;
@@ -302,7 +308,7 @@ const UserDatosFormStep1 = (props) => {
 
           if (arrayData.length > 0) {
 
-            arrayData.forEach(function(elemData) {
+            arrayData.forEach(function (elemData) {
 
               let id = elemData.id;
               let elemDataName = elemData.attributes.razon_social;
@@ -412,7 +418,7 @@ const UserDatosFormStep1 = (props) => {
         let actasArray = [];
 
         if (arrayData.length > 0) {
-          arrayData.forEach(function(elemData) {
+          arrayData.forEach(function (elemData) {
             const fondoComercioRefC = fondoComercioRef.current.value;
 
             console.log("fondoComercioRefC::", fondoComercioRefC);
@@ -471,6 +477,12 @@ const UserDatosFormStep1 = (props) => {
     });
   }
 
+  const handleCrearEmpresa = () => {
+
+
+    setShowCrearModal(true);
+  }
+
   const resetFields = () => {
 
     formik.values.razon_social = "";
@@ -519,6 +531,25 @@ const UserDatosFormStep1 = (props) => {
     }
 
     setShowModal(false);
+  }
+
+  const handleCloseCrear = () => {
+    setShowCrearModal(false);
+  }
+
+  const handleAceptarCrear = () => {
+    alert("Crear");
+    const tipoIdentificacionRefC = tipoIdentificacionRef.current.value;
+    const numeroIdentificacionRefC = numeroIdentificacionRef.current.value;
+    const emailRefC = emailRef.current.value;
+    const passwordRefC = passwordRef.current.value;
+
+    console.log("tipoIdentificacionRefC", tipoIdentificacionRefC);
+    console.log("numeroIdentificacionRefC", numeroIdentificacionRefC);
+    console.log("emailRefC", emailRefC);
+    console.log("passwordRefC", passwordRefC);
+
+    setShowCrearModal(false);
   }
 
   const LoginSchema = Yup.object().shape({
@@ -755,7 +786,7 @@ const UserDatosFormStep1 = (props) => {
             </Col>
             <Col md={3}>
               <input
-                placeholder="ingrese número de R.I.F."
+                placeholder="Ingrese el RIF"
                 type="text"
                 className={`form-control form-control-solid`}
                 name="user"
@@ -763,15 +794,121 @@ const UserDatosFormStep1 = (props) => {
                 ref={numeroRifRef}
               />
             </Col>
-            <Col md={4}>
+            <Col md={2}>
               <Button variant="secondary" size="lg" block
                       type="button"
                       onClick={handleConsultarEmpresa}
               >
-                Consultar Empresa
+                Consultar
               </Button>
             </Col>
-            <Col md={3}>
+            <Col md={2}>
+              <Button variant="secondary" size="lg" block
+                      type="button"
+                      onClick={handleCrearEmpresa}
+              >
+                Crear
+              </Button>
+
+              <Modal show={showCrearModal} onHide={handleCloseCrear}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Crear usuario</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+
+
+
+
+
+
+                  <Row>
+                    <Col md={3}>
+                      {/* begin: tipo */}
+                      <Form.Group controlId="tipo" className="p-0" >
+                        {/*<Form.Label>State</Form.Label>*/}
+                        <Form.Control as="select"
+                                      ref={tipoIdentificacionRef}
+                        >
+
+                          <FormattedMessage id='AUTH.GENERAL.IDENTIFICATIONTYPE'>
+                            {(message) => <option value="">{message}</option>}
+                          </FormattedMessage>
+
+                          <option value="j">J</option>
+                          <option value="v">V</option>
+                          <option value="c">C</option>
+                          <option value="e">E</option>
+                          <option value="g">G</option>
+                          <option value="p">P</option>
+
+                        </Form.Control>
+                      </Form.Group>
+                      {/* end: tipo */}
+                    </Col>
+                    <Col md={9}>
+                      {/* begin: user */}
+                      <div className="form-group fv-plugins-icon-container">
+                        <input
+                          placeholder="ingrese número de R.I.F."
+                          type="text"
+                          className={`form-control form-control-solid h-auto `}
+                          name="user"
+                          onChange={customHandleChange}
+                          maxLength="10"
+                          ref={numeroIdentificacionRef}
+                        />
+                      </div>
+                      {/* end: user */}
+                    </Col>
+                  </Row>
+
+                  {/* begin: Email */}
+                  <div className="form-group fv-plugins-icon-container">
+                    <input
+                      placeholder="ingrese correo electrónico"
+                      type="email"
+                      maxLength="50"
+                      className={`form-control form-control-solid h-auto `}
+                      name="email"
+                      ref={emailRef}
+                    />
+                  </div>
+                  {/* end: Email */}
+
+                  {/* begin: Password */}
+                  <div className="form-group fv-plugins-icon-container">
+                    <input
+                      placeholder="ingrese contraseña"
+                      type="password"
+                      maxLength="30"
+                      className={`form-control form-control-solid h-auto `}
+                      name="password"
+                      ref={passwordRef}
+                    />
+                  </div>
+                  {/* end: Password */}
+
+
+
+
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary"
+                          onClick={handleCloseCrear}
+                  >
+                    Cerrar
+                  </Button>
+                  <Button variant="secondary"
+                          onClick={handleAceptarCrear}
+                  >
+                    Aceptar
+                  </Button>
+
+
+                </Modal.Footer>
+              </Modal>
+            </Col>
+            <Col md={2}>
               <Button variant="secondary" size="lg" block
                       type="button"
                       onClick={handleResetRif}
@@ -827,7 +964,7 @@ const UserDatosFormStep1 = (props) => {
 
               <Modal show={showModal} onHide={handleClose}>
                 <Modal.Header closeButton>
-                  <Modal.Title>Modal heading</Modal.Title>
+                  <Modal.Title>Actas de Asamblea</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                   <form>
@@ -1043,18 +1180,6 @@ const UserDatosFormStep1 = (props) => {
               <br/>
 
               <Row>
-                {/*<Col md={6}>*/}
-                {/*  <Button variant="success" size="lg" block*/}
-                {/*          type="submit"*/}
-                {/*          disabled={*/}
-                {/*            formik.isSubmitting ||*/}
-                {/*            !formik.isValid*/}
-                {/*          }*/}
-                {/*  >*/}
-                {/*    Guardar*/}
-                {/*  </Button>*/}
-                {/*</Col>*/}
-
                 <Col md={12}>
                   <Button variant="secondary" size="lg" block
                           type="button"
