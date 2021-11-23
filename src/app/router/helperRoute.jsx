@@ -38,7 +38,9 @@ const GroupsPage = lazy(() =>
 const UsersPage = lazy(() =>
   import ("../pages/panelAdmin/users")
 );
-
+const PnaPage = lazy(() =>
+    import ("../pages/pna")
+);
 
 /**
  * En este objeto se definen la estrutura de las rutas que se crearan segun el grupo del usuario que se logea en la app.
@@ -98,7 +100,7 @@ export const PathListContribuyente = [
   },
   {
     path: "/user-datos",
-    groups: ["contribuyentes", "parciales"],
+    groups: ["contribuyentes", "parciales", "administradores"],
     name: "Modificar perfil",
     component: UserDatosPage
   },
@@ -136,9 +138,15 @@ export const PathListFuncional = [
     component: UsersPage
   },
   {
+    path: "/user-datos",
+    groups: ["contribuyentes", "parciales", "administradores"],
+    name: "Modificar perfil",
+    component: UserDatosPage
+  },
+  {
     path: "/tablas/:tabla",
     groups: ["administradores"],
-    name: "Trimestres",
+    name: "Tablas Maestras",
     component: MasterTablesPage
   },
   {
@@ -146,6 +154,12 @@ export const PathListFuncional = [
     groups: ["administradores"],
     name: "Mapa",
     component: MapaPage
+  },
+  {
+    path: "/pna_certificado",
+    groups: ["administradores"],
+    name: "PNA Certificados",
+    component: PnaPage
   }
 ];
 
@@ -174,6 +188,12 @@ export const navFuncional = [
         url: "/panel/grupos/",
         icon: "",
         slug: "panel-grupos",
+      },
+      {
+        title: "Modificar perfil",
+        url: "/user-datos",
+        icon: "",
+        slug: "modificar-perfil",
       }
     ]
   },
@@ -232,7 +252,7 @@ export const navFuncional = [
         slug: "tablas-actividad-economica"
       },
       {
-        title: "Conceptos",
+        title: "Conceptos de Pago",
         url: "/tablas/conceptos",
         icon: "",
         slug: "tablas-conceptos"
@@ -256,7 +276,7 @@ export const navFuncional = [
         slug: "tablas-motivo-sancion"
       },
       {
-        title: "Días Festivos",
+        title: "Días Hábiles",
         url: "/tablas/dias-festivos",
         icon: "",
         slug: "tablas-dias-festivos"
@@ -266,6 +286,36 @@ export const navFuncional = [
         url: "/tablas/tasa-intereses",
         icon: "",
         slug: "tablas-tasa-intereses"
+      },
+      {
+        title: "Sectores",
+        url: "/tablas/sectores",
+        icon: "",
+        slug: "tablas-sectores"
+      },
+      {
+        title: "Vialidades",
+        url: "/tablas/vialidades",
+        icon: "",
+        slug: "tablas-vialidades"
+      },
+      {
+        title: "Nomenclatura",
+        url: "/tablas/locales",
+        icon: "",
+        slug: "tablas-locales"
+      },
+      {
+        title: "Edificaciones",
+        url: "/tablas/edificaciones",
+        icon: "",
+        slug: "tablas-edificaciones"
+      },
+      {
+        title: "Tipos de Documento",
+        url: "/tablas/tipo-documentos",
+        icon: "",
+        slug: "tablas-tipo-documentos"
       }
     ]
   },
@@ -276,10 +326,24 @@ export const navFuncional = [
     icon: "",
     childrens: [
       {
-        title: "Trimestres",
+        title: "Mapa",
         url: "/mapa",
         icon: "",
         slug: "mapa",
+      }
+    ]
+  },
+  {
+    titleSection: "PNA",
+    title: "PNA",
+    groups: ["administradores"],
+    icon: "",
+    childrens: [
+      {
+        title: "PNA Certificado",
+        url: "/pna_certificado",
+        icon: "",
+        slug: "pna-certificado",
       }
     ]
   }
@@ -350,12 +414,6 @@ export const navContribuyentes = [
         url: "/user-datos",
         icon: "",
         slug: "modificar-perfil",
-      },
-      {
-        title: "user-profile",
-        url: "/user-profile",
-        icon: "",
-        slug: "user-profile",
       },
       {
         title: "Cambiar clave",

@@ -19,7 +19,8 @@ import { initialValuesTablesCol1,
          initialValuesTablesCol8,
          initialValuesTablesCol9,
          initialValuesTablesCol10,
-         initialValuesTablesCol11 } from "./initialValues";
+         initialValuesTablesCol11,
+         initialValuesTablesCol12 } from "./initialValues";
 
 import { SchemaTablesCol1,
          SchemaTablesCol2,
@@ -31,7 +32,8 @@ import { SchemaTablesCol1,
          SchemaTablesCol8,
          SchemaTablesCol9,
          SchemaTablesCol10,
-         SchemaTablesCol11 } from "./validateSchemas";
+         SchemaTablesCol11,
+         SchemaTablesCol12 } from "./validateSchemas";
 
 import { BaseFormik } from "./baseFormik";
 import { BaseFormikBancosRecaudadores } from "./baseFormikBancosRecaudadores";
@@ -44,6 +46,7 @@ import { BaseFormikMedidaValor } from './baseFormikMedidaValor';
 import { BaseFormikMotivoSancion } from './baseFormikMotivoSancion';
 import { BaseFormikDiasFestivos } from "./baseFormikDiasFestivos";
 import { BaseFormikTasaIntereses } from './baseFormikTasaIntereses';
+import { BaseFormikTipoDocumento } from './baseFormikTipoDocumento';
 
 function ModalMasterTables(props) {
 
@@ -121,6 +124,31 @@ function ModalMasterTables(props) {
         case "tasa-intereses":
             initialValuesTables = initialValuesTablesCol11;
             schemaTables = SchemaTablesCol11;
+            break;
+
+        case "sectores":
+            initialValuesTables = initialValuesTablesCol1;
+            schemaTables = SchemaTablesCol1;
+            break;
+
+        case "vialidades":
+            initialValuesTables = initialValuesTablesCol1;
+            schemaTables = SchemaTablesCol1;
+            break;
+
+        case "locales":
+            initialValuesTables = initialValuesTablesCol1;
+            schemaTables = SchemaTablesCol1;
+            break;
+
+        case "edificaciones":
+            initialValuesTables = initialValuesTablesCol1;
+            schemaTables = SchemaTablesCol1;
+            break;
+
+        case "tipo-documentos":
+            initialValuesTables = initialValuesTablesCol12;
+            schemaTables = SchemaTablesCol12;
             break;
 
         default:
@@ -231,6 +259,13 @@ function ModalMasterTables(props) {
                                                 formik={formik}
                                                 props={props}
                                                 anos={anos}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-12' &&
+                                            <BaseFormikTipoDocumento
+                                                formik={formik}
+                                                props={props}
                                             />
                                         }
                                         <Row className="mb-2" style={{justifyContent: "center"}}>

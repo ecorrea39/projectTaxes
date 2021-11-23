@@ -43,7 +43,7 @@ function MasterTablesModule() {
             break;
 
         case "conceptos":
-            title = "Conceptos";
+            title = "Conceptos de Pago";
             break;
 
         case "registros-mercantiles":
@@ -59,11 +59,31 @@ function MasterTablesModule() {
             break;
 
         case "dias-festivos":
-            title = "Días Festivos";
+            title = "Días Hábiles";
             break;
 
         case "tasa-intereses":
             title = "Tasa de Intereses";
+            break;
+
+        case "sectores":
+            title = "Sectores";
+            break;
+
+        case "vialidades":
+            title = "Vialidades";
+            break;
+
+        case "locales":
+            title = "Nomenclatura";
+            break;
+
+        case "edificaciones":
+            title = "Edificaciones";
+            break;
+
+        case "tipo-documentos":
+            title = "Tipo de Documentos";
             break;
 
         default:
@@ -80,9 +100,11 @@ function MasterTablesModule() {
                     </div>
                     {/* Body */}
                     <div className="card-body d-flex flex-column">
-                        
-                        <MasterTables />
-
+                        {
+                            <MasterTables
+                                tabla={tabla}
+                                titulo={title} />
+                        }
                     </div>
                 </div>
             </div>

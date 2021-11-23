@@ -147,6 +147,8 @@ const UserDatosFormStep3 = (props) => {
   const [municipios, setMunicipios] = useState([]);
   const [parroquiasTotales, setParroquiasTotales] = useState([]);
   const [parroquias, setParroquias] = useState([]);
+  const [ciudadesTotales, setCiudadesTotales] = useState([]);
+  const [ciudades, setCiudades] = useState([]);
   const [siguiente, setSiguiente] = useState(false);
 
   const intl = useIntl();
@@ -171,50 +173,57 @@ const UserDatosFormStep3 = (props) => {
       cargaDeMunicipios().then((resolvedValueMunicipios) => {
         console.log("resolvedValueMunicipios", resolvedValueMunicipios);
 
-        cargaDeParroquias().then((resolvedValueMunicipios) => {
-          console.log("resolvedValueMunicipios", resolvedValueMunicipios);
+        cargaDeParroquias().then((resolvedValueParroquias) => {
+          console.log("resolvedValueParroquias", resolvedValueParroquias);
 
-          axios.get(`${API_URL}user_geographic_data/fondoporid/${generalCtx.theIdUserInformacionProfile}/`, axiosConfig)
-            .then(function (res) {
-              console.log("get_user_company::", res);
+          cargaDeCiudades().then((resolvedValueCiudades) => {
+            console.log("resolvedValueCiudades", resolvedValueCiudades);
 
-              if (res.data.data != null) {
+            axios.get(`${API_URL}user_geographic_data/fondoporid/${generalCtx.theIdUserInformacionProfile}/`, axiosConfig)
+              .then(function (res) {
+                console.log("get_user_company::", res);
 
-                let initialValuesJson = {
-                  "domicilio_fiscal": res.data.data.attributes.domicilio_fiscal != null ? res.data.data.attributes.domicilio_fiscal : "",
-                  "estado": res.data.data.attributes.estado != null ? res.data.data.attributes.estado : "",
-                  "municipio": res.data.data.attributes.municipio != null ? res.data.data.attributes.municipio : "",
-                  "parroquia": res.data.data.attributes.parroquia != null ? res.data.data.attributes.parroquia : "",
-                  "ciudad": res.data.data.attributes.ciudad != null ? res.data.data.attributes.ciudad : "",
-                  "sector": res.data.data.attributes.sector != null ? res.data.data.attributes.sector : "",
-                  "vialidad": res.data.data.attributes.vialidad != null ? res.data.data.attributes.vialidad : "",
-                  "edificacion": res.data.data.attributes.edificacion != null ? res.data.data.attributes.edificacion : "",
-                  "local": res.data.data.attributes.local != null ? res.data.data.attributes.local : "",
-                  "codigo_telefono_compania1": res.data.data.attributes.codigo_telefono_compania1 != null ? res.data.data.attributes.codigo_telefono_compania1 : "",
-                  "numero_telefono_compania1": res.data.data.attributes.numero_telefono_compania1 != null ? res.data.data.attributes.numero_telefono_compania1 : "",
-                  "codigo_telefono_compania2": res.data.data.attributes.codigo_telefono_compania2 != null ? res.data.data.attributes.codigo_telefono_compania2 : "",
-                  "numero_telefono_compania2": res.data.data.attributes.numero_telefono_compania2 != null ? res.data.data.attributes.numero_telefono_compania2 : "",
-                  "correo_empresa": res.data.data.attributes.correo_empresa != null ? res.data.data.attributes.correo_empresa : ""
-                };
+                if (res.data.data != null) {
 
-                setInitialValues(initialValuesJson);
-              } else {
-                alert("No existe información alguna registrada del usuario");
-              }
+                  let initialValuesJson = {
+                    "domicilio_fiscal": res.data.data.attributes.domicilio_fiscal != null ? res.data.data.attributes.domicilio_fiscal : "",
+                    "estado": res.data.data.attributes.estado != null ? res.data.data.attributes.estado : "",
+                    "municipio": res.data.data.attributes.municipio != null ? res.data.data.attributes.municipio : "",
+                    "parroquia": res.data.data.attributes.parroquia != null ? res.data.data.attributes.parroquia : "",
+                    "ciudad": res.data.data.attributes.ciudad != null ? res.data.data.attributes.ciudad : "",
+                    "sector": res.data.data.attributes.sector != null ? res.data.data.attributes.sector : "",
+                    "vialidad": res.data.data.attributes.vialidad != null ? res.data.data.attributes.vialidad : "",
+                    "edificacion": res.data.data.attributes.edificacion != null ? res.data.data.attributes.edificacion : "",
+                    "local": res.data.data.attributes.local != null ? res.data.data.attributes.local : "",
+                    "codigo_telefono_compania1": res.data.data.attributes.codigo_telefono_compania1 != null ? res.data.data.attributes.codigo_telefono_compania1 : "",
+                    "numero_telefono_compania1": res.data.data.attributes.numero_telefono_compania1 != null ? res.data.data.attributes.numero_telefono_compania1 : "",
+                    "codigo_telefono_compania2": res.data.data.attributes.codigo_telefono_compania2 != null ? res.data.data.attributes.codigo_telefono_compania2 : "",
+                    "numero_telefono_compania2": res.data.data.attributes.numero_telefono_compania2 != null ? res.data.data.attributes.numero_telefono_compania2 : "",
+                    "correo_empresa": res.data.data.attributes.correo_empresa != null ? res.data.data.attributes.correo_empresa : ""
+                  };
 
+                  setInitialValues(initialValuesJson);
+                } else {
+                  alert("No existe información alguna registrada del usuario");
+                }
+
+                disableLoading();
+              }).catch((err) => {
+
+              console.log("errGetUserCompany", err);
+              alert("Error buscando datos geograficos de la empresa del usuario")
               disableLoading();
-            }).catch((err) => {
+            });
 
-            console.log("errGetUserCompany", err);
-            alert("Error buscando datos geograficos de la empresa del usuario")
-            disableLoading();
+          }, (error) => {
+            console.log("cargaDeCiudadesFallido", error);
+            alert(error);
           });
 
         }, (error) => {
-          console.log("cargaDeMunicipiosFallido", error);
+          console.log("cargaDeParroquiasFallido", error);
           alert(error);
         });
-
 
       }, (error) => {
         console.log("cargaDeMunicipiosFallido", error);
@@ -239,7 +248,10 @@ const UserDatosFormStep3 = (props) => {
 
           const arrayData = Array.from(res.data.data);
 
-          let estadosArray = arrayData.map(elemData => {
+          let estadosArray = [];
+
+          arrayData.forEach(function(elemData) {
+
             let id = elemData.attributes.cod_estado;
             let elemDataName = elemData.attributes.descripcion;
 
@@ -248,11 +260,10 @@ const UserDatosFormStep3 = (props) => {
               "name": elemDataName
             };
 
-            return rObj;
+            estadosArray.push(rObj);
           });
 
           estadosArray.sort((a, b) => a.name < b.name ? -1 : 1);
-          console.log("estadosArray", estadosArray);
           setEstados(estadosArray);
 
           disableLoading();
@@ -281,7 +292,10 @@ const UserDatosFormStep3 = (props) => {
 
           const arrayData = Array.from(res.data.data);
 
-          let municipiosArray = arrayData.map(elemData => {
+          let municipiosArray = [];
+
+          arrayData.forEach(function(elemData) {
+
             let id = elemData.attributes.cod_municipio;
             let elemDataName = elemData.attributes.descripcion;
             let relacion = elemData.attributes.cod_municipio + '-' + elemData.attributes.id_estado;
@@ -292,11 +306,10 @@ const UserDatosFormStep3 = (props) => {
               "relacion": relacion
             };
 
-            return rObj;
+            municipiosArray.push(rObj);
           });
 
           municipiosArray.sort((a, b) => a.name < b.name ? -1 : 1);
-          console.log("municipiosArray", municipiosArray);
           setMunicipios(municipiosArray);
           setMunicipiosTotales(municipiosArray);
 
@@ -326,7 +339,10 @@ const UserDatosFormStep3 = (props) => {
 
           const arrayData = Array.from(res.data.data);
 
-          let parroquiasArray = arrayData.map(elemData => {
+          let parroquiasArray = [];
+
+          arrayData.forEach(function(elemData) {
+
             let id = elemData.id;
             let elemDataName = elemData.attributes.descripcion;
             let relacion = elemData.id + '-' + elemData.attributes.id_municipio;
@@ -337,11 +353,10 @@ const UserDatosFormStep3 = (props) => {
               "relacion": relacion
             };
 
-            return rObj;
+            parroquiasArray.push(rObj);
           });
 
           parroquiasArray.sort((a, b) => a.name < b.name ? -1 : 1);
-          console.log("parroquiasArray", parroquiasArray);
           setParroquias(parroquiasArray);
           setParroquiasTotales(parroquiasArray);
 
@@ -354,6 +369,53 @@ const UserDatosFormStep3 = (props) => {
         disableLoading();
 
         reject(new Error('Error al consultar los datos de las Parroquias'));
+      });
+    })
+
+    return p;
+  };
+
+  const cargaDeCiudades = () => {
+
+    let p = new Promise(function (resolve, reject) {
+      enableLoading();
+
+      axios.get(`${API_URL}geographic_data_ciudades`, axiosConfig)
+        .then(function (res) {
+          console.log("resFormStep3_datos_geograficos_ciudades", res);
+
+          const arrayData = Array.from(res.data.data);
+
+          let ciudadesArray = [];
+
+          arrayData.forEach(function(elemData) {
+
+            let id = elemData.id;
+            let elemDataName = elemData.attributes.descripcion;
+            let relacion = elemData.attributes.id_estado;
+
+            let rObj = {
+              "id": id,
+              "name": elemDataName,
+              "relacion": relacion
+            };
+
+            ciudadesArray.push(rObj);
+          });
+
+          ciudadesArray.sort((a, b) => a.name < b.name ? -1 : 1);
+          setCiudades(ciudadesArray);
+          setCiudadesTotales(ciudadesArray);
+
+          disableLoading();
+          resolve('Ciudades cargado Exitosamente');
+
+        }).catch((err) => {
+
+        console.log("errUserDatosFormStep3Ciudades", err);
+        disableLoading();
+
+        reject(new Error('Error al consultar los datos de las Ciudades'));
       });
     })
 
@@ -406,6 +468,22 @@ const UserDatosFormStep3 = (props) => {
           let municipioArray = municipio.relacion.split('-');
 
           if (municipioArray[1] == event.target.value) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      })
+    );
+
+    //Filtrar Ciudades
+    setCiudades(
+      ciudadesTotales.filter((ciudad) => {
+
+        if (event.target.value == "") {
+          return true;
+        } else {
+          if (event.target.value == ciudad.relacion) {
             return true;
           } else {
             return false;
@@ -702,7 +780,7 @@ const UserDatosFormStep3 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.domicilio_fiscal}
                                   maxLength="100"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.domicilio_fiscal && formik.errors.domicilio_fiscal ? (
@@ -725,7 +803,7 @@ const UserDatosFormStep3 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.estado}
                                   ref={estadoRef}
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     >
                       <option key="0" value="">Seleccione el Estado</option>
 
@@ -751,7 +829,7 @@ const UserDatosFormStep3 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.municipio}
                                   ref={municipioRef}
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     >
                       <option key="0" relacion="" value="">Seleccione el Municipio</option>
 
@@ -777,7 +855,7 @@ const UserDatosFormStep3 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.parroquia}
                                   ref={parroquiaRef}
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     >
                       <option key="0" relacion="" value="">Seleccione el Parroquia</option>
 
@@ -800,19 +878,26 @@ const UserDatosFormStep3 = (props) => {
 
               <Row>
                 <Col md={4}>
-                  <Form.Group as={Col} controlId="ciudad">
+                  <Form.Group controlId="ciudad">
                     <Form.Label style={textLabelColor}>Ciudad</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Ciudad"
+                    <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.ciudad}
-                                  maxLength="30"
-                                  disabled={props.registradoValor ? "disabled" : ""}
-                    />
+                                  value={formik.values.municipio}
+                                  ref={municipioRef}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
+                    >
+                      <option key="0" relacion="" value="">Seleccione la Ciudadad</option>
 
-                    {formik.touched.ciudad && formik.errors.ciudad ? (
+                      {ciudades.map((elemento) =>
+                        <option key={elemento.id} relacion={elemento.relacion} value={elemento.id}>{elemento.name}</option>
+                      )}
+
+                    </Form.Control>
+
+                    {formik.touched.municipio && formik.errors.municipio ? (
                       <div className="fv-plugins-message-container">
-                        <div className="fv-help-block">{formik.errors.ciudad}</div>
+                        <div className="fv-help-block">{formik.errors.municipio}</div>
                       </div>
                     ) : null}
                   </Form.Group>
@@ -826,7 +911,7 @@ const UserDatosFormStep3 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.sector}
                                   ref={sectorRef}
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     >
                       <option key="0" value="">Seleccione el Sector</option>
 
@@ -852,7 +937,7 @@ const UserDatosFormStep3 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.vialidad}
                                   ref={vialidadRef}
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     >
                       <option key="0" value="">Seleccione la Vialidad</option>
 
@@ -882,7 +967,7 @@ const UserDatosFormStep3 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.edificacion}
                                   ref={edificacionRef}
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     >
                       <option key="0" value="">Seleccione la Edificación</option>
 
@@ -908,7 +993,7 @@ const UserDatosFormStep3 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.local}
                                   maxLength="20"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.local && formik.errors.local ? (

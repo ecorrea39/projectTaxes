@@ -288,12 +288,6 @@ export const AccountStatusState = ({ children }) => {
         const filter = {};
         filter.ano_declaracion = ano_declaracion !== "" ? +ano_declaracion : undefined;
         filter.trimestre = trimestre !== "" ? +trimestre : undefined;
-        /*
-        filter.model = searchText;
-        if (searchText) {
-            filter.manufacture = searchText;
-            filter.VINCode = searchText;
-        }*/
 
         let lista = []
         switch (tipo) {
@@ -302,7 +296,6 @@ export const AccountStatusState = ({ children }) => {
                 break;
 
             case "deudactasxpagar":
-                console.log('paso 2')
                 lista = detalleDeudaCxPOriginal;
                 break;
 
@@ -356,7 +349,7 @@ export const AccountStatusState = ({ children }) => {
     function formatNumber(number) {
         return new Intl.NumberFormat("ES-ES", {
             style: "currency",
-            currency: "VEF"
+            currency: "VED"
         }).format(number)
     }
 

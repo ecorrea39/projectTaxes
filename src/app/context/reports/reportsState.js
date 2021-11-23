@@ -8,12 +8,16 @@ export const ReportsState = ({ children }) => {
 
     const [formatoFechaFutura, setFormatoFechaFutura] = useState();
     const [formatoReporte, setFormatoReporte] = useState([]);
+    const [anos, setAnos] = useState([]);
+    const [trimestres, setTrimestres] = useState([]);
     const [contrib, setContrib ] = useState([]);
 
     useEffect(() => {
         getFechaFutura();
         getFormatoReporte();
         getContribuyente();
+        getAnos();
+        getTrimestres();
     },[]);
 
     const getFechaFutura = () => {
@@ -44,6 +48,47 @@ export const ReportsState = ({ children }) => {
             lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));*/
             const lista = ['PDF'];
             setFormatoReporte(lista)
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getAnos = async () => {
+
+        try {
+            let fecha = new Date();
+            let ano = Number(fecha.getFullYear());
+            let res = [];
+            for (let i = 0; i < 10; i++) {
+                res.push(ano);
+                ano--;
+            }
+            setAnos(res);
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getTrimestres = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/trimestres/', clientAxios);
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "name": arreglo[i].attributes.name,
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setTrimestres(lista)
 
         } catch (error) {
             console.log(error)
@@ -115,6 +160,8 @@ export const ReportsState = ({ children }) => {
     const valuesContext = {
         formatoFechaFutura,
         formatoReporte,
+        anos,
+        trimestres,
         submitReportsCertificateSolvency,
         contrib
     }
