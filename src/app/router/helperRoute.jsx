@@ -51,7 +51,7 @@ const PnaPage = lazy(() =>
  */
 export const PathListContribuyente = [
   {
-    path: "/dashboard",
+    path: ["/","/dashboard"],
     groups: ["contribuyentes","parciales","administradores"],
     name: "Inicio",
     component: DashboardPage
@@ -120,7 +120,7 @@ export const PathListContribuyente = [
 
 export const PathListFuncional = [
   {
-    path: "/panel",
+    path: ["/", "/panel"],
     groups: ["administradores"],
     name: "Panel Dashboard",
     component: DashboardPage
