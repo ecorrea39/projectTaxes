@@ -8,6 +8,9 @@ const UserDatosPage = lazy(() =>
 const MapaPage = lazy(() =>
   import("../modules/Mapa/Mapa")
 );
+const QueryBuilderPage = lazy(() =>
+  import("../modules/QueryBuilder/QueryBuilder")
+);
 const FondosDeComercioPage = lazy(() =>
   import("../modules/FondoDeComercio/FondoDeComercio")
 );
@@ -139,6 +142,12 @@ export const PathListFuncional = [
     groups: ["administradores"],
     name: "Mapa",
     component: MapaPage
+  },
+  {
+    path: "/query-builder",
+    groups: ["administradores"],
+    name: "Definir Consulta",
+    component: QueryBuilderPage
   },
   {
     path: "/pna_certificado",
@@ -303,6 +312,12 @@ export const navFuncional = [
         url: "/mapa",
         icon: "",
         slug: "mapa",
+      },
+      {
+        title: "Definir Consulta",
+        url: "/query-builder",
+        icon: "",
+        slug: "query-builder",
       }
     ]
   },
