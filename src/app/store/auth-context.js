@@ -22,7 +22,6 @@ export const AuthContextProvider = (props) => {
   const [urlDash, setUrlDash] = useState("/");
 
   const definedRouters = () => {
-
     let routers = [];
     if(userType == "user") {
       PathListContribuyente.map((router) => {
@@ -42,7 +41,6 @@ export const AuthContextProvider = (props) => {
   }
 
   const definedUserType = () => {
-    console.log(userGroup)
     switch(userGroup) {
       case "contribuyentes":
         setUserType("user");
@@ -75,12 +73,12 @@ export const AuthContextProvider = (props) => {
     definedUserType();
   },[userGroup]);
 
-  const loginHandler = (token) => {
+  const loginHandler = async (token) => {
     let tokenDecoded = jwt_decode(token);
     setUserGroup(tokenDecoded.data.groups[0]);
     // setUserGroup("administradores");
     definedUserType();
-    window.location.href = urlDash;
+    window.location.href = "/";
     setToken(token);
   };
 
