@@ -190,7 +190,7 @@ export const navFuncional = [
         slug: "panel-grupos",
       },
       {
-        title: "Modificar perfil",
+        title: "Consultar Empresa",
         url: "/user-datos",
         icon: "",
         slug: "modificar-perfil",
