@@ -16,6 +16,7 @@ const Logout = () => {
     localStorage.removeItem('mail');
     localStorage.removeItem('phone_number_mobile');
     localStorage.removeItem('groups');
+    localStorage.removeItem('rifToSearch');
 
     // NO borrar este código comentado
     // authCtx.logout();

@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useState, useEffect} from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import UserDatosHeader from "./UserDatosHeader";
 import UserDatosFormStep1 from "./UserDatosFormStep1";
@@ -6,13 +6,22 @@ import UserDatosFormStep2 from "./UserDatosFormStep2";
 import UserDatosFormStep3 from "./UserDatosFormStep3";
 import UserDatosFormStep4 from "./UserDatosFormStep4";
 import UserDatosFormStep5 from "./UserDatosFormStep5";
+import axios from "axios";
 
 
 const UserDatos = (props) => {
 
+  useEffect(() => {
+
+    const rif = localStorage.getItem('rif');
+    localStorage.setItem('rifToSearch', rif);
+
+  }, []);
+
   const [step, setStep] = useState(1);
   const [registrado, setRegistrado] = useState(false);
   const [actaEdicion, setActaEdicion] = useState(false);
+  const [adminEdicion, setAdminEdicion] = useState(false);
   const [valoresParaFichaDeRegistro, setValoresParaFichaDeRegistro] = useState({
     tipo: "",
     razon_social: "",
@@ -71,6 +80,10 @@ const UserDatos = (props) => {
 
   const cambiarActaEdicion = (valor) => {
     setActaEdicion(valor);
+  }
+
+  const cambiarAdminEdicion = (valor) => {
+    setAdminEdicion(valor);
   }
 
   const cambiarStep = (paso) => {
@@ -182,8 +195,10 @@ const UserDatos = (props) => {
         cambiarResumenFicha={cambiarResumenFichaRegistro1}
         cambiarRegistrado={cambiarRegistrado}
         cambiarActaEdicion={cambiarActaEdicion}
+        cambiarAdminEdicion={cambiarAdminEdicion}
         registradoValor={registrado}
-        actaEdicion={actaEdicion} />
+        actaEdicion={actaEdicion}
+        adminEdicion={adminEdicion} />
       }
 
       { step===2 && <UserDatosFormStep2
@@ -192,8 +207,10 @@ const UserDatos = (props) => {
         cambiarResumenFicha={cambiarResumenFichaRegistro2}
         cambiarRegistrado={cambiarRegistrado}
         cambiarActaEdicion={cambiarActaEdicion}
+        cambiarAdminEdicion={cambiarAdminEdicion}
         registradoValor={registrado}
-        actaEdicion={actaEdicion} />
+        actaEdicion={actaEdicion}
+        adminEdicion={adminEdicion} />
       }
 
       { step===3 && <UserDatosFormStep3
@@ -202,8 +219,10 @@ const UserDatos = (props) => {
         cambiarResumenFicha={cambiarResumenFichaRegistro3}
         cambiarRegistrado={cambiarRegistrado}
         cambiarActaEdicion={cambiarActaEdicion}
+        cambiarAdminEdicion={cambiarAdminEdicion}
         registradoValor={registrado}
-        actaEdicion={actaEdicion} />
+        actaEdicion={actaEdicion}
+        adminEdicion={adminEdicion} />
       }
 
       { step===4 && <UserDatosFormStep4
@@ -212,8 +231,10 @@ const UserDatos = (props) => {
         cambiarResumenFicha={cambiarResumenFichaRegistro4}
         cambiarRegistrado={cambiarRegistrado}
         cambiarActaEdicion={cambiarActaEdicion}
+        cambiarAdminEdicion={cambiarAdminEdicion}
         registradoValor={registrado}
-        actaEdicion={actaEdicion} />
+        actaEdicion={actaEdicion}
+        adminEdicion={adminEdicion} />
       }
 
       { step===5 && <UserDatosFormStep5
