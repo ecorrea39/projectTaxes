@@ -16,6 +16,7 @@ export const CreateGroup = (props) => {
     const handleSubmit = async (values, actions) => {
         
         values.permisos = formPermisos;
+        values.status = parseInt(values.status);
 
         if(action == "add") {
             await addNewGroup(values);
@@ -26,7 +27,14 @@ export const CreateGroup = (props) => {
                 icon: 'success'
             });
         } else {
+            console.log("UP", values)
             await updateGroup(values);
+            Swal.fire({
+                title: `Operación exitosa`,
+                text: `El grupo ${values.name} se ha actualizado con exito.`,
+                button: "Ok",
+                icon: 'success'
+            });
         }
 
         actions.setSubmitting(false);
@@ -36,7 +44,7 @@ export const CreateGroup = (props) => {
     }
 
     const initialValues = { name: "", permisos: [] };
-    const updateValues = { name: "", status: "",  fecha_creacion: ""};
+    const updateValues = { id: "", name: "", status: "",  fecha_creacion: "", permisos: []};
 
     const validationSchemaInitial = Yup.object().shape({
         name: Yup.string()
@@ -53,10 +61,12 @@ export const CreateGroup = (props) => {
             .matches(regexNameGroup, '- Nombre del grupo invalido. -'),
         status: Yup.string()
             .required('- Campo obligatorio -'),
-        id_status: Yup.string()
+        status: Yup.string()
             .required('- Campo obligatorio -'),
         fecha_creacion: Yup.string()
-            .required('- Campo obligatorio -')
+            .required('- Campo obligatorio -'),
+        id: Yup.string()
+            .required('- Campo obligatorio -'),
     });
 
     return (

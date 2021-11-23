@@ -8,9 +8,16 @@ import VpnKeyOutlinedIcon from '@material-ui/icons/VpnKeyOutlined';
 import { NavLink } from "react-router-dom";
 import PrintIcon from '@material-ui/icons/Print';
 
-export const ActionsTable = ({row, actionsRow,alertNotice,permissions,urlUpdate,printInfo}) => {
+export const ActionsTable = ({module, row, actionsRow,alertNotice,permissions,urlUpdate,printInfo}) => {
 
-    const statusAction = row.status == "0" ? "Desactivar" : row.status == "1" ? "Activar" : "Deshabilitado";
+    let statusAction = "";
+    // mientras que samuel termina los endpoins de usuarios
+    if(module) {
+        statusAction = row.status == "0" ? "Activar" : row.status == "1" ? "Desactivar" : "Deshabilitado";
+    } else {
+        statusAction = row.attributes.status == "0" ? "Activar" : row.attributes.status == "1" ? "Desactivar" : "Deshabilitado";
+    }
+   
 
     return (
         <>
@@ -22,14 +29,25 @@ export const ActionsTable = ({row, actionsRow,alertNotice,permissions,urlUpdate,
                 </NavLink>
             </Tooltip>
             
-            <Tooltip title={statusAction} arrow placement="top">
-                <a onClick={() => alertNotice(statusAction,row) }
-                    className="btn btn-icon btn-hover-light btn-sm" >
-                    { row.status == "0" && <CheckBoxOutlineBlankOutlinedIcon style={{color:"#62727b"}} /> }
-                    { row.status == "1" && <CheckBoxOutlinedIcon style={{color:"#64dd17"}} /> }
-                    { row.status == "2" && <BlockIcon style={{color:"#b71c1c"}} /> }
-                </a>
-            </Tooltip>
+            { module == "user" ?
+                <Tooltip title={statusAction} arrow placement="top">
+                    <a onClick={() => alertNotice(statusAction,row) }
+                        className="btn btn-icon btn-hover-light btn-sm" >
+                        { row.status == "0" && <CheckBoxOutlineBlankOutlinedIcon style={{color:"#62727b"}} /> }
+                        { row.status == "1" && <CheckBoxOutlinedIcon style={{color:"#64dd17"}} /> }
+                        { row.status == "2" && <BlockIcon style={{color:"#b71c1c"}} /> }
+                    </a>
+                </Tooltip>
+                :
+                <Tooltip title={statusAction} arrow placement="top">
+                    <a onClick={() => alertNotice(statusAction,row) }
+                        className="btn btn-icon btn-hover-light btn-sm" >
+                        { row.attributes.status == "0" && <CheckBoxOutlineBlankOutlinedIcon style={{color:"#62727b"}} /> }
+                        { row.attributes.status == "1" && <CheckBoxOutlinedIcon style={{color:"#64dd17"}} /> }
+                        { row.attributes.status == "2" && <BlockIcon style={{color:"#b71c1c"}} /> }
+                    </a>
+                </Tooltip>
+            }
 
             {
                 permissions && 

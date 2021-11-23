@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Field } from "formik";
 import { Button, Col, Row } from "react-bootstrap";
 import { Form } from "formik";
@@ -6,13 +6,15 @@ import BaseInput from "../../Forms/BaseInputs";
 import GroupsContext from "../../../context/groups/groupsContext";
 import BaseSelect from "../../Forms/BaseSelect";
 import { Permissions } from "./permissions";
+import { useHistory } from "react-router-dom";
+import { formatearfecha } from "../../../helpers";
 
 export const BaseFormik = ({props,formik}) => {
 
-    const { groupSlct, statusList, permissions, formPermisos, setFormPermisos } = useContext(GroupsContext);
-    //const [formPermisos, setFormPermisos] = useState([]);
+    const { groupSlct, setGroupSlct, statusList, formPermisos, setFormPermisos } = useContext(GroupsContext);
     const { action } = props;
-
+    const [listPermissions, setListPermissions] = useState([]);
+    let history = useHistory();
     /**
       * @e evento onChange.
       * @modulo en el cual se estan agregando los permisos El: Finanzas
@@ -55,9 +57,23 @@ export const BaseFormik = ({props,formik}) => {
 
     useEffect(()=>{
         if(action == "update") {
-            formik.setValues(groupSlct);
+            if(groupSlct) {
+                let data = {
+                    name: groupSlct.attributes.name,
+                    status: groupSlct.attributes.status,
+                    fecha_creacion: groupSlct.attributes.fecha,
+                    id: groupSlct.id,
+                    permisos:  groupSlct.attributes.permisos
+                }
+                formik.setValues(data);
+                setListPermissions(groupSlct.attributes.permisos);
+            } else {
+                history.push("/panel/grupos/");
+            }
+            
         } else {
             formik.resetForm();
+            setListPermissions(formPermisos);
         }
     },[action]);
 
@@ -108,7 +124,7 @@ export const BaseFormik = ({props,formik}) => {
                                     statusList.map(element => (
                                         <option
                                             key={element.status}
-                                            value={element.name}
+                                            value={element.status}
                                         >
                                             {element.name}
                                         </option>
@@ -122,16 +138,20 @@ export const BaseFormik = ({props,formik}) => {
             </Row>
 
             <Permissions
-                permissions={permissions}
+                permissions={listPermissions}
                 formik={formik}
                 formPermisos={formPermisos}
-                setFormPermisos={setFormPermisos} />
+                setFormPermisos={setFormPermisos}
+                dataGrupo={groupSlct}
+                action={action}
+                handleSetGroup={setGroupSlct} />
 
             <Row className="mb-2" style={{justifyContent: "center"}}>
 
                 <Col className="mb-2" xs="6" sm="6" md="6" lg="6" xl="6" xxl="6" >
                     <Button 
                         type="submit"
+                        onClick={()=>console.log(formik)}
                         className="btn btn-sm btn-info font-size-sm w-100">
                             {props.action === 'add' ? 'Guardar' : 'Actualizar'}
                     </Button>

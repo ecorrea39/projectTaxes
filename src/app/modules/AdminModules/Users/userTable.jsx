@@ -93,7 +93,8 @@ export const UserTable = () => {
                     actionsRow={actionsRow}
                     alertNotice={alertNotice}
                     urlUpdate={"/panel/usuarios/modificar"}
-                    printInfo={printInfo} />
+                    printInfo={printInfo}
+                    module={"user"} />
             )
         }
     ];

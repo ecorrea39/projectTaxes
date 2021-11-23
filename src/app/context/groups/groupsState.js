@@ -25,94 +25,123 @@ export const GroupsState = ({ children }) => {
             name: "Deshabilitado"
         }
     ]);
-
-    const [formPermisos, setFormPermisos] = useState([]);
-    const [permissions, setPermissions] = useState([
+    // Lista de permisos para los modulos
+    const [permisos, setPermisos] = useState([
         {
-            modulo: "Finanza",
-            modulo_id: "1",
-            permisos: [
-                {
-                    name: "leer",
-                    active: false
-                },
-                {
-                    name: "escribir",
-                    active: false
-                },
-                {
-                    name: "eliminar",
-                    active: false
-                },
-                {
-                    name: "ejecutar",
-                    active: false
-                },
-                {
-                    name: "importar",
-                    active: false
-                },
-                {
-                    name: "exportar",
-                    active: false
-                }               
-            ]
+            name: "leer",
+            active: false
         },
         {
-            modulo: "Usuarios",
-            modulo_id: "2",
-            permisos: [
-                {
-                    name: "leer",
-                    active: false
-                },
-                {
-                    name: "escribir",
-                    active: false
-                },
-                {
-                    name: "eliminar",
-                    active: false
-                },
-                {
-                    name: "ejecutar",
-                    active: false
-                },
-                {
-                    name: "importar",
-                    active: false
-                },
-                {
-                    name: "exportar",
-                    active: false
-                }                      
-            ]
-        }
+            name: "escribir",
+            active: false
+        },
+        {
+            name: "eliminar",
+            active: false
+        },
+        {
+            name: "ejecutar",
+            active: false
+        },
+        {
+            name: "importar",
+            active: false
+        },
+        {
+            name: "exportar",
+            active: false
+        }               
     ]);
+    // Este es el state que se modificara y se enviara al api.
+    const [formPermisos, setFormPermisos] = useState([]);
+    // Este es el state que tiene los permisos que estan registrados en la base de datos.
+    const [permissions, setPermissions] = useState([]);
 
     useEffect(()=>{
         getUserGroups();
-        getFormPermisos();
+        getModulos();
     },[]);
 
-    useEffect(()=>{
-        // getFormPermisos();
-    },[permissions]);
 
-    const getFormPermisos = () => {
-
+    // Metodo para crear los permisos en el formulario
+    const getFormPermisos = (data) => {
+        console.log(data)
         let arrayPermission = [];
-        permissions.forEach(element => {
+        data.forEach(element => {
             let objectPermisson = {
-                modulo_id: element.modulo_id,
-                modulo: element.modulo,
+                modulo_id: element.id,
+                modulo: element.attributes.name,
+                status: element.attributes.status,
+                leer: false,
+                escribir: false,
+                eliminar: false,
+                ejecutar: false,
+                importar: false,
+                exportar: false,
             }
-            element.permisos.forEach(permiso => {
-                objectPermisson[ permiso.name ] = permiso.active;
-            });
-            arrayPermission.push(objectPermisson);
+            arrayPermission.push(objectPermisson) ;
         });
         setFormPermisos(arrayPermission);
+    }
+
+    // Metodo para asignar permisos a los modulos
+    const getModulosPermisos = (data) => {
+        let array = [];
+        data.forEach(element => {
+            let objectPermisson = {
+                modulo: element.attributes.name,
+                modulo_id: element.id,
+                status: element.attributes.status,
+                permisos: permisos
+            }
+            array.push(objectPermisson);
+        });
+        setPermissions(array);
+    }
+
+    // Metodo para consultar los modulos
+    const getModulos = async () => {
+        try {
+            const respuesta = await clientAxios.get('/modulos/');
+            getFormPermisos(respuesta.data.data);
+        } catch (error) {
+            setLoadingTable(false);
+            console.log(error)
+        }
+    }
+
+    const getDataPermisos = (data) => {
+        let arrayPermission = [];
+        data.forEach(element => {
+            let objectGrupo = {
+                id: element.id,
+                attributes: {
+                    cant_usuarios: element.attributes.cant_usuarios,
+                    fecha: element.attributes.fecha,
+                    name: element.attributes.name,
+                    status: element.attributes.status,
+                    permisos: []
+                }
+            }
+
+            let permisos = element.attributes.permisos;
+
+            permisos.forEach(per => {
+                let objectPermisos = {
+                    modulo_id: per.modulo_id,
+                    modulo: per.modulo,
+                }
+
+                per.permisos.forEach(permiso => {
+                    objectPermisos[ permiso.name ] = permiso.active;
+                });
+                objectGrupo.attributes.permisos.push(objectPermisos);
+            });
+
+            arrayPermission.push(objectGrupo);
+
+        });
+        setUserGroupsList(arrayPermission);
     }
 
     const getUserGroups = async () => {
@@ -120,33 +149,8 @@ export const GroupsState = ({ children }) => {
         try {
             setLoadingTable(true);
             const respuesta = await clientAxios.get('/access_control/');
-            setUserGroupsList(respuesta.data.data);
-            setUserGroupsList([
-                {
-                    id: 1,
-                    name: 'Administradores',
-                    fecha_creacion: '01/01/2021',
-                    cant_usuarios: '06',
-                    status: "1",
-                    permisos: []
-                },
-                {
-                    id: 2,
-                    name: 'Gerente de linea',
-                    fecha_creacion: '02/01/2021',
-                    cant_usuarios: '10',
-                    status: "0",
-                    permisos: []
-                },
-                {
-                    id: 3,
-                    name: 'Coordinadores',
-                    fecha_creacion: '02/01/2021',
-                    cant_usuarios: '2',
-                    status: "2",
-                    permisos: []
-                }
-            ]);
+            getDataPermisos(respuesta.data.data);
+            // setUserGroupsList(respuesta.data.data);
             setLoadingTable(false);
         } catch (error) {
             setLoadingTable(false);
@@ -159,6 +163,7 @@ export const GroupsState = ({ children }) => {
             requestConfig.data.type = "saveAccessControl";
             requestConfig.data.attributes = formData;
             await clientAxios.post('/access_control/',requestConfig);
+            getUserGroups();
             return;
 
         } catch (error) {
@@ -167,11 +172,16 @@ export const GroupsState = ({ children }) => {
     }
 
     const updateGroup = async (formData) => {
+
         console.log(formData)
         try {
             requestConfig.data.type = "updateGroup";
-            requestConfig.data.attributes = formData;
-            // const respuesta = await clientAxios.get('/cuentas_banco/');
+            requestConfig.data.attributes = formData.permisos.attributes;
+            let uid = requestConfig.data.id;
+            requestConfig.data.id = formData.permisos.id;
+            const respuesta = await clientAxios.put('/access_control/',requestConfig);
+            requestConfig.data.id = uid;
+            getUserGroups();
         } catch (error) {
             console.log(error)
         }
@@ -180,7 +190,7 @@ export const GroupsState = ({ children }) => {
     const updateStatus = async (formData) => {
         try {
             requestConfig.data.type = "updateStatusGroup";
-            requestConfig.data.attributes = {status: formData.status};
+            requestConfig.data.attributes = formData;
             await clientAxios.patch(`/access_control/${formData.id_group}`,requestConfig);
             Swal.fire({
                 title: `Operación exitosa`,

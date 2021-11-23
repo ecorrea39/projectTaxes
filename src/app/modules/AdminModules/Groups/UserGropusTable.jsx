@@ -13,32 +13,34 @@ export const UserGroupsTable = ({url}) => {
     }
 
     const selectStatus = (id) => {
-        let statusName = statusList.find(element => element.status === id );
-        return statusName.name;
+
+        let status = statusList.find(element => element.status == id );
+        return status.name;
     }
 
     const alertNotice = (action,row) => {
 
         return (
             <>
-            { row.status == 0 || row.status == 1 ?
+            { row.attributes.status == 0 || row.attributes.status == 1 ?
                 Swal.fire({
                     title: `${action} grupo`,
-                    text: `Esta seguro que desea ${action} el grupo ${row.name}`,
+                    text: `Esta seguro que desea ${action} el grupo ${row.attributes.name}`,
                     icon: 'info',
                     showDenyButton: true,
                     denyButtonText: `Cancelar`,
                     confirmButtonText: 'Confirmar',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        updateStatus({id_group:row.id, name: row.name, status: action == "Activar" ? "0" : "1"});
+                        let newStatus = !row.attributes.status;
+                        updateStatus({id_group:row.id, name: row.attributes.name, status: newStatus });
                     }
                 })
 
                 :
                 Swal.fire({
                     title: `Grupo ${action}`,
-                    text: `El grupo ${row.name} se encuentra con status Deshabilitado. No requiere ninguna otra acción`,
+                    text: `El grupo ${row.attributes.name} se encuentra con status Deshabilitado. No requiere ninguna otra acción`,
                     icon: 'info'
                 })
             }
@@ -48,32 +50,26 @@ export const UserGroupsTable = ({url}) => {
 
     const columns = [
         {
-            name: '#',
-            selector: row => row.id,
-            sortable: true,
-            width: '50px'
-        },
-        {
             name: 'Nombre del grupo',
-            selector: row => row.name,
+            selector: row => row.attributes.name,
             sortable: true,
         },
         {
             name: 'Fecha de creacion',
-            selector: row => row.fecha_creacion,
+            selector: row => row.attributes.fecha,
             sortable: true,
         },
         {
             name: 'Cant. Usuarios Asignados',
-            selector: row => row.cant_usuarios,
+            selector: row => row.attributes.cant_usuarios,
             sortable: true,
         },
         {
             name: 'Status',
-            selector: row => row.status,
+            selector: row => row.attributes.status,
             sortable: true,
             cell: row => (
-                <>{selectStatus(row.status)}</>
+                <>{selectStatus(row.attributes.status)}</>
             )
         },
         {
