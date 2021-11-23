@@ -1,19 +1,23 @@
 import React, {useEffect, useState, useRef, useContext} from "react";
 import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
+import 'antd/dist/antd.css';
+import { TreeSelect } from 'antd';
 import axios from "axios";
 
 const textLabelColor = {
   'color': '#5A5EFF',
 };
 
+const { SHOW_PARENT } = TreeSelect;
+
 const QueryBuilderFormStep2 = (props) => {
   const [loading, setLoading] = useState(false);
+  const [advance, setNext] = useState(false);
 
-  const [initialValues, setInitialValues] = useState({
-    campos: []
-  });
-
+  const [value, setValue] = useState(undefined);
   const [tablesFields, setTablesFields] = useState([]);
+  const [treeData, setTreeData] = useState([]);
+
   const API_URL = `${process.env.REACT_APP_API_URL}`;
   const token = localStorage.getItem('authToken');
 
@@ -27,8 +31,6 @@ const QueryBuilderFormStep2 = (props) => {
 
   useEffect(() => {
     enableLoading();
-
-    setInitialValues(props.QueryFinal.campos.slice());
 
     //* TEMPORALMENTE DESHABILITADO
     // axios.get(`${API_URL}system_schema_data/`, axiosConfig)
@@ -45,6 +47,7 @@ const QueryBuilderFormStep2 = (props) => {
     //   alert("Error obteniendo la lista de campos")
     //   disableLoading();
     // });
+    // *********************************************************** //
 
     //* TEMPORALMENTE HASTA QUE ESTÉ EL BACKEND
     let fieldsValuesArray = [
@@ -81,7 +84,54 @@ const QueryBuilderFormStep2 = (props) => {
       {table_name: "actas_asamblea", column_name: "updatedAt", data_type: "timestamp with time zone"},
       {table_name: "actas_asamblea", column_name: "users_information_id", data_type: "integer"}
     ];
+    // *********************************************************** //
+
     setTablesFields(fieldsValuesArray);
+
+    let mappedData = [];
+    let childrenData = [];
+    let currentTable = "";
+    let startTable = 0;
+    for (let i = 0; i < fieldsValuesArray.length; i++) {
+      const field = fieldsValuesArray[i];
+      if (i === 0) currentTable = field.table_name;
+
+      if (currentTable != field.table_name) {
+        mappedData.push({
+          title: currentTable,
+          value: `${startTable}-${i - 1}`,
+          key: `${startTable}-${i - 1}`,
+          children: childrenData.slice()
+        });
+        childrenData = [];
+        startTable = i;
+        currentTable = field.table_name;
+        childrenData.push({
+          title: `${currentTable}.${field.column_name}`,
+          value: i.toString(),
+          key: i.toString(),
+        });
+      } else {
+        childrenData.push({
+          title: `${currentTable}.${field.column_name}`,
+          value: i.toString(),
+          key: i.toString(),
+        });
+      }
+
+      if (i === fieldsValuesArray.length - 1) {
+        mappedData.push({
+          title: currentTable,
+          value: `${startTable}-${i}`,
+          key: `${startTable}-${i}`,
+          children: childrenData.slice()
+        });
+      }
+    }
+
+    setTreeData(mappedData);
+    setValue(props.QueryFinal.campos ? props.QueryFinal.campos.slice() : undefined);
+    setNext(props.QueryFinal.campos ? props.QueryFinal.campos.length > 0 : false);
 
     disableLoading();
   }, []);
@@ -91,6 +141,11 @@ const QueryBuilderFormStep2 = (props) => {
   }
 
   const submitSiguiente = () => {
+    props.CambiarQuery({
+      campos: value,
+      esquema: tablesFields
+    });
+
     props.cambiarFormularioActual(3);
   }
 
@@ -100,6 +155,23 @@ const QueryBuilderFormStep2 = (props) => {
 
   const disableLoading = () => {
     setLoading(false);
+  };
+
+  const onTreeChange = (value) => {
+    setValue(value);
+    setNext(value.length > 0);
+  };
+
+  const tProps = {
+    treeData,
+    value: value,
+    onChange: onTreeChange,
+    treeCheckable: true,
+    showCheckedStrategy: SHOW_PARENT,
+    placeholder: 'Por favor seleccione los campos',
+    style: {
+      width: '100%'
+    },
   };
 
   return(
@@ -115,7 +187,7 @@ const QueryBuilderFormStep2 = (props) => {
             <Container>
               <Row>
                 <Form.Label style={textLabelColor}>Campos:</Form.Label>
-                yuu
+                <TreeSelect {...tProps} />
               </Row>
 
               <br/>
@@ -133,7 +205,7 @@ const QueryBuilderFormStep2 = (props) => {
                   <Button variant="secondary" size="lg" block
                           type="button"
                           onClick={submitSiguiente}
-                          disabled={!tablesFields}
+                          disabled={!advance}
                   >
                     Siguiente
                   </Button>

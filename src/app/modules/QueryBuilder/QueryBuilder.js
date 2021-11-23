@@ -15,7 +15,8 @@ const QueryBuilder = (props) => {
     nombre: "",
     titulo: "",
     descripcion: "",
-    campos: [],
+    campos: undefined,
+    esquema: [],
     joins: [],
     mapa_campos: [],
     orden: []
@@ -40,7 +41,8 @@ const QueryBuilder = (props) => {
     setValoresQuery((prevState) => {
       return {
         ...prevState,
-        campos: objeto.campos.slice()
+        campos: objeto.campos.slice(),
+        esquema: objeto.esquema.slice()
       };
     });
   };
