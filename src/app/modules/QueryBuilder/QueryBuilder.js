@@ -82,6 +82,7 @@ const QueryBuilder = (props) => {
         formularioActual={step}
         cambiarFormularioActual={cambiarStep}
         CambiarQuery={QueryStep1}
+        QueryFinal={valoresQuery}
         />
       }
 
@@ -89,6 +90,7 @@ const QueryBuilder = (props) => {
         formularioActual={step}
         cambiarFormularioActual={cambiarStep}
         CambiarQuery={QueryStep2}
+        QueryFinal={valoresQuery}
         />
       }
 
@@ -96,6 +98,7 @@ const QueryBuilder = (props) => {
         formularioActual={step}
         cambiarFormularioActual={cambiarStep}
         CambiarQuery={QueryStep3}
+        QueryFinal={valoresQuery}
         />
       }
 
@@ -103,6 +106,7 @@ const QueryBuilder = (props) => {
         formularioActual={step}
         cambiarFormularioActual={cambiarStep}
         CambiarQuery={QueryStep4}
+        QueryFinal={valoresQuery}
         />
       }
 
@@ -110,7 +114,7 @@ const QueryBuilder = (props) => {
         formularioActual={step}
         cambiarFormularioActual={cambiarStep}
         CambiarQuery={QueryStep5}
-        // QueryFinal={valoresQuery} 
+        QueryFinal={valoresQuery} 
         />
       }
 

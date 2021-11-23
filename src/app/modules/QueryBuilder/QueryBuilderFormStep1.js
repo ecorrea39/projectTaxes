@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import {useIntl} from "react-intl";
 import * as Yup from "yup";
@@ -16,6 +16,14 @@ const QueryBuilderFormStep1 = (props) => {
   });
 
   const intl = useIntl();
+
+  useEffect(() => {
+    setInitialValues({
+      nombre: props.QueryFinal.nombre,
+      titulo: props.QueryFinal.titulo,
+      descripcion: props.QueryFinal.descripcion
+    });
+  }, []);
 
   const submitSiguiente = () => {
     formik.submitForm();
@@ -73,7 +81,7 @@ const QueryBuilderFormStep1 = (props) => {
   });
 
   const formik = useFormik({
-    initialValues,
+    initialValues: initialValues,
     enableReinitialize: true,
     validationSchema: LoginSchema,
     onSubmit: () => {
@@ -147,7 +155,7 @@ const QueryBuilderFormStep1 = (props) => {
                   <Col md={12}>
                     <Form.Group as={Col} controlId="descripcion">
                       <Form.Label style={textLabelColor}>Descripción</Form.Label>
-                      <Form.Control size="lg" type="textarea" rows="3" placeholder="Descripción"
+                      <Form.Control as="textarea" size="lg" type="text" rows="3" placeholder="Descripción"
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.descripcion}
