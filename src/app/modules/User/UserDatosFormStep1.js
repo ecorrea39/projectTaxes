@@ -10,6 +10,11 @@ const textLabelColor = {
   'color': '#5A5EFF',
 };
 
+const formulario = {
+  'padding': '0',
+  'width:': '100%'
+}
+
 const UserDatosFormStep1 = (props) => {
 
   const generalCtx = useContext(GeneralContext);
@@ -1059,10 +1064,10 @@ const UserDatosFormStep1 = (props) => {
           >
             <Container>
               <Row>
-                <Col md={6}>
-                  <Form.Group as={Col} controlId="razon_social">
+                <Col xs="12" sm="12" md="6" lg="6" xl="6" xxl="6">
+                  <Form.Group style={formulario} as={Col} controlId="razon_social">
                     <Form.Label style={textLabelColor}>Razón Social</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Razón Social"
+                    <Form.Control size="md" type="text" placeholder="Razón Social"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.razon_social}
@@ -1078,10 +1083,10 @@ const UserDatosFormStep1 = (props) => {
                   </Form.Group>
                 </Col>
 
-                <Col md={6}>
-                  <Form.Group as={Col} controlId="nombre_comercial">
+                <Col xs="12" sm="12" md="6" lg="6" xl="6" xxl="6">
+                  <Form.Group as={Col} style={formulario} controlId="nombre_comercial">
                     <Form.Label style={textLabelColor}>Nombre Comercial</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Nombre Comercial"
+                    <Form.Control size="md" type="text" placeholder="Nombre Comercial"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.nombre_comercial}
@@ -1099,8 +1104,8 @@ const UserDatosFormStep1 = (props) => {
               </Row>
 
               <Row>
-                <Col md={6}>
-                  <Form.Group controlId="clase_de_empresa">
+                <Col xs="12" sm="12" md="6" lg="6" xl="6" xxl="6">
+                  <Form.Group controlId="clase_de_empresa" style={formulario}>
                     <Form.Label style={textLabelColor}>Clase de Empresa</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
@@ -1126,8 +1131,8 @@ const UserDatosFormStep1 = (props) => {
                   </Form.Group>
                 </Col>
 
-                <Col md={6}>
-                  <Form.Group controlId="actividad_economica">
+                <Col xs="12" sm="12" md="6" lg="6" xl="6" xxl="6">
+                  <Form.Group controlId="actividad_economica" style={formulario}>
                     <Form.Label style={textLabelColor}>Actividad Económica</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
@@ -1155,8 +1160,8 @@ const UserDatosFormStep1 = (props) => {
               </Row>
 
               <Row>
-                <Col md={6}>
-                  <Form.Group controlId="estatus">
+                <Col xs="12" sm="12" md="6" lg="6" xl="6" xxl="6">
+                  <Form.Group controlId="estatus" style={formulario}>
                     <Form.Label style={textLabelColor}>Estatus</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
@@ -1181,10 +1186,6 @@ const UserDatosFormStep1 = (props) => {
                     ) : null}
                   </Form.Group>
                 </Col>
-
-                <Col md={6}>
-
-                </Col>
               </Row>
 
               <br/>
@@ -1194,10 +1195,10 @@ const UserDatosFormStep1 = (props) => {
               <br/>
 
               <Row>
-                <Col md={6}>
-                  <Form.Group as={Col} controlId="numero_patronal">
+                <Col xs="12" sm="12" md="6" lg="6" xl="6" xxl="6">
+                  <Form.Group as={Col} controlId="numero_patronal" style={formulario}>
                     <Form.Label style={textLabelColor}>Número Patronal</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Número Patronal"
+                    <Form.Control size="md" type="text" placeholder="Número Patronal"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.numero_patronal}
@@ -1213,10 +1214,10 @@ const UserDatosFormStep1 = (props) => {
                   </Form.Group>
                 </Col>
 
-                <Col md={6}>
-                  <Form.Group as={Col} controlId="numero_de_trabajadores">
+                <Col xs="12" sm="12" md="6" lg="6" xl="6" xxl="6">
+                  <Form.Group as={Col} controlId="numero_de_trabajadores" style={formulario}>
                     <Form.Label style={textLabelColor}>Número de Trabajadores</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Número de Trabajadores"
+                    <Form.Control size="md" type="text" placeholder="Número de Trabajadores"
                                   onChange={customHandleChangeNumeroDeTrabajadores}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.numero_de_trabajadores}

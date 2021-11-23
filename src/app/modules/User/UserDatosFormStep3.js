@@ -111,6 +111,11 @@ const textLabelColor = {
   'color': '#5A5EFF',
 };
 
+const formulario = {
+  'padding': '0',
+  'width:': '100%'
+}
+
 const UserDatosFormStep3 = (props) => {
 
   const generalCtx = useContext(GeneralContext);
@@ -773,9 +778,9 @@ const UserDatosFormStep3 = (props) => {
             <Container>
               <Row>
                 <Col md={12}>
-                  <Form.Group as={Col} controlId="domicilio_fiscal">
+                  <Form.Group as={Col} style={formulario} controlId="domicilio_fiscal">
                     <Form.Label style={textLabelColor}>Domicilio Fiscal</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Domicilio Fiscal"
+                    <Form.Control size="md" type="text" placeholder="Domicilio Fiscal"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.domicilio_fiscal}
@@ -796,7 +801,7 @@ const UserDatosFormStep3 = (props) => {
 
               <Row>
                 <Col md={4}>
-                  <Form.Group controlId="estado">
+                  <Form.Group controlId="estado" style={formulario}>
                     <Form.Label style={textLabelColor}>Estado</Form.Label>
                     <Form.Control as="select"
                                   onChange={handleChangeFiltrarMunicipios}
@@ -822,7 +827,7 @@ const UserDatosFormStep3 = (props) => {
                 </Col>
 
                 <Col md={4}>
-                  <Form.Group controlId="municipio">
+                  <Form.Group controlId="municipio" style={formulario}>
                     <Form.Label style={textLabelColor}>Municipio</Form.Label>
                     <Form.Control as="select"
                                   onChange={handleChangeFiltrarParroquias}
@@ -848,7 +853,7 @@ const UserDatosFormStep3 = (props) => {
                 </Col>
 
                 <Col md={4}>
-                  <Form.Group controlId="parroquia">
+                  <Form.Group controlId="parroquia" style={formulario}>
                     <Form.Label style={textLabelColor}>Parroquia</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
@@ -878,7 +883,7 @@ const UserDatosFormStep3 = (props) => {
 
               <Row>
                 <Col md={4}>
-                  <Form.Group controlId="ciudad">
+                  <Form.Group controlId="ciudad" style={formulario}>
                     <Form.Label style={textLabelColor}>Ciudad</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
@@ -904,7 +909,7 @@ const UserDatosFormStep3 = (props) => {
                 </Col>
 
                 <Col md={4}>
-                  <Form.Group controlId="sector">
+                  <Form.Group controlId="sector" style={formulario}>
                     <Form.Label style={textLabelColor}>Sector</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
@@ -930,7 +935,7 @@ const UserDatosFormStep3 = (props) => {
                 </Col>
 
                 <Col md={4}>
-                  <Form.Group controlId="vialidad">
+                  <Form.Group controlId="vialidad" style={formulario}>
                     <Form.Label style={textLabelColor}>Vialidad</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
@@ -960,7 +965,7 @@ const UserDatosFormStep3 = (props) => {
 
               <Row>
                 <Col md={6}>
-                  <Form.Group controlId="edificacion">
+                  <Form.Group controlId="edificacion" style={formulario}>
                     <Form.Label style={textLabelColor}>Edificación</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
@@ -986,9 +991,9 @@ const UserDatosFormStep3 = (props) => {
                 </Col>
 
                 <Col md={6}>
-                  <Form.Group as={Col} controlId="local">
+                  <Form.Group as={Col} controlId="local" style={formulario}>
                     <Form.Label style={textLabelColor}>Local</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Local"
+                    <Form.Control size="md" type="text" placeholder="Local"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.local}
@@ -1009,7 +1014,7 @@ const UserDatosFormStep3 = (props) => {
 
               <Row>
                 <Col md={2}>
-                  <Form.Group controlId="codigo_telefono_compania1">
+                  <Form.Group controlId="codigo_telefono_compania1" style={formulario}>
                     <Form.Label style={textLabelColor}>Código de área</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
@@ -1034,9 +1039,9 @@ const UserDatosFormStep3 = (props) => {
                 </Col>
 
                 <Col md={4}>
-                  <Form.Group as={Col} controlId="numero_telefono_compania1">
+                  <Form.Group as={Col} controlId="numero_telefono_compania1" style={formulario}>
                     <Form.Label style={textLabelColor}>Número de Teléfono 1</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Telefono 1"
+                    <Form.Control size="md" type="text" placeholder="Telefono 1"
                                   onChange={customHandleChangeNumeroDeTelefono1}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.numero_telefono_compania1}
@@ -1052,7 +1057,7 @@ const UserDatosFormStep3 = (props) => {
                 </Col>
 
                 <Col md={2}>
-                  <Form.Group controlId="codigo_telefono_compania2">
+                  <Form.Group controlId="codigo_telefono_compania2" style={formulario}>
                     <Form.Label style={textLabelColor}>Código de área</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
@@ -1077,9 +1082,9 @@ const UserDatosFormStep3 = (props) => {
                 </Col>
 
                 <Col md={4}>
-                  <Form.Group as={Col} controlId="numero_telefono_compania2">
+                  <Form.Group as={Col} controlId="numero_telefono_compania2" style={formulario}>
                     <Form.Label style={textLabelColor}>Número de Teléfono 2</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Telefono 2"
+                    <Form.Control size="md" type="text" placeholder="Telefono 2"
                                   onChange={customHandleChangeNumeroDeTelefono2}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.numero_telefono_compania2}
@@ -1099,9 +1104,9 @@ const UserDatosFormStep3 = (props) => {
 
               <Row>
                 <Col md={12}>
-                  <Form.Group as={Col} controlId="correo_empresa">
+                  <Form.Group as={Col} controlId="correo_empresa" style={formulario}>
                     <Form.Label style={textLabelColor}>Correo electrónico</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Correo Electrónico"
+                    <Form.Control size="md" type="text" placeholder="Correo Electrónico"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.correo_empresa}
