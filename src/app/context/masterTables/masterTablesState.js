@@ -360,7 +360,8 @@ export const MasterTablesState = ({ children }) => {
                 lista.push(
                     {
                         "id": arreglo[i].id,
-                        "fecha": arreglo[i].attributes.fecha,
+                        "fecha": formatearfecha(new Date(arreglo[i].attributes.fecha), 'DMY'),
+                        "fecha_original": arreglo[i].attributes.fecha,
                         "valor": arreglo[i].attributes.valor
                     }
                 )
@@ -413,7 +414,8 @@ export const MasterTablesState = ({ children }) => {
                     {
                         "id": arreglo[i].id,
                         "ano": arreglo[i].attributes.ano,
-                        "fecha": arreglo[i].attributes.fecha
+                        "fecha": formatearfecha(new Date(arreglo[i].attributes.fecha), 'DMY'),
+                        "fecha_original": arreglo[i].attributes.fecha
                     }
                 )
             });
@@ -1289,6 +1291,19 @@ export const MasterTablesState = ({ children }) => {
 
         }
 
+    }
+
+    const formatearfecha = (f, formato) => {
+        const ano = f.getFullYear();
+        const mes = ("0" + (f.getMonth()+1)).substr(-2);
+        const dia = ("0" + f.getDate()).substr(-2);
+
+        let fecha;
+
+        if(formato === 'DMY') fecha = `${dia}-${mes}-${ano}`
+        else if(formato === 'YMD') fecha = `${ano}-${mes}-${dia}`;
+
+        return fecha;
     }
 
     const getListaOriginal = (tablaName) => {

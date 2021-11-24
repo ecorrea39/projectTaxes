@@ -276,7 +276,7 @@ export const navFuncional = [
         slug: "tablas-motivo-sancion"
       },
       {
-        title: "Días Hábiles",
+        title: "Días Inhábiles",
         url: "/tablas/dias-festivos",
         icon: "",
         slug: "tablas-dias-festivos"
@@ -356,19 +356,19 @@ export const navContribuyentes = [
     icon: "",
     childrens: [
       {
-        title: "Declaración y Reporte de pago",
-        url: "/tributos",
-        icon: "",
-        slug: "tributos",
-      },
-      {
-        title: "Entidad de trabajo",
+        title: "Entidad de Trabajo",
         url: "/user-datos",
         icon: "",
         slug: "entidad-de-trabajo",
       },
       {
-        title: "Estado de cuenta",
+        title: "Declaración y Reporte de Pago",
+        url: "/tributos",
+        icon: "",
+        slug: "tributos",
+      },
+      {
+        title: "Estado de Cuenta",
         url: "/estado-cuentas",
         icon: "",
         slug: "estado-cuentas",
@@ -392,13 +392,13 @@ export const navContribuyentes = [
     groups: ["contribuyentes"],
     childrens: [
       {
-        title: "Comprobante de inscripción",
+        title: "Comprobante de Inscripción",
         url: "/reportes/comprobante-de-inscripcion",
         icon: "",
         slug: "comprobante-de-inscripción",
       },
       {
-        title: "Certificado de solvencia",
+        title: "Certificado de Solvencia",
         url: "/reportes/certificado-solvencia",
         icon: "",
         slug: "certificado-de-solvencia",
@@ -406,17 +406,17 @@ export const navContribuyentes = [
     ]
   },
   {
-    title: "Perfil del contribuyente",
+    title: "Perfil del Contribuyente",
     groups: ["contribuyentes", "parciales"],
     childrens: [
       {
-        title: "Modificar perfil",
+        title: "Modificar Perfil",
         url: "/user-datos",
         icon: "",
         slug: "modificar-perfil",
       },
       {
-        title: "Cambiar clave",
+        title: "Cambiar Clave",
         url: "/user-datos",
         icon: "",
         slug: "cambiar-clave",
