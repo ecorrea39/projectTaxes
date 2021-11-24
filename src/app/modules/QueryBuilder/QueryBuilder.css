@@ -1,0 +1,16 @@
+.equal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color: black;
+    height: 100%;
+}
+
+.table-frame {
+    border: 1px solid #ebedf3;
+    border-radius: 5px;
+    margin-bottom: 32px;
+    padding: 5px;
+}

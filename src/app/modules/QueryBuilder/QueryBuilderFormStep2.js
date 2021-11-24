@@ -16,6 +16,7 @@ const QueryBuilderFormStep2 = (props) => {
 
   const [value, setValue] = useState(undefined);
   const [tablesFields, setTablesFields] = useState([]);
+  const [tables, setTables] = useState([]);
   const [treeData, setTreeData] = useState([]);
 
   const API_URL = `${process.env.REACT_APP_API_URL}`;
@@ -90,6 +91,7 @@ const QueryBuilderFormStep2 = (props) => {
 
     let mappedData = [];
     let childrenData = [];
+    let tablesNames = [];
     let currentTable = "";
     let startTable = 0;
     for (let i = 0; i < fieldsValuesArray.length; i++) {
@@ -103,6 +105,9 @@ const QueryBuilderFormStep2 = (props) => {
           key: `${startTable}-${i - 1}`,
           children: childrenData.slice()
         });
+
+        tablesNames.push(currentTable);
+
         childrenData = [];
         startTable = i;
         currentTable = field.table_name;
@@ -126,10 +131,13 @@ const QueryBuilderFormStep2 = (props) => {
           key: `${startTable}-${i}`,
           children: childrenData.slice()
         });
+
+        tablesNames.push(currentTable);
       }
     }
 
     setTreeData(mappedData);
+    setTables(tablesNames);
     setValue(props.QueryFinal.campos ? props.QueryFinal.campos.slice() : undefined);
     setNext(props.QueryFinal.campos ? props.QueryFinal.campos.length > 0 : false);
 
@@ -137,16 +145,17 @@ const QueryBuilderFormStep2 = (props) => {
   }, []);
 
   const irAnterior = () => {
-    props.cambiarFormularioActual(1);
+    props.cambiarFormularioActual(1, false);
   }
 
   const submitSiguiente = () => {
     props.CambiarQuery({
       campos: value,
-      esquema: tablesFields
+      esquema: tablesFields,
+      tablas: tables
     });
 
-    props.cambiarFormularioActual(3);
+    props.cambiarFormularioActual(3, true);
   }
 
   const enableLoading = () => {
@@ -170,8 +179,10 @@ const QueryBuilderFormStep2 = (props) => {
     showCheckedStrategy: SHOW_PARENT,
     placeholder: 'Por favor seleccione los campos',
     style: {
-      width: '100%'
-    },
+      width: '100%',
+      lineHeight: '44px',
+      borderRadius: '5px!important'
+    }
   };
 
   return(

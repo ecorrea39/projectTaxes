@@ -91,7 +91,7 @@ const QueryBuilderFormStep1 = (props) => {
         descripcion: formik.values.descripcion
       });
 
-      props.cambiarFormularioActual(2);
+      props.cambiarFormularioActual(2, true);
     },
   });
 

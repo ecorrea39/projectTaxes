@@ -11,19 +11,22 @@ import QueryBuilderFormStep5 from "./QueryBuilderFormStep5";
 const QueryBuilder = (props) => {
 
   const [step, setStep] = useState(1);
+  const [moveForward, setForward] = useState(true);
   const [valoresQuery, setValoresQuery] = useState({
     nombre: "",
     titulo: "",
     descripcion: "",
     campos: undefined,
     esquema: [],
+    tablas: [],
     joins: [],
     mapa_campos: [],
     orden: []
   });
 
-  const cambiarStep = (paso) => {
+  const cambiarStep = (paso, avanzar) => {
     setStep(paso);
+    setForward(avanzar);
   }
 
   const QueryStep1 = (objeto) => {
@@ -42,7 +45,8 @@ const QueryBuilder = (props) => {
       return {
         ...prevState,
         campos: objeto.campos.slice(),
-        esquema: objeto.esquema.slice()
+        esquema: objeto.esquema.slice(),
+        tablas: objeto.tablas.slice()
       };
     });
   };
@@ -82,6 +86,7 @@ const QueryBuilder = (props) => {
 
       { step===1 && <QueryBuilderFormStep1
         formularioActual={step}
+        avanzando={moveForward}
         cambiarFormularioActual={cambiarStep}
         CambiarQuery={QueryStep1}
         QueryFinal={valoresQuery}
@@ -90,6 +95,7 @@ const QueryBuilder = (props) => {
 
       { step===2 && <QueryBuilderFormStep2
         formularioActual={step}
+        avanzando={moveForward}
         cambiarFormularioActual={cambiarStep}
         CambiarQuery={QueryStep2}
         QueryFinal={valoresQuery}
@@ -98,6 +104,7 @@ const QueryBuilder = (props) => {
 
       { step===3 && <QueryBuilderFormStep3
         formularioActual={step}
+        avanzando={moveForward}
         cambiarFormularioActual={cambiarStep}
         CambiarQuery={QueryStep3}
         QueryFinal={valoresQuery}
@@ -106,6 +113,7 @@ const QueryBuilder = (props) => {
 
       { step===4 && <QueryBuilderFormStep4
         formularioActual={step}
+        avanzando={moveForward}
         cambiarFormularioActual={cambiarStep}
         CambiarQuery={QueryStep4}
         QueryFinal={valoresQuery}
@@ -114,6 +122,7 @@ const QueryBuilder = (props) => {
 
       { step===5 && <QueryBuilderFormStep5
         formularioActual={step}
+        avanzando={moveForward}
         cambiarFormularioActual={cambiarStep}
         CambiarQuery={QueryStep5}
         QueryFinal={valoresQuery} 
