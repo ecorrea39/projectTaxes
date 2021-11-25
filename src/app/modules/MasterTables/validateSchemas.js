@@ -113,4 +113,12 @@ export const SchemaTablesCol12 = Yup.object().shape({
         .required('- Campo obligatorio -')
 });
 
+export const SchemaTablesCol13 = Yup.object().shape({
+    name: Yup.string()
+        .required('- Campo obligatorio -'),
+    descripcion: Yup.string()
+        .required('- Campo obligatorio -')
+});
+
+
 

@@ -316,6 +316,12 @@ export const navFuncional = [
         url: "/tablas/tipo-documentos",
         icon: "",
         slug: "tablas-tipo-documentos"
+      },
+      {
+        title: "Tipos de Contribuyentes",
+        url: "/tablas/tipo-contribuyente",
+        icon: "",
+        slug: "tablas-tipo-contribuyente"
       }
     ]
   },

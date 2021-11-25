@@ -86,6 +86,10 @@ function MasterTablesModule() {
             title = "Tipo de Documentos";
             break;
 
+        case "tipo-contribuyente":
+            title = "Tipo de Contribuyentes";
+            break;
+
         default:
             break;
     }

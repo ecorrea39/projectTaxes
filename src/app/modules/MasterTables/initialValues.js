@@ -75,3 +75,9 @@ export const initialValuesTablesCol12 = {
     name: ""
 }
 
+export const initialValuesTablesCol13 = {
+    name: "",
+    descripcion: ""
+}
+
+
