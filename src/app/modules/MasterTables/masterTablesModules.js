@@ -59,7 +59,7 @@ function MasterTablesModule() {
             break;
 
         case "dias-festivos":
-            title = "Días Hábiles";
+            title = "Días Inhábiles";
             break;
 
         case "tasa-intereses":

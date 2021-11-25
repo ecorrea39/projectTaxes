@@ -11,7 +11,7 @@ export const BaseFormikMedidaValor = ({formik, props}) => {
     useEffect(() => {
         if(props.accion === 'Modificar') {
             formik.setFieldValue("id", registroSeleccionado.id);
-            formik.setFieldValue("fecha", registroSeleccionado.fecha);
+            formik.setFieldValue("fecha", registroSeleccionado.fecha_original);
             formik.setFieldValue("valor", registroSeleccionado.valor);
         }
     },[]);
