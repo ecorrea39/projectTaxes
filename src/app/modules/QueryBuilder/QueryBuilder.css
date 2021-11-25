@@ -1,3 +1,9 @@
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    min-height: 45px;
+    border-radius: 5px;
+    padding-left: 18px;
+}
+
 .equal {
     display: flex;
     flex-direction: column;
@@ -13,4 +19,13 @@
     border-radius: 5px;
     margin-bottom: 32px;
     padding: 5px;
+}
+
+input {
+    height: 24px;
+}
+
+.icon-function {
+    font-style: italic;
+    color: darkgrey;
 }

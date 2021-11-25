@@ -2,6 +2,8 @@ import React, {useEffect, useState} from "react";
 import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import {Radio, RadioGroup, FormControlLabel, FormControl, FormLabel} from '@material-ui/core';
 import DataTable  from 'react-data-table-component';
+import { Popconfirm } from 'antd';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 import {FormattedMessage, useIntl} from "react-intl";
 import _ from "lodash";
 import {useFormik} from "formik";
@@ -83,12 +85,21 @@ const QueryBuilderFormStep3 = (props) => {
         button: true,
         cell: row => (
             <>
-              <a title="eliminar" style={styleBtn} onClick={() => deleteJoin(row)}
+            <Popconfirm
+              placement="left"
+              icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+              title="¿Confirma que desea eliminar éste Join?"
+              onConfirm={() => deleteJoin(row)}
+              okText="&nbsp;SI&nbsp;"
+              cancelText="NO"
+            >
+              <a title="eliminar" style={styleBtn}
                   className="btn btn-icon btn-hover-light btn-sm">
                   <span className="svg-icon svg-icon-md svg-icon-danger">
                       <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")}/>
                   </span>
               </a>
+            </Popconfirm>
             </>
         )
     }
@@ -101,7 +112,6 @@ const QueryBuilderFormStep3 = (props) => {
     let camposCalificados = [];
 
     setJoins(props.QueryFinal.joins);
-    checkValidity(joins);
 
     campos.forEach(campo => {
       const index = campo.split("-");
@@ -125,11 +135,13 @@ const QueryBuilderFormStep3 = (props) => {
     setInvolvedTables(tablas);
     setFieldsLeft(camposCalificados);
     setFieldsRight(camposCalificados);
+
+    if (involvedTables.length > 0) checkValidity(joins)
   }, []);
 
-  const checkValidity = (arrayCheck) => {
+  const checkValidity = async (arrayCheck) => {
     let usedTables = [];
-    arrayCheck.forEach(element => {
+    await arrayCheck.forEach(element => {
       usedTables.push(element.left.split(".")[0]);
       usedTables.push(element.right.split(".")[0]);
     });
@@ -206,7 +218,6 @@ const QueryBuilderFormStep3 = (props) => {
         </Card.Title>
         <Card.Body>
           <form
-            // onSubmit={formik.handleSubmit}
             className="form fv-plugins-bootstrap fv-plugins-framework"
           >
             <Container>

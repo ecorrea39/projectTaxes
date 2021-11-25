@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useRef, useContext} from "react";
 import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import 'antd/dist/antd.css';
+import "./QueryBuilder.css";
 import { TreeSelect } from 'antd';
 import axios from "axios";
 
@@ -179,9 +180,7 @@ const QueryBuilderFormStep2 = (props) => {
     showCheckedStrategy: SHOW_PARENT,
     placeholder: 'Por favor seleccione los campos',
     style: {
-      width: '100%',
-      lineHeight: '44px',
-      borderRadius: '5px!important'
+      width: '100%'
     }
   };
 
