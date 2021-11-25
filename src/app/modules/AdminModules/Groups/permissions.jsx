@@ -70,7 +70,7 @@ export const Permissions = (props) => {
             <Table striped bordered hover size="sm">
                 <thead>
                     <tr>
-                        <th></th>
+                        <th>Modulos del sistema</th>
                         <th>Leer</th>
                         <th>Escribir</th>
                         <th>Eliminar</th>

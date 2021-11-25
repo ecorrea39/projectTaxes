@@ -78,9 +78,10 @@ export const UserGroupsTable = ({url}) => {
             cell: row => (
                 <ActionsTable
                     row={row}
-                    actionsRow={actionsRow}
-                    alertNotice={alertNotice}
-                    urlUpdate={"/panel/grupos/modificar"}
+                    handleActionsRow={actionsRow}
+                    handleAlertNotice={alertNotice}
+                    baseUrl={"/panel/grupos/"}
+                    actions={["update","status"]}
                 />
             )
         }

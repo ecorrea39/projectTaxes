@@ -6,15 +6,12 @@ import BaseInput from "../../Forms/BaseInputs";
 import GroupsContext from "../../../context/groups/groupsContext";
 import BaseSelect from "../../Forms/BaseSelect";
 import { Permissions } from "./permissions";
-import { useHistory } from "react-router-dom";
-import { formatearfecha } from "../../../helpers";
 
-export const BaseFormik = ({props,formik}) => {
+export const BaseFormik = ({props,formik,history}) => {
 
     const { groupSlct, setGroupSlct, statusList, formPermisos, setFormPermisos } = useContext(GroupsContext);
     const { action } = props;
     const [listPermissions, setListPermissions] = useState([]);
-    let history = useHistory();
     /**
       * @e evento onChange.
       * @modulo en el cual se estan agregando los permisos El: Finanzas
@@ -53,6 +50,11 @@ export const BaseFormik = ({props,formik}) => {
         }
         // actualizo el state con los nuevos permisos
         setFormPermisos(selected);
+    }
+
+    const back = () => {
+        formik.resetForm();
+        history.push("/panel/grupos/");
     }
 
     useEffect(()=>{
@@ -159,6 +161,7 @@ export const BaseFormik = ({props,formik}) => {
 
                 <Col className="mb-2" xs="6" sm="6" md="6" lg="6" xl="6" xxl="6" >
                     <Button 
+                        onClick={()=>back()}
                         className="btn btn-sm btn-danger font-size-sm w-100">Cerrar</Button>
                 </Col>
 

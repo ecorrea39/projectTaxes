@@ -2,7 +2,7 @@ import React from "react";
 import { getIn } from 'formik';
 
 export default function BaseSelect (props) {
-    const { field, form: { touched, errors }, ...rest } = props;
+    const { field, form: { touched, errors }, myClass, ...rest } = props;
     
     return (
         <>
@@ -10,6 +10,7 @@ export default function BaseSelect (props) {
                 type="text" 
                 className={
                     `form-control 
+                    ${myClass}
                     ${getIn(touched, field.name) && getIn(errors, field.name) && 'is-invalid'}
                 `}
                 {...field} 

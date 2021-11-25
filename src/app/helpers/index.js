@@ -1,7 +1,14 @@
 export const regexNumber = /^[0-9]+$/;
 
 export const regexNameGroup = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ]+$/u;
-
+export const regexName = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ]+$/u;
+export const textoAndNumber = /^[A-Za-z0-9\s]+$/g;
+// Valida sin el codigo de area
+export const regexPhoneNumber = /^([0-9]{7})/g;
+// Validador de cedula con separador
+export const regexCICSP = /^([VEP]{1}[\-]{1,2})([0-9]{6,8}$)/g;
+// Validador de cedula sin separador
+export const regexCI = /^([VEP]{1})([0-9]{6,8}$)/g;
 
 export const formatearfecha = (f, formato) => {
     console.log(f)

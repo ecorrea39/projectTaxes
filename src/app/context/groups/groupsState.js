@@ -175,7 +175,7 @@ export const GroupsState = ({ children }) => {
 
         console.log(formData)
         try {
-            requestConfig.data.type = "updateGroup";
+            requestConfig.data.type = "saveAccessControl";
             requestConfig.data.attributes = formData.permisos.attributes;
             let uid = requestConfig.data.id;
             requestConfig.data.id = formData.permisos.id;

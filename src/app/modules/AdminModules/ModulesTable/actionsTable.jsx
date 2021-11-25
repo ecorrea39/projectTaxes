@@ -8,66 +8,71 @@ import VpnKeyOutlinedIcon from '@material-ui/icons/VpnKeyOutlined';
 import { NavLink } from "react-router-dom";
 import PrintIcon from '@material-ui/icons/Print';
 
-export const ActionsTable = ({module, row, actionsRow,alertNotice,permissions,urlUpdate,printInfo}) => {
+export const ActionsTable = ({
+    row, actions, baseUrl,
+    handleActionsRow, handlePermissions, handleAlertNotice, handlePrintInfo}) => {
 
-    let statusAction = "";
-    // mientras que samuel termina los endpoins de usuarios
-    if(module) {
-        statusAction = row.status == "0" ? "Activar" : row.status == "1" ? "Desactivar" : "Deshabilitado";
-    } else {
-        statusAction = row.attributes.status == "0" ? "Activar" : row.attributes.status == "1" ? "Desactivar" : "Deshabilitado";
-    }
-   
+    let statusAction =
+        row.attributes.status == "0" ? "Activar" :
+        row.attributes.status == "1" ? "Desactivar" : "Deshabilitado";
+  
+    const Action = ({action}) => {
+        return (
+            <>
+                { action == "details" && 
+                <Tooltip title="Ver detalles" arrow placement="top">
+                    <NavLink className="btn btn-icon btn-hover-light btn-sm mx-3"
+                            onClick={() => handleActionsRow(row)}
+                            to={baseUrl+"detalles"}>
+                        <ListAltOutlinedIcon style={{color:"#0091ea"}} />
+                    </NavLink>
+                </Tooltip> }
 
-    return (
-        <>
-            <Tooltip title="Modificar" arrow placement="top">
-                <NavLink className="btn btn-icon btn-hover-light btn-sm mx-3"
-                        onClick={() => actionsRow(row)}
-                        to={urlUpdate}>
-                    <ListAltOutlinedIcon style={{color:"#0091ea"}} />
-                </NavLink>
-            </Tooltip>
-            
-            { module == "user" ?
+                { action == "update" && 
+                <Tooltip title="Modificar" arrow placement="top">
+                    <NavLink className="btn btn-icon btn-hover-light btn-sm mx-3"
+                            onClick={() => handleActionsRow(row)}
+                            to={baseUrl+"modificar"}>
+                        <ListAltOutlinedIcon style={{color:"#0091ea"}} />
+                    </NavLink>
+                </Tooltip> }
+
+                { action == "status" && 
                 <Tooltip title={statusAction} arrow placement="top">
-                    <a onClick={() => alertNotice(statusAction,row) }
-                        className="btn btn-icon btn-hover-light btn-sm" >
-                        { row.status == "0" && <CheckBoxOutlineBlankOutlinedIcon style={{color:"#62727b"}} /> }
-                        { row.status == "1" && <CheckBoxOutlinedIcon style={{color:"#64dd17"}} /> }
-                        { row.status == "2" && <BlockIcon style={{color:"#b71c1c"}} /> }
-                    </a>
-                </Tooltip>
-                :
-                <Tooltip title={statusAction} arrow placement="top">
-                    <a onClick={() => alertNotice(statusAction,row) }
+                    <a onClick={() => handleAlertNotice(statusAction,row) }
                         className="btn btn-icon btn-hover-light btn-sm" >
                         { row.attributes.status == "0" && <CheckBoxOutlineBlankOutlinedIcon style={{color:"#62727b"}} /> }
                         { row.attributes.status == "1" && <CheckBoxOutlinedIcon style={{color:"#64dd17"}} /> }
                         { row.attributes.status == "2" && <BlockIcon style={{color:"#b71c1c"}} /> }
                     </a>
-                </Tooltip>
-            }
+                </Tooltip> }
 
-            {
-                permissions && 
+                { action == "permissions" && 
                 <Tooltip title="Permisos" arrow placement="top">
-                    <a onClick={() => permissions(row)}
+                    <a onClick={() => handlePermissions(row)}
                         className="btn btn-icon btn-hover-light btn-sm mx-3">
                         <VpnKeyOutlinedIcon style={{color:"#263238"}} />
                     </a>
-                </Tooltip>
-            }
-            
-            {
-                printInfo && 
+                </Tooltip> }
+
+                { action == "print" && 
                 <Tooltip title="Imprimir información" arrow placement="top">
-                    <a onClick={() => printInfo(row.id)}
+                    <a onClick={() =>  handlePrintInfo(row.id)}
                         className="btn btn-icon btn-hover-light btn-sm mx-3">
                         <PrintIcon style={{color:"#263238"}} />
                     </a>
-                </Tooltip>
-            }
+                </Tooltip> }
+            </>
+        )
+    }
+
+    return (
+        <>
+        {
+            actions.map((action,index)=>(
+                <Action key={index} action={ action } />
+            ))
+        }
             
         </>
     )

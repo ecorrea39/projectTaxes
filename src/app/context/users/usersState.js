@@ -30,25 +30,36 @@ export const UsersState = ({ children }) => {
         getUnidadEstatal();
     },[]);
 
+    const setUserDataList = (data) => {
+        
+        let arrayUser = [];
+        data.map((element)=> {
+            let object = {
+                uid: element.attributes.uid,
+                id: element.id,
+                nombre: element.attributes.name,
+                apellido: element.attributes.surname,
+                correo: element.attributes.mail,
+                usuario: element.attributes.alias,
+                grupo_id: '06',
+                status: element.attributes.status,
+                unid_estatal_tributo: "03",
+                fecha_creacion: '01/01/2021',
+                permisos: []
+            }
+            arrayUser.push(object);
+            console.log(arrayUser)
+        });
+        setUsersList(arrayUser);
+    }
+
     const getUsers = async () => {
         
         try {
             setLoadingTable(true);
-            const respuesta = await clientAxios.get('/access_control/');
-            //setUserGroupsList(respuesta.data.data);
-            setUsersList([
-                {
-                    id: 1,
-                    nombre: 'Eduard',
-                    apellido: 'Correa',
-                    correo: 'correaeduard39@gmail.com',
-                    usuario: 'ecorrea',
-                    grupo: '06',
-                    status: "1",
-                    unid_estatal_tributo: "03",
-                    fecha_creacion: '01/01/2021'
-                }
-            ]);
+            const respuesta = await clientAxios.get('/access_control/users/grupos/');
+            //setUserDataList(respuesta.data.data);
+            setUsersList(respuesta.data.data);
             setLoadingTable(false);
         } catch (error) {
             setLoadingTable(false);
@@ -56,27 +67,28 @@ export const UsersState = ({ children }) => {
         }
     }
 
+    const formatDataGroupsList = (data) => {
+
+        let array = [];
+
+        data.map((grupo) => {
+            let object = {
+                id: grupo.id,
+                name: grupo.attributes.name,
+                fecha_creacion: grupo.attributes.fecha,
+                cant_usuarios: grupo.attributes.cant_usuarios,
+                status: grupo.attributes.status,
+                permisos: grupo.attributes.permisos
+            }
+            array.push(object);
+        });
+        setGroupsList(array);
+    }
+
     const getGroups = async () => {
         try {
-
-            // const respuesta = await clientAxios.get('/access_control/');
-            // setGroupsList(respuesta.data.data);
-            setGroupsList([
-                {
-                    id: 1,
-                    name: 'Administradores',
-                    fecha_creacion: '01/01/2021',
-                    cant_usuarios: '06',
-                    status: "1",
-                },
-                {
-                    id: 2,
-                    name: 'Usurios',
-                    fecha_creacion: '01/01/2021',
-                    cant_usuarios: '06',
-                    status: "1",
-                }
-            ]);
+            const respuesta = await clientAxios.get('/access_control/');
+            formatDataGroupsList(respuesta.data.data);
         } catch (error) {
             console.log(error)
         }
@@ -104,9 +116,11 @@ export const UsersState = ({ children }) => {
 
     const addNewUser = async (formData) => {
         try {
+            let grupo = [formData.grupo];
+            formData.grupo = grupo;
             requestConfig.data.type = "saveAccessControl";
             requestConfig.data.attributes = formData;
-            // await clientAxios.post('/access_control/',requestConfig);
+            await clientAxios.post('/access_control/',requestConfig);
             return;
 
         } catch (error) {

@@ -27,7 +27,6 @@ export const CreateGroup = (props) => {
                 icon: 'success'
             });
         } else {
-            console.log("UP", values)
             await updateGroup(values);
             Swal.fire({
                 title: `Operación exitosa`,
@@ -81,7 +80,7 @@ export const CreateGroup = (props) => {
         >
             {
                 formik => (
-                    <BaseFormik props={props} formik={formik} />
+                    <BaseFormik props={props} formik={formik} history={history} />
                 )
             }
         </Formik>

@@ -52,36 +52,33 @@ export const UserTable = () => {
 
     const columns = [
         {
-            name: '#',
-            selector: row => row.id,
-            sortable: true,
-            width: '50px'
-        },
-        {
             name: 'Nombre y Apellido',
-            selector: row => row.nombre + " " + row.apellido,
-            sortable: true,
-        },
-        {
-            name: 'Correo',
-            selector: row => row.correo,
+            selector: row => row.attributes.name + " " + row.attributes.surname,
             sortable: true,
         },
         {
             name: 'Usuario',
-            selector: row => row.usuario,
+            selector: row => row.attributes.alias,
+            sortable: true,
+        },
+        {
+            name: 'Correo',
+            selector: row => row.attributes.mail,
             sortable: true,
         },
         {
             name: 'Status',
             sortable: true,
             cell: row => (
-                <>{selectStatus(row.status)}</>
+                <>{ 
+                    // selectStatus(row.status)
+                    row.attributes.status ? "Activo" : "Desactivado"
+                }</>
             )
         },
         {
             name: 'Fecha de creación',
-            selector: row => row.fecha_creacion,
+            selector: row => row.attributes.fecha_creacion,
             sortable: true,
         },
         {
@@ -90,10 +87,11 @@ export const UserTable = () => {
             cell: row => (
                 <ActionsTable
                     row={row}
-                    actionsRow={actionsRow}
-                    alertNotice={alertNotice}
-                    urlUpdate={"/panel/usuarios/modificar"}
-                    printInfo={printInfo}
+                    handleActionsRow={actionsRow}
+                    handleAlertNotice={alertNotice}
+                    handlePrintInfo={printInfo}
+                    baseUrl={"/panel/usuarios/"}
+                    actions={["details","update","status","print"]}
                     module={"user"} />
             )
         }

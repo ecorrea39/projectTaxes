@@ -178,16 +178,16 @@ export const navFuncional = [
     icon: "",
     childrens: [
       {
+        title: "Grupos y Permisos",
+        url: "/panel/grupos/",
+        icon: "",
+        slug: "panel-grupos",
+      },
+      {
         title: "Usuarios",
         url: "/panel/usuarios/",
         icon: "",
         slug: "panel-usuarios",
-      },
-      {
-        title: "Grupos",
-        url: "/panel/grupos/",
-        icon: "",
-        slug: "panel-grupos",
       },
       {
         title: "Modificar perfil",
