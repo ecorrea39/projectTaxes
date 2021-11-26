@@ -27,5 +27,14 @@ input {
 
 .icon-function {
     font-style: italic;
-    color: darkgrey;
+}
+
+.icon-function-normal {
+    font-weight: normal;
+    color: gray;
+}
+
+.icon-function-active {
+    font-weight: bold;
+    color: blue;
 }

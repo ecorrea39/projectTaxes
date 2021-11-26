@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
-import {Radio, RadioGroup, FormControlLabel, FormControl, FormLabel} from '@material-ui/core';
 import DataTable  from 'react-data-table-component';
 import { FilterTwoTone, FilterOutlined } from '@ant-design/icons';
 import { Modal } from 'antd';
@@ -12,9 +11,6 @@ const regexp = /^[a-zA-Z_]+$/;
 const textLabelColor = {
   'color': '#5A5EFF',
 };
-const optionLabelColor = {
-  'color': '#000000',
-};
 
 const QueryBuilderFormStep4 = (props) => {
   const [initialValues, setInitialValues] = useState({
@@ -22,7 +18,6 @@ const QueryBuilderFormStep4 = (props) => {
     clave: "",
     valor: "",
     funcion: "",
-    envoltura: "wrapper",
     args: ""
   });
   const [dataMap, setDataMap] = useState([]);
@@ -86,7 +81,7 @@ const QueryBuilderFormStep4 = (props) => {
             
             <a title="Agregar función" style={styleBtn} onClick={() => addFunction(row)}
                 className="btn btn-icon btn-hover-light btn-sm">
-                <span className="icon-function">
+                <span className={`icon-function ${row.function ? 'icon-function-active' : 'icon-function-normal'}`}>
                     F(x)
                 </span>
             </a>
@@ -96,24 +91,85 @@ const QueryBuilderFormStep4 = (props) => {
   ];
 
   useEffect(() => {
-    const campos = props.QueryFinal.campos.slice();
-    const esquema = props.QueryFinal.esquema.slice();
     let camposCalificados = [];
-    let Index = 0;
-
     setAllTables(props.QueryFinal.tablas);
 
-    campos.forEach(campo => {
-      const index = campo.split("-");
-      if (campo.includes("-")) {
-        for (let i = parseInt(index[0]); i <= parseInt(index[1]); i++) {
-          const qName = `${esquema[i].table_name}.${esquema[i].column_name}`;
+    const myMap = props.QueryFinal.mapa_campos.slice();
+
+    if (myMap.length > 0) {
+      //Formik simplemente ignora los valores iniciales
+      let initObject = {
+        tabla: "",
+        clave: "",
+        valor: "",
+        funcion: "",
+        args: ""
+      };
+
+      myMap.forEach(field => {
+        if (field.alias) {
+          let fieldObj = {... initObject[field.table]};
+          fieldObj[field.field] = field.alias;
+          initObject[field.table] = fieldObj;
+        }
+      });
+
+      setInitialValues(initObject);
+      //
+
+      camposCalificados = myMap.map(field => {
+        return {
+          rowId: field.rowId,
+          table: field.table,
+          field: field.field,
+          name: field.name,
+          type: field.type,
+          alias: 
+            <input id={`${field.name}`}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              onKeyPress={limitEntry}
+              value={formik.values[field.name]} 
+            />,
+          ...(field.list_table && { list_table: field.list_table }),
+          ...(field.function && { function: field.function })
+        }
+      });
+    } else {
+      const campos = props.QueryFinal.campos.slice();
+      const esquema = props.QueryFinal.esquema.slice();
+      let Index = 0;
+
+      campos.forEach(campo => {
+        const index = campo.split("-");
+        if (campo.includes("-")) {
+          for (let i = parseInt(index[0]); i <= parseInt(index[1]); i++) {
+            const qName = `${esquema[i].table_name}.${esquema[i].column_name}`;
+            camposCalificados.push({
+              rowId: Index,
+              table: esquema[i].table_name,
+              field: esquema[i].column_name,
+              name: qName,
+              type: esquema[i].data_type,
+              alias: 
+                <input id={`${qName}`}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  onKeyPress={limitEntry}
+                  value={formik.values[qName]} 
+                />
+            });
+
+            Index++;
+          }
+        } else {
+          const qName = `${esquema[index[0]].table_name}.${esquema[index[0]].column_name}`;
           camposCalificados.push({
             rowId: Index,
-            table: esquema[i].table_name,
-            field: esquema[i].column_name,
+            table: esquema[index[0]].table_name,
+            field: esquema[index[0]].column_name,
             name: qName,
-            type: esquema[i].data_type,
+            type: esquema[index[0]].data_type,
             alias: 
               <input id={`${qName}`}
                 onChange={formik.handleChange}
@@ -125,26 +181,8 @@ const QueryBuilderFormStep4 = (props) => {
 
           Index++;
         }
-      } else {
-        const qName = `${esquema[index[0]].table_name}.${esquema[index[0]].column_name}`;
-        camposCalificados.push({
-          rowId: Index,
-          table: esquema[index[0]].table_name,
-          field: esquema[index[0]].column_name,
-          name: qName,
-          type: esquema[index[0]].data_type,
-          alias: 
-            <input id={`${qName}`}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              onKeyPress={limitEntry}
-              value={formik.values[qName]} 
-            />
-        });
-
-        Index++;
-      }
-    });
+      });
+    }
 
     setAllFields(camposCalificados);
   }, []);
@@ -156,8 +194,6 @@ const QueryBuilderFormStep4 = (props) => {
   const addLista = (row) => {
     setDataType(row.type);
     setSelectedId(row.rowId);
-
-    console.log(row);
 
     if (row.list_table) {
       populateTables(row.list_table.table);
@@ -197,8 +233,6 @@ const QueryBuilderFormStep4 = (props) => {
       value: formik.values.valor
     }
 
-    console.log(tmp);
-
     setAllFields(tmp);
     setIsModalVisible(false);
   };
@@ -209,10 +243,26 @@ const QueryBuilderFormStep4 = (props) => {
 
   const addFunction = (row) => {
     setSelectedId(row.rowId);
+
+    if (row.function) {
+      formik.setFieldValue("funcion", row.function.name);
+      formik.setFieldValue("args", row.function.args);
+    } else {
+      formik.setFieldValue("funcion", "");
+      formik.setFieldValue("args", "");
+    }
+
     setIsFunctionVisible(true);
   }
 
   const addFunctionOk = () => {
+    let tmp = allFields.slice();
+    tmp[selectedId].function = {
+      name: formik.values.funcion,
+      args: formik.values.args
+    }
+
+    setAllFields(tmp);
     setIsFunctionVisible(false);
   }
 
@@ -225,35 +275,21 @@ const QueryBuilderFormStep4 = (props) => {
   }
 
   const submitSiguiente = () => {
-    const campos = props.QueryFinal.campos.slice();
-    const esquema = props.QueryFinal.esquema.slice();
     const values = formik.values;
-    let fullmap = [];
 
-    campos.forEach(campo => {
-      const index = campo.split("-");
-      if (campo.includes("-")) {
-        for (let i = parseInt(index[0]); i <= parseInt(index[1]); i++) {
-          const alias = values[esquema[i].table_name][esquema[i].column_name] ? 
-            values[esquema[i].table_name][esquema[i].column_name] : "";
+    let fullmap = allFields.map(field => {
+      const alias = values[field.table] ? 
+        values[field.table][field.field] ? values[field.table][field.field] : "" : "";
 
-          fullmap.push({
-            table: esquema[i].table_name,
-            field: esquema[i].column_name,
-            type: esquema[i].data_type,
-            alias: alias
-          });
-        }
-      } else {
-        const alias = values[esquema[index[0]].table_name][esquema[index[0]].column_name] ? 
-            values[esquema[index[0]].table_name][esquema[index[0]].column_name] : "";
-
-        fullmap.push({
-          table: esquema[index[0]].table_name,
-          field: esquema[index[0]].column_name,
-          type: esquema[index[0]].data_type,
-          alias: alias
-        });
+      return {
+        rowId: field.rowId,
+        table: field.table,
+        field: field.field,
+        name: field.name,
+        type: field.type,
+        alias: alias,
+        ...(field.list_table && { list_table: field.list_table }),
+        ...(field.function && { function: field.function })
       }
     });
 
@@ -279,7 +315,7 @@ const QueryBuilderFormStep4 = (props) => {
         mapa_campos: dataMap
       });
 
-      props.cambiarFormularioActual(5, true);
+      // props.cambiarFormularioActual(5, true);
     },
   });
 
@@ -367,11 +403,11 @@ const QueryBuilderFormStep4 = (props) => {
               onCancel={addFunctionCancel}
               okText="Aceptar"
               cancelText="Cancelar"
-              width={800}
+              width={600}
               okButtonProps={{disabled: formik.values.funcion === ""}}
             >
               <Row>
-                <Col md={7}>
+                <Col md={12}>
                   <Form.Group controlId="funcion">
                     <Form.Label style={textLabelColor}>Función</Form.Label>
                     <Form.Control type="text"
@@ -381,27 +417,6 @@ const QueryBuilderFormStep4 = (props) => {
                     >
                     </Form.Control>
                   </Form.Group>
-                </Col>
-
-                <Col md={5}>
-                  <FormControl component="fieldset">
-                    <FormLabel component="legend" style={textLabelColor}>Tipo de función</FormLabel>
-                    <RadioGroup name="envoltura" 
-                          value={formik.values.envoltura}
-                          onChange={formik.handleChange}
-                    >
-                      <Row>
-                        <Col md={12}>
-                          <FormControlLabel value="wrapper" control={<Radio />} 
-                                label="Paréntesis '()'" style={optionLabelColor} 
-                          />
-                          <FormControlLabel value="space" control={<Radio />} 
-                                label="Espacio ' '" style={optionLabelColor}
-                          />
-                        </Col>
-                      </Row>
-                    </RadioGroup>
-                  </FormControl>
                 </Col>
               </Row>
               <Row>
