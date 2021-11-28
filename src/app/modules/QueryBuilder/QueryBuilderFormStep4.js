@@ -315,7 +315,7 @@ const QueryBuilderFormStep4 = (props) => {
         mapa_campos: dataMap
       });
 
-      // props.cambiarFormularioActual(5, true);
+      props.cambiarFormularioActual(5, true);
     },
   });
 

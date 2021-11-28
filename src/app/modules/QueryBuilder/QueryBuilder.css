@@ -38,3 +38,24 @@ input {
     font-weight: bold;
     color: blue;
 }
+
+.transfer-container {
+    background-color: #fafafa;
+    border: 1px solid #bdcdd4;
+    border-radius: 5px;
+    margin-bottom: 16px;
+    padding: 10px;
+}
+
+.transfer-labels {
+    color: #5A5EFF;
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+.transfer-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}

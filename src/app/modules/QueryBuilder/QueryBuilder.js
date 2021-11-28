@@ -7,6 +7,7 @@ import QueryBuilderFormStep2 from "./QueryBuilderFormStep2";
 import QueryBuilderFormStep3 from "./QueryBuilderFormStep3";
 import QueryBuilderFormStep4 from "./QueryBuilderFormStep4";
 import QueryBuilderFormStep5 from "./QueryBuilderFormStep5";
+import QueryBuilderFormStep6 from "./QueryBuilderFormStep6";
 
 
 const QueryBuilder = (props) => {
@@ -23,7 +24,8 @@ const QueryBuilder = (props) => {
     tablas: [],
     joins: [],
     mapa_campos: [],
-    orden: []
+    orden: [],
+    agrupar: []
   });
 
   // const next = () => {
@@ -85,7 +87,8 @@ const QueryBuilder = (props) => {
     setValoresQuery((prevState) => {
       return {
         ...prevState,
-        orden: objeto.orden.slice()
+        orden: objeto.orden.slice(),
+        agrupar: objeto.agrupar.slice()
       };
     });
   };
@@ -137,6 +140,14 @@ const QueryBuilder = (props) => {
         avanzando={moveForward}
         cambiarFormularioActual={cambiarStep}
         CambiarQuery={QueryStep5}
+        QueryFinal={valoresQuery} 
+        />
+      }
+
+      { step===6 && <QueryBuilderFormStep6
+        formularioActual={step}
+        avanzando={moveForward}
+        cambiarFormularioActual={cambiarStep}
         QueryFinal={valoresQuery} 
         />
       }

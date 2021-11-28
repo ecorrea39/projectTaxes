@@ -16,6 +16,8 @@ const QueryBuilderHeader = (props) => {
           { props.formularioActual===4 && <img src={toAbsoluteUrl("/media/step-by-step-querybuilder/StepByStep4.png")} className="img-fluid" alt="Step by Step" /> }
 
           { props.formularioActual===5 && <img src={toAbsoluteUrl("/media/step-by-step-querybuilder/StepByStep5.png")} className="img-fluid" alt="Step by Step" /> }
+
+          { props.formularioActual===6 && <img src={toAbsoluteUrl("/media/step-by-step-querybuilder/StepByStep6.png")} className="img-fluid" alt="Step by Step" /> }
         </Col>
       </Row>
     </Fragment>
