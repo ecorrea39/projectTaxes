@@ -47,6 +47,11 @@ input {
     padding: 10px;
 }
 
+.transfer {
+    display: flex;
+    flex-direction: row;
+}
+
 .transfer-labels {
     color: #5A5EFF;
     font-size: 16px;
@@ -58,4 +63,44 @@ input {
     flex-direction: row;
     justify-content: center;
     width: 100%;
+}
+
+.transfer-no-data {
+    color: red;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 12px;
+}
+
+.order-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}
+
+.order-button {
+    margin: 12px 0px 12px 0px;
+    max-width: 200px;
+}
+
+.results-container {
+    background-color: #fafafa;
+    border: 1px solid #bdcdd4;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #535353;
+    margin-bottom: 16px;
+    padding: 10px;
+}
+
+@media screen and (max-width: 1189px) {
+    .transfer {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .transfer>:not(:first-child) {
+        margin-top: 10px;
+    }
 }

@@ -25,6 +25,7 @@ const QueryBuilder = (props) => {
     joins: [],
     mapa_campos: [],
     orden: [],
+    direccion: 'ASC',
     agrupar: []
   });
 
@@ -88,6 +89,7 @@ const QueryBuilder = (props) => {
       return {
         ...prevState,
         orden: objeto.orden.slice(),
+        direccion: objeto.direccion,
         agrupar: objeto.agrupar.slice()
       };
     });

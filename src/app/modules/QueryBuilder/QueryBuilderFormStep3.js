@@ -60,7 +60,7 @@ const QueryBuilderFormStep3 = (props) => {
   };
   const styleBtn = { borderRadius: '100%'};
   const sortIcon = <ArrowDownward />;
-  const translate = {inner: "Inner Join", left: "Left Join", right: "Right Join", outter: "Full Outter Join"}
+  const translate = {inner: "Inner Join", left: "Left Join", right: "Right Join", outer: "Full Outer Join"}
   const colTab = [
     {
         name: "Izquierda",
@@ -296,8 +296,8 @@ const QueryBuilderFormStep3 = (props) => {
                           <FormControlLabel value="right" control={<Radio />} 
                                 label="Right Join" style={optionLabelColor}
                           />
-                          <FormControlLabel value="outter" control={<Radio />} 
-                                label="Full Outter Join" style={optionLabelColor}
+                          <FormControlLabel value="outer" control={<Radio />} 
+                                label="Full Outer Join" style={optionLabelColor}
                           />
                         </Col>
                       </Row>

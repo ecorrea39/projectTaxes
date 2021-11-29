@@ -3,10 +3,12 @@ import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import { Transfer } from 'antd';
 import "./QueryBuilder.css";
 
-const aggregateFunctions = ['count', 'sum', 'avg'];
+const aggregateFunctions = ['count', 'sum', 'avg', 'max', 'min'];
 
-const QueryBuilderFormStep4 = (props) => {
-  // const [initialValues, setInitialValues] = useState({});
+const QueryBuilderFormStep5 = (props) => {
+  const [groupEnabled, setGroupEnabled] = useState(false);
+  const [orderDirection, setOrderDirection] = useState('ASC');
+  const [btnVariant, setBtnVariant] = useState('success');
   const [forOrder, setforOrder] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState([]);
   const [orden, setOrden] = useState([]);
@@ -22,20 +24,27 @@ const QueryBuilderFormStep4 = (props) => {
     if (props.QueryFinal.agrupar.length > 0) {
       setAgrupar(props.QueryFinal.agrupar);
       myMap.forEach(field => {
-        if (field.function && aggregateFunctions.includes(field.function.name) && 
-        !props.QueryFinal.agrupar.includes(field.name)) 
+        if (!props.QueryFinal.agrupar.includes(field.name)) {
           availableForGroup.push({
             key: field.rowId,
             name: field.name
           });
+        }
+
+        if (field.function && aggregateFunctions.includes(field.function.name.toLowerCase())) {
+          setGroupEnabled(true);
+        }
       });
     } else {
       myMap.forEach(field => {
-        if (field.function && aggregateFunctions.includes(field.function.name)) 
-          availableForGroup.push({
-            key: field.rowId,
-            name: field.name
-          });
+        availableForGroup.push({
+          key: field.rowId,
+          name: field.name
+        });
+
+        if (field.function && aggregateFunctions.includes(field.function.name.toLowerCase())) {
+          setGroupEnabled(true);
+        }
       });
     }
 
@@ -47,6 +56,15 @@ const QueryBuilderFormStep4 = (props) => {
           name: field.name
         }
       });
+
+      if (props.QueryFinal.direccion === 'ASC') {
+        setOrderDirection('ASC');
+        setBtnVariant('success');
+      }
+      else {
+        setOrderDirection('DESC');
+        setBtnVariant('primary');
+      }
     } else {
       availableForOrder = myMap.map(field => {return {
         key: field.rowId,
@@ -74,6 +92,17 @@ const QueryBuilderFormStep4 = (props) => {
     setSelectedOrder([...sourceSelectedKeys, ...targetSelectedKeys]);
   }
 
+  const changeDirection = () => {
+    if (orderDirection === 'ASC') {
+      setOrderDirection('DESC');
+      setBtnVariant('primary');
+    }
+    else {
+      setOrderDirection('ASC');
+      setBtnVariant('success');
+    }
+  }
+
   const irAnterior = () => {
     props.cambiarFormularioActual(4, false);
   }
@@ -81,10 +110,11 @@ const QueryBuilderFormStep4 = (props) => {
   const submitSiguiente = () => {
     props.CambiarQuery({
       orden: orden,
+      direccion: orderDirection,
       agrupar: agrupar
     });
 
-    // props.cambiarFormularioActual(6, true);
+    props.cambiarFormularioActual(6, true);
   }
 
   return (
@@ -98,8 +128,9 @@ const QueryBuilderFormStep4 = (props) => {
             <Row>
               <Col md={12} className="transfer-container">
                 <div className="transfer-labels">Agrupar por:</div>
-                <div className="transfer-list">
+                {groupEnabled && <div className="transfer-list">
                   <Transfer
+                    className="transfer"
                     dataSource={forGrouping}
                     titles={['Disponibles', 'Seleccionados']}
                     listStyle={{width: 300, backgroundColor: 'white'}}
@@ -112,7 +143,8 @@ const QueryBuilderFormStep4 = (props) => {
                     onSelectChange={onSelectChangeGroup}
                     render={item => item.name}
                   />
-                </div>
+                </div>}
+                {!groupEnabled && <div className="transfer-no-data">Se requiere al menos una función de agregación para agrupar</div>}
               </Col>
             </Row>
 
@@ -121,6 +153,7 @@ const QueryBuilderFormStep4 = (props) => {
                 <div className="transfer-labels">Ordenar por:</div>
                 <div className="transfer-list">
                   <Transfer
+                    className="transfer"
                     dataSource={forOrder}
                     titles={['Disponibles', 'Seleccionados']}
                     listStyle={{width: 300, backgroundColor: 'white'}}
@@ -133,6 +166,18 @@ const QueryBuilderFormStep4 = (props) => {
                     onSelectChange={onSelectChangeOrder}
                     render={item => item.name}
                   />
+                </div>
+                <div className="order-container">
+                  <Button className="order-button"
+                    variant={btnVariant}
+                    size="lg" block
+                    type="button"
+                    disabled={orden.length === 0}
+                    onClick={changeDirection}
+                  >
+                    {orderDirection === 'ASC' && "Orden Ascendente"}
+                    {orderDirection === 'DESC' && "Orden Descendente"}
+                  </Button>
                 </div>
               </Col>
             </Row>
@@ -164,4 +209,4 @@ const QueryBuilderFormStep4 = (props) => {
   );
 }
 
-export default QueryBuilderFormStep4;
+export default QueryBuilderFormStep5;
