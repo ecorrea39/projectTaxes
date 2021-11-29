@@ -13,6 +13,9 @@ const textLabelColor = {
 };
 
 const QueryBuilderFormStep4 = (props) => {
+  const [, updateState] = React.useState();
+  const forceUpdate = React.useCallback(() => updateState({}), []);
+
   const [initialValues, setInitialValues] = useState({
     tabla: "",
     clave: "",
@@ -107,14 +110,8 @@ const QueryBuilderFormStep4 = (props) => {
       };
 
       myMap.forEach(field => {
-        if (field.alias) {
-          let fieldObj = {... initObject[field.table]};
-          fieldObj[field.field] = field.alias;
-          initObject[field.table] = fieldObj;
-        }
+        if (field.alias) initObject[`${field.table}_${field.field}`] = field.alias;
       });
-
-      setInitialValues(initObject);
       //
 
       camposCalificados = myMap.map(field => {
@@ -125,16 +122,18 @@ const QueryBuilderFormStep4 = (props) => {
           name: field.name,
           type: field.type,
           alias: 
-            <input id={`${field.name}`}
+            <input id={`${field.name.replace('.', '_')}`}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               onKeyPress={limitEntry}
-              value={formik.values[field.name]} 
+              value={formik.values[`${field.name.replace('.', '_')}`]}
             />,
           ...(field.list_table && { list_table: field.list_table }),
           ...(field.function && { function: field.function })
         }
       });
+
+      setInitialValues(initObject);
     } else {
       const campos = props.QueryFinal.campos.slice();
       const esquema = props.QueryFinal.esquema.slice();
@@ -145,6 +144,7 @@ const QueryBuilderFormStep4 = (props) => {
         if (campo.includes("-")) {
           for (let i = parseInt(index[0]); i <= parseInt(index[1]); i++) {
             const qName = `${esquema[i].table_name}.${esquema[i].column_name}`;
+            const fName = `${esquema[i].table_name}_${esquema[i].column_name}`;
             camposCalificados.push({
               rowId: Index,
               table: esquema[i].table_name,
@@ -152,11 +152,11 @@ const QueryBuilderFormStep4 = (props) => {
               name: qName,
               type: esquema[i].data_type,
               alias: 
-                <input id={`${qName}`}
+                <input id={`${fName}`}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   onKeyPress={limitEntry}
-                  value={formik.values[qName]} 
+                  value={formik.values[fName]} 
                 />
             });
 
@@ -164,6 +164,7 @@ const QueryBuilderFormStep4 = (props) => {
           }
         } else {
           const qName = `${esquema[index[0]].table_name}.${esquema[index[0]].column_name}`;
+          const fName = `${esquema[index[0]].table_name}_${esquema[index[0]].column_name}`;
           camposCalificados.push({
             rowId: Index,
             table: esquema[index[0]].table_name,
@@ -171,11 +172,11 @@ const QueryBuilderFormStep4 = (props) => {
             name: qName,
             type: esquema[index[0]].data_type,
             alias: 
-              <input id={`${qName}`}
+              <input id={`${fName}`}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 onKeyPress={limitEntry}
-                value={formik.values[qName]} 
+                value={formik.values[fName]} 
               />
           });
 
@@ -278,8 +279,8 @@ const QueryBuilderFormStep4 = (props) => {
     const values = formik.values;
 
     let fullmap = allFields.map(field => {
-      const alias = values[field.table] ? 
-        values[field.table][field.field] ? values[field.table][field.field] : "" : "";
+      const alias = values[`${field.table}_${field.field}`] ? 
+        values[`${field.table}_${field.field}`] : "";
 
       return {
         rowId: field.rowId,

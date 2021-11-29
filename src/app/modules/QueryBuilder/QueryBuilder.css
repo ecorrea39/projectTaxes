@@ -4,6 +4,24 @@
     padding-left: 18px;
 }
 
+.steps .ant-steps-item-icon .ant-steps-icon {
+    top: -2px;
+    line-height: 0.8;
+}
+
+.steps .ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
+    top: -3.5px;
+}
+
+.steps .ant-steps-item-content .ant-steps-item-title {
+    font-size: 12px;
+    line-height: 1.2;
+}
+
+.steps-guard {
+    margin-top: 12px;
+}
+
 .equal {
     display: flex;
     flex-direction: column;
