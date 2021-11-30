@@ -57,6 +57,11 @@ input {
     color: blue;
 }
 
+.icon-alias {
+    font-weight: bold;
+    color: gray;
+}
+
 .transfer-container {
     background-color: #fafafa;
     border: 1px solid #bdcdd4;

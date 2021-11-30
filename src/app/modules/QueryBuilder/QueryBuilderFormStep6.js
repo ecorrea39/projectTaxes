@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import "./QueryBuilder.css";
-import axios from "axios";
+import { clientAxios, requestConfig } from '../../config/configAxios';
 
 const join_transform = {
   inner: 'INNER JOIN',
@@ -15,7 +15,6 @@ const QueryBuilderFormStep6 = (props) => {
 
   useEffect(() => {
     const mapa_campos = props.QueryFinal.mapa_campos;
-    const tablas = props.QueryFinal.tablas;
     const joins = props.QueryFinal.joins;
     const agrupar = props.QueryFinal.agrupar;
     const orden = props.QueryFinal.orden;
@@ -49,7 +48,7 @@ const QueryBuilderFormStep6 = (props) => {
         sql += ` ${join_transform[join.type]} ${join.right.split('.')[0]} ON ${join.left}=${join.right}`;
       });
     } else {
-      sql += `${tablas[0]}`;
+      sql += `${mapa_campos[0].table}`;
     }
 
     for (let i = 0; i < agrupar.length; i++) {
@@ -75,21 +74,28 @@ const QueryBuilderFormStep6 = (props) => {
     props.cambiarFormularioActual(5, false);
   }
 
-  const submitSiguiente = () => {
-    // axios.get(`${API_URL}system_schema_data/`, axiosConfig)
-    //   .then(function (res) {
-    //     if (res.data.data != null) {
-    //       let fieldsValuesArray = res.data.data.slice();
-    //       setTablesFields(fieldsValuesArray);
-    //     } else {
-    //       alert("Error obteniendo la lista de campos");
-    //     }
+  const submitSiguiente = async () => {
+    const valores = {
+      nombre: props.QueryFinal.nombre,
+      titulo: props.QueryFinal.titulo,
+      descripcion: props.QueryFinal.descripcion,
+      mapa_campos: props.QueryFinal.mapa_campos,
+      joins: props.QueryFinal.joins,
+      agrupar: props.QueryFinal.agrupar,
+      orden: props.QueryFinal.orden,
+      direccion: props.QueryFinal.direccion
+    };
 
-    //     disableLoading();
-    //   }).catch((err) => {
-    //   alert("Error obteniendo la lista de campos")
-    //   disableLoading();
-    // });
+    requestConfig.data.type = 'query';
+    requestConfig.data.attributes = valores;
+    // requestConfig.data.id = (props.accion !== 'Agregar') ? valores.id : '';
+    requestConfig.data.id = '';
+
+    // if(props.accion === 'Agregar') {
+        const respuesta = await clientAxios.post('/dynamic_query/query/', requestConfig);
+    // } else {
+    //     const respuesta = await clientAxios.put('/dynamic_query/query/', requestConfig);
+    // }
   }
 
   return (

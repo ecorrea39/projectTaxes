@@ -13,22 +13,21 @@ const textLabelColor = {
 };
 
 const QueryBuilderFormStep4 = (props) => {
-  const [, updateState] = React.useState();
-  const forceUpdate = React.useCallback(() => updateState({}), []);
-
   const [initialValues, setInitialValues] = useState({
     tabla: "",
     clave: "",
     valor: "",
     funcion: "",
-    args: ""
+    args: "",
+    alias: ""
   });
+
   const [dataMap, setDataMap] = useState([]);
   const [allFields, setAllFields] = useState([]);
+  const [isAliasVisible, setIsAliasVisible] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isFunctionVisible, setIsFunctionVisible] = useState(false);
-  const [dataType, setDataType] = useState("");
-  const [selectedId, setSelectedId] = useState(-1);
+  const [selectedRow, setSelectedRow] = useState({});
   const [allTables, setAllTables] = useState([]);
   const [validFields, setValidFields] = useState([]);
   const [availableFields, setAvailableFields] = useState([]);
@@ -63,7 +62,9 @@ const QueryBuilderFormStep4 = (props) => {
     },
     {
         name: "Alias",
-        selector: row => row.alias
+        selector: row => row.alias,
+        sortable: true,
+        maxWidth: "740px"
     },
     {
       name: "Tipo",
@@ -76,6 +77,13 @@ const QueryBuilderFormStep4 = (props) => {
         button: true,
         cell: row => (
             <>
+            <a title="Definir alias" style={styleBtn} onClick={() => addAlias(row)}
+                className="btn btn-icon btn-hover-light btn-sm">
+                <span className='icon-alias'>
+                    A
+                </span>
+            </a>
+
             <a title="Enlazar con lista" style={styleBtn}  onClick={() => addLista(row)}
                 className="btn btn-icon btn-hover-light btn-sm mx-3">
                 {row.list_table && <FilterTwoTone />}
@@ -100,20 +108,6 @@ const QueryBuilderFormStep4 = (props) => {
     const myMap = props.QueryFinal.mapa_campos.slice();
 
     if (myMap.length > 0) {
-      //Formik simplemente ignora los valores iniciales
-      let initObject = {
-        tabla: "",
-        clave: "",
-        valor: "",
-        funcion: "",
-        args: ""
-      };
-
-      myMap.forEach(field => {
-        if (field.alias) initObject[`${field.table}_${field.field}`] = field.alias;
-      });
-      //
-
       camposCalificados = myMap.map(field => {
         return {
           rowId: field.rowId,
@@ -121,19 +115,11 @@ const QueryBuilderFormStep4 = (props) => {
           field: field.field,
           name: field.name,
           type: field.type,
-          alias: 
-            <input id={`${field.name.replace('.', '_')}`}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              onKeyPress={limitEntry}
-              value={formik.values[`${field.name.replace('.', '_')}`]}
-            />,
+          alias: field.alias,
           ...(field.list_table && { list_table: field.list_table }),
           ...(field.function && { function: field.function })
         }
       });
-
-      setInitialValues(initObject);
     } else {
       const campos = props.QueryFinal.campos.slice();
       const esquema = props.QueryFinal.esquema.slice();
@@ -144,40 +130,26 @@ const QueryBuilderFormStep4 = (props) => {
         if (campo.includes("-")) {
           for (let i = parseInt(index[0]); i <= parseInt(index[1]); i++) {
             const qName = `${esquema[i].table_name}.${esquema[i].column_name}`;
-            const fName = `${esquema[i].table_name}_${esquema[i].column_name}`;
             camposCalificados.push({
               rowId: Index,
               table: esquema[i].table_name,
               field: esquema[i].column_name,
               name: qName,
               type: esquema[i].data_type,
-              alias: 
-                <input id={`${fName}`}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  onKeyPress={limitEntry}
-                  value={formik.values[fName]} 
-                />
+              alias: ''
             });
 
             Index++;
           }
         } else {
           const qName = `${esquema[index[0]].table_name}.${esquema[index[0]].column_name}`;
-          const fName = `${esquema[index[0]].table_name}_${esquema[index[0]].column_name}`;
           camposCalificados.push({
             rowId: Index,
             table: esquema[index[0]].table_name,
             field: esquema[index[0]].column_name,
             name: qName,
             type: esquema[index[0]].data_type,
-            alias: 
-              <input id={`${fName}`}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                onKeyPress={limitEntry}
-                value={formik.values[fName]} 
-              />
+            alias: ''
           });
 
           Index++;
@@ -188,17 +160,42 @@ const QueryBuilderFormStep4 = (props) => {
     setAllFields(camposCalificados);
   }, []);
 
+  useEffect(() => {
+    if (selectedRow && selectedRow.list_table) populateTables(selectedRow.list_table.table);
+  }, [selectedRow]);
+
   const limitEntry = (event) => {
     if (event.key.search(regexp) === -1) event.preventDefault();
   }
 
+  const addAlias = (row) => {
+    setSelectedRow(row);
+
+    if (row.alias != "") {
+      formik.setFieldValue("alias", row.alias);
+    } else {
+      formik.setFieldValue("alias", "");
+    }
+
+    setIsAliasVisible(true);
+  }
+
+  const addAliasOk = () => {
+    let tmp = allFields.slice();
+    tmp[selectedRow.rowId].alias = formik.values.alias;
+
+    setAllFields(tmp);
+    setIsAliasVisible(false);
+  }
+
+  const addAliasCancel = () => {
+    setIsAliasVisible(false);
+  }
+
   const addLista = (row) => {
-    setDataType(row.type);
-    setSelectedId(row.rowId);
+    setSelectedRow(row);
 
     if (row.list_table) {
-      populateTables(row.list_table.table);
-
       formik.setFieldValue("tabla", row.list_table.table);
       formik.setFieldValue("clave", row.list_table.key);
       formik.setFieldValue("valor", row.list_table.value);
@@ -213,7 +210,7 @@ const QueryBuilderFormStep4 = (props) => {
 
   const populateTables = (tablename) => {
     const temp1 = props.QueryFinal.esquema.filter(column => column.table_name === tablename);
-    const temp2 = temp1.filter(campo => campo.data_type === dataType);
+    const temp2 = temp1.filter(campo => campo.data_type === selectedRow.type);
     const temp3 = temp1.map(item => { return item.column_name });
     const temp4 = temp2.map(item => { return item.column_name });
 
@@ -222,13 +219,15 @@ const QueryBuilderFormStep4 = (props) => {
   }
 
   const selectTable = (event) => {
+    formik.setFieldValue("clave", "");
+    formik.setFieldValue("valor", "");
     populateTables(event.target.value);
     formik.handleChange(event);
   }
 
   const addListaOk = () => {
     let tmp = allFields.slice();
-    tmp[selectedId].list_table = {
+    tmp[selectedRow.rowId].list_table = {
       table: formik.values.tabla,
       key: formik.values.clave,
       value: formik.values.valor
@@ -243,7 +242,7 @@ const QueryBuilderFormStep4 = (props) => {
   };
 
   const addFunction = (row) => {
-    setSelectedId(row.rowId);
+    setSelectedRow(row);
 
     if (row.function) {
       formik.setFieldValue("funcion", row.function.name);
@@ -258,7 +257,7 @@ const QueryBuilderFormStep4 = (props) => {
 
   const addFunctionOk = () => {
     let tmp = allFields.slice();
-    tmp[selectedId].function = {
+    tmp[selectedRow.rowId].function = {
       name: formik.values.funcion,
       args: formik.values.args
     }
@@ -276,19 +275,14 @@ const QueryBuilderFormStep4 = (props) => {
   }
 
   const submitSiguiente = () => {
-    const values = formik.values;
-
     let fullmap = allFields.map(field => {
-      const alias = values[`${field.table}_${field.field}`] ? 
-        values[`${field.table}_${field.field}`] : "";
-
       return {
         rowId: field.rowId,
         table: field.table,
         field: field.field,
         name: field.name,
         type: field.type,
-        alias: alias,
+        alias: field.alias,
         ...(field.list_table && { list_table: field.list_table }),
         ...(field.function && { function: field.function })
       }
@@ -332,110 +326,134 @@ const QueryBuilderFormStep4 = (props) => {
             className="form fv-plugins-bootstrap fv-plugins-framework"
           >
             <Container>
-            <Modal title="Enlazar con lista"
-              visible={isModalVisible} 
-              onOk={addListaOk}
-              onCancel={addListaCancel}
-              okText="Aceptar"
-              cancelText="Cancelar"
-              width={800}
-              okButtonProps={{disabled: formik.values.valor === ""}}
-            >
-              <Row>
-                <Col md={4}>
-                  <Form.Group controlId="tabla">
-                    <Form.Label style={textLabelColor}>Tabla</Form.Label>
-                    <Form.Control as="select"
-                                  onChange={selectTable}
-                                  onBlur={formik.handleBlur}
-                                  value={formik.values.tabla}
-                    >
-                      <option disabled key="0" value="">Seleccione la tabla</option>
+              <Modal title="Definir alias"
+                visible={isAliasVisible} 
+                onOk={addAliasOk}
+                onCancel={addAliasCancel}
+                okText="Aceptar"
+                cancelText="Cancelar"
+                width={600}
+              >
+                <Row>
+                  <Col md={12}>
+                    <Form.Group controlId="alias">
+                      <Form.Label style={textLabelColor}>Alias</Form.Label>
+                      <Form.Control type="text"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    onKeyPress={limitEntry}
+                                    value={formik.values.alias}
+                      >
+                      </Form.Control>
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </Modal>
 
-                      {allTables.map((elemento) =>
-                        <option key={elemento} value={elemento}>{elemento}</option>
-                      )}
+              <Modal title="Enlazar con lista"
+                visible={isModalVisible} 
+                onOk={addListaOk}
+                onCancel={addListaCancel}
+                okText="Aceptar"
+                cancelText="Cancelar"
+                width={800}
+                okButtonProps={{disabled: formik.values.valor === ""}}
+              >
+                <Row>
+                  <Col md={4}>
+                    <Form.Group controlId="tabla">
+                      <Form.Label style={textLabelColor}>Tabla</Form.Label>
+                      <Form.Control as="select"
+                                    onChange={selectTable}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.tabla}
+                      >
+                        <option disabled key="0" value="">Seleccione la tabla</option>
 
-                    </Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col md={4}>
-                  <Form.Group controlId="clave">
-                    <Form.Label style={textLabelColor}>Clave</Form.Label>
-                    <Form.Control as="select"
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                  value={formik.values.clave}
-                                  disabled={formik.values.tabla === ""}
-                    >
-                      <option disabled key="0" value="">Seleccione la clave</option>
+                        {allTables.map((elemento) =>
+                          <option key={elemento} value={elemento}>{elemento}</option>
+                        )}
 
-                      {validFields.map((elemento) =>
-                        <option key={elemento} value={elemento}>{elemento}</option>
-                      )}
+                      </Form.Control>
+                    </Form.Group>
+                  </Col>
+                  <Col md={4}>
+                    <Form.Group controlId="clave">
+                      <Form.Label style={textLabelColor}>Clave</Form.Label>
+                      <Form.Control as="select"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.clave}
+                                    disabled={formik.values.tabla === ""}
+                      >
+                        <option disabled key="0" value="">Seleccione la clave</option>
 
-                    </Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col md={4}>
-                  <Form.Group controlId="valor">
-                    <Form.Label style={textLabelColor}>Valor</Form.Label>
-                    <Form.Control as="select"
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                  value={formik.values.valor}
-                                  disabled={formik.values.clave === ""}
-                    >
-                      <option disabled key="0" value="">Seleccione el valor</option>
+                        {validFields.map((elemento) =>
+                          <option key={elemento} value={elemento}>{elemento}</option>
+                        )}
 
-                      {availableFields.map((elemento) =>
-                        <option key={elemento} value={elemento}>{elemento}</option>
-                      )}
+                      </Form.Control>
+                    </Form.Group>
+                  </Col>
+                  <Col md={4}>
+                    <Form.Group controlId="valor">
+                      <Form.Label style={textLabelColor}>Valor</Form.Label>
+                      <Form.Control as="select"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.valor}
+                                    disabled={formik.values.clave === ""}
+                      >
+                        <option disabled key="0" value="">Seleccione el valor</option>
 
-                    </Form.Control>
-                  </Form.Group>
-                </Col>
-              </Row>
-            </Modal>
+                        {availableFields.map((elemento) =>
+                          <option key={elemento} value={elemento}>{elemento}</option>
+                        )}
 
-            <Modal title="Agregar función"
-              visible={isFunctionVisible} 
-              onOk={addFunctionOk}
-              onCancel={addFunctionCancel}
-              okText="Aceptar"
-              cancelText="Cancelar"
-              width={600}
-              okButtonProps={{disabled: formik.values.funcion === ""}}
-            >
-              <Row>
-                <Col md={12}>
-                  <Form.Group controlId="funcion">
-                    <Form.Label style={textLabelColor}>Función</Form.Label>
-                    <Form.Control type="text"
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                  value={formik.values.funcion}
-                    >
-                    </Form.Control>
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Row>
-                <Col md={12}>
-                  <Form.Group controlId="args">
-                    <Form.Label style={textLabelColor}>Argumentos</Form.Label>
-                    <Form.Control as="textarea" rows="3" placeholder="Separe los argumentos con coma ,"
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                  value={formik.values.args}
-                                  disabled={formik.values.envoltura === "space" ||
-                                  formik.values.funcion === ""}
-                    >
-                    </Form.Control>
-                  </Form.Group>
-                </Col>
-              </Row>
-            </Modal>
+                      </Form.Control>
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </Modal>
+
+              <Modal title="Agregar función"
+                visible={isFunctionVisible} 
+                onOk={addFunctionOk}
+                onCancel={addFunctionCancel}
+                okText="Aceptar"
+                cancelText="Cancelar"
+                width={600}
+                okButtonProps={{disabled: formik.values.funcion === ""}}
+              >
+                <Row>
+                  <Col md={12}>
+                    <Form.Group controlId="funcion">
+                      <Form.Label style={textLabelColor}>Función</Form.Label>
+                      <Form.Control type="text"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.funcion}
+                      >
+                      </Form.Control>
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={12}>
+                    <Form.Group controlId="args">
+                      <Form.Label style={textLabelColor}>Argumentos</Form.Label>
+                      <Form.Control as="textarea" rows="3" placeholder="Separe los argumentos con coma ,"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.args}
+                                    disabled={formik.values.envoltura === "space" ||
+                                    formik.values.funcion === ""}
+                      >
+                      </Form.Control>
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </Modal>
 
               <Row>
                 <Col md={12} className="table-frame">
