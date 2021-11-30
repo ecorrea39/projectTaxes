@@ -322,6 +322,12 @@ export const navFuncional = [
         url: "/tablas/tipo-contribuyente",
         icon: "",
         slug: "tablas-tipo-contribuyente"
+      },
+      {
+        title: "Cuentas Contables",
+        url: "/tablas/cuentas-contables",
+        icon: "",
+        slug: "tablas-cuentas-contables"
       }
     ]
   },

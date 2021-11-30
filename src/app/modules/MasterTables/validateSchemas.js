@@ -120,5 +120,21 @@ export const SchemaTablesCol13 = Yup.object().shape({
         .required('- Campo obligatorio -')
 });
 
+export const SchemaTablesCol14 = Yup.object().shape({
+    concepto: Yup.string()
+        .required('- Campo obligatorio -'),
+    codigo_cuenta: Yup.string()
+        .required('- Campo obligatorio -'),
+    naturaleza_cuenta: Yup.string()
+        .required('- Campo obligatorio -'),
+    grupo: Yup.string()
+        .required('- Campo obligatorio -'),
+    sub_grupo: Yup.string()
+        .required('- Campo obligatorio -'),
+    auxiliar: Yup.string()
+        .required('- Campo obligatorio -')
+});
+
+
 
 

@@ -90,6 +90,10 @@ function MasterTablesModule() {
             title = "Tipo de Contribuyentes";
             break;
 
+        case "cuentas-contables":
+            title = "Cuentas Contables";
+            break;
+
         default:
             break;
     }

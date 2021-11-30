@@ -80,4 +80,14 @@ export const initialValuesTablesCol13 = {
     descripcion: ""
 }
 
+export const initialValuesTablesCol14 = {
+    concepto: "",
+    codigo_cuenta: "",
+    naturaleza_cuenta: "",
+    grupo: "",
+    sub_grupo: "",
+    auxiliar: ""
+}
+
+
 

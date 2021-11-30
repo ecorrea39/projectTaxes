@@ -21,7 +21,8 @@ import { initialValuesTablesCol1,
          initialValuesTablesCol10,
          initialValuesTablesCol11,
          initialValuesTablesCol12,
-         initialValuesTablesCol13 } from "./initialValues";
+         initialValuesTablesCol13,
+         initialValuesTablesCol14 } from "./initialValues";
 
 import { SchemaTablesCol1,
          SchemaTablesCol2,
@@ -35,7 +36,8 @@ import { SchemaTablesCol1,
          SchemaTablesCol10,
          SchemaTablesCol11,
          SchemaTablesCol12,
-         SchemaTablesCol13 } from "./validateSchemas";
+         SchemaTablesCol13,
+         SchemaTablesCol14 } from "./validateSchemas";
 
 import { BaseFormik } from "./baseFormik";
 import { BaseFormikBancosRecaudadores } from "./baseFormikBancosRecaudadores";
@@ -50,6 +52,7 @@ import { BaseFormikDiasFestivos } from "./baseFormikDiasFestivos";
 import { BaseFormikTasaIntereses } from './baseFormikTasaIntereses';
 import { BaseFormikTipoDocumento } from './baseFormikTipoDocumento';
 import { BaseFormikTipoContribuyente } from './baseFormikTipoContribuyente';
+import { BaseFormikCuentasContables } from './baseFormikCuentasContables';
 
 function ModalMasterTables(props) {
 
@@ -157,6 +160,11 @@ function ModalMasterTables(props) {
         case "tipo-contribuyente":
             initialValuesTables = initialValuesTablesCol13;
             schemaTables = SchemaTablesCol13;
+            break;
+
+        case "cuentas-contables":
+            initialValuesTables = initialValuesTablesCol14;
+            schemaTables = SchemaTablesCol14;
             break;
 
         default:
@@ -279,6 +287,13 @@ function ModalMasterTables(props) {
                                         {
                                             props.columnas === 'col-13' &&
                                             <BaseFormikTipoContribuyente
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-14' &&
+                                            <BaseFormikCuentasContables
                                                 formik={formik}
                                                 props={props}
                                             />

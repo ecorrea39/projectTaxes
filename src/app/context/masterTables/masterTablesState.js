@@ -28,6 +28,7 @@ export const MasterTablesState = ({ children }) => {
     const [edificaciones, setEdificaciones] = useState([]);
     const [tipoDocumento, setTipoDocumento] = useState([]);
     const [tipoContribuyente, setTipoContribuyente] = useState([]);
+    const [cuentasContables, setCuentasContables] = useState([]);
     const [formDataTables, setFormDataTables] = useState({});
     const [registroSeleccionado, setRegistroSeleccionado] = useState({});
 
@@ -56,6 +57,7 @@ export const MasterTablesState = ({ children }) => {
         getEdificaciones();
         getTipoDocumento();
         getTipoContribuyente();
+        getCuentasContables();
     },[]);
 
     const getBancos = async () => {
@@ -604,7 +606,7 @@ export const MasterTablesState = ({ children }) => {
 
     }
 
-    const getTipoContribuyente = async () => { //aqui
+    const getTipoContribuyente = async () => {
 
         try {
             const respuesta = await clientAxios.get('/tipo_contribuyente/', clientAxios);
@@ -623,6 +625,36 @@ export const MasterTablesState = ({ children }) => {
             });
             lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
             setTipoContribuyente(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getCuentasContables = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/cuentas_contables/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "concepto": arreglo[i].attributes.concepto,
+                        "codigo_cuenta": arreglo[i].attributes.codigo_cuenta,
+                        "naturaleza_cuenta": arreglo[i].attributes.naturaleza_cuenta,
+                        "grupo": arreglo[i].attributes.grupo,
+                        "sub_grupo": arreglo[i].attributes.sub_grupo,
+                        "auxiliar": arreglo[i].attributes.auxiliar
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setCuentasContables(lista);
 
         } catch (error) {
             console.log(error)
@@ -875,6 +907,10 @@ export const MasterTablesState = ({ children }) => {
                             urlTabla = `/tipo_contribuyente/${valores.id}`;
                             break;
 
+                        case "cuentas-contables":
+                            urlTabla = `/cuentas_contables/${valores.id}`;
+                            break;
+
                         default:
                             break;
                     }
@@ -1011,6 +1047,11 @@ export const MasterTablesState = ({ children }) => {
                     urlTabla = "/tipo_contribuyente/";
                     break;
 
+                case "cuentas-contables":
+                    dataType = "saveCuentasContables";
+                    urlTabla = "/cuentas_contables/";
+                    break;
+
                 default:
                     break;
             }
@@ -1130,14 +1171,16 @@ export const MasterTablesState = ({ children }) => {
                 getTipoContribuyente();
                 break;
 
+            case "cuentas-contables":
+                getCuentasContables();
+                break;
+
             default:
                 break;
         }
     }
 
     const filtrarElementos = async (tabla, palabra, columnas) => {
-
-        console.log('aqui')
 
         await getListaOriginal(tabla);
 
@@ -1263,6 +1306,19 @@ export const MasterTablesState = ({ children }) => {
             );
         }
 
+        /* cuentas contables */
+        if (columnas === 'col-14') {
+            search = dataAux.filter(item => //aqui
+                item.concepto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.codigo_cuenta.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.naturaleza_cuenta.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.grupo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.sub_grupo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.auxiliar.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+            );
+        }
+
         if(palabra === '') {
             actualizarTablas(tabla);
         } else {
@@ -1345,6 +1401,10 @@ export const MasterTablesState = ({ children }) => {
 
                 case "tipo-contribuyente":
                     setTipoContribuyente(search);
+                    break;
+
+                case "cuentas-contables":
+                    setCuentasContables(search);
                     break;
 
                 default:
@@ -1451,6 +1511,10 @@ export const MasterTablesState = ({ children }) => {
                 dataAux = tipoContribuyente;
                 break;
 
+            case "cuentas-contables":
+                dataAux = cuentasContables;
+                break;
+
             default:
                 break;
         }
@@ -1479,6 +1543,7 @@ export const MasterTablesState = ({ children }) => {
         edificaciones,
         tipoDocumento,
         tipoContribuyente,
+        cuentasContables,
         submitMasterTables,
         setFormDataTables,
         deleteMasterTables,
