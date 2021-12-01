@@ -113,4 +113,43 @@ export const SchemaTablesCol12 = Yup.object().shape({
         .required('- Campo obligatorio -')
 });
 
+export const SchemaTablesCol13 = Yup.object().shape({
+    name: Yup.string()
+        .required('- Campo obligatorio -'),
+    descripcion: Yup.string()
+        .required('- Campo obligatorio -')
+});
+
+export const SchemaTablesCol14 = Yup.object().shape({
+    concepto: Yup.string()
+        .required('- Campo obligatorio -'),
+    codigo_cuenta: Yup.string()
+        .required('- Campo obligatorio -'),
+    naturaleza_cuenta: Yup.string()
+        .required('- Campo obligatorio -'),
+    grupo: Yup.string()
+        .required('- Campo obligatorio -'),
+    sub_grupo: Yup.string()
+        .required('- Campo obligatorio -'),
+    auxiliar: Yup.string()
+        .required('- Campo obligatorio -')
+});
+
+export const SchemaTablesCol15 = Yup.object().shape({
+    documento: Yup.string()
+        .required('- Campo obligatorio -'),
+    nombre: Yup.string()
+        .required('- Campo obligatorio -'),
+    cargo: Yup.string()
+        .required('- Campo obligatorio -'),
+    ngaceta: Yup.string()
+        .required('- Campo obligatorio -'),
+    fecha_gaceta: Yup.string()
+        .required('- Campo obligatorio -'),
+    orden_administrativa: Yup.string()
+});
+
+
+
+
 

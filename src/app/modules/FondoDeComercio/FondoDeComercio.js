@@ -1,5 +1,6 @@
 import React, {Fragment, useState} from "react";
 import FondoDeComercioLista from "./FondoDeComercioLista";
+import FondoDeComercioCrear from "./FondoDeComercioCrear";
 
 const FondoDeComercio = () => {
 
@@ -12,6 +13,8 @@ const FondoDeComercio = () => {
   return (
     <Fragment>
       { vistaActual==="lista" && <FondoDeComercioLista cambiarVistaActual={cambiarVistaActualFunction} /> }
+
+      { vistaActual==="crear" && <FondoDeComercioCrear cambiarVistaActual={cambiarVistaActualFunction} /> }
     </Fragment>
   );
 }

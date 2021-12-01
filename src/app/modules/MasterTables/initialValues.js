@@ -75,3 +75,29 @@ export const initialValuesTablesCol12 = {
     name: ""
 }
 
+export const initialValuesTablesCol13 = {
+    name: "",
+    descripcion: ""
+}
+
+export const initialValuesTablesCol14 = {
+    concepto: "",
+    codigo_cuenta: "",
+    naturaleza_cuenta: "",
+    grupo: "",
+    sub_grupo: "",
+    auxiliar: ""
+}
+
+export const initialValuesTablesCol15 = {
+    documento: "",
+    nombre: "",
+    cargo: "",
+    ngaceta: "",
+    fecha_gaceta: "",
+    orden_administrativa: ""
+}
+
+
+
+

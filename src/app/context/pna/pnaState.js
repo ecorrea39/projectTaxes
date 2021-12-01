@@ -9,6 +9,8 @@ export const PnaState = ({ children }) => {
     const [registroSeleccionado, setRegistroSeleccionado] = useState({});
     const [formDataPna, setFormDataPna] = useState({});
 
+    let dataAux = [];
+
     useEffect(() => {
         getPna();
     },[]);
@@ -93,6 +95,7 @@ export const PnaState = ({ children }) => {
 
     const validarNroTrabajadores = async (formik, props) => {
 
+        /*
         let rif = formik.values.tipo + formik.values.rif;
 
         requestConfig.data.id = rif;
@@ -134,7 +137,7 @@ export const PnaState = ({ children }) => {
                 button: "Ok",
                 timer: 2000
             });
-        }
+        }*/
     }
 
     const submitPna = async (valores, props) => {
@@ -176,6 +179,29 @@ export const PnaState = ({ children }) => {
         }
     }
 
+    const filtrarElementos = async (palabra) => {
+
+        await getListaOriginal();
+
+        let search = ""
+
+        search = dataAux.filter(item =>
+            item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase()) || item.id.toString().includes(palabra)
+            || item.uid.toString().includes(palabra)
+            || item.numero_certificado.toString().includes(palabra)
+            || item.cumple.toString().includes(palabra)
+        );
+
+        if(palabra === '') {
+            getPna();
+        } else {
+            setPna(search);
+        }
+
+    }
+
+    const getListaOriginal = () => { dataAux = pna; }
+
     const valuesContext = {
         pna,
         submitPna,
@@ -184,7 +210,8 @@ export const PnaState = ({ children }) => {
         registroSeleccionado,
         obtenerValores,
         limpiarSeleccionado,
-        validarNroTrabajadores
+        validarNroTrabajadores,
+        filtrarElementos
     }
 
     return (

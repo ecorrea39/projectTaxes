@@ -27,8 +27,13 @@ export const MasterTablesState = ({ children }) => {
     const [locales, setLocales] = useState([]);
     const [edificaciones, setEdificaciones] = useState([]);
     const [tipoDocumento, setTipoDocumento] = useState([]);
+    const [tipoContribuyente, setTipoContribuyente] = useState([]);
+    const [cuentasContables, setCuentasContables] = useState([]);
+    const [firmasAutorizadas, setFirmasAutorizadas] = useState([]);
     const [formDataTables, setFormDataTables] = useState({});
     const [registroSeleccionado, setRegistroSeleccionado] = useState({});
+
+    const listReportes = ["Certificado de Solvencia","Resolución de incumplimiento de deberes formales"];
 
     let dataAux = [];
 
@@ -54,6 +59,9 @@ export const MasterTablesState = ({ children }) => {
         getLocales();
         getEdificaciones();
         getTipoDocumento();
+        getTipoContribuyente();
+        getCuentasContables();
+        getFirmasAutorizadas();
     },[]);
 
     const getBancos = async () => {
@@ -360,7 +368,8 @@ export const MasterTablesState = ({ children }) => {
                 lista.push(
                     {
                         "id": arreglo[i].id,
-                        "fecha": arreglo[i].attributes.fecha,
+                        "fecha": formatearfecha(new Date(arreglo[i].attributes.fecha), 'DMY'),
+                        "fecha_original": arreglo[i].attributes.fecha,
                         "valor": arreglo[i].attributes.valor
                     }
                 )
@@ -413,7 +422,8 @@ export const MasterTablesState = ({ children }) => {
                     {
                         "id": arreglo[i].id,
                         "ano": arreglo[i].attributes.ano,
-                        "fecha": arreglo[i].attributes.fecha
+                        "fecha": formatearfecha(new Date(arreglo[i].attributes.fecha), 'DMY'),
+                        "fecha_original": arreglo[i].attributes.fecha
                     }
                 )
             });
@@ -600,6 +610,93 @@ export const MasterTablesState = ({ children }) => {
 
     }
 
+    const getTipoContribuyente = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/tipo_contribuyente/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "name": arreglo[i].attributes.name,
+                        "descripcion": arreglo[i].attributes.descripcion
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setTipoContribuyente(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getCuentasContables = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/cuentas_contables/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "concepto": arreglo[i].attributes.concepto,
+                        "codigo_cuenta": arreglo[i].attributes.codigo_cuenta,
+                        "naturaleza_cuenta": arreglo[i].attributes.naturaleza_cuenta,
+                        "grupo": arreglo[i].attributes.grupo,
+                        "sub_grupo": arreglo[i].attributes.sub_grupo,
+                        "auxiliar": arreglo[i].attributes.auxiliar
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setCuentasContables(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getFirmasAutorizadas = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/firmas_autorizadas/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "documento": listReportes.filter(x => x === arreglo[i].attributes.documento),
+                        "reporte": "",
+                        "nombre": arreglo[i].attributes.nombre,
+                        "cargo": arreglo[i].attributes.cargo,
+                        "ngaceta": arreglo[i].attributes.ngaceta,
+                        "fecha_gaceta": arreglo[i].attributes.fecha_gaceta,
+                        "orden_administrativa": arreglo[i].attributes.orden_administrativa
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setFirmasAutorizadas(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
     const obtenerValores = (valores) => {
         setRegistroSeleccionado(valores);
     }
@@ -725,6 +822,14 @@ export const MasterTablesState = ({ children }) => {
                 });
                 break;
 
+            case "tipo_contribuyente":
+                tipoContribuyente.map((x) => {
+                    if(x.name.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
             default:
                 break;
         }
@@ -831,6 +936,18 @@ export const MasterTablesState = ({ children }) => {
 
                         case "tipo-documentos":
                             urlTabla = `/tipo_documento/${valores.id}`;
+                            break;
+
+                        case "tipo-contribuyente":
+                            urlTabla = `/tipo_contribuyente/${valores.id}`;
+                            break;
+
+                        case "cuentas-contables":
+                            urlTabla = `/cuentas_contables/${valores.id}`;
+                            break;
+
+                        case "firmas-autorizadas":
+                            urlTabla = `/firmas_autorizadas/${valores.id}`;
                             break;
 
                         default:
@@ -964,6 +1081,21 @@ export const MasterTablesState = ({ children }) => {
                     urlTabla = "/tipo_documento/";
                     break;
 
+                case "tipo-contribuyente":
+                    dataType = "saveTipoContribuyente";
+                    urlTabla = "/tipo_contribuyente/";
+                    break;
+
+                case "cuentas-contables":
+                    dataType = "saveCuentasContables";
+                    urlTabla = "/cuentas_contables/";
+                    break;
+
+                case "firmas-autorizadas":
+                    dataType = "saveFirmasAutorizadas";
+                    urlTabla = "/firmas_autorizadas/";
+                    break;
+
                 default:
                     break;
             }
@@ -971,8 +1103,6 @@ export const MasterTablesState = ({ children }) => {
             requestConfig.data.type = dataType;
             requestConfig.data.attributes = valores;
             requestConfig.data.id = (props.accion !== 'Agregar') ? valores.id : '';
-
-            console.log('requestConfig ', requestConfig)
 
             if(props.accion === 'Agregar') {
                 const respuesta = await clientAxios.post(urlTabla, requestConfig);
@@ -1079,6 +1209,18 @@ export const MasterTablesState = ({ children }) => {
 
             case "tipo-documentos":
                 getTipoDocumento();
+                break;
+
+            case "tipo-contribuyente":
+                getTipoContribuyente();
+                break;
+
+            case "cuentas-contables":
+                getCuentasContables();
+                break;
+
+            case "firmas-autorizadas":
+                getFirmasAutorizadas();
                 break;
 
             default:
@@ -1194,12 +1336,46 @@ export const MasterTablesState = ({ children }) => {
             );
         }
 
-        /* ttipo de documento */
+        /* tipo de documento */
         if (columnas === 'col-12') {
             search = dataAux.filter(item =>
                 item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
                 || item.id.toString().includes(palabra)
                 || item.codigo.toString().includes(palabra)
+            );
+        }
+
+        /* tipo de contribuyente */
+        if (columnas === 'col-13') {
+            search = dataAux.filter(item =>
+                item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.descripcion.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+            );
+        }
+
+        /* cuentas contables */
+        if (columnas === 'col-14') {
+            search = dataAux.filter(item => //aqui
+                item.concepto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.codigo_cuenta.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.naturaleza_cuenta.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.grupo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.sub_grupo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.auxiliar.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+            );
+        }
+
+        /* firmas autorizadas */
+        if (columnas === 'col-15') {
+            search = dataAux.filter(item => //aqui
+                item.nombre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.cargo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+                || item.ngaceta.toString().includes(palabra)
+                || item.fecha_gaceta.toString().includes(palabra)
+                || item.orden_administrativa.toString().includes(palabra)
             );
         }
 
@@ -1283,12 +1459,37 @@ export const MasterTablesState = ({ children }) => {
                     setTipoDocumento(search);
                     break;
 
+                case "tipo-contribuyente":
+                    setTipoContribuyente(search);
+                    break;
+
+                case "cuentas-contables":
+                    setCuentasContables(search);
+                    break;
+
+                case "firmas-autorizadas":
+                    setFirmasAutorizadas(search);
+                    break;
+
                 default:
                     break;
             }
 
         }
 
+    }
+
+    const formatearfecha = (f, formato) => {
+        const ano = f.getFullYear();
+        const mes = ("0" + (f.getMonth()+1)).substr(-2);
+        const dia = ("0" + f.getDate()).substr(-2);
+
+        let fecha;
+
+        if(formato === 'DMY') fecha = `${dia}-${mes}-${ano}`
+        else if(formato === 'YMD') fecha = `${ano}-${mes}-${dia}`;
+
+        return fecha;
     }
 
     const getListaOriginal = (tablaName) => {
@@ -1370,6 +1571,18 @@ export const MasterTablesState = ({ children }) => {
                 dataAux = tipoDocumento;
                 break;
 
+            case "tipo-contribuyente":
+                dataAux = tipoContribuyente;
+                break;
+
+            case "cuentas-contables":
+                dataAux = cuentasContables;
+                break;
+
+            case "firmas-autorizadas":
+                dataAux = firmasAutorizadas;
+                break;
+
             default:
                 break;
         }
@@ -1397,6 +1610,10 @@ export const MasterTablesState = ({ children }) => {
         locales,
         edificaciones,
         tipoDocumento,
+        tipoContribuyente,
+        cuentasContables,
+        firmasAutorizadas,
+        listReportes,
         submitMasterTables,
         setFormDataTables,
         deleteMasterTables,

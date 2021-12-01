@@ -132,8 +132,7 @@ function Login(props) {
         localStorage.setItem('groups', attr.groups);
 
         authCtx.login(attr.authorization.token);
-        window.location.href = '/';
-
+        
       }).catch((err) => {
         console.log("errorEnConsulta", err);
 

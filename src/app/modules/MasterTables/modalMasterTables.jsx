@@ -20,7 +20,10 @@ import { initialValuesTablesCol1,
          initialValuesTablesCol9,
          initialValuesTablesCol10,
          initialValuesTablesCol11,
-         initialValuesTablesCol12 } from "./initialValues";
+         initialValuesTablesCol12,
+         initialValuesTablesCol13,
+         initialValuesTablesCol14,
+         initialValuesTablesCol15 } from "./initialValues";
 
 import { SchemaTablesCol1,
          SchemaTablesCol2,
@@ -33,7 +36,10 @@ import { SchemaTablesCol1,
          SchemaTablesCol9,
          SchemaTablesCol10,
          SchemaTablesCol11,
-         SchemaTablesCol12 } from "./validateSchemas";
+         SchemaTablesCol12,
+         SchemaTablesCol13,
+         SchemaTablesCol14,
+         SchemaTablesCol15 } from "./validateSchemas";
 
 import { BaseFormik } from "./baseFormik";
 import { BaseFormikBancosRecaudadores } from "./baseFormikBancosRecaudadores";
@@ -47,6 +53,9 @@ import { BaseFormikMotivoSancion } from './baseFormikMotivoSancion';
 import { BaseFormikDiasFestivos } from "./baseFormikDiasFestivos";
 import { BaseFormikTasaIntereses } from './baseFormikTasaIntereses';
 import { BaseFormikTipoDocumento } from './baseFormikTipoDocumento';
+import { BaseFormikTipoContribuyente } from './baseFormikTipoContribuyente';
+import { BaseFormikCuentasContables } from './baseFormikCuentasContables';
+import { BaseFormikFirmasAutorizadas } from './baseFormikFirmasAutorizadas';
 
 function ModalMasterTables(props) {
 
@@ -149,6 +158,21 @@ function ModalMasterTables(props) {
         case "tipo-documentos":
             initialValuesTables = initialValuesTablesCol12;
             schemaTables = SchemaTablesCol12;
+            break;
+
+        case "tipo-contribuyente":
+            initialValuesTables = initialValuesTablesCol13;
+            schemaTables = SchemaTablesCol13;
+            break;
+
+        case "cuentas-contables":
+            initialValuesTables = initialValuesTablesCol14;
+            schemaTables = SchemaTablesCol14;
+            break;
+
+        case "firmas-autorizadas":
+            initialValuesTables = initialValuesTablesCol15;
+            schemaTables = SchemaTablesCol15;
             break;
 
         default:
@@ -268,6 +292,28 @@ function ModalMasterTables(props) {
                                                 props={props}
                                             />
                                         }
+                                        {
+                                            props.columnas === 'col-13' &&
+                                            <BaseFormikTipoContribuyente
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-14' &&
+                                            <BaseFormikCuentasContables
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-15' &&
+                                            <BaseFormikFirmasAutorizadas
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
+
                                         <Row className="mb-2" style={{justifyContent: "center"}}>
                                             <Col className="mb-2" xs="6" sm="6" md="6" lg="6" xl="6" xxl="6" >
                                                 <Button onClick={() => props.onHide()}

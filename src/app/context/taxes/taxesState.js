@@ -305,7 +305,7 @@ export const TaxesState = ({ children }) => {
     function formatNumber(number) {
         return new Intl.NumberFormat("ES-ES", {
             style: "currency",
-            currency: "VEF"
+            currency: "VED"
         }).format(number)
     }
 

@@ -12,6 +12,124 @@ export default function ReceiptPayment() {
     const [dataBanco, setDataBanco] = useState({nomBanco: "",numCuenta:""});
     const [listConceptos, setListConceptos] = useState([]);
 
+    const ust = [
+        {
+            cod: "01",
+            asignacion: "TRIBUTOS CAPITAL, MIRANDA Y VARGAS",
+            estado: "1"
+        },
+        {
+            cod: "01",
+            asignacion: "TRIBUTOS CAPITAL, MIRANDA Y VARGAS",
+            estado: "15"
+        },
+        {
+            cod: "01",
+            asignacion: "TRIBUTOS CAPITAL, MIRANDA Y VARGAS",
+            estado: "24"
+        },
+        {
+            cod: "02",
+            asignacion: "TRIBUTOS ANZOATEGUI",
+            estado: "3"
+        },
+        {
+            cod: "03",
+            asignacion: "TRIBUTOS APURE",
+            estado: "4"
+        },
+        {
+            cod: "04",
+            asignacion: "TRIBUTOS ARAGUA",
+            estado: "5"
+        },
+        {
+            cod: "05",
+            asignacion: "TRIBUTOS BARINAS",
+            estado: "6"
+        },
+        {
+            cod: "06",
+            asignacion: "TRIBUTOS BOLIVAR",
+            estado: "7"
+        },
+        {
+            cod: "07",
+            asignacion: "TRIBUTOS CARABOBO",
+            estado: "8"
+        },
+        {
+            cod: "08",
+            asignacion: "TRIBUTOS COJEDES",
+            estado: "9"
+        },
+        {
+            cod: "09",
+            asignacion: "TRIBUTOS FALCON",
+            estado: "11"
+        },
+        {
+            cod: "10",
+            asignacion: "TRIBUTOS GUARICO",
+            estado: "12"
+        },
+        {
+            cod: "11",
+            asignacion: "TRIBUTOS LARA",
+            estado: "13"
+        },
+        {
+            cod: "12",
+            asignacion: "TRIBUTOS MERIDA",
+            estado: "14"
+        },
+        {
+            cod: "13",
+            asignacion: "TRIBUTOS MONAGAS",
+            estado: "16"
+        },
+        {
+            cod: "14",
+            asignacion: "TRIBUTOS NVA. ESPARTA",
+            estado: "17"
+        },
+        {
+            cod: "15",
+            asignacion: "TRIBUTOS PORTUGUESA",
+            estado: "18"
+        },
+        {
+            cod: "16",
+            asignacion: "TRIBUTOS SUCRE",
+            estado: "19"
+        },
+        {
+            cod: "17",
+            asignacion: "TRIBUTOS TACHIRA",
+            estado: "20"
+        },
+        {
+            cod: "18",
+            asignacion: "TRIBUTOS TRUJILLO",
+            estado: "21"
+        },
+        {
+            cod: "19",
+            asignacion: "TRIBUTOS YARACUY",
+            estado: "22"
+        },
+        {
+            cod: "20",
+            asignacion: "TRIBUTOS ZULIA",
+            estado: "23"
+        },
+        {
+            cod: "21",
+            asignacion: "TRIBUTOS DELTA AMACURO",
+            estado: "10"
+        }
+    ];
+
     const createListConcepts = () => {
 
         let conceptos = [];

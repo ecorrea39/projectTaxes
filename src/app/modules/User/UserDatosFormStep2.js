@@ -291,6 +291,11 @@ const textLabelColor = {
   'color': '#5A5EFF',
 };
 
+const formulario = {
+  'padding': '0',
+  'width:': '100%'
+}
+
 const UserDatosFormStep2 = (props) => {
 
   const [loading, setLoading] = useState(false);
@@ -550,15 +555,15 @@ const UserDatosFormStep2 = (props) => {
           >
             <Container>
               <Row>
-                <Col md={6}>
+                <Col xs="12" sm="12" md="6" lg="6" xl="6" xxl="6">
                   <Form.Group controlId="oficina">
                     <Form.Label style={textLabelColor}>Oficina</Form.Label>
-                    <Form.Control as="select"
+                    <Form.Control style={formulario} as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.oficina}
                                   ref={oficinaRef}
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     >
                       <option key="0" value="">Seleccione la Oficina</option>
 
@@ -576,15 +581,15 @@ const UserDatosFormStep2 = (props) => {
                   </Form.Group>
                 </Col>
 
-                <Col md={6}>
-                  <Form.Group as={Col} controlId="numero_de_documento">
+                <Col xs="12" sm="12" md="6" lg="6" xl="6" xxl="6">
+                  <Form.Group as={Col} style={formulario} controlId="numero_de_documento">
                     <Form.Label style={textLabelColor}>Número de Documento</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Número Del Documento"
+                    <Form.Control size="md" type="text" placeholder="Número Del Documento"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.numero_de_documento}
                                   maxLength="20"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.numero_de_documento && formik.errors.numero_de_documento ? (
@@ -599,15 +604,15 @@ const UserDatosFormStep2 = (props) => {
               <br/>
 
               <Row>
-                <Col md={6}>
-                  <Form.Group as={Col} controlId="numero_de_tomo">
+                <Col xs="12" sm="12" md="6" lg="6" xl="6" xxl="6">
+                  <Form.Group as={Col} style={formulario} controlId="numero_de_tomo">
                     <Form.Label style={textLabelColor}>Número de Tomo</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Número De Tomo"
+                    <Form.Control size="md" type="text" placeholder="Número De Tomo"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.numero_de_tomo}
                                   maxLength="20"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.numero_de_tomo && formik.errors.numero_de_tomo ? (
@@ -618,15 +623,15 @@ const UserDatosFormStep2 = (props) => {
                   </Form.Group>
                 </Col>
 
-                <Col md={6}>
-                  <Form.Group as={Col} controlId="numero_de_folio">
+                <Col xs="12" sm="12" md="6" lg="6" xl="6" xxl="6">
+                  <Form.Group as={Col} style={formulario} controlId="numero_de_folio">
                     <Form.Label style={textLabelColor}>Número de Folio</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Número Del Folio"
+                    <Form.Control size="md" type="text" placeholder="Número Del Folio"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.numero_de_folio}
                                   maxLength="20"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.numero_de_folio && formik.errors.numero_de_folio ? (
@@ -641,15 +646,15 @@ const UserDatosFormStep2 = (props) => {
               <br />
 
               <Row>
-                <Col md={6}>
-                  <Form.Group as={Col} controlId="numero_de_protocolo">
+                <Col xs="12" sm="12" md="6" lg="6" xl="6" xxl="6">
+                  <Form.Group as={Col} style={formulario} controlId="numero_de_protocolo">
                     <Form.Label style={textLabelColor}>Número de Protocolo</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Número De Protocolo"
+                    <Form.Control size="md" type="text" placeholder="Número De Protocolo"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.numero_de_protocolo}
                                   maxLength="20"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.numero_de_protocolo && formik.errors.numero_de_protocolo ? (
@@ -660,14 +665,14 @@ const UserDatosFormStep2 = (props) => {
                   </Form.Group>
                 </Col>
 
-                <Col md={6}>
-                  <Form.Group as={Col} controlId="fecha_constitucion">
+                <Col xs="12" sm="12" md="6" lg="6" xl="6" xxl="6">
+                  <Form.Group as={Col} style={formulario} controlId="fecha_constitucion">
                     <Form.Label style={textLabelColor}>Fecha de Constitución</Form.Label>
-                    <Form.Control size="lg" type="date" required
+                    <Form.Control size="md" type="date" required
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.fecha_constitucion}
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                                   max={new Date().toISOString().split("T")[0]}
                     />
 

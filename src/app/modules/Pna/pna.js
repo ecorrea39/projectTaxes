@@ -12,13 +12,12 @@ import Search from '@material-ui/icons/Search';
 
 function Pna({titulo}) {
 
-    const { deletePna, pna, obtenerValores } = useContext(PnaContext);
+    const { deletePna, pna, obtenerValores, filtrarElementos } = useContext(PnaContext);
     const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", padding: "20px 35px 20px 35px"}
     const [isSwitchOn, setIsSwitchOn] = useState(false);
     const styleBtn = { borderRadius: '100%'}
     const [show, setShow] = useState(show);
     const [accion, setAccion] = useState("");
-    const [dataAux, setDataAux] = useState([]);
     const [busqueda, setBusqueda] = useState("");
 
     const sortIcon = <ArrowDownward />;
@@ -112,25 +111,10 @@ function Pna({titulo}) {
         selectAllRowsItemText: "Todos"
     };
 
-    const filtrarElementos = () => {
-        setDataAux(data);
-        let search = dataAux.filter(item => {
-            if(item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,"").includes(busqueda)) {
-                return item;
-            }
-        });
-        console.log('busqueda ', busqueda)
-        actualizarData(search);
-        console.log('data ', search)
-
-    }
-
-    const actualizarData = (d) => { data = d }
-
-    const onChange = async (e) => {
+    const onChange = (e) => {
         e.persist();
-        await setBusqueda(e.target.value);
-        filtrarElementos();
+        setBusqueda(e.target.value);
+        filtrarElementos(e.target.value);
     }
 
     return (

@@ -149,6 +149,7 @@ function FormPayment() {
                 initialValues={initialValuesPayment}
                 validationSchema={SchemaPayment}
                 onSubmit={handleSubmit}
+                formnovalidate
             >
                 {
                     formik => (

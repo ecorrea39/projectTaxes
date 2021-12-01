@@ -76,6 +76,11 @@ const textLabelColor = {
   'color': '#5A5EFF',
 };
 
+const formulario = {
+  'padding': '0',
+  'width:': '100%'
+};
+
 const UserDatosFormStep4 = (props) => {
 
   const [loading, setLoading] = useState(false);
@@ -868,14 +873,14 @@ const UserDatosFormStep4 = (props) => {
 
               <Row>
                 <Col md={2}>
-                  <Form.Group as={Col} controlId="cedula_representante_legal1">
+                  <Form.Group as={Col} style={formulario} controlId="cedula_representante_legal1">
                     <Form.Label style={textLabelColor}>Cédula</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Número Del Cédula"
+                    <Form.Control size="md" type="text" placeholder="Número Del Cédula"
                                   onChange={customHandleChangeCedulaRepresentanteLegal1}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.cedula_representante_legal1}
                                   maxLength="8"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.cedula_representante_legal1 && formik.errors.cedula_representante_legal1 ? (
@@ -887,14 +892,14 @@ const UserDatosFormStep4 = (props) => {
                 </Col>
 
                 <Col md={5}>
-                  <Form.Group as={Col} controlId="nombre_representante_legal1">
+                  <Form.Group as={Col} style={formulario} controlId="nombre_representante_legal1">
                     <Form.Label style={textLabelColor}>Nombre</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Nombre del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder="Nombre del Representante Legal 1"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.nombre_representante_legal1}
                                   maxLength="30"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.nombre_representante_legal1 && formik.errors.nombre_representante_legal1 ? (
@@ -906,14 +911,14 @@ const UserDatosFormStep4 = (props) => {
                 </Col>
 
                 <Col md={5}>
-                  <Form.Group as={Col} controlId="apellido_representante_legal1">
+                  <Form.Group as={Col} style={formulario} controlId="apellido_representante_legal1">
                     <Form.Label style={textLabelColor}>Apellido</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Apellido del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder="Apellido del Representante Legal 1"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.apellido_representante_legal1}
                                   maxLength="30"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.apellido_representante_legal1 && formik.errors.apellido_representante_legal1 ? (
@@ -929,7 +934,7 @@ const UserDatosFormStep4 = (props) => {
 
               <Row>
                 <Col md={2}>
-                  <Form.Group controlId="codigo_de_area_representante_legal1">
+                  <Form.Group style={formulario} controlId="codigo_de_area_representante_legal1">
                     <Form.Label style={textLabelColor}>Código de área</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
@@ -954,9 +959,9 @@ const UserDatosFormStep4 = (props) => {
                 </Col>
 
                 <Col md={3}>
-                  <Form.Group as={Col} controlId="telefono_representante_legal1">
+                  <Form.Group as={Col} style={formulario} controlId="telefono_representante_legal1">
                     <Form.Label style={textLabelColor}>Número de Teléfono</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Telefono del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder="Telefono del Representante Legal 1"
                                   onChange={customHandleChangeTelefonoRepresentanteLegal1}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.telefono_representante_legal1}
@@ -972,9 +977,9 @@ const UserDatosFormStep4 = (props) => {
                 </Col>
 
                 <Col md={4}>
-                  <Form.Group as={Col} controlId="correo_electronico_representante_legal1">
+                  <Form.Group as={Col} style={formulario} controlId="correo_electronico_representante_legal1">
                     <Form.Label style={textLabelColor}>Correo Electrónico</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Correo Electrónico"
+                    <Form.Control size="md" type="text" placeholder="Correo Electrónico"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.correo_electronico_representante_legal1}
@@ -990,14 +995,14 @@ const UserDatosFormStep4 = (props) => {
                 </Col>
 
                 <Col md={3}>
-                  <Form.Group as={Col} controlId="cargo_representante_legal1">
+                  <Form.Group as={Col} style={formulario} controlId="cargo_representante_legal1">
                     <Form.Label style={textLabelColor}>Cargo</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Cargo del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder="Cargo del Representante Legal 1"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.cargo_representante_legal1}
                                   maxLength="30"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.cargo_representante_legal1 && formik.errors.cargo_representante_legal1 ? (
@@ -1017,14 +1022,14 @@ const UserDatosFormStep4 = (props) => {
 
               <Row>
                 <Col md={2}>
-                  <Form.Group as={Col} controlId="cedula_representante_legal2">
+                  <Form.Group as={Col} style={formulario} controlId="cedula_representante_legal2">
                     <Form.Label style={textLabelColor}>Cédula</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Número Del Cédula"
+                    <Form.Control size="md" type="text" placeholder="Número Del Cédula"
                                   onChange={customHandleChangeCedulaRepresentanteLegal2}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.cedula_representante_legal2}
                                   maxLength="8"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.cedula_representante_legal2 && formik.errors.cedula_representante_legal2 ? (
@@ -1036,14 +1041,14 @@ const UserDatosFormStep4 = (props) => {
                 </Col>
 
                 <Col md={5}>
-                  <Form.Group as={Col} controlId="nombre_representante_legal2">
+                  <Form.Group as={Col} style={formulario} controlId="nombre_representante_legal2">
                     <Form.Label style={textLabelColor}>Nombre</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Nombre del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder="Nombre del Representante Legal 1"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.nombre_representante_legal2}
                                   maxLength="30"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.nombre_representante_legal2 && formik.errors.nombre_representante_legal2 ? (
@@ -1055,14 +1060,14 @@ const UserDatosFormStep4 = (props) => {
                 </Col>
 
                 <Col md={5}>
-                  <Form.Group as={Col} controlId="apellido_representante_legal2">
+                  <Form.Group as={Col} style={formulario} controlId="apellido_representante_legal2">
                     <Form.Label style={textLabelColor}>Apellido</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Apellido del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder="Apellido del Representante Legal 1"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.apellido_representante_legal2}
                                   maxLength="30"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.apellido_representante_legal2 && formik.errors.apellido_representante_legal2 ? (
@@ -1078,7 +1083,7 @@ const UserDatosFormStep4 = (props) => {
 
               <Row>
                 <Col md={2}>
-                  <Form.Group controlId="codigo_de_area_representante_legal2">
+                  <Form.Group style={formulario} controlId="codigo_de_area_representante_legal2">
                     <Form.Label style={textLabelColor}>Código de área</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
@@ -1103,9 +1108,9 @@ const UserDatosFormStep4 = (props) => {
                 </Col>
 
                 <Col md={3}>
-                  <Form.Group as={Col} controlId="telefono_representante_legal2">
+                  <Form.Group as={Col} style={formulario} controlId="telefono_representante_legal2">
                     <Form.Label style={textLabelColor}>Número de Teléfono</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Teléfono del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder="Teléfono del Representante Legal 1"
                                   onChange={customHandleChangeTelefonoRepresentanteLegal2}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.telefono_representante_legal2}
@@ -1121,9 +1126,9 @@ const UserDatosFormStep4 = (props) => {
                 </Col>
 
                 <Col md={4}>
-                  <Form.Group as={Col} controlId="correo_electronico_representante_legal2">
+                  <Form.Group as={Col} style={formulario} controlId="correo_electronico_representante_legal2">
                     <Form.Label style={textLabelColor}>Correo Electrónico</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Correo Electrónico"
+                    <Form.Control size="md" type="text" placeholder="Correo Electrónico"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.correo_electronico_representante_legal2}
@@ -1139,14 +1144,14 @@ const UserDatosFormStep4 = (props) => {
                 </Col>
 
                 <Col md={3}>
-                  <Form.Group as={Col} controlId="cargo_representante_legal2">
+                  <Form.Group as={Col} style={formulario} controlId="cargo_representante_legal2">
                     <Form.Label style={textLabelColor}>Cargo</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Cargo del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder="Cargo del Representante Legal 1"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.cargo_representante_legal2}
                                   maxLength="30"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.cargo_representante_legal2 && formik.errors.cargo_representante_legal2 ? (
@@ -1166,14 +1171,14 @@ const UserDatosFormStep4 = (props) => {
 
               <Row>
                 <Col md={2}>
-                  <Form.Group as={Col} controlId="cedula_representante_legal3">
+                  <Form.Group as={Col} style={formulario} controlId="cedula_representante_legal3">
                     <Form.Label style={textLabelColor}>Cédula</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Número Del Cédula"
+                    <Form.Control size="md" type="text" placeholder="Número Del Cédula"
                                   onChange={customHandleChangeCedulaRepresentanteLegal3}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.cedula_representante_legal3}
                                   maxLength="8"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.cedula_representante_legal3 && formik.errors.cedula_representante_legal3 ? (
@@ -1185,14 +1190,14 @@ const UserDatosFormStep4 = (props) => {
                 </Col>
 
                 <Col md={5}>
-                  <Form.Group as={Col} controlId="nombre_representante_legal3">
+                  <Form.Group as={Col} style={formulario} controlId="nombre_representante_legal3">
                     <Form.Label style={textLabelColor}>Nombre</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Nombre del Representante Legal 3"
+                    <Form.Control size="md" type="text" placeholder="Nombre del Representante Legal 3"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.nombre_representante_legal3}
                                   maxLength="30"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.nombre_representante_legal3 && formik.errors.nombre_representante_legal3 ? (
@@ -1204,14 +1209,14 @@ const UserDatosFormStep4 = (props) => {
                 </Col>
 
                 <Col md={5}>
-                  <Form.Group as={Col} controlId="apellido_representante_legal3">
+                  <Form.Group as={Col} style={formulario} controlId="apellido_representante_legal3">
                     <Form.Label style={textLabelColor}>Apellido</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Apellido del Representante Legal 3"
+                    <Form.Control size="md" type="text" placeholder="Apellido del Representante Legal 3"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.apellido_representante_legal3}
                                   maxLength="30"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.apellido_representante_legal3 && formik.errors.apellido_representante_legal3 ? (
@@ -1227,7 +1232,7 @@ const UserDatosFormStep4 = (props) => {
 
               <Row>
                 <Col md={2}>
-                  <Form.Group controlId="codigo_de_area_representante_legal3">
+                  <Form.Group style={formulario} controlId="codigo_de_area_representante_legal3">
                     <Form.Label style={textLabelColor}>Código de área</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
@@ -1252,9 +1257,9 @@ const UserDatosFormStep4 = (props) => {
                 </Col>
 
                 <Col md={3}>
-                  <Form.Group as={Col} controlId="telefono_representante_legal3">
+                  <Form.Group as={Col} style={formulario} controlId="telefono_representante_legal3">
                     <Form.Label style={textLabelColor}>Número de Teléfono</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Teléfono del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder="Teléfono del Representante Legal 1"
                                   onChange={customHandleChangeTelefonoRepresentanteLegal3}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.telefono_representante_legal3}
@@ -1270,9 +1275,9 @@ const UserDatosFormStep4 = (props) => {
                 </Col>
 
                 <Col md={4}>
-                  <Form.Group as={Col} controlId="correo_electronico_representante_legal3">
+                  <Form.Group as={Col} style={formulario} controlId="correo_electronico_representante_legal3">
                     <Form.Label style={textLabelColor}>Correo Electrónico</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Correo Electrónico"
+                    <Form.Control size="md" type="text" placeholder="Correo Electrónico"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.correo_electronico_representante_legal3}
@@ -1288,14 +1293,14 @@ const UserDatosFormStep4 = (props) => {
                 </Col>
 
                 <Col md={3}>
-                  <Form.Group as={Col} controlId="cargo_representante_legal3">
+                  <Form.Group as={Col} style={formulario} controlId="cargo_representante_legal3">
                     <Form.Label style={textLabelColor}>Cargo</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Cargo del Representante Legal 3"
+                    <Form.Control size="md" type="text" placeholder="Cargo del Representante Legal 3"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.cargo_representante_legal3}
                                   maxLength="30"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.cargo_representante_legal3 && formik.errors.cargo_representante_legal3 ? (
