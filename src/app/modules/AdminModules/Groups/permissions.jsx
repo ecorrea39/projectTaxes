@@ -1,10 +1,7 @@
 import React from "react";
-import { Card, Col, Row, Table, Button } from "react-bootstrap";
+import { Col, Row, Table } from "react-bootstrap";
 import VpnKeyOutlinedIcon from '@material-ui/icons/VpnKeyOutlined';
-import { Field } from "formik";
 import style from "../panel.module.css";
-import css from '../../Forms/checkbox.module.css';
-// import Checkbox from "../../Forms/BaseCheckbox";
 import Checkbox from '@material-ui/core/Checkbox';
 
 export const Permissions = (props) => {
@@ -171,7 +168,6 @@ export const Permissions = (props) => {
                             </tr>
                         ))
                     }
-                    
                 </tbody>
             </Table>
         )

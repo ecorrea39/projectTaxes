@@ -47,3 +47,17 @@
     cursor: pointer;
     z-index: 1;
 }
+
+.labelDetail, .spanDetail{
+    display: block;
+}
+
+.labelDetail{
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.spanDetail{
+    font-size: 14px;
+    font-weight: 300;
+}

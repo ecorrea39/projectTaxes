@@ -2,6 +2,7 @@ import React from "react";
 import ListAltOutlinedIcon from '@material-ui/icons/ListAltOutlined';
 import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined';
 import CheckBoxOutlineBlankOutlinedIcon from '@material-ui/icons/CheckBoxOutlineBlankOutlined';
+import FindInPageOutlinedIcon from '@material-ui/icons/FindInPageOutlined';
 import BlockIcon from '@material-ui/icons/Block';
 import { Tooltip } from "@material-ui/core";
 import VpnKeyOutlinedIcon from '@material-ui/icons/VpnKeyOutlined';
@@ -12,25 +13,23 @@ export const ActionsTable = ({
     row, actions, baseUrl,
     handleActionsRow, handlePermissions, handleAlertNotice, handlePrintInfo}) => {
 
-    let statusAction =
-        row.attributes.status == "0" ? "Activar" :
-        row.attributes.status == "1" ? "Desactivar" : "Deshabilitado";
+    let statusAction = row.attributes.status ? "Activar" : "Desactivar";
   
     const Action = ({action}) => {
         return (
             <>
                 { action == "details" && 
                 <Tooltip title="Ver detalles" arrow placement="top">
-                    <NavLink className="btn btn-icon btn-hover-light btn-sm mx-3"
+                    <NavLink className="btn btn-icon btn-hover-light btn-sm"
                             onClick={() => handleActionsRow(row)}
                             to={baseUrl+"detalles"}>
-                        <ListAltOutlinedIcon style={{color:"#0091ea"}} />
+                        <FindInPageOutlinedIcon style={{color:"#ba000d"}} />
                     </NavLink>
                 </Tooltip> }
 
                 { action == "update" && 
                 <Tooltip title="Modificar" arrow placement="top">
-                    <NavLink className="btn btn-icon btn-hover-light btn-sm mx-3"
+                    <NavLink className="btn btn-icon btn-hover-light btn-sm"
                             onClick={() => handleActionsRow(row)}
                             to={baseUrl+"modificar"}>
                         <ListAltOutlinedIcon style={{color:"#0091ea"}} />
@@ -50,7 +49,7 @@ export const ActionsTable = ({
                 { action == "permissions" && 
                 <Tooltip title="Permisos" arrow placement="top">
                     <a onClick={() => handlePermissions(row)}
-                        className="btn btn-icon btn-hover-light btn-sm mx-3">
+                        className="btn btn-icon btn-hover-light btn-sm">
                         <VpnKeyOutlinedIcon style={{color:"#263238"}} />
                     </a>
                 </Tooltip> }
@@ -58,7 +57,7 @@ export const ActionsTable = ({
                 { action == "print" && 
                 <Tooltip title="Imprimir información" arrow placement="top">
                     <a onClick={() =>  handlePrintInfo(row.id)}
-                        className="btn btn-icon btn-hover-light btn-sm mx-3">
+                        className="btn btn-icon btn-hover-light btn-sm">
                         <PrintIcon style={{color:"#263238"}} />
                     </a>
                 </Tooltip> }

@@ -1,12 +1,15 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import GroupsContext from "../../../context/groups/groupsContext";
 import { MyDataTable } from "../ModulesTable/MyDataTable";
 import { ActionsTable } from "../ModulesTable/actionsTable";
 import Swal from "sweetalert2";
+import { SearchTable } from "../ModulesTable/searchTable";
 
 export const UserGroupsTable = ({url}) => {
 
     const { loadingTable, setGroupSlct, userGroupsList, updateStatus, statusList } = useContext(GroupsContext);
+
+    const [dataFilter, setDataFilter] = useState(userGroupsList);
 
     const actionsRow = (row) => {
         setGroupSlct(row);
@@ -87,16 +90,31 @@ export const UserGroupsTable = ({url}) => {
         }
     ];
 
+    const fiterData = (filterText) => {
+        if(filterText != "") {
+            let filter = userGroupsList.filter(item =>
+                item.attributes.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(filterText.toLowerCase())
+            );
+            setDataFilter(filter)
+        } else {
+            setDataFilter(userGroupsList);
+        }
+    }
+
+    useEffect(()=>{
+        setDataFilter(userGroupsList)
+    },[userGroupsList]);
+
     return (
-        <div className="table-responsive">
+        <>
+            <SearchTable handleOnchange={fiterData} />
 
             <MyDataTable
                 actionsRow={actionsRow}
                 columns={columns}
-                data={userGroupsList}
+                data={dataFilter}
                 loadingTable={loadingTable}
             />
-
-        </div>
+        </>
     )
 }

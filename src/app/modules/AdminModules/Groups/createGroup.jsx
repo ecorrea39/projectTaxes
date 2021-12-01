@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 export const CreateGroup = (props) => {
 
     let history = useHistory();
-    const { action, title } = props;
+    const { action } = props;
     const { addNewGroup, updateGroup, formPermisos } = useContext(GroupsContext);
 
     const handleSubmit = async (values, actions) => {
@@ -18,7 +18,7 @@ export const CreateGroup = (props) => {
         values.permisos = formPermisos;
         values.status = parseInt(values.status);
 
-        if(action == "add") {
+        if(action === "add") {
             await addNewGroup(values);
             Swal.fire({
                 title: `Operación exitosa`,

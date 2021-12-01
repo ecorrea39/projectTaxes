@@ -195,12 +195,12 @@ export const BaseFormik = ({props,formik,history}) => {
                     >
                         <option value="" disabled>. . .</option>
                         {
-                            unidadesEstatales.map(element => (
+                            unidadesEstatales.map( (element,index) => (
                                 <option
-                                    key={element.id}
-                                    value={element.cod}
+                                    key={index}
+                                    value={element.attributes.cod}
                                 >
-                                    {element.asignacion}
+                                    {element.attributes.asignacion}
                                 </option>
                             ))
                         }

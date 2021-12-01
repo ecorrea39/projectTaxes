@@ -1,27 +1,48 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import UsersContext from "../../../context/users/usersContext";
 import Swal from "sweetalert2";
 import { MyDataTable } from "../ModulesTable/MyDataTable";
 import { ActionsTable } from "../ModulesTable/actionsTable";
+import { SearchTable } from "../ModulesTable/searchTable";
 
 export const UserTable = () => {
 
-    const { setUserSlct, usersList, statusList, loadingTable, updateUserStatus, printInfoUser } = useContext(UsersContext);
+    const { setUserSlct, usersList, statusList, groupsList, loadingTable, updateUserStatus, printInfoUser } = useContext(UsersContext);
+    
+    const [dataFilter, setDataFilter] = useState(usersList);
+
+    const fiterData = (filterText) => {
+        if(filterText != "") {
+            let filter = usersList.filter(item =>
+                item.attributes.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(filterText.toLowerCase())
+                || item.attributes.alias.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(filterText.toLowerCase())
+                || item.attributes.mail.toLowerCase().includes(filterText.toLowerCase())
+            );
+            setDataFilter(filter)
+        } else {
+            setDataFilter(usersList);
+        }
+    }
 
     const actionsRow = (row) => {
         setUserSlct(row);
     }
 
     const selectStatus = (id) => {
-        let statusName = statusList.find(element => element.status === id );
-        return statusName.name;
+        let status = statusList.find(element => element.status == id );
+        return status.name;
+    }
+
+    const selectGroup = (id) => {
+        let group = groupsList.find(element => element.id == id );
+        return group.name;
     }
 
     const alertNotice = (action,row) => {
-
+        console.log(row)
         return (
             <>
-            { row.status == 0 || row.status == 1 ?
+            {
                 Swal.fire({
                     title: `${action} usuario`,
                     text: `Esta seguro que desea ${action} el usuario ${row.nombre + " " + row.apellido}`,
@@ -31,15 +52,12 @@ export const UserTable = () => {
                     confirmButtonText: 'Confirmar',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        updateUserStatus({id_guser:row.id, status: action == "Activar" ? "0" : "1"});
+                        updateUserStatus({
+                            name: row.attributes.name+" "+row.attributes.surname,
+                            id_user:row.id,
+                            status: !row.attributes.status ? 1 : 0
+                        });
                     }
-                })
-
-                :
-                Swal.fire({
-                    title: `Usuario ${action}`,
-                    text: `El usuario ${row.nombre + " " + row.apellido} se encuentra con status Deshabilitado. No requiere ninguna otra acción`,
-                    icon: 'info'
                 })
             }
             </>
@@ -69,6 +87,7 @@ export const UserTable = () => {
         {
             name: 'Status',
             sortable: true,
+            with: "50px",
             cell: row => (
                 <>{ 
                     // selectStatus(row.status)
@@ -79,6 +98,11 @@ export const UserTable = () => {
         {
             name: 'Fecha de creación',
             selector: row => row.attributes.fecha_creacion,
+            sortable: true,
+        },
+        {
+            name: 'Grupo asignado',
+            selector: row => selectGroup(row.attributes['user_grupos_usuarios.grupo_id']),
             sortable: true,
         },
         {
@@ -97,14 +121,20 @@ export const UserTable = () => {
         }
     ];
 
+    useEffect(()=>{
+        setDataFilter(usersList)
+    },[usersList]);
+
     return (
-        <div className="table-responsive">
+        <>
+            <SearchTable handleOnchange={fiterData} />
+
             <MyDataTable
                 actionsRow={actionsRow}
                 columns={columns}
-                data={usersList}
+                data={dataFilter}
                 loadingTable={loadingTable}
             />
-        </div>
+        </>
     )
 }

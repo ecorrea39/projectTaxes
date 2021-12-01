@@ -1,6 +1,7 @@
 import React, { useEffect, useState} from 'react';
 import {clientAxios, requestConfig } from '../../config/configAxios';
 import UsersContext from './usersContext';
+import Swal from "sweetalert2";
 
 export const UsersState = ({ children }) => {
 
@@ -25,9 +26,9 @@ export const UsersState = ({ children }) => {
     ]);
 
     useEffect(()=>{
-        getUsers();
         getGroups();
         getUnidadEstatal();
+        getUsers();
     },[]);
 
     const setUserDataList = (data) => {
@@ -96,19 +97,8 @@ export const UsersState = ({ children }) => {
 
     const getUnidadEstatal = async () => {
         try {
-            const respuesta = await clientAxios.get(`/unidad_estadal/3`);
-            setUnidadesEstatales([
-                {
-                    asignacion: "TRIBUTOS APURE",
-                    cod: "03",
-                    id: 1
-                },
-                {
-                    asignacion: "TRIBUTOS AMAZONAS",
-                    cod: "04",
-                    id: 2
-                }
-            ])
+            const respuesta = await clientAxios.get(`/unidad_estadal`);
+            setUnidadesEstatales(respuesta.data.data)
         } catch (error) {
             console.log(error)
         }
@@ -140,11 +130,18 @@ export const UsersState = ({ children }) => {
     }
 
     const updateUserStatus = async (formData) => {
-        console.log(formData)
         try {
             requestConfig.data.type = "updateUser";
-            requestConfig.data.attributes = formData;
-            // const respuesta = await clientAxios.get('/cuentas_banco/');
+            requestConfig.data.attributes = {status: formData.status};
+            console.log(requestConfig)
+            const respuesta = await clientAxios.patch(`/access_control/${formData.id_user}`, requestConfig);
+            Swal.fire({
+                title: `Operación exitosa`,
+                text: `El usuario ${formData.name} fue actualizado con éxito.`,
+                button: "Ok",
+                icon: 'success'
+            });
+            getUsers();
         } catch (error) {
             console.log(error)
         }

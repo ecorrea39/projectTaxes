@@ -130,6 +130,7 @@ export const GroupsState = ({ children }) => {
                 let objectPermisos = {
                     modulo_id: per.modulo_id,
                     modulo: per.modulo,
+                    permiso_id: per.permiso_id
                 }
 
                 per.permisos.forEach(permiso => {
