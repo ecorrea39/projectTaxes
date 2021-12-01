@@ -6,11 +6,14 @@ import { Modal } from 'antd';
 import {useFormik} from "formik";
 import "./QueryBuilder.css";
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 const regexp = /^[a-zA-Z_]+$/;
 const textLabelColor = {
   'color': '#5A5EFF',
 };
+
+const { confirm } = Modal;
 
 const QueryBuilderFormStep4 = (props) => {
   const [initialValues, setInitialValues] = useState({
@@ -300,7 +303,20 @@ const QueryBuilderFormStep4 = (props) => {
       setDataMap(fullmap);
       formik.submitForm();
     }
-  }
+  };
+
+  const onCancel = () => {
+    confirm({
+      title: '¿Desea cancelar la creación de la consulta?',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Se perderán todos los datos',
+      okText: "Abandonar",
+      cancelText: "Volver",
+      onOk() {
+        props.regresar();
+      },
+    });
+  };
 
   const formik = useFormik({
     initialValues,
@@ -473,7 +489,15 @@ const QueryBuilderFormStep4 = (props) => {
               <br/>
 
               <Row>
-                <Col md={6}>
+                <Col md={2}>
+                  <Button variant="danger" size="lg" block
+                          type="button"
+                          onClick={onCancel}
+                  >
+                    Cancelar
+                  </Button>
+                </Col>
+                <Col md={5}>
                   <Button variant="secondary" size="lg" block
                           type="button"
                           onClick={irAnterior}
@@ -481,7 +505,7 @@ const QueryBuilderFormStep4 = (props) => {
                     Anterior
                   </Button>
                 </Col>
-                <Col md={6}>
+                <Col md={5}>
                   <Button variant="secondary" size="lg" block
                           type="button"
                           onClick={submitSiguiente}

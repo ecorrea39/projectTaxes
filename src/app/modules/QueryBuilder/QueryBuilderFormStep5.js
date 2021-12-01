@@ -1,9 +1,13 @@
 import React, {useEffect, useState} from "react";
-import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
+import {Button, Card, Col, Container, Row} from "react-bootstrap";
 import { Transfer } from 'antd';
 import "./QueryBuilder.css";
+import { Modal } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 const aggregateFunctions = ['count', 'sum', 'avg', 'max', 'min'];
+
+const { confirm } = Modal;
 
 const QueryBuilderFormStep5 = (props) => {
   const [groupEnabled, setGroupEnabled] = useState(false);
@@ -107,6 +111,19 @@ const QueryBuilderFormStep5 = (props) => {
     props.cambiarFormularioActual(4, false);
   }
 
+  const onCancel = () => {
+    confirm({
+      title: '¿Desea cancelar la creación de la consulta?',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Se perderán todos los datos',
+      okText: "Abandonar",
+      cancelText: "Volver",
+      onOk() {
+        props.regresar();
+      },
+    });
+  };
+
   const submitSiguiente = () => {
     props.CambiarQuery({
       orden: orden,
@@ -185,7 +202,15 @@ const QueryBuilderFormStep5 = (props) => {
             <br/>
 
             <Row>
-              <Col md={6}>
+              <Col md={2}>
+                <Button variant="danger" size="lg" block
+                        type="button"
+                        onClick={onCancel}
+                >
+                  Cancelar
+                </Button>
+              </Col>
+              <Col md={5}>
                 <Button variant="secondary" size="lg" block
                         type="button"
                         onClick={irAnterior}
@@ -193,7 +218,7 @@ const QueryBuilderFormStep5 = (props) => {
                   Anterior
                 </Button>
               </Col>
-              <Col md={6}>
+              <Col md={5}>
                 <Button variant="secondary" size="lg" block
                         type="button"
                         onClick={submitSiguiente}

@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useState, useEffect} from "react";
 import { Steps } from 'antd';
 import 'bootstrap/dist/css/bootstrap.css';
 import './QueryBuilder.css';
@@ -26,8 +26,45 @@ const QueryBuilder = (props) => {
     mapa_campos: [],
     orden: [],
     direccion: 'ASC',
-    agrupar: []
+    agrupar: [],
+    editId: -1
   });
+
+  useEffect(() => {
+    if (props.editar.id) {
+      const valores = {
+        nombre: props.editar.nombre,
+        titulo: props.editar.titulo,
+        descripcion: props.editar.descripcion,
+        campos: props.editar.campos,
+        esquema: [],
+        tablas: [],
+        joins: props.editar.joins,
+        mapa_campos: props.editar.mapa_campos,
+        orden: props.editar.orden,
+        direccion: props.editar.direccion,
+        agrupar: props.editar.agrupar,
+        editId: props.editar.id
+      };
+
+      setValoresQuery(valores);
+    } else {
+      setValoresQuery({
+        nombre: "",
+        titulo: "",
+        descripcion: "",
+        campos: undefined,
+        esquema: [],
+        tablas: [],
+        joins: [],
+        mapa_campos: [],
+        orden: [],
+        direccion: 'ASC',
+        agrupar: [],
+        editId: -1
+      });
+    }
+  }, [props.editar]);
 
   const next = () => {
     setCurrent(current + 1);
@@ -105,6 +142,7 @@ const QueryBuilder = (props) => {
         cambiarFormularioActual={cambiarStep}
         CambiarQuery={QueryStep1}
         QueryFinal={valoresQuery}
+        regresar={props.regresar}
       />,
     },
     {
@@ -116,6 +154,7 @@ const QueryBuilder = (props) => {
         cambiarFormularioActual={cambiarStep}
         CambiarQuery={QueryStep2}
         QueryFinal={valoresQuery}
+        regresar={props.regresar}
       />,
     },
     {
@@ -127,6 +166,7 @@ const QueryBuilder = (props) => {
         cambiarFormularioActual={cambiarStep}
         CambiarQuery={QueryStep3}
         QueryFinal={valoresQuery}
+        regresar={props.regresar}
       />,
     },
     {
@@ -138,6 +178,7 @@ const QueryBuilder = (props) => {
         cambiarFormularioActual={cambiarStep}
         CambiarQuery={QueryStep4}
         QueryFinal={valoresQuery}
+        regresar={props.regresar}
       />,
     },
     {
@@ -148,7 +189,8 @@ const QueryBuilder = (props) => {
         avanzando={moveForward}
         cambiarFormularioActual={cambiarStep}
         CambiarQuery={QueryStep5}
-        QueryFinal={valoresQuery} 
+        QueryFinal={valoresQuery}
+        regresar={props.regresar}
       />,
     },
     {
@@ -159,6 +201,7 @@ const QueryBuilder = (props) => {
         avanzando={moveForward}
         cambiarFormularioActual={cambiarStep}
         QueryFinal={valoresQuery} 
+        regresar={props.regresar}
       />,
     }
   ];

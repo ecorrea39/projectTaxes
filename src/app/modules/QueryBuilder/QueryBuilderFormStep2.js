@@ -5,10 +5,14 @@ import "./QueryBuilder.css";
 import { TreeSelect } from 'antd';
 import { clientAxios } from '../../config/configAxios';
 import Swal from "sweetalert2";
+import { Modal } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 const textLabelColor = {
   'color': '#5A5EFF',
 };
+
+const { confirm } = Modal;
 
 const { SHOW_PARENT } = TreeSelect;
 
@@ -132,6 +136,19 @@ const QueryBuilderFormStep2 = (props) => {
     setNext(value.length > 0);
   };
 
+  const onCancel = () => {
+    confirm({
+      title: '¿Desea cancelar la creación de la consulta?',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Se perderán todos los datos',
+      okText: "Abandonar",
+      cancelText: "Volver",
+      onOk() {
+        props.regresar();
+      },
+    });
+  };
+
   const tProps = {
     treeData,
     value: value,
@@ -163,7 +180,15 @@ const QueryBuilderFormStep2 = (props) => {
               <br/>
 
               <Row>
-                <Col md={6}>
+                <Col md={2}>
+                  <Button variant="danger" size="lg" block
+                          type="button"
+                          onClick={onCancel}
+                  >
+                    Cancelar
+                  </Button>
+                </Col>
+                <Col md={5}>
                   <Button variant="secondary" size="lg" block
                           type="button"
                           onClick={irAnterior}
@@ -171,7 +196,7 @@ const QueryBuilderFormStep2 = (props) => {
                     Anterior
                   </Button>
                 </Col>
-                <Col md={6}>
+                <Col md={5}>
                   <Button variant="secondary" size="lg" block
                           type="button"
                           onClick={submitSiguiente}

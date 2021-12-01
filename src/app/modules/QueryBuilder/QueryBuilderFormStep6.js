@@ -2,6 +2,9 @@ import React, {useEffect, useState} from "react";
 import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import "./QueryBuilder.css";
 import { clientAxios, requestConfig } from '../../config/configAxios';
+import Swal from "sweetalert2";
+import { Modal } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 const join_transform = {
   inner: 'INNER JOIN',
@@ -9,6 +12,8 @@ const join_transform = {
   right: 'RIGHT JOIN',
   outer: 'FULL OUTER JOIN'
 }
+
+const { confirm } = Modal;
 
 const QueryBuilderFormStep6 = (props) => {
   const [query, setQuery] = useState('');
@@ -74,11 +79,25 @@ const QueryBuilderFormStep6 = (props) => {
     props.cambiarFormularioActual(5, false);
   }
 
+  const onCancel = () => {
+    confirm({
+      title: '¿Desea cancelar la creación de la consulta?',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Se perderán todos los datos',
+      okText: "Abandonar",
+      cancelText: "Volver",
+      onOk() {
+        props.regresar();
+      },
+    });
+  };
+
   const submitSiguiente = async () => {
     const valores = {
       nombre: props.QueryFinal.nombre,
       titulo: props.QueryFinal.titulo,
       descripcion: props.QueryFinal.descripcion,
+      campos: props.QueryFinal.campos,
       mapa_campos: props.QueryFinal.mapa_campos,
       joins: props.QueryFinal.joins,
       agrupar: props.QueryFinal.agrupar,
@@ -88,14 +107,22 @@ const QueryBuilderFormStep6 = (props) => {
 
     requestConfig.data.type = 'query';
     requestConfig.data.attributes = valores;
-    // requestConfig.data.id = (props.accion !== 'Agregar') ? valores.id : '';
-    requestConfig.data.id = '';
+    requestConfig.data.id = (props.QueryFinal.editId >= 0) ? props.QueryFinal.editId : '';
 
-    // if(props.accion === 'Agregar') {
+    if (props.QueryFinal.editId < 0) {
         const respuesta = await clientAxios.post('/dynamic_query/query/', requestConfig);
-    // } else {
-    //     const respuesta = await clientAxios.put('/dynamic_query/query/', requestConfig);
-    // }
+    } else {
+        const respuesta = await clientAxios.put('/dynamic_query/query/', requestConfig);
+    }
+
+    Swal.fire({
+      title: "Resultado de la operación",
+      text: "La consulta se guardó con éxito",
+      icon: "success",
+      timer: 1500
+    }).then(() => {
+      props.regresar();
+    });
   }
 
   return (
@@ -124,7 +151,15 @@ const QueryBuilderFormStep6 = (props) => {
             <br/>
 
             <Row>
-              <Col md={6}>
+              <Col md={2}>
+                <Button variant="danger" size="lg" block
+                        type="button"
+                        onClick={onCancel}
+                >
+                  Cancelar
+                </Button>
+              </Col>
+              <Col md={5}>
                 <Button variant="secondary" size="lg" block
                         type="button"
                         onClick={irAnterior}
@@ -132,7 +167,7 @@ const QueryBuilderFormStep6 = (props) => {
                   Anterior
                 </Button>
               </Col>
-              <Col md={6}>
+              <Col md={5}>
                 <Button variant="secondary" size="lg" block
                         type="button"
                         onClick={submitSiguiente}

@@ -12,6 +12,8 @@ import "./QueryBuilder.css";
 import SVG from "react-inlinesvg";
 import { toAbsoluteUrl } from "../../../_metronic/_helpers";
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
+import { Modal } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 const textLabelColor = {
   'color': '#5A5EFF',
@@ -20,6 +22,8 @@ const textLabelColor = {
 const optionLabelColor = {
   'color': '#000000',
 };
+
+const { confirm } = Modal;
 
 const QueryBuilderFormStep3 = (props) => {
   const [, updateState] = React.useState();
@@ -112,6 +116,7 @@ const QueryBuilderFormStep3 = (props) => {
     let camposCalificados = [];
 
     setJoins(props.QueryFinal.joins);
+    if (props.QueryFinal.joins) setFulfilled(true);
 
     campos.forEach(campo => {
       const index = campo.split("-");
@@ -203,6 +208,19 @@ const QueryBuilderFormStep3 = (props) => {
         })
       )
   });
+
+  const onCancel = () => {
+    confirm({
+      title: '¿Desea cancelar la creación de la consulta?',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Se perderán todos los datos',
+      okText: "Abandonar",
+      cancelText: "Volver",
+      onOk() {
+        props.regresar();
+      },
+    });
+  };
 
   const formik = useFormik({
     initialValues,
@@ -336,7 +354,15 @@ const QueryBuilderFormStep3 = (props) => {
               <br/>
 
               <Row>
-                <Col md={6}>
+                <Col md={2}>
+                  <Button variant="danger" size="lg" block
+                          type="button"
+                          onClick={onCancel}
+                  >
+                    Cancelar
+                  </Button>
+                </Col>
+                <Col md={5}>
                   <Button variant="secondary" size="lg" block
                           type="button"
                           onClick={irAnterior}
@@ -344,7 +370,7 @@ const QueryBuilderFormStep3 = (props) => {
                     Anterior
                   </Button>
                 </Col>
-                <Col md={6}>
+                <Col md={5}>
                   <Button variant="secondary" size="lg" block
                           type="button"
                           onClick={submitSiguiente}

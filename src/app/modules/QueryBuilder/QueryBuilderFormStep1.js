@@ -3,10 +3,14 @@ import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import {useIntl} from "react-intl";
 import * as Yup from "yup";
 import {useFormik} from "formik";
+import { Modal } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 const textLabelColor = {
   'color': '#5A5EFF',
 };
+
+const { confirm } = Modal;
 
 const QueryBuilderFormStep1 = (props) => {
   const [initialValues, setInitialValues] = useState({
@@ -23,7 +27,7 @@ const QueryBuilderFormStep1 = (props) => {
       titulo: props.QueryFinal.titulo,
       descripcion: props.QueryFinal.descripcion
     });
-  }, []);
+  }, [props.QueryFinal]);
 
   const submitSiguiente = () => {
     formik.submitForm();
@@ -79,6 +83,19 @@ const QueryBuilderFormStep1 = (props) => {
         })
       )
   });
+
+  const onCancel = () => {
+    confirm({
+      title: '¿Desea cancelar la creación de la consulta?',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Se perderán todos los datos',
+      okText: "Abandonar",
+      cancelText: "Volver",
+      onOk() {
+        props.regresar();
+      },
+    });
+  };
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -174,7 +191,15 @@ const QueryBuilderFormStep1 = (props) => {
                 <br/>
 
                 <Row>
-                  <Col md={12}>
+                <Col md={4}>
+                    <Button variant="danger" size="lg" block
+                            type="button"
+                            onClick={onCancel}
+                    >
+                      Cancelar
+                    </Button>
+                  </Col>
+                  <Col md={8}>
                     <Button variant="secondary" size="lg" block
                             type="button"
                             onClick={submitSiguiente}
