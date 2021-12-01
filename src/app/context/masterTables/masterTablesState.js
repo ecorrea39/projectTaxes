@@ -29,8 +29,11 @@ export const MasterTablesState = ({ children }) => {
     const [tipoDocumento, setTipoDocumento] = useState([]);
     const [tipoContribuyente, setTipoContribuyente] = useState([]);
     const [cuentasContables, setCuentasContables] = useState([]);
+    const [firmasAutorizadas, setFirmasAutorizadas] = useState([]);
     const [formDataTables, setFormDataTables] = useState({});
     const [registroSeleccionado, setRegistroSeleccionado] = useState({});
+
+    const listReportes = ["Certificado de Solvencia","Resolución de incumplimiento de deberes formales"];
 
     let dataAux = [];
 
@@ -58,6 +61,7 @@ export const MasterTablesState = ({ children }) => {
         getTipoDocumento();
         getTipoContribuyente();
         getCuentasContables();
+        getFirmasAutorizadas();
     },[]);
 
     const getBancos = async () => {
@@ -662,6 +666,37 @@ export const MasterTablesState = ({ children }) => {
 
     }
 
+    const getFirmasAutorizadas = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/firmas_autorizadas/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "documento": listReportes.filter(x => x === arreglo[i].attributes.documento),
+                        "reporte": "",
+                        "nombre": arreglo[i].attributes.nombre,
+                        "cargo": arreglo[i].attributes.cargo,
+                        "ngaceta": arreglo[i].attributes.ngaceta,
+                        "fecha_gaceta": arreglo[i].attributes.fecha_gaceta,
+                        "orden_administrativa": arreglo[i].attributes.orden_administrativa
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setFirmasAutorizadas(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
     const obtenerValores = (valores) => {
         setRegistroSeleccionado(valores);
     }
@@ -911,6 +946,10 @@ export const MasterTablesState = ({ children }) => {
                             urlTabla = `/cuentas_contables/${valores.id}`;
                             break;
 
+                        case "firmas-autorizadas":
+                            urlTabla = `/firmas_autorizadas/${valores.id}`;
+                            break;
+
                         default:
                             break;
                     }
@@ -1052,6 +1091,11 @@ export const MasterTablesState = ({ children }) => {
                     urlTabla = "/cuentas_contables/";
                     break;
 
+                case "firmas-autorizadas":
+                    dataType = "saveFirmasAutorizadas";
+                    urlTabla = "/firmas_autorizadas/";
+                    break;
+
                 default:
                     break;
             }
@@ -1173,6 +1217,10 @@ export const MasterTablesState = ({ children }) => {
 
             case "cuentas-contables":
                 getCuentasContables();
+                break;
+
+            case "firmas-autorizadas":
+                getFirmasAutorizadas();
                 break;
 
             default:
@@ -1319,6 +1367,18 @@ export const MasterTablesState = ({ children }) => {
             );
         }
 
+        /* firmas autorizadas */
+        if (columnas === 'col-15') {
+            search = dataAux.filter(item => //aqui
+                item.nombre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.cargo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+                || item.ngaceta.toString().includes(palabra)
+                || item.fecha_gaceta.toString().includes(palabra)
+                || item.orden_administrativa.toString().includes(palabra)
+            );
+        }
+
         if(palabra === '') {
             actualizarTablas(tabla);
         } else {
@@ -1405,6 +1465,10 @@ export const MasterTablesState = ({ children }) => {
 
                 case "cuentas-contables":
                     setCuentasContables(search);
+                    break;
+
+                case "firmas-autorizadas":
+                    setFirmasAutorizadas(search);
                     break;
 
                 default:
@@ -1515,6 +1579,10 @@ export const MasterTablesState = ({ children }) => {
                 dataAux = cuentasContables;
                 break;
 
+            case "firmas-autorizadas":
+                dataAux = firmasAutorizadas;
+                break;
+
             default:
                 break;
         }
@@ -1544,6 +1612,8 @@ export const MasterTablesState = ({ children }) => {
         tipoDocumento,
         tipoContribuyente,
         cuentasContables,
+        firmasAutorizadas,
+        listReportes,
         submitMasterTables,
         setFormDataTables,
         deleteMasterTables,

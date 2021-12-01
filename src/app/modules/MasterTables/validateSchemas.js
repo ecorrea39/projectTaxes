@@ -135,6 +135,21 @@ export const SchemaTablesCol14 = Yup.object().shape({
         .required('- Campo obligatorio -')
 });
 
+export const SchemaTablesCol15 = Yup.object().shape({
+    documento: Yup.string()
+        .required('- Campo obligatorio -'),
+    nombre: Yup.string()
+        .required('- Campo obligatorio -'),
+    cargo: Yup.string()
+        .required('- Campo obligatorio -'),
+    ngaceta: Yup.string()
+        .required('- Campo obligatorio -'),
+    fecha_gaceta: Yup.string()
+        .required('- Campo obligatorio -'),
+    orden_administrativa: Yup.string()
+});
+
+
 
 
 

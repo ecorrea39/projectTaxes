@@ -89,5 +89,15 @@ export const initialValuesTablesCol14 = {
     auxiliar: ""
 }
 
+export const initialValuesTablesCol15 = {
+    documento: "",
+    nombre: "",
+    cargo: "",
+    ngaceta: "",
+    fecha_gaceta: "",
+    orden_administrativa: ""
+}
+
+
 
 

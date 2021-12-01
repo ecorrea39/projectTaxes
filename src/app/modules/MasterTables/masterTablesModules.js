@@ -94,6 +94,10 @@ function MasterTablesModule() {
             title = "Cuentas Contables";
             break;
 
+        case "firmas-autorizadas":
+            title = "Firmas Autorizadas";
+            break;
+
         default:
             break;
     }

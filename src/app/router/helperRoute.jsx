@@ -328,7 +328,14 @@ export const navFuncional = [
         url: "/tablas/cuentas-contables",
         icon: "",
         slug: "tablas-cuentas-contables"
+      },
+      {
+        title: "Firmas Autorizadas",
+        url: "/tablas/firmas-autorizadas",
+        icon: "",
+        slug: "tablas-firmas-autorizadas"
       }
+
     ]
   },
   {
