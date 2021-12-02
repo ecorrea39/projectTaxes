@@ -27,6 +27,8 @@ const QueryBuilderFormStep5 = (props) => {
 
     if (props.QueryFinal.agrupar.length > 0) {
       setAgrupar(props.QueryFinal.agrupar);
+      let aggregate = false;
+
       myMap.forEach(field => {
         if (!props.QueryFinal.agrupar.includes(field.name)) {
           availableForGroup.push({
@@ -36,20 +38,19 @@ const QueryBuilderFormStep5 = (props) => {
         }
 
         if (field.function && aggregateFunctions.includes(field.function.name.toLowerCase())) {
-          setGroupEnabled(true);
+          aggregate = true;
         }
       });
-    } else {
-      myMap.forEach(field => {
-        availableForGroup.push({
-          key: field.rowId,
-          name: field.name
-        });
 
-        if (field.function && aggregateFunctions.includes(field.function.name.toLowerCase())) {
-          setGroupEnabled(true);
-        }
-      });
+      if (!aggregate) {
+        setAgrupar([]);
+        availableForGroup = [];
+        availableForGroup = fillAllForGrouping(myMap);
+      } else {
+        setGroupEnabled(true);
+      }
+    } else {
+      availableForGroup = fillAllForGrouping(myMap);
     }
 
     if (props.QueryFinal.orden.length > 0) {
@@ -79,6 +80,23 @@ const QueryBuilderFormStep5 = (props) => {
     setForGrouping(availableForGroup);
     setforOrder(availableForOrder);
   }, []);
+
+  const fillAllForGrouping = (myMap) => {
+    let forGroup = [];
+
+    myMap.forEach(field => {
+      forGroup.push({
+        key: field.rowId,
+        name: field.name
+      });
+
+      if (field.function && aggregateFunctions.includes(field.function.name.toLowerCase())) {
+        setGroupEnabled(true);
+      }
+    });
+
+    return forGroup;
+  }
 
   const onChangeGroup = (nextTargetKeys, direction, moveKeys) => {
     setAgrupar(nextTargetKeys)

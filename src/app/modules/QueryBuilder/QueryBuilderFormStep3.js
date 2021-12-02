@@ -116,7 +116,7 @@ const QueryBuilderFormStep3 = (props) => {
     let camposCalificados = [];
 
     setJoins(props.QueryFinal.joins);
-    if (props.QueryFinal.joins) setFulfilled(true);
+    if (props.QueryFinal.joins.length > 0) setFulfilled(true);
 
     campos.forEach(campo => {
       const index = campo.split("-");
@@ -346,7 +346,7 @@ const QueryBuilderFormStep3 = (props) => {
                         sortIcon={sortIcon}
                         customStyles={customStyles}
                         responsive={true}
-                        noDataComponent="Por favor agregue un Join"
+                        noDataComponent="Todas las tablas seleccionadas en el paso anterior, deben formar parte de un Join."
                   />
                 </Col>
               </Row>

@@ -81,6 +81,22 @@ const QueryBuilder = (props) => {
     else prev();
   }
 
+  const clearSentiveSteps = () => {
+    //Si los campos del paso 2 cambian, se borra todo de allí en adelante
+    //para garantizar consistencia de datos
+    
+    setValoresQuery((prevState) => {
+      return {
+        ...prevState,
+        joins: [],
+        mapa_campos: [],
+        orden: [],
+        direccion: 'ASC',
+        agrupar: []
+      };
+    });
+  }
+
   const QueryStep1 = (objeto) => {
     setValoresQuery((prevState) => {
       return {
@@ -153,6 +169,7 @@ const QueryBuilder = (props) => {
         avanzando={moveForward}
         cambiarFormularioActual={cambiarStep}
         CambiarQuery={QueryStep2}
+        ClearData={clearSentiveSteps}
         QueryFinal={valoresQuery}
         regresar={props.regresar}
       />,

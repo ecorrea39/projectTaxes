@@ -7,3 +7,32 @@
     margin-bottom: 16px;
     padding: 10px;
 }
+
+.steps .ant-steps-item-icon .ant-steps-icon {
+    top: -2px;
+    line-height: 0.8;
+}
+
+.steps .ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
+    top: -3.5px;
+}
+
+.steps .ant-steps-item-content .ant-steps-item-title {
+    font-size: 12px;
+    line-height: 1.2;
+}
+
+.steps-guard {
+    margin-top: 12px;
+}
+
+.question-info-icon {
+    margin: 4px 0px 0px 10px;
+    height: 50%;
+}
+
+.limit-label {
+    font-size: 18px;
+    color: #5A5EFF;
+    margin-bottom: 12px;
+}

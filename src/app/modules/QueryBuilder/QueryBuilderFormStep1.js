@@ -5,9 +5,12 @@ import * as Yup from "yup";
 import {useFormik} from "formik";
 import { Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { QuestionCircleOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
 
 const textLabelColor = {
   'color': '#5A5EFF',
+  'marginLeft': '12px'
 };
 
 const { confirm } = Modal;
@@ -133,7 +136,18 @@ const QueryBuilderFormStep1 = (props) => {
                 <Row>
                   <Col md={6}>
                     <Form.Group as={Col} controlId="nombre">
-                      <Form.Label style={textLabelColor}>Nombre</Form.Label>
+                      <Row>
+                        <Form.Label style={textLabelColor}>Nombre</Form.Label>
+                        
+                        <Tooltip title="Se usará como parte del nombre del archivo"
+                        color="geekblue" key="geekblue" placement="right"
+                        >
+                          <QuestionCircleOutlined 
+                          className="question-info-icon" 
+                          style={{ color: 'green' }}
+                          />
+                        </Tooltip>
+                      </Row>
                       <Form.Control size="lg" type="text" placeholder="Nombre"
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
@@ -151,7 +165,18 @@ const QueryBuilderFormStep1 = (props) => {
 
                   <Col md={6}>
                     <Form.Group as={Col} controlId="titulo">
-                      <Form.Label style={textLabelColor}>Título</Form.Label>
+                      <Row>
+                        <Form.Label style={textLabelColor}>Título</Form.Label>
+
+                        <Tooltip title="Se usará como encabezado en el resultado de la consulta"
+                        color="geekblue" key="geekblue" placement="right"
+                        >
+                          <QuestionCircleOutlined 
+                          className="question-info-icon" 
+                          style={{ color: 'green' }}
+                          />
+                        </Tooltip>
+                      </Row>
                       <Form.Control size="lg" type="text" placeholder="Título"
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
@@ -171,7 +196,18 @@ const QueryBuilderFormStep1 = (props) => {
                 <Row>
                   <Col md={12}>
                     <Form.Group as={Col} controlId="descripcion">
-                      <Form.Label style={textLabelColor}>Descripción</Form.Label>
+                      <Row>
+                        <Form.Label style={textLabelColor}>Descripción</Form.Label>
+                        
+                        <Tooltip title="Mayor información sobre la consulta"
+                        color="geekblue" key="geekblue" placement="right"
+                        >
+                          <QuestionCircleOutlined 
+                          className="question-info-icon" 
+                          style={{ color: 'green' }}
+                          />
+                        </Tooltip>
+                      </Row>
                       <Form.Control as="textarea" size="lg" type="text" rows="3" placeholder="Descripción"
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}

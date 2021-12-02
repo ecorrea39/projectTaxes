@@ -88,7 +88,7 @@ const QueryBuilderFormStep4 = (props) => {
             </a>
 
             <a title="Enlazar con lista" style={styleBtn}  onClick={() => addLista(row)}
-                className="btn btn-icon btn-hover-light btn-sm mx-3">
+                className="btn btn-icon btn-hover-light btn-sm">
                 {row.list_table && <FilterTwoTone />}
                 {!row.list_table && <FilterOutlined />}
             </a>
@@ -244,6 +244,16 @@ const QueryBuilderFormStep4 = (props) => {
     setIsModalVisible(false);
   };
 
+  const removeList = () => {
+    let allTmp = allFields.slice();
+    let tmp = allTmp[selectedRow.rowId];
+    delete tmp.list_table;
+    allTmp[selectedRow.rowId] = tmp
+
+    setAllFields(allTmp);
+    setIsModalVisible(false);
+  }
+
   const addFunction = (row) => {
     setSelectedRow(row);
 
@@ -270,6 +280,16 @@ const QueryBuilderFormStep4 = (props) => {
   }
 
   const addFunctionCancel = () => {
+    setIsFunctionVisible(false);
+  }
+
+  const removeFunction = () => {
+    let allTmp = allFields.slice();
+    let tmp = allTmp[selectedRow.rowId];
+    delete tmp.function;
+    allTmp[selectedRow.rowId] = tmp
+
+    setAllFields(allTmp);
     setIsFunctionVisible(false);
   }
 
@@ -374,6 +394,21 @@ const QueryBuilderFormStep4 = (props) => {
                 cancelText="Cancelar"
                 width={800}
                 okButtonProps={{disabled: formik.values.valor === ""}}
+                footer={[
+                  <Button key="remove" onClick={removeList}
+                  className="modal-btn modal-btn-danger" disabled={!selectedRow.list_table}
+                  hidden={!selectedRow.list_table}>
+                    Eliminar
+                  </Button>,
+                  <Button key="return" onClick={addListaCancel}
+                  className="modal-btn modal-btn-secundary">
+                    Cancelar
+                  </Button>,
+                  <Button key="submit" onClick={addListaOk} 
+                  className="modal-btn modal-btn-primary" disabled={formik.values.valor === ""}>
+                    Aceptar
+                  </Button>,
+                ]}
               >
                 <Row>
                   <Col md={4}>
@@ -440,6 +475,21 @@ const QueryBuilderFormStep4 = (props) => {
                 cancelText="Cancelar"
                 width={600}
                 okButtonProps={{disabled: formik.values.funcion === ""}}
+                footer={[
+                  <Button key="remove" onClick={removeFunction}
+                  className="modal-btn modal-btn-danger" disabled={!selectedRow.function}
+                  hidden={!selectedRow.function}>
+                    Eliminar
+                  </Button>,
+                  <Button key="return" onClick={addFunctionCancel}
+                  className="modal-btn modal-btn-secundary">
+                    Cancelar
+                  </Button>,
+                  <Button key="submit" onClick={addFunctionOk} 
+                  className="modal-btn modal-btn-primary" disabled={formik.values.funcion === ""}>
+                    Aceptar
+                  </Button>,
+                ]}
               >
                 <Row>
                   <Col md={12}>
