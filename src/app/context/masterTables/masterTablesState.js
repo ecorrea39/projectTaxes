@@ -30,10 +30,13 @@ export const MasterTablesState = ({ children }) => {
     const [tipoContribuyente, setTipoContribuyente] = useState([]);
     const [cuentasContables, setCuentasContables] = useState([]);
     const [firmasAutorizadas, setFirmasAutorizadas] = useState([]);
+    const [unidadEstadal, setUnidadEstadal] = useState([]);
     const [formDataTables, setFormDataTables] = useState({});
     const [registroSeleccionado, setRegistroSeleccionado] = useState({});
 
     const listReportes = ["Certificado de Solvencia","Resolución de incumplimiento de deberes formales"];
+    const listRegiones = ['Central','Centro Occidental','Dependencias Federales','Guayana','La Guaira','Los Andres','Los Llanos','Nor Oriental','Otras Dependencias Federales (M)','Región Capital','Registro de Normalización (Municipio)','Zuliana'];
+    const listRedi = ['Redi Andres','Redi Central','Redi Centro Occidente','Redi Guayana','Redi Llanos','Redi Oriente'];
 
     let dataAux = [];
 
@@ -62,6 +65,7 @@ export const MasterTablesState = ({ children }) => {
         getTipoContribuyente();
         getCuentasContables();
         getFirmasAutorizadas();
+        getUnidadEstadalTributos();
     },[]);
 
     const getBancos = async () => {
@@ -339,11 +343,16 @@ export const MasterTablesState = ({ children }) => {
             let arreglo = [];
             let lista = [];
             arreglo = respuesta.data.data;
+            console.log('estados ', arreglo)
             arreglo.map((x, i) => {
                 lista.push(
                     {
+                        "id": arreglo[i].id,
                         "cod_estado": arreglo[i].attributes.cod_estado,
-                        "descripcion": arreglo[i].attributes.descripcion
+                        "descripcion": arreglo[i].attributes.descripcion,
+                        "region": arreglo[i].attributes.region,
+                        "redi": arreglo[i].attributes.redi,
+                        "unidad_estadal": arreglo[i].attributes.unidad_estadal
                     }
                 )
             });
@@ -697,6 +706,32 @@ export const MasterTablesState = ({ children }) => {
 
     }
 
+    const getUnidadEstadalTributos = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/unidad_estadal/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "cod": arreglo[i].attributes.cod,
+                        "asignacion": arreglo[i].attributes.asignacion
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setUnidadEstadal(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
     const obtenerValores = (valores) => {
         setRegistroSeleccionado(valores);
     }
@@ -830,6 +865,14 @@ export const MasterTablesState = ({ children }) => {
                 });
                 break;
 
+            case "estados":
+                estados.map((x) => {
+                    if(x.descripcion.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
             default:
                 break;
         }
@@ -948,6 +991,10 @@ export const MasterTablesState = ({ children }) => {
 
                         case "firmas-autorizadas":
                             urlTabla = `/firmas_autorizadas/${valores.id}`;
+                            break;
+
+                        case "estados":
+                            urlTabla = `/geographic_data_estados/${valores.id}`;
                             break;
 
                         default:
@@ -1096,6 +1143,11 @@ export const MasterTablesState = ({ children }) => {
                     urlTabla = "/firmas_autorizadas/";
                     break;
 
+                case "estados":
+                    dataType = "saveGeographicDataEstados";
+                    urlTabla = "/geographic_data_estados/";
+                    break;
+
                 default:
                     break;
             }
@@ -1221,6 +1273,10 @@ export const MasterTablesState = ({ children }) => {
 
             case "firmas-autorizadas":
                 getFirmasAutorizadas();
+                break;
+
+            case "estados":
+                getEstados();
                 break;
 
             default:
@@ -1369,13 +1425,25 @@ export const MasterTablesState = ({ children }) => {
 
         /* firmas autorizadas */
         if (columnas === 'col-15') {
-            search = dataAux.filter(item => //aqui
+            search = dataAux.filter(item =>
                 item.nombre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
                 || item.cargo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
                 || item.id.toString().includes(palabra)
                 || item.ngaceta.toString().includes(palabra)
                 || item.fecha_gaceta.toString().includes(palabra)
                 || item.orden_administrativa.toString().includes(palabra)
+            );
+        }
+
+        /* estados */
+        if (columnas === 'col-16') {
+            search = dataAux.filter(item =>
+                item.region.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.redi.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.descripcion.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+                || item.cod_estado.toString().includes(palabra)
+                || item.unidad_estadal.toString().includes(palabra)
             );
         }
 
@@ -1469,6 +1537,10 @@ export const MasterTablesState = ({ children }) => {
 
                 case "firmas-autorizadas":
                     setFirmasAutorizadas(search);
+                    break;
+
+                case "estados":
+                    setEstados(search);
                     break;
 
                 default:
@@ -1613,7 +1685,10 @@ export const MasterTablesState = ({ children }) => {
         tipoContribuyente,
         cuentasContables,
         firmasAutorizadas,
+        unidadEstadal,
         listReportes,
+        listRegiones,
+        listRedi,
         submitMasterTables,
         setFormDataTables,
         deleteMasterTables,

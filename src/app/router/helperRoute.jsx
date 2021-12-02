@@ -334,8 +334,13 @@ export const navFuncional = [
         url: "/tablas/firmas-autorizadas",
         icon: "",
         slug: "tablas-firmas-autorizadas"
+      },
+      {
+        title: "Estados",
+        url: "/tablas/estados",
+        icon: "",
+        slug: "tablas-estados"
       }
-
     ]
   },
   {
