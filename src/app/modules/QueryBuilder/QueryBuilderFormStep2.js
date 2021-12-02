@@ -120,13 +120,14 @@ const QueryBuilderFormStep2 = (props) => {
       tablas: tables
     });
     
-    if (props.QueryFinal.campos) {
-      const oldValue = props.QueryFinal.campos;
-      const theSame = (oldValue.length === value.length) && 
-        oldValue.every((value, index) => value === value[index]);
+    //Debo perfeccionar ésta función a mano, every no funciona
+    // if (props.QueryFinal.campos) {
+    //   const oldValue = props.QueryFinal.campos;
+    //   const theSame = (oldValue.length === value.length) && 
+    //     oldValue.every((value, index) => value === value[index]);
 
-      if (!theSame) props.ClearData();
-    }
+    //   if (!theSame) props.ClearData();
+    // }
 
     props.cambiarFormularioActual(3, true);
   }

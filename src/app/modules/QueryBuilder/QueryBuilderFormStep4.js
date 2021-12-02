@@ -14,6 +14,8 @@ const textLabelColor = {
 };
 
 const { confirm } = Modal;
+// const dataTypes = ['text', 'number', 'date', 'time', 'datetime', 'select', 'multiselect', 'treeselect', 'treemultiselect', 'boolean'];
+const dataTypes = ['bigint', 'boolean', 'character', 'character varying', 'date', 'integer', 'numeric', 'real', 'time without time zone', 'timestamp with time zone'];
 
 const QueryBuilderFormStep4 = (props) => {
   const [initialValues, setInitialValues] = useState({
@@ -22,6 +24,7 @@ const QueryBuilderFormStep4 = (props) => {
     valor: "",
     funcion: "",
     args: "",
+    tipo_dato: "character varying",
     alias: ""
   });
 
@@ -259,9 +262,11 @@ const QueryBuilderFormStep4 = (props) => {
 
     if (row.function) {
       formik.setFieldValue("funcion", row.function.name);
+      formik.setFieldValue("tipo_dato", row.function.dataType);
       formik.setFieldValue("args", row.function.args);
     } else {
       formik.setFieldValue("funcion", "");
+      formik.setFieldValue("tipo_dato", "character varying");
       formik.setFieldValue("args", "");
     }
 
@@ -272,6 +277,7 @@ const QueryBuilderFormStep4 = (props) => {
     let tmp = allFields.slice();
     tmp[selectedRow.rowId].function = {
       name: formik.values.funcion,
+      dataType: formik.values.tipo_dato,
       args: formik.values.args
     }
 
@@ -500,6 +506,24 @@ const QueryBuilderFormStep4 = (props) => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values.funcion}
                       >
+                      </Form.Control>
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={12}>
+                    <Form.Group controlId="tipo_dato">
+                      <Form.Label style={textLabelColor}>Tipo de dato</Form.Label>
+                      <Form.Control as="select"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.tipo_dato}
+                      >
+                        {/* <option disabled key="0" value="">Seleccione el lado izquierdo</option> */}
+
+                        {dataTypes.map((elemento) =>
+                          <option key={elemento} value={elemento}>{elemento}</option>
+                        )}
                       </Form.Control>
                     </Form.Group>
                   </Col>

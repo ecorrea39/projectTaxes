@@ -1,40 +1,69 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Card, Col, Container, Form, Row} from 'react-bootstrap';
-import {Radio, RadioGroup, FormControlLabel, FormControl, FormLabel} from '@material-ui/core';
 import './QueryRunner.css';
 import { Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { QuestionCircleOutlined } from '@ant-design/icons';
-import { Tooltip } from 'antd';
-import {useFormik} from "formik";
+import { Query, Builder, Utils as QbUtils } from "react-awesome-query-builder";
+import { JsonGroup, Config, ImmutableTree, BuilderProps } from "react-awesome-query-builder";
+import AntdConfig from "react-awesome-query-builder/lib/config/antd";
+import "antd/dist/antd.css";
+import "react-awesome-query-builder/lib/css/styles.css";
 
-const textLabelColor = {
-  'color': '#5A5EFF',
-  'marginLeft': '12px'
+const InitialConfig = AntdConfig;
+
+const config = {
+  ...InitialConfig,
+  fields: {
+    qty: {
+      label: "Qty",
+      type: "number",
+      fieldSettings: {
+        min: 0
+      },
+      valueSources: ["value"],
+      preferWidgets: ["number"]
+    },
+    price: {
+      label: "Price",
+      type: "number",
+      valueSources: ["value"],
+      fieldSettings: {
+        min: 10,
+        max: 100
+      },
+      preferWidgets: ["slider", "rangeslider"]
+    },
+    color: {
+      label: "Color",
+      type: "select",
+      valueSources: ["value"],
+      fieldSettings: {
+        listValues: [
+          { value: "yellow", title: "Yellow" },
+          { value: "green", title: "Green" },
+          { value: "orange", title: "Orange" }
+        ]
+      }
+    },
+    is_promotion: {
+      label: "Promo?",
+      type: "boolean",
+      operators: ["equal"],
+      valueSources: ["value"]
+    }
+  }
 };
 
-const optionLabelColor = {
-  'color': '#000000',
-};
+const queryValue = { id: QbUtils.uuid(), type: "group" };
 
 const { confirm } = Modal;
-const regexp = /^[0-9]+$/;
 
 const QueryRunnerStep2 = (props) => {
   const [queryData, setQueryData] = useState('');
-//   const [initialValues, setInitialValues] = useState({
-//     offset: "",
-//     limite: "",
-//     formato: "pdf"
-//   });
-
-//   useEffect(() => {
-//     setInitialValues({
-//       offset: props.WhereFinal.limites.offset ? props.WhereFinal.limites.offset : "",
-//       limite: props.WhereFinal.limites.limite ? props.WhereFinal.limites.limite : "",
-//       formato: props.WhereFinal.formato
-//     })
-//   }, []);
+  const [state, setState] = useState({
+    tree: QbUtils.checkTree(QbUtils.loadTree(queryValue), config),
+    config: config
+  });
 
   useEffect(() => {
     setQueryData(props.queryData);
@@ -48,10 +77,6 @@ const QueryRunnerStep2 = (props) => {
     //
   };
 
-  const limitEntry = (event) => {
-    if (event.key.search(regexp) === -1) event.preventDefault();
-  }
-
   const onCancel = () => {
     confirm({
       title: '¿Desea cancelar la ejecución de la consulta?',
@@ -64,10 +89,19 @@ const QueryRunnerStep2 = (props) => {
     });
   };
 
-//   const formik = useFormik({
-//     initialValues,
-//     enableReinitialize: true
-//   });
+  const onChange = (immutableTree, config) => {
+    setState({ tree: immutableTree, config: config });
+
+    const jsonTree = QbUtils.getTree(immutableTree);
+  };
+
+  const renderBuilder = (props) => (
+    <div className="query-builder-container" style={{ padding: "10px" }}>
+      <div className="query-builder qb-lite">
+        <Builder {...props} />
+      </div>
+    </div>
+  );
 
   return (
     <Card bg="default" text="success">
@@ -88,90 +122,28 @@ const QueryRunnerStep2 = (props) => {
 
               <br/>
 
-              {/* <Row>
+              <Row>
                 <Col md={12}>
-                  <FormControl component="fieldset">
-                    <FormLabel component="legend" style={textLabelColor}>Formato de salida</FormLabel>
-                    <RadioGroup name="formato" 
-                      value={formik.values.formato}
-                      onChange={formik.handleChange}
-                    >
-                      <Row>
-                        <Col md={12} style={{'marginLeft': '12px'}}>
-                          <FormControlLabel value="pdf" control={<Radio />} 
-                            label="PDF" style={optionLabelColor} 
-                          />
-                          <FormControlLabel value="xlsx" control={<Radio />} 
-                            label="XLSX" style={optionLabelColor}
-                          />
-                          <FormControlLabel value="txt" control={<Radio />} 
-                            label="TXT" style={optionLabelColor}
-                          />
-                          <FormControlLabel value="ods" control={<Radio />} 
-                            label="ODS" style={optionLabelColor}
-                          />
-                        </Col>
-                      </Row>
-                    </RadioGroup>
-                  </FormControl>
+                <div>
+                  <Query
+                    {...config}
+                    value={state.tree}
+                    onChange={onChange}
+                    renderBuilder={renderBuilder}
+                  />
+                  <div className="query-builder-result">
+                    <div className="query-header">
+                      SQL where:{" "}
+                      <pre>
+                        {JSON.stringify(QbUtils.sqlFormat(state.tree, state.config))}
+                      </pre>
+                    </div>
+                  </div>
+                </div>
                 </Col>
               </Row>
 
               <br/>
-
-              <Row>
-                <div className="limit-label">Limitar el número de resultados</div>
-              </Row>
-
-              <Row>
-                <Col md={6}>
-                  <Form.Group as={Col} controlId="offset">
-                    <Row>
-                      <Form.Label style={textLabelColor}>Omitir</Form.Label>
-                      
-                      <Tooltip title="Cantidad de filas que se omitirán al inicio"
-                      color="geekblue" key="geekblue" placement="right"
-                      >
-                        <QuestionCircleOutlined 
-                        className="question-info-icon" 
-                        style={{ color: 'green' }}
-                        />
-                      </Tooltip>
-                    </Row>
-                    <Form.Control size="lg" type="number" placeholder="Deje en blanco para no omitir"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      onKeyPress={limitEntry}
-                      value={formik.values.offset}
-                    />
-                  </Form.Group>
-                </Col>
-
-                <Col md={6}>
-                  <Form.Group as={Col} controlId="limite">
-                    <Row>
-                      <Form.Label style={textLabelColor}>Máximo</Form.Label>
-
-                      <Tooltip title="Máxima cantidad de columnas que tendrá el resultado"
-                      color="geekblue" key="geekblue" placement="right"
-                      >
-                        <QuestionCircleOutlined 
-                        className="question-info-icon" 
-                        style={{ color: 'green' }}
-                        />
-                      </Tooltip>
-                    </Row>
-                    <Form.Control size="lg" type="number" placeholder="Deje en blanco para no limitar"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      onKeyPress={limitEntry}
-                      value={formik.values.limite}
-                    />
-                  </Form.Group>
-                </Col>
-              </Row> 
-
-              <br/>*/}
 
               <Row>
                 <Col md={2}>
