@@ -3,8 +3,7 @@ import {Button, Card, Col, Container, Form, Row} from 'react-bootstrap';
 import {Radio, RadioGroup, FormControlLabel, FormControl, FormLabel} from '@material-ui/core';
 import './QueryRunner.css';
 import { Modal } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
 import {useFormik} from "formik";
 
@@ -25,16 +24,8 @@ const QueryRunnerStep1 = (props) => {
   const [initialValues, setInitialValues] = useState({
     offset: "",
     limite: "",
-    formato: "pdf"
+    formato: "xlsx"
   });
-
-  useEffect(() => {
-    setInitialValues({
-      offset: props.WhereFinal.limites.offset ? props.WhereFinal.limites.offset : "",
-      limite: props.WhereFinal.limites.limite ? props.WhereFinal.limites.limite : "",
-      formato: props.WhereFinal.formato
-    })
-  }, []);
 
   useEffect(() => {
     setQueryData(props.queryData);
@@ -103,11 +94,11 @@ const QueryRunnerStep1 = (props) => {
                     >
                       <Row>
                         <Col md={12} style={{'marginLeft': '12px'}}>
-                          <FormControlLabel value="pdf" control={<Radio />} 
-                            label="PDF" style={optionLabelColor} 
-                          />
                           <FormControlLabel value="xlsx" control={<Radio />} 
                             label="XLSX" style={optionLabelColor}
+                          />
+                          <FormControlLabel value="pdf" control={<Radio />} 
+                            label="PDF" style={optionLabelColor} 
                           />
                           <FormControlLabel value="txt" control={<Radio />} 
                             label="TXT" style={optionLabelColor}

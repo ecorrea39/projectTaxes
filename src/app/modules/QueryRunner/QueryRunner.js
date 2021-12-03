@@ -11,8 +11,9 @@ const QueryRunner = (props) => {
   const [current, setCurrent] = React.useState(0);
   const [step, setStep] = useState(1);
   const [valoresWhere, setValoresWhere] = useState({
-    formato: 'pdf',
-    limites: {}
+    formato: '',
+    limites: {},
+    where: ''
   });
 
   const cambiarStep = (paso) => {
@@ -28,6 +29,15 @@ const QueryRunner = (props) => {
         ...prevState,
         formato: objeto.formato,
         limites: objeto.limites
+      };
+    });
+  };
+
+  const WhereStep2 = (objeto) => {
+    setValoresWhere((prevState) => {
+      return {
+        ...prevState,
+        where: objeto.where
       };
     });
   };
@@ -51,6 +61,7 @@ const QueryRunner = (props) => {
       <QueryRunnerStep2
         formularioActual={step}
         cambiarFormularioActual={cambiarStep}
+        CambiarQuery={WhereStep2}
         WhereFinal={valoresWhere}
         queryData={props.queryData}
         regresar={props.regresar}
@@ -61,7 +72,6 @@ const QueryRunner = (props) => {
       content: 
       <QueryRunnerStep3
         formularioActual={step}
-        cambiarFormularioActual={cambiarStep}
         WhereFinal={valoresWhere}
         queryData={props.queryData}
         regresar={props.regresar}
