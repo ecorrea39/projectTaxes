@@ -16,6 +16,7 @@ export const MasterTablesState = ({ children }) => {
     const [actividadesEconomicas, setActividadesEconomicas] = useState([]);
     const [conceptos, setConceptos] = useState([]);
     const [estados, setEstados] = useState([]);
+    const [municipios, setMunicipios] = useState([]);
     const [registrosMercantiles, setRegistrosMercantiles] = useState([]);
     const [medidaValor, setMedidaValor] = useState([]);
     const [motivoSancion, setMotivoSancion] = useState([]);
@@ -30,10 +31,13 @@ export const MasterTablesState = ({ children }) => {
     const [tipoContribuyente, setTipoContribuyente] = useState([]);
     const [cuentasContables, setCuentasContables] = useState([]);
     const [firmasAutorizadas, setFirmasAutorizadas] = useState([]);
+    const [unidadEstadal, setUnidadEstadal] = useState([]);
     const [formDataTables, setFormDataTables] = useState({});
     const [registroSeleccionado, setRegistroSeleccionado] = useState({});
 
     const listReportes = ["Certificado de Solvencia","Resolución de incumplimiento de deberes formales"];
+    const listRegiones = ['Central','Centro Occidental','Dependencias Federales','Guayana','La Guaira','Los Andres','Los Llanos','Nor Oriental','Otras Dependencias Federales (M)','Región Capital','Registro de Normalización (Municipio)','Zuliana'];
+    const listRedi = ['Redi Andres','Redi Central','Redi Centro Occidente','Redi Guayana','Redi Llanos','Redi Oriente'];
 
     let dataAux = [];
 
@@ -49,6 +53,7 @@ export const MasterTablesState = ({ children }) => {
         getConceptos();
         getRegistrosMercantiles();
         getEstados();
+        getMunicipios();
         getMedidaValor();
         getMotivoSancion();
         getDiasFestivos();
@@ -62,6 +67,7 @@ export const MasterTablesState = ({ children }) => {
         getTipoContribuyente();
         getCuentasContables();
         getFirmasAutorizadas();
+        getUnidadEstadalTributos();
     },[]);
 
     const getBancos = async () => {
@@ -342,13 +348,45 @@ export const MasterTablesState = ({ children }) => {
             arreglo.map((x, i) => {
                 lista.push(
                     {
+                        "id": arreglo[i].id,
                         "cod_estado": arreglo[i].attributes.cod_estado,
-                        "descripcion": arreglo[i].attributes.descripcion
+                        "descripcion": arreglo[i].attributes.descripcion,
+                        "region": arreglo[i].attributes.region,
+                        "redi": arreglo[i].attributes.redi,
+                        "unidad_estadal": arreglo[i].attributes.unidad_estadal
                     }
                 )
             });
             lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
             setEstados(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getMunicipios = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/geographic_data_municipios/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "cod_municipio": arreglo[i].attributes.cod_municipio,
+                        "id_estado": arreglo[i].attributes.id_estado,
+                        "descripcion": arreglo[i].attributes.descripcion,
+                        "estado": arreglo[i].attributes['id_estado_estado.descripcion']
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setMunicipios(lista);
 
         } catch (error) {
             console.log(error)
@@ -697,6 +735,32 @@ export const MasterTablesState = ({ children }) => {
 
     }
 
+    const getUnidadEstadalTributos = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/unidad_estadal/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "cod": arreglo[i].attributes.cod,
+                        "asignacion": arreglo[i].attributes.asignacion
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setUnidadEstadal(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
     const obtenerValores = (valores) => {
         setRegistroSeleccionado(valores);
     }
@@ -705,7 +769,7 @@ export const MasterTablesState = ({ children }) => {
         setRegistroSeleccionado({});
     }
 
-    const validarDescripcion = (e, props) => {
+    const validarDescripcion = (e, props, formik) => {
 
         let busqueda = false;
         let valor = e.target.value.toUpperCase();
@@ -830,6 +894,22 @@ export const MasterTablesState = ({ children }) => {
                 });
                 break;
 
+            case "estados":
+                estados.map((x) => {
+                    if(x.descripcion.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "municipios":
+                municipios.map((x) => {
+                    if(x.descripcion.toUpperCase().trim() === valor.trim() && Number(x.id_estado) === Number(formik.values.id_estado)) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
             default:
                 break;
         }
@@ -948,6 +1028,14 @@ export const MasterTablesState = ({ children }) => {
 
                         case "firmas-autorizadas":
                             urlTabla = `/firmas_autorizadas/${valores.id}`;
+                            break;
+
+                        case "estados":
+                            urlTabla = `/geographic_data_estados/${valores.id}`;
+                            break;
+
+                        case "municipios":
+                            urlTabla = `/geographic_data_municipios/${valores.id}`;
                             break;
 
                         default:
@@ -1096,6 +1184,16 @@ export const MasterTablesState = ({ children }) => {
                     urlTabla = "/firmas_autorizadas/";
                     break;
 
+                case "estados":
+                    dataType = "saveGeographicDataEstados";
+                    urlTabla = "/geographic_data_estados/";
+                    break;
+
+                case "municipios":
+                    dataType = "saveGeographicDataMunicipios";
+                    urlTabla = "/geographic_data_municipios/";
+                    break;
+
                 default:
                     break;
             }
@@ -1221,6 +1319,14 @@ export const MasterTablesState = ({ children }) => {
 
             case "firmas-autorizadas":
                 getFirmasAutorizadas();
+                break;
+
+            case "estados":
+                getEstados();
+                break;
+
+            case "municipios":
+                getMunicipios();
                 break;
 
             default:
@@ -1369,13 +1475,35 @@ export const MasterTablesState = ({ children }) => {
 
         /* firmas autorizadas */
         if (columnas === 'col-15') {
-            search = dataAux.filter(item => //aqui
+            search = dataAux.filter(item =>
                 item.nombre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
                 || item.cargo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
                 || item.id.toString().includes(palabra)
                 || item.ngaceta.toString().includes(palabra)
                 || item.fecha_gaceta.toString().includes(palabra)
                 || item.orden_administrativa.toString().includes(palabra)
+            );
+        }
+
+        /* estados */
+        if (columnas === 'col-16') {
+            search = dataAux.filter(item =>
+                item.region.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.redi.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.descripcion.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+                || item.cod_estado.toString().includes(palabra)
+                || item.unidad_estadal.toString().includes(palabra)
+            );
+        }
+
+        /* municipios */
+        if (columnas === 'col-17') {
+            search = dataAux.filter(item =>
+                item.descripcion.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.estado.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+                || item.cod_municipio.toString().includes(palabra)
             );
         }
 
@@ -1469,6 +1597,14 @@ export const MasterTablesState = ({ children }) => {
 
                 case "firmas-autorizadas":
                     setFirmasAutorizadas(search);
+                    break;
+
+                case "estados":
+                    setEstados(search);
+                    break;
+
+                case "municipios":
+                    setMunicipios(search);
                     break;
 
                 default:
@@ -1583,6 +1719,14 @@ export const MasterTablesState = ({ children }) => {
                 dataAux = firmasAutorizadas;
                 break;
 
+            case "estados":
+                dataAux = estados;
+                break;
+
+            case "municipios":
+                dataAux = municipios;
+                break;
+
             default:
                 break;
         }
@@ -1600,6 +1744,7 @@ export const MasterTablesState = ({ children }) => {
         conceptos,
         registrosMercantiles,
         estados,
+        municipios,
         medidaValor,
         motivoSancion,
         diasFestivos,
@@ -1613,7 +1758,10 @@ export const MasterTablesState = ({ children }) => {
         tipoContribuyente,
         cuentasContables,
         firmasAutorizadas,
+        unidadEstadal,
         listReportes,
+        listRegiones,
+        listRedi,
         submitMasterTables,
         setFormDataTables,
         deleteMasterTables,

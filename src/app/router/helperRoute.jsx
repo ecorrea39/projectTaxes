@@ -352,8 +352,19 @@ export const navFuncional = [
         url: "/tablas/firmas-autorizadas",
         icon: "",
         slug: "tablas-firmas-autorizadas"
+      },
+      {
+        title: "Estados",
+        url: "/tablas/estados",
+        icon: "",
+        slug: "tablas-estados"
+      },
+      {
+        title: "Municipios",
+        url: "/tablas/municipios",
+        icon: "",
+        slug: "tablas-municipios"
       }
-
     ]
   },
   {

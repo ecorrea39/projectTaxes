@@ -149,6 +149,29 @@ export const SchemaTablesCol15 = Yup.object().shape({
     orden_administrativa: Yup.string()
 });
 
+export const SchemaTablesCol16 = Yup.object().shape({
+    cod_estado: Yup.string()
+        .required('- Campo obligatorio -'),
+    region: Yup.string()
+        .required('- Campo obligatorio -'),
+    redi: Yup.string()
+        .required('- Campo obligatorio -'),
+    unidad_estadal: Yup.string(),
+    descripcion: Yup.string()
+        .required('- Campo obligatorio -')
+});
+
+export const SchemaTablesCol17 = Yup.object().shape({
+    cod_municipio: Yup.string()
+        .required('- Campo obligatorio -'),
+    id_estado: Yup.string()
+        .required('- Campo obligatorio -'),
+    descripcion: Yup.string()
+        .required('- Campo obligatorio -')
+});
+
+
+
 
 
 

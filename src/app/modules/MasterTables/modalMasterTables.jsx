@@ -23,7 +23,9 @@ import { initialValuesTablesCol1,
          initialValuesTablesCol12,
          initialValuesTablesCol13,
          initialValuesTablesCol14,
-         initialValuesTablesCol15 } from "./initialValues";
+         initialValuesTablesCol15,
+         initialValuesTablesCol16,
+         initialValuesTablesCol17 } from "./initialValues";
 
 import { SchemaTablesCol1,
          SchemaTablesCol2,
@@ -39,7 +41,9 @@ import { SchemaTablesCol1,
          SchemaTablesCol12,
          SchemaTablesCol13,
          SchemaTablesCol14,
-         SchemaTablesCol15 } from "./validateSchemas";
+         SchemaTablesCol15,
+         SchemaTablesCol16,
+         SchemaTablesCol17 } from "./validateSchemas";
 
 import { BaseFormik } from "./baseFormik";
 import { BaseFormikBancosRecaudadores } from "./baseFormikBancosRecaudadores";
@@ -56,6 +60,8 @@ import { BaseFormikTipoDocumento } from './baseFormikTipoDocumento';
 import { BaseFormikTipoContribuyente } from './baseFormikTipoContribuyente';
 import { BaseFormikCuentasContables } from './baseFormikCuentasContables';
 import { BaseFormikFirmasAutorizadas } from './baseFormikFirmasAutorizadas';
+import { BaseFormikEstados } from './baseFormikEstados';
+import { BaseFormikMunicipios } from './baseFormikMunicipios';
 
 function ModalMasterTables(props) {
 
@@ -173,6 +179,16 @@ function ModalMasterTables(props) {
         case "firmas-autorizadas":
             initialValuesTables = initialValuesTablesCol15;
             schemaTables = SchemaTablesCol15;
+            break;
+
+        case "estados":
+            initialValuesTables = initialValuesTablesCol16;
+            schemaTables = SchemaTablesCol16;
+            break;
+
+        case "municipios":
+            initialValuesTables = initialValuesTablesCol17;
+            schemaTables = SchemaTablesCol17;
             break;
 
         default:
@@ -313,7 +329,20 @@ function ModalMasterTables(props) {
                                                 props={props}
                                             />
                                         }
-
+                                        {
+                                            props.columnas === 'col-16' &&
+                                            <BaseFormikEstados
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-17' &&
+                                            <BaseFormikMunicipios
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
                                         <Row className="mb-2" style={{justifyContent: "center"}}>
                                             <Col className="mb-2" xs="6" sm="6" md="6" lg="6" xl="6" xxl="6" >
                                                 <Button onClick={() => props.onHide()}

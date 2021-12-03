@@ -98,6 +98,24 @@ export const initialValuesTablesCol15 = {
     orden_administrativa: ""
 }
 
+export const initialValuesTablesCol16 = {
+    cod_estado: "",
+    region: "",
+    redi: "",
+    unidad_estadal: "",
+    descripcion: "",
+    is_active: true
+}
+
+export const initialValuesTablesCol17 = {
+    id_estado: "",
+    cod_municipio: "",
+    descripcion: "",
+    is_active: true
+}
+
+
+
 
 
 

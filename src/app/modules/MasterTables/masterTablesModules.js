@@ -98,6 +98,14 @@ function MasterTablesModule() {
             title = "Firmas Autorizadas";
             break;
 
+        case "estados":
+            title = "Estados";
+            break;
+
+        case "municipios":
+            title = "Municipios";
+            break;
+
         default:
             break;
     }
