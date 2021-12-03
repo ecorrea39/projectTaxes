@@ -340,6 +340,12 @@ export const navFuncional = [
         url: "/tablas/estados",
         icon: "",
         slug: "tablas-estados"
+      },
+      {
+        title: "Municipios",
+        url: "/tablas/municipios",
+        icon: "",
+        slug: "tablas-municipios"
       }
     ]
   },

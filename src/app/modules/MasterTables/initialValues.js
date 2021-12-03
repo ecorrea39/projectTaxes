@@ -103,8 +103,17 @@ export const initialValuesTablesCol16 = {
     region: "",
     redi: "",
     unidad_estadal: "",
-    descripcion: ""
+    descripcion: "",
+    is_active: true
 }
+
+export const initialValuesTablesCol17 = {
+    id_estado: "",
+    cod_municipio: "",
+    descripcion: "",
+    is_active: true
+}
+
 
 
 

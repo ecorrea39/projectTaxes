@@ -102,6 +102,10 @@ function MasterTablesModule() {
             title = "Estados";
             break;
 
+        case "municipios":
+            title = "Municipios";
+            break;
+
         default:
             break;
     }

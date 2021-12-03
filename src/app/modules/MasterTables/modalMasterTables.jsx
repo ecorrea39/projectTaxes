@@ -24,7 +24,8 @@ import { initialValuesTablesCol1,
          initialValuesTablesCol13,
          initialValuesTablesCol14,
          initialValuesTablesCol15,
-         initialValuesTablesCol16 } from "./initialValues";
+         initialValuesTablesCol16,
+         initialValuesTablesCol17 } from "./initialValues";
 
 import { SchemaTablesCol1,
          SchemaTablesCol2,
@@ -41,7 +42,8 @@ import { SchemaTablesCol1,
          SchemaTablesCol13,
          SchemaTablesCol14,
          SchemaTablesCol15,
-         SchemaTablesCol16 } from "./validateSchemas";
+         SchemaTablesCol16,
+         SchemaTablesCol17 } from "./validateSchemas";
 
 import { BaseFormik } from "./baseFormik";
 import { BaseFormikBancosRecaudadores } from "./baseFormikBancosRecaudadores";
@@ -59,6 +61,7 @@ import { BaseFormikTipoContribuyente } from './baseFormikTipoContribuyente';
 import { BaseFormikCuentasContables } from './baseFormikCuentasContables';
 import { BaseFormikFirmasAutorizadas } from './baseFormikFirmasAutorizadas';
 import { BaseFormikEstados } from './baseFormikEstados';
+import { BaseFormikMunicipios } from './baseFormikMunicipios';
 
 function ModalMasterTables(props) {
 
@@ -181,6 +184,11 @@ function ModalMasterTables(props) {
         case "estados":
             initialValuesTables = initialValuesTablesCol16;
             schemaTables = SchemaTablesCol16;
+            break;
+
+        case "municipios":
+            initialValuesTables = initialValuesTablesCol17;
+            schemaTables = SchemaTablesCol17;
             break;
 
         default:
@@ -324,6 +332,13 @@ function ModalMasterTables(props) {
                                         {
                                             props.columnas === 'col-16' &&
                                             <BaseFormikEstados
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-17' &&
+                                            <BaseFormikMunicipios
                                                 formik={formik}
                                                 props={props}
                                             />

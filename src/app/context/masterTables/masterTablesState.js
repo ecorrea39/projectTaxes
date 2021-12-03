@@ -16,6 +16,7 @@ export const MasterTablesState = ({ children }) => {
     const [actividadesEconomicas, setActividadesEconomicas] = useState([]);
     const [conceptos, setConceptos] = useState([]);
     const [estados, setEstados] = useState([]);
+    const [municipios, setMunicipios] = useState([]);
     const [registrosMercantiles, setRegistrosMercantiles] = useState([]);
     const [medidaValor, setMedidaValor] = useState([]);
     const [motivoSancion, setMotivoSancion] = useState([]);
@@ -52,6 +53,7 @@ export const MasterTablesState = ({ children }) => {
         getConceptos();
         getRegistrosMercantiles();
         getEstados();
+        getMunicipios();
         getMedidaValor();
         getMotivoSancion();
         getDiasFestivos();
@@ -343,7 +345,6 @@ export const MasterTablesState = ({ children }) => {
             let arreglo = [];
             let lista = [];
             arreglo = respuesta.data.data;
-            console.log('estados ', arreglo)
             arreglo.map((x, i) => {
                 lista.push(
                     {
@@ -358,6 +359,34 @@ export const MasterTablesState = ({ children }) => {
             });
             lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
             setEstados(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getMunicipios = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/geographic_data_municipios/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "cod_municipio": arreglo[i].attributes.cod_municipio,
+                        "id_estado": arreglo[i].attributes.id_estado,
+                        "descripcion": arreglo[i].attributes.descripcion,
+                        "estado": arreglo[i].attributes['id_estado_estado.descripcion']
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setMunicipios(lista);
 
         } catch (error) {
             console.log(error)
@@ -740,7 +769,7 @@ export const MasterTablesState = ({ children }) => {
         setRegistroSeleccionado({});
     }
 
-    const validarDescripcion = (e, props) => {
+    const validarDescripcion = (e, props, formik) => {
 
         let busqueda = false;
         let valor = e.target.value.toUpperCase();
@@ -873,6 +902,14 @@ export const MasterTablesState = ({ children }) => {
                 });
                 break;
 
+            case "municipios":
+                municipios.map((x) => {
+                    if(x.descripcion.toUpperCase().trim() === valor.trim() && Number(x.id_estado) === Number(formik.values.id_estado)) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
             default:
                 break;
         }
@@ -995,6 +1032,10 @@ export const MasterTablesState = ({ children }) => {
 
                         case "estados":
                             urlTabla = `/geographic_data_estados/${valores.id}`;
+                            break;
+
+                        case "municipios":
+                            urlTabla = `/geographic_data_municipios/${valores.id}`;
                             break;
 
                         default:
@@ -1148,6 +1189,11 @@ export const MasterTablesState = ({ children }) => {
                     urlTabla = "/geographic_data_estados/";
                     break;
 
+                case "municipios":
+                    dataType = "saveGeographicDataMunicipios";
+                    urlTabla = "/geographic_data_municipios/";
+                    break;
+
                 default:
                     break;
             }
@@ -1277,6 +1323,10 @@ export const MasterTablesState = ({ children }) => {
 
             case "estados":
                 getEstados();
+                break;
+
+            case "municipios":
+                getMunicipios();
                 break;
 
             default:
@@ -1447,6 +1497,16 @@ export const MasterTablesState = ({ children }) => {
             );
         }
 
+        /* municipios */
+        if (columnas === 'col-17') {
+            search = dataAux.filter(item =>
+                item.descripcion.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.estado.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+                || item.cod_municipio.toString().includes(palabra)
+            );
+        }
+
         if(palabra === '') {
             actualizarTablas(tabla);
         } else {
@@ -1541,6 +1601,10 @@ export const MasterTablesState = ({ children }) => {
 
                 case "estados":
                     setEstados(search);
+                    break;
+
+                case "municipios":
+                    setMunicipios(search);
                     break;
 
                 default:
@@ -1655,6 +1719,14 @@ export const MasterTablesState = ({ children }) => {
                 dataAux = firmasAutorizadas;
                 break;
 
+            case "estados":
+                dataAux = estados;
+                break;
+
+            case "municipios":
+                dataAux = municipios;
+                break;
+
             default:
                 break;
         }
@@ -1672,6 +1744,7 @@ export const MasterTablesState = ({ children }) => {
         conceptos,
         registrosMercantiles,
         estados,
+        municipios,
         medidaValor,
         motivoSancion,
         diasFestivos,
