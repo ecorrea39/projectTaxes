@@ -77,6 +77,7 @@ const QueryRunnerStep2 = (props) => {
     myMap.forEach(campo => {
       const name = campo.alias != '' ? campo.alias : campo.name;
       const hasList = campo.list_table ? true : false;
+      const tipo = campo.function ? campo.function.dataType : campo.type;
       let settings = undefined;
 
       if (hasList) {
@@ -93,12 +94,12 @@ const QueryRunnerStep2 = (props) => {
         };
       }
 
-      const operators = mapOperator(campo.type, hasList);
-      const widgets = mapWidget(campo.type, hasList);
+      const operators = mapOperator(tipo, hasList);
+      const widgets = mapWidget(tipo, hasList);
 
       const thisField = {
         label: name,
-        type: mapType(campo.type, hasList),
+        type: mapType(tipo, hasList),
         ...(settings && { fieldSettings: settings }),
         ...(operators && { operators: operators }),
         ...(widgets && { preferWidgets: widgets })
