@@ -103,8 +103,8 @@ const QueryRunnerStep1 = (props) => {
                           <FormControlLabel value="txt" control={<Radio />} 
                             label="TXT" style={optionLabelColor}
                           />
-                          <FormControlLabel value="ods" control={<Radio />} 
-                            label="ODS" style={optionLabelColor}
+                          <FormControlLabel value="csv" control={<Radio />} 
+                            label="CSV" style={optionLabelColor}
                           />
                         </Col>
                       </Row>
