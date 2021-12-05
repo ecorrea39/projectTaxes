@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Button, Card, Col, Container, Form, Row} from 'react-bootstrap';
 import './QueryRunner.css';
 import { Modal } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { Query, Builder, Utils as QbUtils } from "react-awesome-query-builder";
 import { clientAxios, requestConfig } from '../../config/configAxios';
 import "antd/dist/antd.css";
@@ -148,7 +148,19 @@ const QueryRunnerStep2 = (props) => {
   };
 
   const onClear = () => {
-    //
+    confirm({
+      title: '¿Seguro que desea eliminar todos los filtros?',
+      icon: <QuestionCircleOutlined style={{ color: 'red' }} />,
+      okText: "Eliminar",
+      cancelText: "Volver",
+      okButtonProps: {
+        type: 'primary',
+        danger: true
+      },
+      onOk() {
+        setState({ tree: QbUtils.checkTree(QbUtils.loadTree(queryValue), config), config: config });
+      },
+    });
   }
 
   const onChange = (immutableTree, config) => {
@@ -185,14 +197,17 @@ const QueryRunnerStep2 = (props) => {
               <br/>
 
               <Row>
-                <Col md={2}>
-                  <Button variant="primary" size="lg" block
-                    type="button"
-                    onClick={onClear}
-                  >
-                    Limpiar
-                  </Button>
-                </Col>
+                <div className="clear-button">
+                  <Col md={2}>
+                    <Button variant="primary" size="lg" block
+                      type="button"
+                      onClick={onClear}
+                      disabled={!QbUtils.sqlFormat(state.tree, state.config)}
+                    >
+                      Limpiar
+                    </Button>
+                  </Col>
+                </div>
               </Row>
 
               <br/>
@@ -206,12 +221,10 @@ const QueryRunnerStep2 = (props) => {
                     onChange={onChange}
                     renderBuilder={renderBuilder}
                   />
-                  <div className="query-builder-result">
-                    <div className="query-header">
-                      where:{" "}
-                      <pre>
-                        {JSON.stringify(QbUtils.sqlFormat(state.tree, state.config))}
-                      </pre>
+                  <div className="query-builder-result" hidden={!QbUtils.sqlFormat(state.tree, state.config)}>
+                    <div className="query-builder-title">WHERE:</div>
+                    <div className="query-builder-body">
+                      {JSON.stringify(QbUtils.sqlFormat(state.tree, state.config))}
                     </div>
                   </div>
                 </div>
