@@ -85,11 +85,11 @@
     margin-top: 12px;
 }
 
-.success-text {
+/* .success-text {
     font-size: 16px;
     color: #52ae32;
     margin: 24px 0px 24px 0px;
-}
+} */
 
 .error-title {
     font-size: 24px;
@@ -102,4 +102,41 @@
     font-size: 16px;
     color: #e30425;
     margin: 24px 0px 24px 0px;
+}
+
+.download-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 24px 0px 24px 0px;
+}
+
+.download-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 18px;
+    color: #52ae32;
+}
+
+.download-wrapper:hover {
+    color: #4d7a3e;
+}
+
+.circle-download {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    width: 64px;
+    height: 64px;
+    border: solid 2px #52ae32;
+    font-size: 36px;
+}
+
+.download-wrapper:hover .circle-download {
+    border: solid 2px #4d7a3e;
+    font-size: 32px;
 }
