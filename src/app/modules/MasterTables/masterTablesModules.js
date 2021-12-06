@@ -106,6 +106,10 @@ function MasterTablesModule() {
             title = "Municipios";
             break;
 
+        case "parroquias":
+            title = "Parroquías";
+            break;
+
         default:
             break;
     }

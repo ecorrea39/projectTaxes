@@ -12,7 +12,7 @@ import Search from '@material-ui/icons/Search';
 
 function MasterTables({tabla, titulo}) {
 
-    const { deleteMasterTables, trimestres, formasPago, cuentasRecaudadoras, estatus, bancos, claseEmpresa, motores, actividadesEconomicas, conceptos, registrosMercantiles, medidaValor, motivoSancion, diasFestivos, tasaIntereses, sectores, vialidades, locales, edificaciones, tipoDocumento, tipoContribuyente, cuentasContables, firmasAutorizadas, estados, municipios, obtenerValores, filtrarElementos } = useContext(MasterTablesContext);
+    const { deleteMasterTables, trimestres, formasPago, cuentasRecaudadoras, estatus, bancos, claseEmpresa, motores, actividadesEconomicas, conceptos, registrosMercantiles, medidaValor, motivoSancion, diasFestivos, tasaIntereses, sectores, vialidades, locales, edificaciones, tipoDocumento, tipoContribuyente, cuentasContables, firmasAutorizadas, estados, municipios, parroquias, obtenerValores, filtrarElementos } = useContext(MasterTablesContext);
     const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", padding: "20px 35px 20px 35px"}
     const [isSwitchOn, setIsSwitchOn] = useState(false);
     const styleBtn = { borderRadius: '100%'}
@@ -49,7 +49,6 @@ function MasterTables({tabla, titulo}) {
     let data = [];
     let columnas = '';
     let colTab = [];
-
 
     const columnas01 = [
         {
@@ -861,6 +860,48 @@ function MasterTables({tabla, titulo}) {
         }
     ];
 
+    const columnas18 = [
+        {
+            name: "ID",
+            selector: row => Number(row.id),
+            sortable: true,
+            maxWidth: "50px"
+        },
+        {
+            name: "Municipio",
+            selector: row => row.municipio,
+            sortable: true,
+            maxWidth: "300px"
+        },
+        {
+            name: "Parroquía",
+            selector: row => row.descripcion,
+            sortable: true,
+            maxWidth: "300px"
+        },
+        {
+            name: "Acciones",
+            button: true,
+            cell: row => (
+                <>
+                    <a title="modificar" onClick={() => { setShow(true); setAccion('Modificar'); obtenerValores(row)}}
+                       style={styleBtn} className="btn btn-icon btn-hover-light btn-sm">
+                        <span className="svg-icon svg-icon-md svg-icon-info">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}/>
+                        </span>
+                    </a>
+
+                    <a title="eliminar" style={styleBtn} onClick={() => deleteMasterTables(tabla, titulo, row)}
+                       className="btn btn-icon btn-hover-light btn-sm">
+                        <span className="svg-icon svg-icon-md svg-icon-danger">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")}/>
+                        </span>
+                    </a>
+                </>
+            )
+        }
+    ];
+
     switch (tabla) {
         case "trimestre":
             titulo = titulo;
@@ -1028,6 +1069,13 @@ function MasterTables({tabla, titulo}) {
             data = municipios;
             columnas = "col-17";
             colTab = columnas17;
+            break;
+
+        case "parroquias":
+            titulo = titulo;
+            data = parroquias;
+            columnas = "col-18";
+            colTab = columnas18;
             break;
 
         default:

@@ -17,6 +17,7 @@ export const MasterTablesState = ({ children }) => {
     const [conceptos, setConceptos] = useState([]);
     const [estados, setEstados] = useState([]);
     const [municipios, setMunicipios] = useState([]);
+    const [parroquias, setParroquias] = useState([]);
     const [registrosMercantiles, setRegistrosMercantiles] = useState([]);
     const [medidaValor, setMedidaValor] = useState([]);
     const [motivoSancion, setMotivoSancion] = useState([]);
@@ -54,6 +55,7 @@ export const MasterTablesState = ({ children }) => {
         getRegistrosMercantiles();
         getEstados();
         getMunicipios();
+        getParroquias();
         getMedidaValor();
         getMotivoSancion();
         getDiasFestivos();
@@ -387,6 +389,33 @@ export const MasterTablesState = ({ children }) => {
             });
             lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
             setMunicipios(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getParroquias = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/geographic_data_parroquias/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "id_municipio": arreglo[i].attributes.id_municipio,
+                        "descripcion": arreglo[i].attributes.descripcion,
+                        "municipio": arreglo[i].attributes['id_municipio_municipio.descripcion']
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setParroquias(lista);
 
         } catch (error) {
             console.log(error)
@@ -910,6 +939,14 @@ export const MasterTablesState = ({ children }) => {
                 });
                 break;
 
+            case "parroquias":
+                parroquias.map((x) => {
+                    if(x.descripcion.toUpperCase().trim() === valor.trim() && Number(x.id_municipio) === Number(formik.values.id_municipio)) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
             default:
                 break;
         }
@@ -1036,6 +1073,10 @@ export const MasterTablesState = ({ children }) => {
 
                         case "municipios":
                             urlTabla = `/geographic_data_municipios/${valores.id}`;
+                            break;
+
+                        case "parroquias":
+                            urlTabla = `/geographic_data_parroquias/${valores.id}`;
                             break;
 
                         default:
@@ -1194,6 +1235,11 @@ export const MasterTablesState = ({ children }) => {
                     urlTabla = "/geographic_data_municipios/";
                     break;
 
+                case "parroquias":
+                    dataType = "saveGeographicDataParroquias";
+                    urlTabla = "/geographic_data_parroquias/";
+                    break;
+
                 default:
                     break;
             }
@@ -1327,6 +1373,10 @@ export const MasterTablesState = ({ children }) => {
 
             case "municipios":
                 getMunicipios();
+                break;
+
+            case "parroquias":
+                getParroquias();
                 break;
 
             default:
@@ -1507,6 +1557,16 @@ export const MasterTablesState = ({ children }) => {
             );
         }
 
+        /* parroquias */
+        if (columnas === 'col-18') {
+            search = dataAux.filter(item =>
+                item.descripcion.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.municipio.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+                || item.id_municipio.toString().includes(palabra)
+            );
+        }
+
         if(palabra === '') {
             actualizarTablas(tabla);
         } else {
@@ -1605,6 +1665,10 @@ export const MasterTablesState = ({ children }) => {
 
                 case "municipios":
                     setMunicipios(search);
+                    break;
+
+                case "parroquias":
+                    setParroquias(search);
                     break;
 
                 default:
@@ -1727,6 +1791,10 @@ export const MasterTablesState = ({ children }) => {
                 dataAux = municipios;
                 break;
 
+            case "parroquias":
+                dataAux = parroquias;
+                break;
+
             default:
                 break;
         }
@@ -1745,6 +1813,7 @@ export const MasterTablesState = ({ children }) => {
         registrosMercantiles,
         estados,
         municipios,
+        parroquias,
         medidaValor,
         motivoSancion,
         diasFestivos,
