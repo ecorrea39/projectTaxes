@@ -120,6 +120,14 @@ export const initialValuesTablesCol18 = {
     is_active: true
 }
 
+export const initialValuesTablesCol19 = {
+    id_municipio: "",
+    id_estado: "",
+    descripcion: "",
+    is_active: true
+}
+
+
 
 
 
