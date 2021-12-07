@@ -3,6 +3,8 @@ import React, {useContext, useState, useEffect} from "react";
 import SVG from "react-inlinesvg";
 import { toAbsoluteUrl } from "../../../../src/_metronic/_helpers";
 import {clientAxios} from "../../config/configAxios";
+import {Col, Row} from "react-bootstrap";
+import {Field} from "formik";
 
 function Resumen({className}) {
 
@@ -23,7 +25,7 @@ function Resumen({className}) {
     function FormatNumber(number) {
         return  new Intl.NumberFormat("ES-ES", {
             style: "currency",
-            currency: "VEF"
+            currency: "VED"
         }).format(number)
     }
 
@@ -58,14 +60,55 @@ function Resumen({className}) {
                 <div className="card-body d-flex flex-column p-0" style={styleCard}>
 
                     <div className="card-spacer bg-white card-rounded flex-grow-1">
-                        <div className="row m-0">
-                            <div className="col px-12 py-6">
-                                <div className="font-size-sm text-muted font-weight-bold">
-                                    <SVG src={toAbsoluteUrl("/media/svg/icons/Layout/Layout-arrange.svg")} />
+                        <div>
+
+                            <Row className="mt-4 mb-8 ">
+                                <Col xs="9" sm="9" md="9" lg="9" xl="9" xxl="9" font-size-md text-muted font-weight-bold>
                                     Total deuda trimestres declarados
-                                </div>
-                                <div className="font-size-h4 font-weight-bolder">{typeof totalDeudaTrim !== "undefined" ? FormatNumber(totalDeudaTrim) : FormatNumber(0)}</div>
-                            </div>
+                                </Col>
+                                <Col xs="3" sm="3" md="3" lg="3" xl="3" xxl="3" font-size-h3 font-weight-bolder>
+                                    {typeof totalDeudaTrim !== "undefined" ? FormatNumber(totalDeudaTrim) : FormatNumber(0)}
+                                </Col>
+                            </Row>
+
+                            <Row className="mt-4 mb-8 ">
+                                <Col xs="9" sm="9" md="9" lg="9" xl="9" xxl="9" font-size-md text-muted font-weight-bold>
+                                    Total deuda efectos y cuentas por pagar
+                                </Col>
+                                <Col xs="3" sm="3" md="3" lg="3" xl="3" xxl="3" font-size-h3 font-weight-bolder>
+                                    {typeof totalDeudaCxP !== "undefined" ? FormatNumber(totalDeudaCxP) : FormatNumber(0)}
+                                </Col>
+                            </Row>
+
+                            <Row className="mt-4 mb-8 ">
+                                <Col xs="9" sm="9" md="9" lg="9" xl="9" xxl="9" font-size-md text-muted font-weight-bold>
+                                    Total saldos pagados
+                                </Col>
+                                <Col xs="3" sm="3" md="3" lg="3" xl="3" xxl="3" font-size-h3 font-weight-bolder>
+                                    {typeof totalPagos !== "undefined" ? FormatNumber(totalPagos) : FormatNumber(0)}
+                                </Col>
+                            </Row>
+
+                            <Row className="mt-4 mb-8 ">
+                                <Col xs="9" sm="9" md="9" lg="9" xl="9" xxl="9" font-size-md text-muted font-weight-bold>
+                                    Total crédito fiscal | Saldo temporal a compensar
+                                </Col>
+                                <Col xs="3" sm="3" md="3" lg="3" xl="3" xxl="3" font-size-h3 font-weight-bolder>
+                                    {typeof totalCreditoFisTemp !== "undefined" ? FormatNumber(totalCreditoFisTemp) : FormatNumber(0)}
+                                </Col>
+                            </Row>
+
+                            <Row className="mt-4 mb-8 ">
+                                <Col xs="9" sm="9" md="9" lg="9" xl="9" xxl="9" font-size-md text-muted font-weight-bold>
+                                    Total crédito fiscal | Saldo aprobado 
+                                </Col>
+                                <Col xs="3" sm="3" md="3" lg="3" xl="3" xxl="3" font-size-h3 font-weight-bolder>
+                                    {typeof totalCreditoFisAprob !== "undefined" ? FormatNumber(totalCreditoFisAprob) : FormatNumber(0)}
+                                </Col>
+                            </Row>
+
+
+                            {/*
                             <div className="col px-12 py-6">
                                 <div className="font-size-sm text-muted font-weight-bold">
                                     <SVG src={toAbsoluteUrl("/media/svg/icons/Layout/Layout-4-blocks.svg")} />
@@ -98,7 +141,7 @@ function Resumen({className}) {
                                     Total crédito fiscal | Saldo aprobado certificado de crédito fiscal
                                 </div>
                                 <div className="font-size-h4 font-weight-bolder">{typeof totalCreditoFisAprob !== "undefined" ? FormatNumber(totalCreditoFisAprob) : FormatNumber(0)}</div>
-                            </div>
+                            </div>*/}
                         </div>
                     </div>
                 </div>

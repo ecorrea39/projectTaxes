@@ -13,7 +13,7 @@ export const BaseFormikDiasFestivos = ({formik, props, anos}) => {
         if(props.accion === 'Modificar') {
             formik.setFieldValue("id", registroSeleccionado.id);
             formik.setFieldValue("ano", registroSeleccionado.ano);
-            formik.setFieldValue("fecha", registroSeleccionado.fecha);
+            formik.setFieldValue("fecha", registroSeleccionado.fecha_original);
         }
     },[]);
 

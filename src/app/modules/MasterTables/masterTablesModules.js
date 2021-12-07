@@ -43,7 +43,7 @@ function MasterTablesModule() {
             break;
 
         case "conceptos":
-            title = "Conceptos";
+            title = "Conceptos de Pago";
             break;
 
         case "registros-mercantiles":
@@ -59,11 +59,51 @@ function MasterTablesModule() {
             break;
 
         case "dias-festivos":
-            title = "Días Festivos";
+            title = "Días Inhábiles";
             break;
 
         case "tasa-intereses":
             title = "Tasa de Intereses";
+            break;
+
+        case "sectores":
+            title = "Sectores";
+            break;
+
+        case "vialidades":
+            title = "Vialidades";
+            break;
+
+        case "locales":
+            title = "Nomenclatura";
+            break;
+
+        case "edificaciones":
+            title = "Edificaciones";
+            break;
+
+        case "tipo-documentos":
+            title = "Tipo de Documentos";
+            break;
+
+        case "tipo-contribuyente":
+            title = "Tipo de Contribuyentes";
+            break;
+
+        case "cuentas-contables":
+            title = "Cuentas Contables";
+            break;
+
+        case "firmas-autorizadas":
+            title = "Firmas Autorizadas";
+            break;
+
+        case "estados":
+            title = "Estados";
+            break;
+
+        case "municipios":
+            title = "Municipios";
             break;
 
         default:
@@ -76,12 +116,14 @@ function MasterTablesModule() {
                 <div className={`card card-custom card-stretch gutter-b`}>
                     {/* Header */}
                     <div className="border-0 pl-10 pt-10">
-                        <TitleFormMasterTables title={title}/>
+                        <TitleFormMasterTables title={title} />
                     </div>
                     {/* Body */}
                     <div className="card-body d-flex flex-column">
                         {
-                            <MasterTables tabla={tabla} />
+                            <MasterTables
+                                tabla={tabla}
+                                titulo={title} />
                         }
                     </div>
                 </div>

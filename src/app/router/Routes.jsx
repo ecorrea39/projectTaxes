@@ -14,7 +14,7 @@ export const Routes = () => {
       <>
         {isAuthorized
           ? <Layout> <RouterPrivate isAuth={isAuthorized} pathList={PathList} urlDash={urlDash} /> </Layout>
-          : <RouterPublic isAuth={isAuthorized} pathList={PathList} />
+          : <RouterPublic isAuth={isAuthorized} pathList={PathList} urlDash={urlDash} />
         }
       </>
     )

@@ -104,3 +104,75 @@ export const SchemaTablesCol11 = Yup.object().shape({
         .required('- Campo obligatorio -')
 });
 
+export const SchemaTablesCol12 = Yup.object().shape({
+    codigo: Yup.string()
+        .required('- Campo obligatorio -')
+        .min(3, '- Debe ingresar un mínimo de 3 digitos -')
+        .max(3, '- Debe ingresar un máximo de 3 digitos -'),
+    name: Yup.string()
+        .required('- Campo obligatorio -')
+});
+
+export const SchemaTablesCol13 = Yup.object().shape({
+    name: Yup.string()
+        .required('- Campo obligatorio -'),
+    descripcion: Yup.string()
+        .required('- Campo obligatorio -')
+});
+
+export const SchemaTablesCol14 = Yup.object().shape({
+    concepto: Yup.string()
+        .required('- Campo obligatorio -'),
+    codigo_cuenta: Yup.string()
+        .required('- Campo obligatorio -'),
+    naturaleza_cuenta: Yup.string()
+        .required('- Campo obligatorio -'),
+    grupo: Yup.string()
+        .required('- Campo obligatorio -'),
+    sub_grupo: Yup.string()
+        .required('- Campo obligatorio -'),
+    auxiliar: Yup.string()
+        .required('- Campo obligatorio -')
+});
+
+export const SchemaTablesCol15 = Yup.object().shape({
+    documento: Yup.string()
+        .required('- Campo obligatorio -'),
+    nombre: Yup.string()
+        .required('- Campo obligatorio -'),
+    cargo: Yup.string()
+        .required('- Campo obligatorio -'),
+    ngaceta: Yup.string()
+        .required('- Campo obligatorio -'),
+    fecha_gaceta: Yup.string()
+        .required('- Campo obligatorio -'),
+    orden_administrativa: Yup.string()
+});
+
+export const SchemaTablesCol16 = Yup.object().shape({
+    cod_estado: Yup.string()
+        .required('- Campo obligatorio -'),
+    region: Yup.string()
+        .required('- Campo obligatorio -'),
+    redi: Yup.string()
+        .required('- Campo obligatorio -'),
+    unidad_estadal: Yup.string(),
+    descripcion: Yup.string()
+        .required('- Campo obligatorio -')
+});
+
+export const SchemaTablesCol17 = Yup.object().shape({
+    cod_municipio: Yup.string()
+        .required('- Campo obligatorio -'),
+    id_estado: Yup.string()
+        .required('- Campo obligatorio -'),
+    descripcion: Yup.string()
+        .required('- Campo obligatorio -')
+});
+
+
+
+
+
+
+

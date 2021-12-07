@@ -69,3 +69,53 @@ export const initialValuesTablesCol11 = {
     ngaceta: "",
     fecha_gaceta: ""
 }
+
+export const initialValuesTablesCol12 = {
+    codigo: "",
+    name: ""
+}
+
+export const initialValuesTablesCol13 = {
+    name: "",
+    descripcion: ""
+}
+
+export const initialValuesTablesCol14 = {
+    concepto: "",
+    codigo_cuenta: "",
+    naturaleza_cuenta: "",
+    grupo: "",
+    sub_grupo: "",
+    auxiliar: ""
+}
+
+export const initialValuesTablesCol15 = {
+    documento: "",
+    nombre: "",
+    cargo: "",
+    ngaceta: "",
+    fecha_gaceta: "",
+    orden_administrativa: ""
+}
+
+export const initialValuesTablesCol16 = {
+    cod_estado: "",
+    region: "",
+    redi: "",
+    unidad_estadal: "",
+    descripcion: "",
+    is_active: true
+}
+
+export const initialValuesTablesCol17 = {
+    id_estado: "",
+    cod_municipio: "",
+    descripcion: "",
+    is_active: true
+}
+
+
+
+
+
+

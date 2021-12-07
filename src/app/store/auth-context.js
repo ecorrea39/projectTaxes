@@ -17,12 +17,11 @@ export const AuthContextProvider = (props) => {
   const [token, setToken] = useState(localStorage.getItem("authToken"));
   const [userIsLoggedIn, setUserIsLoggedIn] = useState(!!token);
   const [accesRouters, setAccessRouters] = useState(null);
-  const [userGroup, setUserGroup] = useState(localStorage.getItem("groups"));
+  const [userGroup, setUserGroup] = useState(null);
   const [userType, setUserType] = useState(null);
   const [urlDash, setUrlDash] = useState("/");
 
   const definedRouters = () => {
-
     let routers = [];
     if(userType == "user") {
       PathListContribuyente.map((router) => {
@@ -41,15 +40,13 @@ export const AuthContextProvider = (props) => {
     setAccessRouters(routers);
   }
 
-  const definedUserType = (redired) => {
+  const definedUserType = () => {
     switch(userGroup) {
       case "contribuyentes":
-        // setUserType("funcional");
         setUserType("user");
         setUrlDash("/dashboard");
         break;
       case "parciales":
-        // setUserType("funcional");
         setUserType("user");
         setUrlDash("/dashboard");
         break;
@@ -64,8 +61,6 @@ export const AuthContextProvider = (props) => {
     if(token) {
       let tokenDecoded = jwt_decode(token);
       setUserGroup(tokenDecoded.data.groups[0]);
-      // setUserGroup("administradores");
-      definedUserType(false);
     }
     setUserIsLoggedIn(!!token);
   },[]);
@@ -74,11 +69,16 @@ export const AuthContextProvider = (props) => {
     definedRouters();
   },[userType]);
 
+  useEffect(()=>{
+    definedUserType();
+  },[userGroup]);
+
   const loginHandler = async (token) => {
     let tokenDecoded = jwt_decode(token);
     setUserGroup(tokenDecoded.data.groups[0]);
-    await definedUserType();
-    window.location.href = urlDash;
+    // setUserGroup("administradores");
+    definedUserType();
+    window.location.href = "/";
     setToken(token);
   };
 

@@ -19,7 +19,13 @@ import { initialValuesTablesCol1,
          initialValuesTablesCol8,
          initialValuesTablesCol9,
          initialValuesTablesCol10,
-         initialValuesTablesCol11 } from "./initialValues";
+         initialValuesTablesCol11,
+         initialValuesTablesCol12,
+         initialValuesTablesCol13,
+         initialValuesTablesCol14,
+         initialValuesTablesCol15,
+         initialValuesTablesCol16,
+         initialValuesTablesCol17 } from "./initialValues";
 
 import { SchemaTablesCol1,
          SchemaTablesCol2,
@@ -31,7 +37,13 @@ import { SchemaTablesCol1,
          SchemaTablesCol8,
          SchemaTablesCol9,
          SchemaTablesCol10,
-         SchemaTablesCol11 } from "./validateSchemas";
+         SchemaTablesCol11,
+         SchemaTablesCol12,
+         SchemaTablesCol13,
+         SchemaTablesCol14,
+         SchemaTablesCol15,
+         SchemaTablesCol16,
+         SchemaTablesCol17 } from "./validateSchemas";
 
 import { BaseFormik } from "./baseFormik";
 import { BaseFormikBancosRecaudadores } from "./baseFormikBancosRecaudadores";
@@ -44,6 +56,12 @@ import { BaseFormikMedidaValor } from './baseFormikMedidaValor';
 import { BaseFormikMotivoSancion } from './baseFormikMotivoSancion';
 import { BaseFormikDiasFestivos } from "./baseFormikDiasFestivos";
 import { BaseFormikTasaIntereses } from './baseFormikTasaIntereses';
+import { BaseFormikTipoDocumento } from './baseFormikTipoDocumento';
+import { BaseFormikTipoContribuyente } from './baseFormikTipoContribuyente';
+import { BaseFormikCuentasContables } from './baseFormikCuentasContables';
+import { BaseFormikFirmasAutorizadas } from './baseFormikFirmasAutorizadas';
+import { BaseFormikEstados } from './baseFormikEstados';
+import { BaseFormikMunicipios } from './baseFormikMunicipios';
 
 function ModalMasterTables(props) {
 
@@ -121,6 +139,56 @@ function ModalMasterTables(props) {
         case "tasa-intereses":
             initialValuesTables = initialValuesTablesCol11;
             schemaTables = SchemaTablesCol11;
+            break;
+
+        case "sectores":
+            initialValuesTables = initialValuesTablesCol1;
+            schemaTables = SchemaTablesCol1;
+            break;
+
+        case "vialidades":
+            initialValuesTables = initialValuesTablesCol1;
+            schemaTables = SchemaTablesCol1;
+            break;
+
+        case "locales":
+            initialValuesTables = initialValuesTablesCol1;
+            schemaTables = SchemaTablesCol1;
+            break;
+
+        case "edificaciones":
+            initialValuesTables = initialValuesTablesCol1;
+            schemaTables = SchemaTablesCol1;
+            break;
+
+        case "tipo-documentos":
+            initialValuesTables = initialValuesTablesCol12;
+            schemaTables = SchemaTablesCol12;
+            break;
+
+        case "tipo-contribuyente":
+            initialValuesTables = initialValuesTablesCol13;
+            schemaTables = SchemaTablesCol13;
+            break;
+
+        case "cuentas-contables":
+            initialValuesTables = initialValuesTablesCol14;
+            schemaTables = SchemaTablesCol14;
+            break;
+
+        case "firmas-autorizadas":
+            initialValuesTables = initialValuesTablesCol15;
+            schemaTables = SchemaTablesCol15;
+            break;
+
+        case "estados":
+            initialValuesTables = initialValuesTablesCol16;
+            schemaTables = SchemaTablesCol16;
+            break;
+
+        case "municipios":
+            initialValuesTables = initialValuesTablesCol17;
+            schemaTables = SchemaTablesCol17;
             break;
 
         default:
@@ -231,6 +299,48 @@ function ModalMasterTables(props) {
                                                 formik={formik}
                                                 props={props}
                                                 anos={anos}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-12' &&
+                                            <BaseFormikTipoDocumento
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-13' &&
+                                            <BaseFormikTipoContribuyente
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-14' &&
+                                            <BaseFormikCuentasContables
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-15' &&
+                                            <BaseFormikFirmasAutorizadas
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-16' &&
+                                            <BaseFormikEstados
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-17' &&
+                                            <BaseFormikMunicipios
+                                                formik={formik}
+                                                props={props}
                                             />
                                         }
                                         <Row className="mb-2" style={{justifyContent: "center"}}>

@@ -16,14 +16,30 @@ export const MasterTablesState = ({ children }) => {
     const [actividadesEconomicas, setActividadesEconomicas] = useState([]);
     const [conceptos, setConceptos] = useState([]);
     const [estados, setEstados] = useState([]);
+    const [municipios, setMunicipios] = useState([]);
     const [registrosMercantiles, setRegistrosMercantiles] = useState([]);
     const [medidaValor, setMedidaValor] = useState([]);
     const [motivoSancion, setMotivoSancion] = useState([]);
     const [diasFestivos, setDiasFestivos] = useState([]);
     const [anos, setAnos] = useState([]);
     const [tasaIntereses, setTasaIntereses] = useState([]);
+    const [sectores, setSectores] = useState([]);
+    const [vialidades, setVialidades] = useState([]);
+    const [locales, setLocales] = useState([]);
+    const [edificaciones, setEdificaciones] = useState([]);
+    const [tipoDocumento, setTipoDocumento] = useState([]);
+    const [tipoContribuyente, setTipoContribuyente] = useState([]);
+    const [cuentasContables, setCuentasContables] = useState([]);
+    const [firmasAutorizadas, setFirmasAutorizadas] = useState([]);
+    const [unidadEstadal, setUnidadEstadal] = useState([]);
     const [formDataTables, setFormDataTables] = useState({});
     const [registroSeleccionado, setRegistroSeleccionado] = useState({});
+
+    const listReportes = ["Certificado de Solvencia","Resolución de incumplimiento de deberes formales"];
+    const listRegiones = ['Central','Centro Occidental','Dependencias Federales','Guayana','La Guaira','Los Andres','Los Llanos','Nor Oriental','Otras Dependencias Federales (M)','Región Capital','Registro de Normalización (Municipio)','Zuliana'];
+    const listRedi = ['Redi Andres','Redi Central','Redi Centro Occidente','Redi Guayana','Redi Llanos','Redi Oriente'];
+
+    let dataAux = [];
 
     useEffect(() => {
         getBancos();
@@ -37,11 +53,21 @@ export const MasterTablesState = ({ children }) => {
         getConceptos();
         getRegistrosMercantiles();
         getEstados();
+        getMunicipios();
         getMedidaValor();
         getMotivoSancion();
         getDiasFestivos();
         getTasaIntereses();
         getAnos();
+        getSectores();
+        getVialidades();
+        getLocales();
+        getEdificaciones();
+        getTipoDocumento();
+        getTipoContribuyente();
+        getCuentasContables();
+        getFirmasAutorizadas();
+        getUnidadEstadalTributos();
     },[]);
 
     const getBancos = async () => {
@@ -322,13 +348,45 @@ export const MasterTablesState = ({ children }) => {
             arreglo.map((x, i) => {
                 lista.push(
                     {
+                        "id": arreglo[i].id,
                         "cod_estado": arreglo[i].attributes.cod_estado,
-                        "descripcion": arreglo[i].attributes.descripcion
+                        "descripcion": arreglo[i].attributes.descripcion,
+                        "region": arreglo[i].attributes.region,
+                        "redi": arreglo[i].attributes.redi,
+                        "unidad_estadal": arreglo[i].attributes.unidad_estadal
                     }
                 )
             });
             lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
             setEstados(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getMunicipios = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/geographic_data_municipios/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "cod_municipio": arreglo[i].attributes.cod_municipio,
+                        "id_estado": arreglo[i].attributes.id_estado,
+                        "descripcion": arreglo[i].attributes.descripcion,
+                        "estado": arreglo[i].attributes['id_estado_estado.descripcion']
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setMunicipios(lista);
 
         } catch (error) {
             console.log(error)
@@ -348,7 +406,8 @@ export const MasterTablesState = ({ children }) => {
                 lista.push(
                     {
                         "id": arreglo[i].id,
-                        "fecha": arreglo[i].attributes.fecha,
+                        "fecha": formatearfecha(new Date(arreglo[i].attributes.fecha), 'DMY'),
+                        "fecha_original": arreglo[i].attributes.fecha,
                         "valor": arreglo[i].attributes.valor
                     }
                 )
@@ -401,7 +460,8 @@ export const MasterTablesState = ({ children }) => {
                     {
                         "id": arreglo[i].id,
                         "ano": arreglo[i].attributes.ano,
-                        "fecha": arreglo[i].attributes.fecha
+                        "fecha": formatearfecha(new Date(arreglo[i].attributes.fecha), 'DMY'),
+                        "fecha_original": arreglo[i].attributes.fecha
                     }
                 )
             });
@@ -462,6 +522,245 @@ export const MasterTablesState = ({ children }) => {
 
     }
 
+    const getSectores = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/sectores/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "name": arreglo[i].attributes.name
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setSectores(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getVialidades = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/vialidades/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "name": arreglo[i].attributes.name
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setVialidades(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getLocales = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/locales/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "name": arreglo[i].attributes.name
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setLocales(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getEdificaciones = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/edificaciones/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "name": arreglo[i].attributes.name
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setEdificaciones(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getTipoDocumento = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/tipo_documento/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "codigo": arreglo[i].attributes.codigo,
+                        "name": arreglo[i].attributes.name
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setTipoDocumento(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getTipoContribuyente = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/tipo_contribuyente/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "name": arreglo[i].attributes.name,
+                        "descripcion": arreglo[i].attributes.descripcion
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setTipoContribuyente(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getCuentasContables = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/cuentas_contables/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "concepto": arreglo[i].attributes.concepto,
+                        "codigo_cuenta": arreglo[i].attributes.codigo_cuenta,
+                        "naturaleza_cuenta": arreglo[i].attributes.naturaleza_cuenta,
+                        "grupo": arreglo[i].attributes.grupo,
+                        "sub_grupo": arreglo[i].attributes.sub_grupo,
+                        "auxiliar": arreglo[i].attributes.auxiliar
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setCuentasContables(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getFirmasAutorizadas = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/firmas_autorizadas/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "documento": listReportes.filter(x => x === arreglo[i].attributes.documento),
+                        "reporte": "",
+                        "nombre": arreglo[i].attributes.nombre,
+                        "cargo": arreglo[i].attributes.cargo,
+                        "ngaceta": arreglo[i].attributes.ngaceta,
+                        "fecha_gaceta": arreglo[i].attributes.fecha_gaceta,
+                        "orden_administrativa": arreglo[i].attributes.orden_administrativa
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setFirmasAutorizadas(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getUnidadEstadalTributos = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/unidad_estadal/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "cod": arreglo[i].attributes.cod,
+                        "asignacion": arreglo[i].attributes.asignacion
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setUnidadEstadal(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
     const obtenerValores = (valores) => {
         setRegistroSeleccionado(valores);
     }
@@ -470,7 +769,7 @@ export const MasterTablesState = ({ children }) => {
         setRegistroSeleccionado({});
     }
 
-    const validarDescripcion = (e, props) => {
+    const validarDescripcion = (e, props, formik) => {
 
         let busqueda = false;
         let valor = e.target.value.toUpperCase();
@@ -542,6 +841,70 @@ export const MasterTablesState = ({ children }) => {
             case "motivo-sancion":
                 motivoSancion.map((x) => {
                     if(x.name.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "sectores":
+                sectores.map((x) => {
+                    if(x.name.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "vialidades":
+                vialidades.map((x) => {
+                    if(x.name.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "locales":
+                locales.map((x) => {
+                    if(x.name.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "edificaciones":
+                edificaciones.map((x) => {
+                    if(x.name.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "tipo_documento":
+                tipoDocumento.map((x) => {
+                    if(x.name.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "tipo_contribuyente":
+                tipoContribuyente.map((x) => {
+                    if(x.name.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "estados":
+                estados.map((x) => {
+                    if(x.descripcion.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "municipios":
+                municipios.map((x) => {
+                    if(x.descripcion.toUpperCase().trim() === valor.trim() && Number(x.id_estado) === Number(formik.values.id_estado)) {
                         busqueda = true;
                     }
                 });
@@ -633,6 +996,46 @@ export const MasterTablesState = ({ children }) => {
 
                         case "tasa-intereses":
                             urlTabla = `/tasa_intereses/${valores.id}`;
+                            break;
+
+                        case "sectores":
+                            urlTabla = `/sectores/${valores.id}`;
+                            break;
+
+                        case "vialidades":
+                            urlTabla = `/vialidades/${valores.id}`;
+                            break;
+
+                        case "locales":
+                            urlTabla = `/locales/${valores.id}`;
+                            break;
+
+                        case "edificaciones":
+                            urlTabla = `/edificaciones/${valores.id}`;
+                            break;
+
+                        case "tipo-documentos":
+                            urlTabla = `/tipo_documento/${valores.id}`;
+                            break;
+
+                        case "tipo-contribuyente":
+                            urlTabla = `/tipo_contribuyente/${valores.id}`;
+                            break;
+
+                        case "cuentas-contables":
+                            urlTabla = `/cuentas_contables/${valores.id}`;
+                            break;
+
+                        case "firmas-autorizadas":
+                            urlTabla = `/firmas_autorizadas/${valores.id}`;
+                            break;
+
+                        case "estados":
+                            urlTabla = `/geographic_data_estados/${valores.id}`;
+                            break;
+
+                        case "municipios":
+                            urlTabla = `/geographic_data_municipios/${valores.id}`;
                             break;
 
                         default:
@@ -741,6 +1144,56 @@ export const MasterTablesState = ({ children }) => {
                     urlTabla = "/tasa_intereses/";
                     break;
 
+                case "sectores":
+                    dataType = "saveSectores";
+                    urlTabla = "/sectores/";
+                    break;
+
+                case "vialidades":
+                    dataType = "saveVialidades";
+                    urlTabla = "/vialidades/";
+                    break;
+
+                case "locales":
+                    dataType = "saveLocales";
+                    urlTabla = "/locales/";
+                    break;
+
+                case "edificaciones":
+                    dataType = "saveEdificaciones";
+                    urlTabla = "/edificaciones/";
+                    break;
+
+                case "tipo-documentos":
+                    dataType = "saveTipoDocumento";
+                    urlTabla = "/tipo_documento/";
+                    break;
+
+                case "tipo-contribuyente":
+                    dataType = "saveTipoContribuyente";
+                    urlTabla = "/tipo_contribuyente/";
+                    break;
+
+                case "cuentas-contables":
+                    dataType = "saveCuentasContables";
+                    urlTabla = "/cuentas_contables/";
+                    break;
+
+                case "firmas-autorizadas":
+                    dataType = "saveFirmasAutorizadas";
+                    urlTabla = "/firmas_autorizadas/";
+                    break;
+
+                case "estados":
+                    dataType = "saveGeographicDataEstados";
+                    urlTabla = "/geographic_data_estados/";
+                    break;
+
+                case "municipios":
+                    dataType = "saveGeographicDataMunicipios";
+                    urlTabla = "/geographic_data_municipios/";
+                    break;
+
                 default:
                     break;
             }
@@ -748,8 +1201,6 @@ export const MasterTablesState = ({ children }) => {
             requestConfig.data.type = dataType;
             requestConfig.data.attributes = valores;
             requestConfig.data.id = (props.accion !== 'Agregar') ? valores.id : '';
-
-            console.log('requestConfig ', requestConfig)
 
             if(props.accion === 'Agregar') {
                 const respuesta = await clientAxios.post(urlTabla, requestConfig);
@@ -780,7 +1231,7 @@ export const MasterTablesState = ({ children }) => {
     }
 
     const actualizarTablas = (tablaName) => {
-        console.log('tablaName ', tablaName);
+
         switch (tablaName) {
             case "trimestre":
                 getTrimestres();
@@ -834,12 +1285,446 @@ export const MasterTablesState = ({ children }) => {
                 getDiasFestivos();
                 break;
 
-            case "dias-festivos":
+            case "tasa-intereses":
                 getTasaIntereses();
                 break;
 
+            case "sectores":
+                getSectores();
+                break;
+
+            case "vialidades":
+                getVialidades();
+                break;
+
+            case "locales":
+                getLocales();
+                break;
+
+            case "edificaciones":
+                getEdificaciones();
+                break;
+
+            case "tipo-documentos":
+                getTipoDocumento();
+                break;
+
+            case "tipo-contribuyente":
+                getTipoContribuyente();
+                break;
+
+            case "cuentas-contables":
+                getCuentasContables();
+                break;
+
+            case "firmas-autorizadas":
+                getFirmasAutorizadas();
+                break;
+
+            case "estados":
+                getEstados();
+                break;
+
+            case "municipios":
+                getMunicipios();
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    const filtrarElementos = async (tabla, palabra, columnas) => {
+
+        await getListaOriginal(tabla);
+
+        let search = ""
+
+        /* trimestre, forma-pago, estatus-entidad, motores, sectores, vialidades, locales, edificaciones */
+        if (columnas === 'col-1') {
+            search = dataAux.filter(item =>
+                item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase()) || item.id.toString().includes(palabra)
+            );
+        }
+
+        /* cuentas recaudadoras */
+        if (columnas === 'col-2') {
+            search = dataAux.filter(item =>
+                item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+                || item.cuenta_tipo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.cuenta_nro.toString().includes(palabra)
+
+            );
+        }
+
+        /* bancos recaudadores */
+        if (columnas === 'col-3') {
+            search = dataAux.filter(item =>
+                item.nom_banco.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+                || item.cod_banco.toString().includes(palabra)
+            );
+        }
+
+        /* clase de empresas */
+        if (columnas === 'col-4') {
+            search = dataAux.filter(item =>
+                item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+            );
+        }
+
+        /* actividades económicas */
+        if (columnas === 'col-5') {
+            search = dataAux.filter(item =>
+                item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+                || item.codigo.toString().includes(palabra)
+                || item.motor.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+            );
+        }
+
+        /* conceptos */
+        if (columnas === 'col-6') {
+            search = dataAux.filter(item =>
+                item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+                || item.clave.toString().includes(palabra)
+            );
+        }
+
+        /* registros mercantiles */
+        if (columnas === 'col-7') {
+            search = dataAux.filter(item =>
+                item.estado_name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+                || item.oficina.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+            );
+        }
+
+        /* medida valor */
+        if (columnas === 'col-8') {
+            search = dataAux.filter(item =>
+                item.id.toString().includes(palabra)
+                || item.fecha.toString().includes(palabra)
+                || item.valor.toString().includes(palabra)
+            );
+        }
+
+        /* motivo de sanción */
+        if (columnas === 'col-9') {
+            search = dataAux.filter(item =>
+                item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+                || item.nveces_mmv.toString().includes(palabra)
+            );
+        }
+
+        /* días festivos */
+        if (columnas === 'col-10') {//aqui
+            search = dataAux.filter(item =>
+                item.ano.toString().includes(palabra)
+                || item.fecha.toString().includes(palabra)
+            );
+        }
+
+        /* tasa intereses */
+        if (columnas === 'col-11') {//aqui
+            search = dataAux.filter(item =>
+                item.ano.toString().includes(palabra)
+                || item.mes.toString().includes(palabra)
+                || item.tasa_bcv.toString().includes(palabra)
+                || item.recargo_cot.toString().includes(palabra)
+                || item.tasa_intereses_mora.toString().includes(palabra)
+                || item.ngaceta.toString().includes(palabra)
+                || item.fecha_gaceta.toString().includes(palabra)
+            );
+        }
+
+        /* tipo de documento */
+        if (columnas === 'col-12') {
+            search = dataAux.filter(item =>
+                item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+                || item.codigo.toString().includes(palabra)
+            );
+        }
+
+        /* tipo de contribuyente */
+        if (columnas === 'col-13') {
+            search = dataAux.filter(item =>
+                item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.descripcion.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+            );
+        }
+
+        /* cuentas contables */
+        if (columnas === 'col-14') {
+            search = dataAux.filter(item => //aqui
+                item.concepto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.codigo_cuenta.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.naturaleza_cuenta.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.grupo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.sub_grupo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.auxiliar.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+            );
+        }
+
+        /* firmas autorizadas */
+        if (columnas === 'col-15') {
+            search = dataAux.filter(item =>
+                item.nombre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.cargo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+                || item.ngaceta.toString().includes(palabra)
+                || item.fecha_gaceta.toString().includes(palabra)
+                || item.orden_administrativa.toString().includes(palabra)
+            );
+        }
+
+        /* estados */
+        if (columnas === 'col-16') {
+            search = dataAux.filter(item =>
+                item.region.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.redi.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.descripcion.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+                || item.cod_estado.toString().includes(palabra)
+                || item.unidad_estadal.toString().includes(palabra)
+            );
+        }
+
+        /* municipios */
+        if (columnas === 'col-17') {
+            search = dataAux.filter(item =>
+                item.descripcion.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.estado.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+                || item.cod_municipio.toString().includes(palabra)
+            );
+        }
+
+        if(palabra === '') {
+            actualizarTablas(tabla);
+        } else {
+            switch (tabla) {
+                case "trimestre":
+                    setTrimestres(search);
+                    break;
+
+                case "forma-pago":
+                    setFormasPago(search);
+                    break;
+
+                case "cuentas-recaudadoras":
+                    setCuentasRecaudadoras(search);
+                    break;
+
+                case "estatus-entidad-trabajo":
+                    setEstatus(search);
+                    break;
+
+                case "clase-empresa":
+                    setClaseEmpresa(search);
+                    break;
+
+                case "bancos-recaudadores":
+                    setBancos(search);
+                    break;
+
+                case "motores-productivos":
+                    setMotores(search);
+                    break;
+
+                case "actividad-economica":
+                    setActividadesEconomicas(search);
+                    break;
+
+                case "conceptos":
+                    setConceptos(search);
+                    break;
+
+                case "registros-mercantiles":
+                    setRegistrosMercantiles(search);
+                    break;
+
+                case "medida-valor":
+                    setMedidaValor(search);
+                    break;
+
+                case "motivo-sancion":
+                    setMotivoSancion(search);
+                    break;
+
+                case "dias-festivos":
+                    setDiasFestivos(search);
+                    break;
+
+                case "tasa-intereses":
+                    setTasaIntereses(search);
+                    break;
+
+                case "sectores":
+                    setSectores(search);
+                    break;
+
+                case "vialidades":
+                    setVialidades(search);
+                    break;
+
+                case "locales":
+                    setLocales(search);
+                    break;
+
+                case "edificaciones":
+                    setEdificaciones(search);
+                    break;
+
+                case "tipo-documentos":
+                    setTipoDocumento(search);
+                    break;
+
+                case "tipo-contribuyente":
+                    setTipoContribuyente(search);
+                    break;
+
+                case "cuentas-contables":
+                    setCuentasContables(search);
+                    break;
+
+                case "firmas-autorizadas":
+                    setFirmasAutorizadas(search);
+                    break;
+
+                case "estados":
+                    setEstados(search);
+                    break;
+
+                case "municipios":
+                    setMunicipios(search);
+                    break;
+
+                default:
+                    break;
+            }
+
+        }
+
+    }
+
+    const formatearfecha = (f, formato) => {
+        const ano = f.getFullYear();
+        const mes = ("0" + (f.getMonth()+1)).substr(-2);
+        const dia = ("0" + f.getDate()).substr(-2);
+
+        let fecha;
+
+        if(formato === 'DMY') fecha = `${dia}-${mes}-${ano}`
+        else if(formato === 'YMD') fecha = `${ano}-${mes}-${dia}`;
+
+        return fecha;
+    }
+
+    const getListaOriginal = (tablaName) => {
+
+        switch (tablaName) {
+            case "trimestre":
+                dataAux = trimestres;
+                break;
+
+            case "forma-pago":
+                dataAux = formasPago;
+                break;
+
+            case "cuentas-recaudadoras":
+                dataAux = cuentasRecaudadoras;
+                break;
+
+            case "estatus-entidad-trabajo":
+                dataAux = estatus;
+                break;
+
+            case "clase-empresa":
+                dataAux = claseEmpresa;
+                break;
+
+            case "bancos-recaudadores":
+                dataAux = bancos;
+                break;
+
+            case "motores-productivos":
+                dataAux = motores;
+                break;
+
+            case "actividad-economica":
+                dataAux = actividadesEconomicas;
+                break;
+
+            case "conceptos":
+                dataAux = conceptos;
+                break;
+
+            case "registros-mercantiles":
+                dataAux = registrosMercantiles;
+                break;
+
+            case "medida-valor":
+                dataAux = medidaValor;
+                break;
+
+            case "motivo-sancion":
+                dataAux = motivoSancion;
+                break;
+
+            case "dias-festivos":
+                dataAux = diasFestivos;
+                break;
+
             case "tasa-intereses":
-                getTasaIntereses();
+                dataAux = tasaIntereses;
+                break;
+
+            case "sectores":
+                dataAux = sectores;
+                break;
+
+            case "vialidades":
+                dataAux = vialidades;
+                break;
+
+            case "locales":
+                dataAux = locales;
+                break;
+
+            case "edificaciones":
+                dataAux = edificaciones;
+                break;
+
+            case "tipo-documentos":
+                dataAux = tipoDocumento;
+                break;
+
+            case "tipo-contribuyente":
+                dataAux = tipoContribuyente;
+                break;
+
+            case "cuentas-contables":
+                dataAux = cuentasContables;
+                break;
+
+            case "firmas-autorizadas":
+                dataAux = firmasAutorizadas;
+                break;
+
+            case "estados":
+                dataAux = estados;
+                break;
+
+            case "municipios":
+                dataAux = municipios;
                 break;
 
             default:
@@ -859,18 +1744,32 @@ export const MasterTablesState = ({ children }) => {
         conceptos,
         registrosMercantiles,
         estados,
+        municipios,
         medidaValor,
         motivoSancion,
         diasFestivos,
         tasaIntereses,
         anos,
+        sectores,
+        vialidades,
+        locales,
+        edificaciones,
+        tipoDocumento,
+        tipoContribuyente,
+        cuentasContables,
+        firmasAutorizadas,
+        unidadEstadal,
+        listReportes,
+        listRegiones,
+        listRedi,
         submitMasterTables,
         setFormDataTables,
         deleteMasterTables,
         registroSeleccionado,
         obtenerValores,
         limpiarSeleccionado,
-        validarDescripcion
+        validarDescripcion,
+        filtrarElementos
     }
 
     return (

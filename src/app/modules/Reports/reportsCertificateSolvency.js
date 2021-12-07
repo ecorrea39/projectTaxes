@@ -13,7 +13,7 @@ import BaseSelect from "../Forms/BaseSelect";
 
 function ReportsCertificateSolvency() {
 
-    const { formatoFechaFutura, formatoReporte, submitReportsCertificateSolvency, setFormDataReports, contrib  } = useContext(ReportsContext);
+    const { formatoFechaFutura, formatoReporte, anos, trimestres, submitReportsCertificateSolvency, setFormDataReports, contrib  } = useContext(ReportsContext);
     const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", padding: "20px 35px 20px 35px"}
     const formato = formatoReporte;
     let contribuyente = contrib;
@@ -62,6 +62,39 @@ function ReportsCertificateSolvency() {
                                             }
                                         </Field>
                                     </Col>
+
+                                    <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6" className="mb-6">
+                                        <label htmlFor="ano_declaracion" className="font-weight-bold">Año</label>
+                                        <Field
+                                            id="ano"
+                                            name="ano"
+                                            type="select"
+                                            component={BaseSelect}
+                                        >
+                                            <option value="" disabled>seleccione</option>
+                                            {
+                                                anos.map((s, i) => {
+                                                    return <option key={i} value={s}>{s}</option>
+                                                })
+                                            }
+                                        </Field>
+                                    </Col>
+                                    <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6" className="mb-6">
+                                        <label htmlFor="trimestre" className="font-weight-bold">Trimestre</label>
+                                        <Field
+                                            id="trimestre"
+                                            name="trimestre"
+                                            type="select"
+                                            component={BaseSelect}
+                                        >
+                                            <option value="" disabled>seleccione</option>
+                                            {
+                                                trimestres.map((s) => {
+                                                    return <option key={s.id} value={s.id}>{s.name}</option>
+                                                })
+                                            }
+                                        </Field>
+                                    </Col>
                                     <Col xs="12" sm="12" md="12" lg="6" xl="6" xxl="6"
                                          className="mb-6">
                                         <label htmlFor="fecha" className="font-weight-bold">Fecha de solicitud</label>
@@ -98,7 +131,7 @@ function ReportsCertificateSolvency() {
                                     </Col>
                                     <Col className="mt-1 mb-2" xs="12" sm="6" md="6" lg="6" xl="6" xxl="6">
                                         <Button type="submit" onClick={()=>console.log(formik.errors, formik.values)}
-                                        variant="success" className="btn btn-success font-size-lg w-100">Reporte</Button>
+                                        variant="success" className="btn btn-success font-size-lg w-100">Generar Reporte</Button>
                                     </Col>
                                 </Row>
                             </Form>
