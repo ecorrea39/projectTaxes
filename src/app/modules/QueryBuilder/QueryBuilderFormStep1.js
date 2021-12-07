@@ -168,7 +168,7 @@ const QueryBuilderFormStep1 = (props) => {
                       <Row>
                         <Form.Label style={textLabelColor}>Título</Form.Label>
 
-                        <Tooltip title="Se usará como encabezado en el resultado de la consulta"
+                        <Tooltip title="Se usará como encabezado en el resultado de la consulta (solo pdf)"
                         color="geekblue" key="geekblue" placement="right"
                         >
                           <QuestionCircleOutlined 

@@ -1,13 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, Col, Container, Form, Row} from 'react-bootstrap';
+import {Button, Card, Col, Container, Row} from 'react-bootstrap';
 import './QueryRunner.css';
 import { Modal } from 'antd';
 import { ExclamationCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { Query, Builder, Utils as QbUtils } from "react-awesome-query-builder";
 import { clientAxios, requestConfig } from '../../config/configAxios';
-import "antd/dist/antd.css";
-// import "react-awesome-query-builder/lib/css/styles.css";
-import "./raqb-styles.css"
+import "./raqb-styles.scss"
 import { type_map, widget_map, operator_map } from './maps';
 import { InitialConfig } from './settings';
 
@@ -106,7 +104,7 @@ const QueryRunnerStep2 = (props) => {
         ...(widgets && { preferWidgets: widgets })
       };
 
-      fields[name] = thisField;
+      fields[campo.name] = thisField;
     });
 
     setConfig({ ...InitialConfig, fields: fields });

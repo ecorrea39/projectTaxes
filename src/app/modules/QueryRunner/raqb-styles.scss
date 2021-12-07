@@ -1,3 +1,44 @@
+.ant-elements {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.ant-form-field {
+  @extend .ant-elements;
+  justify-content: flex-start;
+  min-height: 48px;
+}
+
+.ant-select-single.ant-select-sm:not(.ant-select-customize-input) .ant-select-selector {
+  @extend .ant-form-field;
+}
+
+.ant-input-number {
+  @extend .ant-form-field;
+  width: 12vw;
+}
+
+.ant-input {
+  @extend .ant-form-field;
+  width: 24vw;
+}
+
+.ant-picker {
+  @extend .ant-form-field;
+  width: 13vw;
+}
+
+.action--ADD-GROUP .anticon svg {
+  display: inline-block;
+  transform: translate(0px, -3px);
+}
+
+.action--ADD-RULE .anticon svg {
+  display: inline-block;
+  transform: translate(0px, -3px);
+}
+
 .qb-drag-handler, .qb-draggable, .query-builder {
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -48,8 +89,8 @@ body.qb-dragging .ant-tooltip {
 }
 
 .group {
-  background: rgba(250, 240, 210, 0.5);
-  border: 1px solid #DCC896;
+  background: rgba(232, 233, 235, 0.5);
+  border: 1px solid #E0DFD5;
 }
 
 .rule {

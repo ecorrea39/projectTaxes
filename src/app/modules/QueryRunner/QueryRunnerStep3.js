@@ -1,46 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import {Card, Col, Container, Row} from 'react-bootstrap';
 import './QueryRunner.css';
-import { CheckCircleOutlined, CloseCircleOutlined, FileTwoTone, FileTextTwoTone, FileExcelTwoTone, FilePdfTwoTone } from '@ant-design/icons';
+import { CheckCircleOutlined, CloseCircleOutlined, FileTwoTone, FileTextTwoTone, 
+  FileExcelTwoTone, FilePdfTwoTone, HourglassTwoTone } from '@ant-design/icons';
 import { clientAxios, requestConfig } from '../../config/configAxios';
 import { toAbsoluteUrl } from "../../../_metronic/_helpers";
-import ExportExcel from "react-export-excel";
+import ReactExport from "react-export-excel";
 import { CSVLink } from "react-csv";
 import { Document, Page, Text, View, PDFDownloadLink, Image } from '@react-pdf/renderer';
 import styles from './pdf-styles';
+import Swal from "sweetalert2";
 
-const ExcelFile = ExportExcel.ExcelFile;
-const ExcelSheet = ExportExcel.ExcelSheet;
-const ExcelColumn = ExportExcel.ExcelColumn;
-
-const multiDataSet = [
-  {
-    columns: [
-      { value: "Name", widthPx: 50 }, // width in pixels
-      { value: "Salary", widthCh: 20 }, // width in charachters
-      { value: "Sex", widthPx: 60, widthCh: 20 }, // will check for width in pixels first
-    ],
-    data: [
-      ["Johnson", 30000, "Male"],
-      ["Monika", 355000, "Female"],
-      ["Konstantina", 20000, "Female"],
-      ["John", 250000, "Male"],
-      ["Josef", 450500, "Male"],
-    ],
-  },
-  {
-    xSteps: 1, // Will start putting cell with 1 empty cell on left most
-    ySteps: 5, //will put space of 5 rows,
-    columns: ["Name", "Department"],
-    data: [
-      ["Johnson", "Finance"],
-      ["Monika", "IT"],
-      ["Konstantina", "IT Billing"],
-      ["John", "HR"],
-      ["Josef", "Testing"],
-    ],
-  },
-];
+const ExcelFile = ReactExport.ExcelFile;
+const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
+const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 
 const QueryRunnerStep3 = (props) => {
   const [loading, setLoading] = useState(false);
@@ -51,7 +24,9 @@ const QueryRunnerStep3 = (props) => {
   const [headers, setHeaders] = useState([]);
   const [tipo, setTipo] = useState('');
   const [ahora, setAhora] = useState('');
+  const [ahoraStr, setAhoraStr] = useState('');
   const [colWidth, setColWidth] = useState('');
+  const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
     enableLoading();
@@ -75,33 +50,43 @@ const QueryRunnerStep3 = (props) => {
     requestConfig.data.attributes = valores;
     requestConfig.data.id = '';
 
-    const respuesta = await clientAxios.post('/dynamic_query/exec/', requestConfig);
+    let respuesta = {};
+
+    try {
+      respuesta = await clientAxios.post('/dynamic_query/exec/', requestConfig);
+    } catch (e) {
+      console.log(e);
+      Swal.fire({
+        title: "Resultado de la operación",
+        text: "Ocurrió un error ejecutando la consulta",
+        icon: "error",
+        timer: 1500
+      }).then(() => {
+        props.regresar();
+      });
+      return;
+    }
     
     if (respuesta.data.data.attributes) {
       const innerType = props.WhereFinal.formato;
       const newDate = new Date();
       const isNow = `${newDate.getDate()}/${newDate.getMonth() + 1}/${newDate.getFullYear()} ${newDate.getHours()}:${newDate.getMinutes()}:${newDate.getSeconds()}`
+      const isNowStr = `${newDate.getDate()}-${newDate.getMonth() + 1}-${newDate.getFullYear()} ${newDate.getHours()}.${newDate.getMinutes()}.${newDate.getSeconds()}`
       const dataSample = respuesta.data.data.attributes.records.length > 0 ?
         respuesta.data.data.attributes.records[0] : {};
       
       setAhora(isNow);
+      setAhoraStr(isNowStr);
       setTipo(innerType);
-      setFileName(`${props.queryData.nombre}.${innerType}`);
       setHeaders(Object.keys(dataSample));
       setColWidth(95 / Object.keys(dataSample).length);
 
-      if (['txt', 'csv'].includes(innerType)) {
-        setSeparator(innerType === 'txt' ? '\t' : ';');
-        setData(respuesta.data.data.attributes.records);
-      }
+      if (['txt', 'csv'].includes(innerType)) setSeparator(innerType === 'txt' ? '\t' : ';');
 
-      if (innerType === 'xlsx') {
-        setData(respuesta.data.data.attributes.records);
-      }
+      if (innerType != 'xlsx') setFileName(`${props.queryData.nombre}.${innerType}`);
+      else setFileName(`${props.queryData.nombre}`);
 
-      if (innerType === 'pdf') {
-        setData(respuesta.data.data.attributes.records);
-      }
+      setData(respuesta.data.data.attributes.records);
 
       setResultado('success');
     }
@@ -121,7 +106,8 @@ const QueryRunnerStep3 = (props) => {
   };
 
   const afterDownload = () => {
-    setTimeout(() => props.regresar(), 1000);
+    setDownloading(true);
+    setTimeout(() => props.regresar(), 1500);
   };
 
   const getColor = (index) => {
@@ -201,7 +187,7 @@ const QueryRunnerStep3 = (props) => {
               {['txt', 'csv'].includes(tipo) &&
                 <Row>
                 <Col md={12}>
-                  <div className="download-link">
+                  <div className="download-link" hidden={downloading}>
                     <CSVLink
                     data={data}
                     separator={separator}
@@ -217,6 +203,11 @@ const QueryRunnerStep3 = (props) => {
                       </div>
                     </CSVLink>
                   </div>
+                  <div className="download-link" hidden={!downloading}>
+                    <div className="download-text">
+                      Su archivo se está descargando, pronto será redireccionado al inicio.
+                    </div>
+                  </div>
                 </Col>
               </Row>
               }
@@ -224,18 +215,26 @@ const QueryRunnerStep3 = (props) => {
               {tipo === 'xlsx' &&
                 <Row>
                 <Col md={12}>
-                  <ExcelFile element={<div className="download-link">
-                    <div className="download-wrapper">
-                      <div className="circle-download">
-                        <FileExcelTwoTone twoToneColor="#52c41a" />
+                  <div className="download-link" hidden={downloading}>
+                    <ExcelFile element={<div className="download-wrapper" onClick={afterDownload}>
+                        <div className="circle-download">
+                          <FileExcelTwoTone twoToneColor="#52c41a" />
+                        </div>
+                        Por favor descargue su archivo
                       </div>
-                      Por favor descargue su archivo
+                    } filename={fileName}>
+                      <ExcelSheet data={data} name={ahoraStr}>
+                      {headers.map((elemento) =>
+                        <ExcelColumn key={elemento} label={elemento} value={elemento} />
+                      )}
+                      </ExcelSheet>
+                    </ExcelFile>
+                  </div>
+                  <div className="download-link" hidden={!downloading}>
+                    <div className="download-text">
+                      Su archivo se está descargando, pronto será redireccionado al inicio.
                     </div>
-                  </div>} filename={fileName}>
-                    <ExcelSheet data={multiDataSet} name="Resultados">
-                      <ExcelColumn label="Hola" value="mundo" />
-                    </ExcelSheet>
-                  </ExcelFile>
+                  </div>
                 </Col>
               </Row>
               }
@@ -243,17 +242,31 @@ const QueryRunnerStep3 = (props) => {
               {tipo === 'pdf' &&
                 <Row>
                 <Col md={12}>
-                  <div className="download-link">
+                  <div className="download-link" hidden={downloading}>
                     <PDFDownloadLink
                     document={MyDocument()}
                     fileName={fileName}>
-                      <div className="download-wrapper" onClick={afterDownload}>
-                        <div className="circle-download">
-                        <FilePdfTwoTone twoToneColor="#52c41a" />
+                      {({ blob, url, loading, error }) =>
+                        loading ? 
+                        <div className="wait-file">
+                          <HourglassTwoTone twoToneColor="#52c41a" spin />
+                          <div className="download-text">
+                            Su archivo se está generando, por favor espere.
+                          </div>
+                        </div> : 
+                        <div className="download-wrapper" onClick={afterDownload}>
+                          <div className="circle-download">
+                          <FilePdfTwoTone twoToneColor="#52c41a" />
+                          </div>
+                          Por favor descargue su archivo
                         </div>
-                        Por favor descargue su archivo
-                      </div>
+                      }
                     </PDFDownloadLink>
+                  </div>
+                  <div className="download-link" hidden={!downloading}>
+                    <div className="download-text">
+                      Su archivo se está descargando, pronto será redireccionado al inicio.
+                    </div>
                   </div>
                 </Col>
               </Row>

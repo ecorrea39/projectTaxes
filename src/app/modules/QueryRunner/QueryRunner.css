@@ -85,12 +85,6 @@
     margin-top: 12px;
 }
 
-/* .success-text {
-    font-size: 16px;
-    color: #52ae32;
-    margin: 24px 0px 24px 0px;
-} */
-
 .error-title {
     font-size: 24px;
     font-weight: bold;
@@ -118,6 +112,7 @@
     align-items: center;
     font-size: 18px;
     color: #52ae32;
+    cursor: pointer;
 }
 
 .download-wrapper:hover {
@@ -139,4 +134,17 @@
 .download-wrapper:hover .circle-download {
     border: solid 2px #4d7a3e;
     font-size: 32px;
+}
+
+.wait-file {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 36px;
+}
+
+.download-text {
+    font-size: 16px;
+    color: #52ae32;
+    margin: 12px 0px 24px 0px;
 }
