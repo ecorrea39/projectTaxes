@@ -1,4 +1,4 @@
-import React, {useEffect, useState, Fragment} from "react";
+import React, {useEffect, useState, Fragment, useContext} from "react";
 import {Card, Col, Container, Row} from "react-bootstrap";
 import DataTable  from 'react-data-table-component';
 import SVG from "react-inlinesvg";
@@ -11,6 +11,8 @@ import { clientAxios, requestConfig } from '../../config/configAxios';
 import Swal from "sweetalert2";
 import { Modal } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
+import AuthContext from "../../store/auth-context";
+import jwt_decode from "jwt-decode";
 
 import QueryBuilder from '../QueryBuilder/QueryBuilder'; 
 import QueryRunner from '../QueryRunner/QueryRunner';
@@ -18,12 +20,14 @@ import QueryRunner from '../QueryRunner/QueryRunner';
 const { confirm } = Modal;
 
 const QueryList = () => {
+    const authCtx = useContext(AuthContext);
     const [loading, setLoading] = useState(false);
     const [allQuerys, setAllQuerys] = useState([]);
     const [filterQuerys, setFilterQuerys] = useState([]);
     const [busqueda, setBusqueda] = useState("");
     const [view, setView] = useState("main");
     const [editRow, setEditRow] = useState({});
+    const [uId, setUId] = useState("");
 
     const styleBtn = { borderRadius: '100%'}
     const sortIcon = <ArrowDownward />;
@@ -95,19 +99,23 @@ const QueryList = () => {
                         <PlayCircleTwoTone className="play-btn" />
                     </a>
     
-                    <a title="Modificar" onClick={() => onEdit(row)}
-                       style={styleBtn} className="btn btn-icon btn-hover-light btn-sm">
-                        <span className="svg-icon svg-icon-md svg-icon-info">
-                            <SVG src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}/>
-                        </span>
-                    </a>
-    
-                    <a title="Eliminar" onClick={() => onDelete(row)}
+                    {uId === row['created_by_user.uid'] &&
+                        <a title="Modificar" onClick={() => onEdit(row)}
                         style={styleBtn} className="btn btn-icon btn-hover-light btn-sm">
-                        <span className="svg-icon svg-icon-md svg-icon-danger">
-                            <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")}/>
-                        </span>
-                    </a>
+                            <span className="svg-icon svg-icon-md svg-icon-info">
+                                <SVG src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}/>
+                            </span>
+                        </a>
+                    }
+    
+                    {uId === row['created_by_user.uid'] &&
+                        <a title="Eliminar" onClick={() => onDelete(row)}
+                        style={styleBtn} className="btn btn-icon btn-hover-light btn-sm">
+                            <span className="svg-icon svg-icon-md svg-icon-danger">
+                                <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")}/>
+                            </span>
+                        </a>
+                    }
                 </>
             )
         }
@@ -119,6 +127,10 @@ const QueryList = () => {
 
     const fetchData = async () => {
         enableLoading();
+        const token = authCtx.token;
+        const decoded = jwt_decode(token);
+        setUId(decoded && decoded.data ? decoded.data.uid : '');
+
         let Querys = [];
         
         try {

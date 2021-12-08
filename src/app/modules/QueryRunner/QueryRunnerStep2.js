@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {Button, Card, Col, Container, Row} from 'react-bootstrap';
 import './QueryRunner.css';
 import { Modal } from 'antd';
@@ -8,13 +8,18 @@ import { clientAxios, requestConfig } from '../../config/configAxios';
 import "./raqb-styles.scss"
 import { type_map, widget_map, operator_map } from './maps';
 import { InitialConfig } from './settings';
+import AuthContext from "../../store/auth-context";
+import jwt_decode from "jwt-decode";
 
 const queryValue = { id: QbUtils.uuid(), type: "group" };
 const { confirm } = Modal;
 
 const QueryRunnerStep2 = (props) => {
+  const authCtx = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
+  const [uUid, setUUid] = useState(undefined);
   const [queryData, setQueryData] = useState('');
+  const [filters, setFilters] = useState({});
   const [config, setConfig] = useState({ ...InitialConfig, fields: {} });
   const [state, setState] = useState({
     tree: QbUtils.checkTree(QbUtils.loadTree(queryValue), config),
@@ -41,6 +46,19 @@ const QueryRunnerStep2 = (props) => {
 
     getLists(listas);
   }, [props.queryData]);
+
+  useEffect(() => {
+    if (uUid) {
+      const uukey = `${uUid}_${queryData.id}`;
+      const filtersStr = localStorage.getItem(uukey);
+      if (filtersStr) {
+        setState({
+          tree: QbUtils.checkTree(QbUtils.loadTree(JSON.parse(filtersStr)), config),
+          config: config
+        });
+      }
+    }
+  }, [uUid]);
 
   const mapType = (type, has_list) => {
     if (has_list) return 'select';
@@ -109,6 +127,10 @@ const QueryRunnerStep2 = (props) => {
 
     setConfig({ ...InitialConfig, fields: fields });
 
+    const token = authCtx.token;
+    const decoded = jwt_decode(token);
+    if (decoded && decoded.data) setUUid(decoded.data.uid);
+
     disableLoading();
   };
 
@@ -126,6 +148,15 @@ const QueryRunnerStep2 = (props) => {
 
   const submitSiguiente = () => {
     const where = QbUtils.sqlFormat(state.tree, state.config);
+
+    if (uUid) {
+      const uukey = `${uUid}_${queryData.id}`;
+      if (!where && localStorage.getItem(uukey)) localStorage.removeItem(uukey);
+      if (where) {
+        const filtersStr = JSON.stringify(filters);
+        localStorage.setItem(uukey, filtersStr);
+      }
+    }
 
     props.CambiarQuery({
       where: where ? where : ''
@@ -166,6 +197,7 @@ const QueryRunnerStep2 = (props) => {
     setState({ tree: immutableTree, config: config });
 
     const jsonTree = QbUtils.getTree(immutableTree);
+    setFilters(jsonTree);
   };
 
   const renderBuilder = (props) => (

@@ -13,6 +13,7 @@ const textLabelColor = {
   'marginLeft': '12px'
 };
 
+const regexp = /^[a-zA-Z0-9_]+$/;
 const { confirm } = Modal;
 
 const QueryBuilderFormStep1 = (props) => {
@@ -32,9 +33,13 @@ const QueryBuilderFormStep1 = (props) => {
     });
   }, [props.QueryFinal]);
 
+  const limitEntry = (event) => {
+    if (event.key.search(regexp) === -1) event.preventDefault();
+  }
+
   const submitSiguiente = () => {
     formik.submitForm();
-  }
+  };
 
   const LoginSchema = Yup.object().shape({
     nombre: Yup.string()
@@ -151,6 +156,7 @@ const QueryBuilderFormStep1 = (props) => {
                       <Form.Control size="lg" type="text" placeholder="Nombre"
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
+                                    onKeyPress={limitEntry}
                                     value={formik.values.nombre}
                                     maxLength="20"
                       />
