@@ -1,5 +1,5 @@
 import React, {useContext, useState} from "react";
-import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
+import {Button, Card, Col, Container, Form, Row, Spinner} from "react-bootstrap";
 import {useIntl} from "react-intl";
 import axios from "axios";
 import GeneralContext from "../../store/general-context";
@@ -8,6 +8,7 @@ import {useHistory} from "react-router-dom";
 const UserDatosFormStep5 = (props) => {
 
   const [loading, setLoading] = useState(false);
+  const [spinner, setSpinner] = useState(false);
 
   const generalCtx = useContext(GeneralContext);
 
@@ -54,6 +55,7 @@ const UserDatosFormStep5 = (props) => {
       }
     };
 
+    setSpinner(true);
     axios.post(`${API_URL}profile_summary/`, data, axiosConfig)
       .then(function (res) {
 
@@ -101,6 +103,9 @@ const UserDatosFormStep5 = (props) => {
       disableLoading();
 
       alert("Error en consulta de finalización");
+    })
+    .finally(() => {
+      setSpinner(false);
     });
   }
 
@@ -117,6 +122,7 @@ const UserDatosFormStep5 = (props) => {
       <Card.Body>
         <Card.Title>
           Ficha de Registro
+          {spinner && <Spinner animation="border" variant="danger" />}
         </Card.Title>
         <Card.Body>
           <Container>
@@ -599,6 +605,7 @@ const UserDatosFormStep5 = (props) => {
                 >
                   Finalizar
                 </Button>
+                {spinner && <Spinner animation="border" variant="danger" />}
               </Col>
             </Row>
           </Container>

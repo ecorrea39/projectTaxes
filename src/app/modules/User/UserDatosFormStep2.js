@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef, useContext} from "react";
-import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
+import {Button, Card, Col, Container, Form, Row, Spinner} from "react-bootstrap";
 import {FormattedMessage, useIntl} from "react-intl";
 import {useFormik} from "formik";
 import * as Yup from "yup";
@@ -299,6 +299,7 @@ const formulario = {
 const UserDatosFormStep2 = (props) => {
 
   const [loading, setLoading] = useState(false);
+  const [spinner, setSpinner] = useState(false);
 
   const generalCtx = useContext(GeneralContext);
 
@@ -346,6 +347,7 @@ const UserDatosFormStep2 = (props) => {
 
     console.log("registradoValor::", props.registradoValor);
 
+    setSpinner(true);
     axios.get(`${API_URL}user_mercantil_data/fondoporid/${generalCtx.theIdUserInformacionProfile}/`, axiosConfig)
       .then(function (res) {
         console.log("get_user_company::", res);
@@ -373,6 +375,9 @@ const UserDatosFormStep2 = (props) => {
       alert("Error buscando datos mercantiles de la empresa del usuario")
       disableLoading();
 
+    })
+    .finally(() => {
+      setSpinner(false);
     });
 
   }, []);
@@ -508,6 +513,7 @@ const UserDatosFormStep2 = (props) => {
         }
       };
 
+      setSpinner(true);
       axios.post(`${API_URL}user_mercantil_data/`, data, axiosConfig)
         .then(function (res) {
 
@@ -538,6 +544,9 @@ const UserDatosFormStep2 = (props) => {
         disableLoading();
 
         alert("Error al guardar los Datos Mercantiles");
+      })
+      .finally(() => {
+        setSpinner(false);
       });
     },
   });
@@ -547,6 +556,7 @@ const UserDatosFormStep2 = (props) => {
       <Card.Body>
         <Card.Title>
           Datos Mercantiles
+          {spinner && <Spinner animation="border" variant="danger" />}
         </Card.Title>
         <Card.Body>
           <form
@@ -718,6 +728,7 @@ const UserDatosFormStep2 = (props) => {
                   >
                     Siguiente
                   </Button>
+                  {spinner && <Spinner animation="border" variant="danger" />}
                 </Col>
               </Row>
             </Container>

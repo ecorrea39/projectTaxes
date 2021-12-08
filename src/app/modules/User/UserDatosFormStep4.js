@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef, useContext} from "react";
-import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
+import {Button, Card, Col, Container, Form, Row, Spinner} from "react-bootstrap";
 import {FormattedMessage, useIntl} from "react-intl";
 import {useFormik} from "formik";
 import * as Yup from "yup";
@@ -85,6 +85,7 @@ const UserDatosFormStep4 = (props) => {
 
   const [loading, setLoading] = useState(false);
   const [siguiente, setSiguiente] = useState(false);
+  const [spinner, setSpinner] = useState(false);
 
   const generalCtx = useContext(GeneralContext);
 
@@ -132,6 +133,7 @@ const UserDatosFormStep4 = (props) => {
 
   useEffect(() => {
 
+    setSpinner(true);
     axios.get(`${API_URL}user_manager_data/fondoporid/${generalCtx.theIdUserInformacionProfile}/`, axiosConfig)
       .then(function (res) {
         console.log("get_user_company::", res);
@@ -174,6 +176,9 @@ const UserDatosFormStep4 = (props) => {
       alert("Error buscando datos de los representantes legales de la empresa del usuario");
       disableLoading();
 
+    })
+    .finally(() => {
+      setSpinner(false);
     });
 
   }, []);
@@ -803,6 +808,7 @@ const UserDatosFormStep4 = (props) => {
         }
       };
 
+      setSpinner(true);
       axios.post(`${API_URL}user_manager_data/`, data, axiosConfig)
         .then(function (res) {
 
@@ -850,6 +856,9 @@ const UserDatosFormStep4 = (props) => {
         disableLoading();
 
         alert("Error al guardar los Datos de los Representantes Legales");
+      })
+      .finally(() => {
+        setSpinner(false);
       });
     },
   });
@@ -859,6 +868,7 @@ const UserDatosFormStep4 = (props) => {
       <Card.Body>
         <Card.Title>
           Datos del Representante Legal
+          {spinner && <Spinner animation="border" variant="danger" />}
         </Card.Title>
         <Card.Body>
           <form
@@ -1345,6 +1355,7 @@ const UserDatosFormStep4 = (props) => {
                   >
                     Siguiente
                   </Button>
+                  {spinner && <Spinner animation="border" variant="danger" />}
                 </Col>
               </Row>
             </Container>

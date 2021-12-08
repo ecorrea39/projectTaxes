@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef, useContext} from "react";
-import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
+import {Button, Card, Col, Container, Form, Row, Spinner} from "react-bootstrap";
 import {FormattedMessage, useIntl} from "react-intl";
 import {useFormik} from "formik";
 import * as Yup from "yup";
@@ -155,6 +155,7 @@ const UserDatosFormStep3 = (props) => {
   const [ciudadesTotales, setCiudadesTotales] = useState([]);
   const [ciudades, setCiudades] = useState([]);
   const [siguiente, setSiguiente] = useState(false);
+  const [spinner, setSpinner] = useState(false);
 
   const intl = useIntl();
   const API_URL = `${process.env.REACT_APP_API_URL}`;
@@ -184,6 +185,7 @@ const UserDatosFormStep3 = (props) => {
           cargaDeCiudades().then((resolvedValueCiudades) => {
             console.log("resolvedValueCiudades", resolvedValueCiudades);
 
+            setSpinner(true);
             axios.get(`${API_URL}user_geographic_data/fondoporid/${generalCtx.theIdUserInformacionProfile}/`, axiosConfig)
               .then(function (res) {
                 console.log("get_user_company::", res);
@@ -218,6 +220,9 @@ const UserDatosFormStep3 = (props) => {
               console.log("errGetUserCompany", err);
               alert("Error buscando datos geograficos de la empresa del usuario")
               disableLoading();
+            })
+            .finally(() => {
+              setSpinner(false);
             });
 
           }, (error) => {
@@ -247,6 +252,7 @@ const UserDatosFormStep3 = (props) => {
     let p = new Promise(function (resolve, reject) {
       enableLoading();
 
+      setSpinner(true);
       axios.get(`${API_URL}geographic_data_estados/`, axiosConfig)
         .then(function (res) {
           console.log("resFormStep3_datos_geograficos_estados", res);
@@ -280,6 +286,9 @@ const UserDatosFormStep3 = (props) => {
         disableLoading();
 
         reject(new Error('Error al consultar los datos de los estados'));
+      })
+      .finally(() => {
+        setSpinner(false);
       });
     })
 
@@ -291,6 +300,7 @@ const UserDatosFormStep3 = (props) => {
     let p = new Promise(function (resolve, reject) {
       enableLoading();
 
+      setSpinner(true);
       axios.get(`${API_URL}geographic_data_municipios/`, axiosConfig)
         .then(function (res) {
           console.log("resFormStep3_datos_geograficos_municipios", res);
@@ -327,6 +337,9 @@ const UserDatosFormStep3 = (props) => {
         disableLoading();
 
         reject(new Error('Error al consultar los datos de los municipios'));
+      })
+      .finally(() => {
+        setSpinner(false);
       });
     })
 
@@ -338,6 +351,7 @@ const UserDatosFormStep3 = (props) => {
     let p = new Promise(function (resolve, reject) {
       enableLoading();
 
+      setSpinner(true);
       axios.get(`${API_URL}geographic_data_parroquias/`, axiosConfig)
         .then(function (res) {
           console.log("resFormStep3_datos_geograficos_parroquias", res);
@@ -374,6 +388,9 @@ const UserDatosFormStep3 = (props) => {
         disableLoading();
 
         reject(new Error('Error al consultar los datos de las Parroquias'));
+      })
+      .finally(() => {
+        setSpinner(false);
       });
     })
 
@@ -385,6 +402,7 @@ const UserDatosFormStep3 = (props) => {
     let p = new Promise(function (resolve, reject) {
       enableLoading();
 
+      setSpinner(true);
       axios.get(`${API_URL}geographic_data_ciudades`, axiosConfig)
         .then(function (res) {
           console.log("resFormStep3_datos_geograficos_ciudades", res);
@@ -421,6 +439,9 @@ const UserDatosFormStep3 = (props) => {
         disableLoading();
 
         reject(new Error('Error al consultar los datos de las Ciudades'));
+      })
+      .finally(() => {
+        setSpinner(false);
       });
     })
 
@@ -715,6 +736,7 @@ const UserDatosFormStep3 = (props) => {
         }
       };
 
+      setSpinner(true);
       axios.post(`${API_URL}user_geographic_data/`, data, axiosConfig)
         .then(function (res) {
 
@@ -760,6 +782,9 @@ const UserDatosFormStep3 = (props) => {
         disableLoading();
 
         alert("Error al guardar los Datos Geograficos");
+      })
+      .finally(() => {
+        setSpinner(false);
       });
     },
   });
@@ -769,6 +794,7 @@ const UserDatosFormStep3 = (props) => {
       <Card.Body>
         <Card.Title>
           Datos Geográficos
+          {spinner && <Spinner animation="border" variant="danger" />}
         </Card.Title>
         <Card.Body>
           <form
@@ -1155,6 +1181,7 @@ const UserDatosFormStep3 = (props) => {
                   >
                     Siguiente
                   </Button>
+                  {spinner && <Spinner animation="border" variant="danger" />}
                 </Col>
               </Row>
             </Container>
