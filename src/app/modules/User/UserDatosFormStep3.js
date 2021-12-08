@@ -992,7 +992,7 @@ const UserDatosFormStep3 = (props) => {
 
                 <Col md={6}>
                   <Form.Group as={Col} controlId="local" style={formulario}>
-                    <Form.Label style={textLabelColor}>Local</Form.Label>
+                    <Form.Label style={textLabelColor}>Nomenclatura</Form.Label>
                     <Form.Control size="md" type="text" placeholder="Local"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
