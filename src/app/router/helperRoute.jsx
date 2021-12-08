@@ -364,6 +364,18 @@ export const navFuncional = [
         url: "/tablas/municipios",
         icon: "",
         slug: "tablas-municipios"
+      },
+      {
+        title: "Parroquías",
+        url: "/tablas/parroquias",
+        icon: "",
+        slug: "tablas-parroquias"
+      },
+      {
+        title: "Ciudades",
+        url: "/tablas/ciudades",
+        icon: "",
+        slug: "tablas-ciudades"
       }
     ]
   },
