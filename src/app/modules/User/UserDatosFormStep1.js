@@ -1241,7 +1241,6 @@ const UserDatosFormStep1 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.numero_patronal}
                                   maxLength="20"
-                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.numero_patronal && formik.errors.numero_patronal ? (
@@ -1260,7 +1259,6 @@ const UserDatosFormStep1 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.numero_de_trabajadores}
                                   maxLength="7"
-                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.numero_de_trabajadores && formik.errors.numero_de_trabajadores ? (
