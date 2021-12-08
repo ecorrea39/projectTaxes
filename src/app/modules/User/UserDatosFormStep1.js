@@ -237,7 +237,13 @@ const UserDatosFormStep1 = (props) => {
               "name": elemDataName
             };
 
-            estatusArray.push(rObj);
+            if (groups == 'administradores') {
+              estatusArray.push(rObj);
+            } else {
+              if (id == 1) {
+                estatusArray.push(rObj);
+              }
+            }
           });
 
           estatusArray.sort((a, b) => a.name < b.name ? -1 : 1);
