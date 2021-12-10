@@ -358,6 +358,12 @@ export const navFuncional = [
         url: "/tablas/ciudades",
         icon: "",
         slug: "tablas-ciudades"
+      },
+      {
+        title: "Unidad Estadal de Tributos",
+        url: "/tablas/unidad-estadal-tributos",
+        icon: "",
+        slug: "tablas-unidad-estadal-tributos"
       }
     ]
   },

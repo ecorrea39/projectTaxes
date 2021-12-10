@@ -938,7 +938,7 @@ export const MasterTablesState = ({ children }) => {
                 });
                 break;
 
-            case "tipo_documento":
+            case "tipo-documento":
                 tipoDocumento.map((x) => {
                     if(x.name.toUpperCase().trim() === valor.trim()) {
                         busqueda = true;
@@ -946,7 +946,7 @@ export const MasterTablesState = ({ children }) => {
                 });
                 break;
 
-            case "tipo_contribuyente":
+            case "tipo-contribuyente":
                 tipoContribuyente.map((x) => {
                     if(x.name.toUpperCase().trim() === valor.trim()) {
                         busqueda = true;
@@ -981,6 +981,14 @@ export const MasterTablesState = ({ children }) => {
             case "ciudades":
                 ciudades.map((x) => {
                     if(x.descripcion.toUpperCase().trim() === valor.trim() && Number(x.id_municipio) === Number(formik.values.id_municipio) && Number(x.id_estado) === Number(formik.values.id_estado)) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "unidad-estadal-tributos":
+                unidadEstadal.map((x) => {
+                    if(x.asignacion.toUpperCase().trim() === valor.trim()) {
                         busqueda = true;
                     }
                 });
@@ -1120,6 +1128,10 @@ export const MasterTablesState = ({ children }) => {
 
                         case "ciudades":
                             urlTabla = `/geographic_data_ciudades/${valores.id}`;
+                            break;
+
+                        case "unidad-estadal-tributos":
+                            urlTabla = `/unidad_estadal/${valores.id}`;
                             break;
 
                         default:
@@ -1288,6 +1300,11 @@ export const MasterTablesState = ({ children }) => {
                     urlTabla = "/geographic_data_ciudades/";
                     break;
 
+                case "unidad-estadal-tributos":
+                    dataType = "saveunidad_estadal";
+                    urlTabla = "/unidad_estadal/";
+                    break;
+
                 default:
                     break;
             }
@@ -1429,6 +1446,10 @@ export const MasterTablesState = ({ children }) => {
 
             case "ciudades":
                 getCiudades();
+                break;
+
+            case "unidad-estadal-tributos":
+                getUnidadEstadalTributos();
                 break;
 
             default:
@@ -1629,6 +1650,15 @@ export const MasterTablesState = ({ children }) => {
             );
         }
 
+        /* unidad estadal de tributos */
+        if (columnas === 'col-20') {
+            search = dataAux.filter(item =>
+                item.asignacion.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+                || item.cod.toString().includes(palabra)
+            );
+        }
+
         if(palabra === '') {
             actualizarTablas(tabla);
         } else {
@@ -1735,6 +1765,10 @@ export const MasterTablesState = ({ children }) => {
 
                 case "ciudades":
                     setCiudades(search);
+                    break;
+
+                case "unidad-estadal-tributos":
+                    setUnidadEstadal(search);
                     break;
 
                 default:
@@ -1863,6 +1897,10 @@ export const MasterTablesState = ({ children }) => {
 
             case "ciudades":
                 dataAux = ciudades;
+                break;
+
+            case "unidad-estadal-tributos":
+                dataAux = unidadEstadal;
                 break;
 
             default:

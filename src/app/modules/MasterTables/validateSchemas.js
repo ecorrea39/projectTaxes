@@ -186,6 +186,15 @@ export const SchemaTablesCol19 = Yup.object().shape({
         .required('- Campo obligatorio -')
 });
 
+export const SchemaTablesCol20 = Yup.object().shape({
+    cod: Yup.string()
+        .required('- Campo obligatorio -'),
+    asignacion: Yup.string()
+        .required('- Campo obligatorio -')
+});
+
+
+
 
 
 

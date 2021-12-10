@@ -114,6 +114,10 @@ function MasterTablesModule() {
             title = "Ciudades";
             break;
 
+        case "unidad-estadal-tributos":
+            title = "Unidad Estadal de Tributos";
+            break;
+
         default:
             break;
     }

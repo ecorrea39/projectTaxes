@@ -127,6 +127,12 @@ export const initialValuesTablesCol19 = {
     is_active: true
 }
 
+export const initialValuesTablesCol20 = {
+    cod: "",
+    asignacion: ""
+}
+
+
 
 
 
