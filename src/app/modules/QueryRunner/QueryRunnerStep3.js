@@ -137,7 +137,7 @@ const QueryRunnerStep3 = (props) => {
               <View key={idx} style={[styles.dataRow, {backgroundColor: `${getColor(idx)}`}]}>
                 {headers.map((elemento) =>
                   <Text key={`${elemento}.${idx}`} style={[styles.data, { width: `${colWidth}%`}]}>
-                    {valor[elemento].toString()}
+                    {valor[elemento]?.toString()}
                   </Text>
                 )}
               </View>
