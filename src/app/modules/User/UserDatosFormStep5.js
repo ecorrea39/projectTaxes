@@ -337,11 +337,31 @@ const UserDatosFormStep5 = (props) => {
 
             <Row>
               <Col md={4}>
+                <b>Sector Txxto</b>
+              </Col>
+
+              <Col md={8}>
+                {props.resumenFichaRegistro.sector_texto}
+              </Col>
+            </Row>
+
+            <Row>
+              <Col md={4}>
                 <b>Vialidad</b>
               </Col>
 
               <Col md={8}>
                 {props.resumenFichaRegistro.vialidad}
+              </Col>
+            </Row>
+
+            <Row>
+              <Col md={4}>
+                <b>Vialidad Texto</b>
+              </Col>
+
+              <Col md={8}>
+                {props.resumenFichaRegistro.vialidad_texto}
               </Col>
             </Row>
 

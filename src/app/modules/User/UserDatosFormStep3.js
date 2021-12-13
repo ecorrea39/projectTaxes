@@ -127,7 +127,9 @@ const UserDatosFormStep3 = (props) => {
     parroquia: "",
     ciudad: "",
     sector:"",
+    sector_texto:"",
     vialidad:"",
+    vialidad_texto:"",
     edificacion:"",
     local:"",
     codigo_telefono_compania1:"",
@@ -199,7 +201,9 @@ const UserDatosFormStep3 = (props) => {
                     "parroquia": res.data.data.attributes.parroquia != null ? res.data.data.attributes.parroquia : "",
                     "ciudad": res.data.data.attributes.ciudad != null ? res.data.data.attributes.ciudad : "",
                     "sector": res.data.data.attributes.sector != null ? res.data.data.attributes.sector : "",
+                    "sector_texto": res.data.data.attributes.sector_texto != null ? res.data.data.attributes.sector_texto : "",
                     "vialidad": res.data.data.attributes.vialidad != null ? res.data.data.attributes.vialidad : "",
+                    "vialidad_texto": res.data.data.attributes.vialidad_texto != null ? res.data.data.attributes.vialidad_texto : "",
                     "edificacion": res.data.data.attributes.edificacion != null ? res.data.data.attributes.edificacion : "",
                     "local": res.data.data.attributes.local != null ? res.data.data.attributes.local : "",
                     "codigo_telefono_compania1": res.data.data.attributes.codigo_telefono_compania1 != null ? res.data.data.attributes.codigo_telefono_compania1 : "",
@@ -639,7 +643,39 @@ const UserDatosFormStep3 = (props) => {
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
         })
       ),
+    sector_texto: Yup.string()
+      .min(1,
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.MIN_LENGTH",
+        }, {min: 1})
+      )
+      .max(25,
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.MAX_LENGTH",
+        }, {max: 50})
+      )
+      .required(
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.REQUIRED_FIELD",
+        })
+      ),
     vialidad: Yup.string()
+      .required(
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.REQUIRED_FIELD",
+        })
+      ),
+    vialidad_texto: Yup.string()
+      .min(1,
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.MIN_LENGTH",
+        }, {min: 1})
+      )
+      .max(25,
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.MAX_LENGTH",
+        }, {max: 50})
+      )
       .required(
         intl.formatMessage({
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
@@ -756,7 +792,9 @@ const UserDatosFormStep3 = (props) => {
             parroquia: parroquiaC,
             ciudad: formik.values.ciudad,
             sector: sectorC,
+            sector_texto: formik.values.sector_texto,
             vialidad: vialidadC,
+            vialidad_texto: formik.values.vialidad_texto,
             edificacion: edificacionC,
             local: formik.values.local,
             codigo_telefono_compania1: codigo_telefono_compania1C,
@@ -961,6 +999,30 @@ const UserDatosFormStep3 = (props) => {
                 </Col>
 
                 <Col md={4}>
+                  <Form.Group as={Col} controlId="sector_texto" style={formulario}>
+                    <Form.Label style={textLabelColor}>Sector Texto</Form.Label>
+                    <Form.Control size="md" type="text" placeholder="sector_texto"
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  value={formik.values.sector_texto}
+                                  maxLength="20"
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
+                    />
+
+                    {formik.touched.sector_texto && formik.errors.sector_texto ? (
+                      <div className="fv-plugins-message-container">
+                        <div className="fv-help-block">{formik.errors.sector_texto}</div>
+                      </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
+
+              </Row>
+
+              <br />
+
+              <Row>
+                <Col md={3}>
                   <Form.Group controlId="vialidad" style={formulario}>
                     <Form.Label style={textLabelColor}>Vialidad</Form.Label>
                     <Form.Control as="select"
@@ -985,12 +1047,27 @@ const UserDatosFormStep3 = (props) => {
                     ) : null}
                   </Form.Group>
                 </Col>
-              </Row>
 
-              <br />
+                <Col md={3}>
+                  <Form.Group as={Col} controlId="vialidad_texto" style={formulario}>
+                    <Form.Label style={textLabelColor}>Vialidad Texto</Form.Label>
+                    <Form.Control size="md" type="text" placeholder="vialidad_texto"
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  value={formik.values.vialidad_texto}
+                                  maxLength="20"
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
+                    />
 
-              <Row>
-                <Col md={6}>
+                    {formik.touched.vialidad_texto && formik.errors.vialidad_texto ? (
+                      <div className="fv-plugins-message-container">
+                        <div className="fv-help-block">{formik.errors.vialidad_texto}</div>
+                      </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
+
+                <Col md={3}>
                   <Form.Group controlId="edificacion" style={formulario}>
                     <Form.Label style={textLabelColor}>Edificación</Form.Label>
                     <Form.Control as="select"
@@ -1016,7 +1093,7 @@ const UserDatosFormStep3 = (props) => {
                   </Form.Group>
                 </Col>
 
-                <Col md={6}>
+                <Col md={3}>
                   <Form.Group as={Col} controlId="local" style={formulario}>
                     <Form.Label style={textLabelColor}>Nomenclatura</Form.Label>
                     <Form.Control size="md" type="text" placeholder="Local"
