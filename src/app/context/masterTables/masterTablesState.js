@@ -17,6 +17,8 @@ export const MasterTablesState = ({ children }) => {
     const [conceptos, setConceptos] = useState([]);
     const [estados, setEstados] = useState([]);
     const [municipios, setMunicipios] = useState([]);
+    const [parroquias, setParroquias] = useState([]);
+    const [ciudades, setCiudades] = useState([]);
     const [registrosMercantiles, setRegistrosMercantiles] = useState([]);
     const [medidaValor, setMedidaValor] = useState([]);
     const [motivoSancion, setMotivoSancion] = useState([]);
@@ -54,6 +56,8 @@ export const MasterTablesState = ({ children }) => {
         getRegistrosMercantiles();
         getEstados();
         getMunicipios();
+        getParroquias();
+        getCiudades();
         getMedidaValor();
         getMotivoSancion();
         getDiasFestivos();
@@ -387,6 +391,62 @@ export const MasterTablesState = ({ children }) => {
             });
             lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
             setMunicipios(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getParroquias = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/geographic_data_parroquias/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "id_municipio": arreglo[i].attributes.id_municipio,
+                        "descripcion": arreglo[i].attributes.descripcion,
+                        "municipio": arreglo[i].attributes['id_municipio_municipio.descripcion']
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setParroquias(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getCiudades = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/geographic_data_ciudades/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "id_municipio": arreglo[i].attributes.id_municipio,
+                        "id_estado": arreglo[i].attributes.id_estado,
+                        "descripcion": arreglo[i].attributes.descripcion,
+                        "municipio": arreglo[i].attributes['id_municipio_municipio.descripcion'],
+                        "estado": arreglo[i].attributes['id_estado_estado.descripcion']
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setCiudades(lista);
 
         } catch (error) {
             console.log(error)
@@ -878,7 +938,7 @@ export const MasterTablesState = ({ children }) => {
                 });
                 break;
 
-            case "tipo_documento":
+            case "tipo-documento":
                 tipoDocumento.map((x) => {
                     if(x.name.toUpperCase().trim() === valor.trim()) {
                         busqueda = true;
@@ -886,7 +946,7 @@ export const MasterTablesState = ({ children }) => {
                 });
                 break;
 
-            case "tipo_contribuyente":
+            case "tipo-contribuyente":
                 tipoContribuyente.map((x) => {
                     if(x.name.toUpperCase().trim() === valor.trim()) {
                         busqueda = true;
@@ -905,6 +965,30 @@ export const MasterTablesState = ({ children }) => {
             case "municipios":
                 municipios.map((x) => {
                     if(x.descripcion.toUpperCase().trim() === valor.trim() && Number(x.id_estado) === Number(formik.values.id_estado)) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "parroquias":
+                parroquias.map((x) => {
+                    if(x.descripcion.toUpperCase().trim() === valor.trim() && Number(x.id_municipio) === Number(formik.values.id_municipio)) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "ciudades":
+                ciudades.map((x) => {
+                    if(x.descripcion.toUpperCase().trim() === valor.trim() && Number(x.id_municipio) === Number(formik.values.id_municipio) && Number(x.id_estado) === Number(formik.values.id_estado)) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "unidad-estadal-tributos":
+                unidadEstadal.map((x) => {
+                    if(x.asignacion.toUpperCase().trim() === valor.trim()) {
                         busqueda = true;
                     }
                 });
@@ -1036,6 +1120,18 @@ export const MasterTablesState = ({ children }) => {
 
                         case "municipios":
                             urlTabla = `/geographic_data_municipios/${valores.id}`;
+                            break;
+
+                        case "parroquias":
+                            urlTabla = `/geographic_data_parroquias/${valores.id}`;
+                            break;
+
+                        case "ciudades":
+                            urlTabla = `/geographic_data_ciudades/${valores.id}`;
+                            break;
+
+                        case "unidad-estadal-tributos":
+                            urlTabla = `/unidad_estadal/${valores.id}`;
                             break;
 
                         default:
@@ -1194,6 +1290,21 @@ export const MasterTablesState = ({ children }) => {
                     urlTabla = "/geographic_data_municipios/";
                     break;
 
+                case "parroquias":
+                    dataType = "saveGeographicDataParroquias";
+                    urlTabla = "/geographic_data_parroquias/";
+                    break;
+
+                case "ciudades":
+                    dataType = "saveGeographicDataCiudades";
+                    urlTabla = "/geographic_data_ciudades/";
+                    break;
+
+                case "unidad-estadal-tributos":
+                    dataType = "saveunidad_estadal";
+                    urlTabla = "/unidad_estadal/";
+                    break;
+
                 default:
                     break;
             }
@@ -1327,6 +1438,18 @@ export const MasterTablesState = ({ children }) => {
 
             case "municipios":
                 getMunicipios();
+                break;
+
+            case "parroquias":
+                getParroquias();
+                break;
+
+            case "ciudades":
+                getCiudades();
+                break;
+
+            case "unidad-estadal-tributos":
+                getUnidadEstadalTributos();
                 break;
 
             default:
@@ -1507,6 +1630,35 @@ export const MasterTablesState = ({ children }) => {
             );
         }
 
+        /* parroquias */
+        if (columnas === 'col-18') {
+            search = dataAux.filter(item =>
+                item.descripcion.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.municipio.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+                || item.id_municipio.toString().includes(palabra)
+            );
+        }
+
+        /* ciudades */
+        if (columnas === 'col-19') {
+            search = dataAux.filter(item =>
+                item.descripcion.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.municipio.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.estado.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+            );
+        }
+
+        /* unidad estadal de tributos */
+        if (columnas === 'col-20') {
+            search = dataAux.filter(item =>
+                item.asignacion.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+                || item.cod.toString().includes(palabra)
+            );
+        }
+
         if(palabra === '') {
             actualizarTablas(tabla);
         } else {
@@ -1605,6 +1757,18 @@ export const MasterTablesState = ({ children }) => {
 
                 case "municipios":
                     setMunicipios(search);
+                    break;
+
+                case "parroquias":
+                    setParroquias(search);
+                    break;
+
+                case "ciudades":
+                    setCiudades(search);
+                    break;
+
+                case "unidad-estadal-tributos":
+                    setUnidadEstadal(search);
                     break;
 
                 default:
@@ -1727,6 +1891,18 @@ export const MasterTablesState = ({ children }) => {
                 dataAux = municipios;
                 break;
 
+            case "parroquias":
+                dataAux = parroquias;
+                break;
+
+            case "ciudades":
+                dataAux = ciudades;
+                break;
+
+            case "unidad-estadal-tributos":
+                dataAux = unidadEstadal;
+                break;
+
             default:
                 break;
         }
@@ -1745,6 +1921,8 @@ export const MasterTablesState = ({ children }) => {
         registrosMercantiles,
         estados,
         municipios,
+        parroquias,
+        ciudades,
         medidaValor,
         motivoSancion,
         diasFestivos,

@@ -106,6 +106,18 @@ function MasterTablesModule() {
             title = "Municipios";
             break;
 
+        case "parroquias":
+            title = "Parroquías";
+            break;
+
+        case "ciudades":
+            title = "Ciudades";
+            break;
+
+        case "unidad-estadal-tributos":
+            title = "Unidad Estadal de Tributos";
+            break;
+
         default:
             break;
     }
