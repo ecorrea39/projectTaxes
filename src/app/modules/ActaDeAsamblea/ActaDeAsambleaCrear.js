@@ -557,9 +557,24 @@ const ActaDeAsambleaCrear = (props) => {
         }).catch((err) => {
 
         console.log("errUserDatosFormStep1", err);
-        setSubmitting(false);
 
-        alert("Error al guardar los Datos de la Empresa");
+
+        if (err.response !== undefined && err.response !== null) {
+          let txt = '';
+          switch (err.response.status) {
+            case 424:
+              txt = 'Error en la consulta de Acta de Asamblea (Debe llenar el perfil del usuario antes de cargar actas)';
+              break;
+            default:
+              txt = 'Error al guardar los Datos de la Empresa';
+          }
+
+          alert(txt);
+        } else {
+          alert("Error al guardar los Datos de la Empresa.");
+        }
+
+        setSubmitting(false);
       });
     },
   });
