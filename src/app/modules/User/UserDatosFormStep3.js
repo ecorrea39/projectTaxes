@@ -956,7 +956,7 @@ const UserDatosFormStep3 = (props) => {
                                   ref={municipioRef}
                                   disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     >
-                      <option key="0" relacion="" value="">Seleccione la Ciudadad</option>
+                      <option key="0" relacion="" value="">Seleccione la Ciudad</option>
 
                       {ciudades.map((elemento) =>
                         <option key={elemento.id} relacion={elemento.relacion} value={elemento.id}>{elemento.name}</option>
