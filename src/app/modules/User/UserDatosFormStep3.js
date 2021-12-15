@@ -952,7 +952,7 @@ const UserDatosFormStep3 = (props) => {
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.municipio}
+                                  value={formik.values.ciudad}
                                   ref={municipioRef}
                                   disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     >
