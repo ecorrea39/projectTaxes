@@ -148,6 +148,12 @@ const FusionarEmpresasPage = lazy(() =>
     groups: ["administradores"],
     name: "PNA Certificados",
     component: PnaPage
+  },
+  {
+    path: "/fusionar_empresas",
+    groups: ["administradores"],
+    name: "Fusionar Entidades de Trabajo",
+    component: FusionarEmpresasPage
   }
 ];
 

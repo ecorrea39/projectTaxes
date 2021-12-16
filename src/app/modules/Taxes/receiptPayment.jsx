@@ -203,7 +203,7 @@ export default function ReceiptPayment() {
     const rif = odb.get("rif");
     const razonSocial = odb.get("name");
     const phone = odb.get("phone_number_mobile");
-    const UST = odb.get("codigoUnidadEstatal");
+    const UST = odb.get("codigoUnidadEstadal");
 
     useEffect(() => {
         createListConcepts();
