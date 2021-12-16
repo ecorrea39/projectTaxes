@@ -3,7 +3,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import Checkbox from "../Forms/BaseCheckbox";
 
-
 export const ListConcepts = ({conceptos,formik}) => {
 
     return (

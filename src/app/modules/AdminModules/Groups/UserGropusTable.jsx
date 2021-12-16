@@ -1,19 +1,21 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import GroupsContext from "../../../context/groups/groupsContext";
 import { MyDataTable } from "../ModulesTable/MyDataTable";
 import { ActionsTable } from "../ModulesTable/actionsTable";
 import Swal from "sweetalert2";
+import { SearchTable } from "../ModulesTable/searchTable";
 
 export const UserGroupsTable = ({url}) => {
 
     const { loadingTable, setGroupSlct, userGroupsList, updateStatus, statusList } = useContext(GroupsContext);
+
+    const [dataFilter, setDataFilter] = useState(userGroupsList);
 
     const actionsRow = (row) => {
         setGroupSlct(row);
     }
 
     const selectStatus = (id) => {
-
         let status = statusList.find(element => element.status == id );
         return status.name;
     }
@@ -78,24 +80,40 @@ export const UserGroupsTable = ({url}) => {
             cell: row => (
                 <ActionsTable
                     row={row}
-                    actionsRow={actionsRow}
-                    alertNotice={alertNotice}
-                    urlUpdate={"/panel/grupos/modificar"}
+                    handleActionsRow={actionsRow}
+                    handleAlertNotice={alertNotice}
+                    baseUrl={"/panel/grupos/"}
+                    actions={["update","status"]}
                 />
             )
         }
     ];
 
+    const fiterData = (filterText) => {
+        if(filterText != "") {
+            let filter = userGroupsList.filter(item =>
+                item.attributes.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(filterText.toLowerCase())
+            );
+            setDataFilter(filter)
+        } else {
+            setDataFilter(userGroupsList);
+        }
+    }
+
+    useEffect(()=>{
+        setDataFilter(userGroupsList)
+    },[userGroupsList]);
+
     return (
-        <div className="table-responsive">
+        <>
+            <SearchTable handleOnchange={fiterData} />
 
             <MyDataTable
                 actionsRow={actionsRow}
                 columns={columns}
-                data={userGroupsList}
+                data={dataFilter}
                 loadingTable={loadingTable}
             />
-
-        </div>
+        </>
     )
 }

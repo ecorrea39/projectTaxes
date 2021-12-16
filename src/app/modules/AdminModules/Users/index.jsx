@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BtnAddTable } from "../ModulesTable/btnAddtable";
 import { CreateUser } from "./createUser";
 import { UserTable } from "./userTable";
 import { useParams } from "react-router";
+import { DetailsUser } from "./detailsUser";
+import { useHistory } from "react-router-dom";
 
 export const UsersModule = () => {
     
@@ -10,6 +12,7 @@ export const UsersModule = () => {
     const { url } = useParams();
     const [action, setAction] = useState("");
     const [icon, setIcon] = useState("add");
+    let history = useHistory();
 
     const ComponentAction = () => {
         switch(url) {
@@ -21,6 +24,11 @@ export const UsersModule = () => {
             case "modificar":
                 setTitle("Modificar Usuario");
                 setAction("update");
+                setIcon("back");
+                break;
+            case "detalles":
+                setTitle("Información del usuario");
+                setAction("details");
                 setIcon("back");
                 break;
             default:
@@ -41,13 +49,21 @@ export const UsersModule = () => {
                 <div className="card-body d-flex flex-column">
                     <div className="tab-content">
                         <BtnAddTable link={!url ? "/panel/usuarios/crear-nuevo" : "/panel/usuarios/"} icon={icon} />
-                        { (url == "crear-nuevo" || url == "modificar") && <CreateUser action={action} />}
-                        {!url && <UserTable url={url} />}
+                        {
+                            (action == "add" || action == "update") ? <CreateUser action={action} /> 
+                            : action == "details" ? <DetailsUser /> : <UserTable />
+                        }
                     </div>
                 </div>
             </div>
         )
     }
+
+    useEffect(()=>{
+        if(url == "detalles") {
+            history.push("/panel/usuarios/");
+        }
+    },[]);
 
     return (
         <div className="row">

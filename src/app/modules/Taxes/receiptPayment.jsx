@@ -7,7 +7,7 @@ import BaseInput from "../Forms/BaseInputs";
 
 export default function ReceiptPayment() {
 
-    const { formDataPayment, bancos, getUserData, userData, conceptos, modalidadesPagos, formDataDeclaration, linkRecibo } = useContext(TaxesContext);
+    const { formDataPayment, bancos, getUserData, userData, usts, conceptos, modalidadesPagos, formDataDeclaration, linkRecibo } = useContext(TaxesContext);
 
     const [dataBanco, setDataBanco] = useState({nomBanco: "",numCuenta:""});
     const [listConceptos, setListConceptos] = useState([]);
@@ -181,8 +181,17 @@ export default function ReceiptPayment() {
     }
 
     const selectTipoTransaccion = (tt) => {
+        console.log(tt)
         let tipoTransaccion = modalidadesPagos.find(element => element.id === tt);
+        console.log(tipoTransaccion)
         return tipoTransaccion.attributes.name;
+    }
+
+    const selectUST = (cod) => {
+        if(cod) {
+            let ust = usts.find(element => element.attributes.cod === cod);
+            return ust.attributes.asignacion;
+        }
     }
 
     const handlePrint = () => {
@@ -194,11 +203,12 @@ export default function ReceiptPayment() {
     const rif = odb.get("rif");
     const razonSocial = odb.get("name");
     const phone = odb.get("phone_number_mobile");
+    const UST = odb.get("codigoUnidadEstadal");
 
     useEffect(() => {
         createListConcepts();
         getUserData(rif);
-        selectBanco(formDataPayment.banco)
+        selectBanco(formDataPayment.banco_id)
     },[]);
 
     return (
@@ -235,7 +245,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                            XXXXXX XXXX XXXX
+                            { selectUST(UST) }
                         </span>
                     </div>
                 </Col>

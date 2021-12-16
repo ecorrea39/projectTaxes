@@ -1,6 +1,21 @@
 import * as Yup from 'yup';
 import { regexNumber } from '../../helpers';
 
+export const SchemaSummary = Yup.object().shape({
+    montoPagar: Yup.string()
+        .required('- Campo obligatorio -')
+        .max(10, 'Debe ingresar un máximo de 10 digitos'),
+    montoTributo: Yup.string()
+        .required('- Campo obligatorio -')
+        .max(10, 'Debe ingresar un máximo de 10 digitos'),
+    intereses: Yup.string()
+        .max(10, 'Debe ingresar un máximo de 10 digitos')
+        .matches(regexNumber, '- Solo se permiten numeros -'),
+    multa: Yup.string()
+        .max(10, 'Debe ingresar un maximo de 10 digistos')
+        .matches(regexNumber, '- Solo se permiten numeros -')
+});
+
 export const SchemaPayment = Yup.object().shape({
     nro_referencia: Yup.string()
         .required('- Campo obligatorio -')
@@ -9,18 +24,11 @@ export const SchemaPayment = Yup.object().shape({
         .matches(regexNumber, '- Numero de referencia invalido. -'),
     tipo_transaccion: Yup.string()
         .required('- Campo obligatorio -'),
-    banco: Yup.string()
+    banco_id: Yup.string()
         .required('- Campo obligatorio -'),
     monto: Yup.string()
         .required('- Campo obligatorio -')
-        .max(10, 'Debe ingresar un máximo de 10 digitos')
-        .matches(regexNumber, '- Solo se permiten numeros -'),
-    intereses: Yup.string()
-        .max(10, 'Debe ingresar un máximo de 10 digitos')
-        .matches(regexNumber, '- Solo se permiten numeros -'),
-    multa: Yup.string()
-        .max(10, 'Debe ingresar un maximo de 10 digistos')
-        .matches(regexNumber, '- Solo se permiten numeros -'),
+        .max(10, 'Debe ingresar un máximo de 10 digitos'),
     fecha: Yup.date()
         .required('- Campo obligatorio -')
         .max(new Date(), "La fecha ingresada no esta permitida")

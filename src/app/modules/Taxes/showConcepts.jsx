@@ -26,64 +26,58 @@ function ShowConcept({formik}) {
 
     const conceptos = formik.values.conceptos;
 
-    const handleActa = (value,input) => {    
+    const handleActa = (value,input,e) => {
         setActaR({
             ...actaReparo,
-            [input] : parseInt(value)
+            [input] : value
         });
     }
     const handleReAdmin = (value,input) => {
         setReAdmin({
             ...reAdmin,
-            [input] : parseInt(value)
+            [input] : value
         })
     }
     const handleReCul = (value,input) => {    
         setReCul({
             ...reCul,
-            [input] : parseInt(value)
+            [input] : value
         })
     }
     const handleDebFormales = (value,input) => {    
         setDebForm({
             ...debForm,
-            [input] : parseInt(value)
+            [input] : value
         })
     }
     const handleDebMat = (value,input) => {    
         setDebMat({
             ...debMat,
-            [input] : parseInt(value)
-        })
-    }
-    const handleCredito = (value,input) => {    
-        setCreditoFiscal({
-            ...creditoFiscal,
-            [input] : parseInt(value)
+            [input] : value
         })
     }
     const handleConv = (value,input) => {
         setConv({
             ...conv,
-            [input] : parseInt(value)
+            [input] : value
         })
     }
     const handleCheq = (value,input) => {
         setCheq({
             ...cheq,
-            [input] : parseInt(value)
+            [input] : value
         })
     }
     const handleMulta = (value,input) => {
         setMulta({
             ...multa,
-            [input] : parseInt(value)
+            [input] : value
         })
     }
     const handleIntereses = (value,input) => {
         setIntereses({
             ...intereses,
-            [input] : parseInt(value)
+            [input] : value
         })
     }
 
@@ -91,15 +85,14 @@ function ShowConcept({formik}) {
         <>
             <Col>
                 { conceptos.includes("3") && <ActaReparo formatoFecha={formatoFechaFutura} extraOnChange={handleActa} /> }
-                { conceptos.includes("4") && <ResolucionAdministrativa formatoFecha={formatoFechaFutura} extraOnChange={handleReAdmin} /> }
-                { conceptos.includes("5") && <ResolucionCulminatoriaSumario formatoFecha={formatoFechaFutura} extraOnChange={handleReCul} /> }
-                { conceptos.includes("6") && <IncumplimientoDeberesFormales formatoFecha={formatoFechaFutura} extraOnChange={handleDebFormales} /> }
-                { conceptos.includes("7") && <IncumplimientoDeberesMateriales formatoFecha={formatoFechaFutura} extraOnChange={handleDebMat} /> }
-                { conceptos.includes("8") && <ConvenioPago formatoFecha={formatoFechaFutura} extraOnChange={handleConv}/> }
-                { conceptos.includes("9") && <ChequeDevuelto formatoFecha={formatoFechaFutura} extraOnChange={handleCheq} /> }
-                { conceptos.includes("10") && <MultasPorcentuales extraOnChange={handleMulta}/>}
-                { conceptos.includes("11") && <InteresesMoratorios extraOnChange={handleIntereses}/>}
-                { conceptos.includes("12") && <CreditoFiscal extraOnChange={handleCredito} /> }
+                { conceptos.includes("9") && <ResolucionAdministrativa formatoFecha={formatoFechaFutura} extraOnChange={handleReAdmin} /> }
+                { conceptos.includes("4") && <ResolucionCulminatoriaSumario formatoFecha={formatoFechaFutura} extraOnChange={handleReCul} /> }
+                { conceptos.includes("10") && <IncumplimientoDeberesFormales formatoFecha={formatoFechaFutura} extraOnChange={handleDebFormales} /> }
+                { conceptos.includes("11") && <IncumplimientoDeberesMateriales formatoFecha={formatoFechaFutura} extraOnChange={handleDebMat} /> }
+                { conceptos.includes("5") && <ConvenioPago formatoFecha={formatoFechaFutura} extraOnChange={handleConv}/> }
+                { conceptos.includes("6") && <ChequeDevuelto formatoFecha={formatoFechaFutura} extraOnChange={handleCheq} /> }
+                { conceptos.includes("7") && <MultasPorcentuales extraOnChange={handleMulta}/>}
+                { conceptos.includes("8") && <InteresesMoratorios extraOnChange={handleIntereses}/>}
             </Col>
 
             {/*<Col>

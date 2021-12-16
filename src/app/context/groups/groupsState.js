@@ -65,7 +65,6 @@ export const GroupsState = ({ children }) => {
 
     // Metodo para crear los permisos en el formulario
     const getFormPermisos = (data) => {
-        console.log(data)
         let arrayPermission = [];
         data.forEach(element => {
             let objectPermisson = {
@@ -99,6 +98,15 @@ export const GroupsState = ({ children }) => {
         setPermissions(array);
     }
 
+    const getGrupoInfo = async (grupoId) => {
+        try {
+            const respuesta = await clientAxios.get(`/access_control/${grupoId}`);
+            setGroupSlct(respuesta.data.data);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     // Metodo para consultar los modulos
     const getModulos = async () => {
         try {
@@ -130,6 +138,7 @@ export const GroupsState = ({ children }) => {
                 let objectPermisos = {
                     modulo_id: per.modulo_id,
                     modulo: per.modulo,
+                    permiso_id: per.permiso_id
                 }
 
                 per.permisos.forEach(permiso => {
@@ -172,13 +181,12 @@ export const GroupsState = ({ children }) => {
     }
 
     const updateGroup = async (formData) => {
-
-        console.log(formData)
         try {
-            requestConfig.data.type = "updateGroup";
-            requestConfig.data.attributes = formData.permisos.attributes;
+            requestConfig.data.type = "saveAccessControl";
+            requestConfig.data.attributes = formData;
             let uid = requestConfig.data.id;
-            requestConfig.data.id = formData.permisos.id;
+            // requestConfig.data.id = formData.permisos.id;
+            requestConfig.data.id = formData.id;
             const respuesta = await clientAxios.put('/access_control/',requestConfig);
             requestConfig.data.id = uid;
             getUserGroups();
@@ -218,7 +226,8 @@ export const GroupsState = ({ children }) => {
         addNewGroup,
         updateGroup,
         updateStatus,
-        setGroupSlct
+        setGroupSlct,
+        getGrupoInfo
     }
 
     return (

@@ -52,6 +52,111 @@ const FusionarEmpresasPage = lazy(() =>
  * @name: Nombre de la ruta.
  * @component E componente que llamara esa ruta.
  */
+ export const PathList = [
+  {
+    path: ["/","/dashboard", "/panel"],
+    groups: ["contribuyentes","parciales","administradores"],
+    name: "Inicio",
+    component: DashboardPage
+  },
+  {
+    path: "/tributos",
+    groups: ["contribuyentes"],
+    name: "Declaración y Reporte de pago",
+    component: TaxesPage
+  },
+  {
+    path: "/estado-cuentas",
+    groups: ["contribuyentes"],
+    name: "Estado de cuenta",
+    component: AccountStatusPage
+  },
+  {
+    path: "/fondos-de-comercio",
+    groups: ["contribuyentes"],
+    name: "Fondos de Comercio",
+    component: FondosDeComercioPage
+  },
+  {
+    path: "/crear-fondocomercio",
+    groups: ["contribuyentes"],
+    name: "Crear Fondos de Comercio",
+    component: CrearFondosDeComercioPage
+  },
+  {
+    path: "/actas-de-asamblea",
+    groups: ["contribuyentes"],
+    name: "Crear Fondos de Comercio",
+    component: ActasDeAsambleaPage
+  },
+  {
+    path: "/user-datos",
+    groups: ["contribuyentes"],
+    name: "Entidad de trabajo",
+    component: UserDatosPage
+  },
+  {
+    path: "/reportes/:reporte",
+    groups: ["contribuyentes"],
+    name: "Certificado de solvencia",
+    component: ReportsPage
+  },
+  {
+    path: "/user-datos",
+    groups: ["contribuyentes", "parciales", "administradores"],
+    name: "Modificar perfil",
+    component: UserDatosPage
+  },
+  {
+    path: "/user-profile",
+    groups: ["contribuyentes", "parciales"],
+    name: "user-profile",
+    component: UserProfilePage
+  },
+  {
+    path: "/user-datos",
+    groups: ["contribuyentes", "parciales"],
+    name: "Cambiar clave",
+    component: UserDatosPage
+  },
+  {
+    path: "/panel/grupos/:url?/:grupo_id?",
+    groups: ["administradores"],
+    name: "Grupos usuarios",
+    component: GroupsPage
+  },
+  {
+    path: "/panel/usuarios/:url?",
+    groups: ["administradores"],
+    name: "Usuarios",
+    component: UsersPage
+  },
+  {
+    path: "/tablas/:tabla",
+    groups: ["administradores"],
+    name: "Tablas Maestras",
+    component: MasterTablesPage
+  },
+  {
+    path: "/mapa",
+    groups: ["administradores"],
+    name: "Mapa",
+    component: MapaPage
+  },
+  {
+    path: "/pna_certificado",
+    groups: ["administradores"],
+    name: "PNA Certificados",
+    component: PnaPage
+  },
+  {
+    path: "/fusionar_empresas",
+    groups: ["administradores"],
+    name: "Fusionar Entidades de Trabajo",
+    component: FusionarEmpresasPage
+  }
+];
+
 export const PathListContribuyente = [
   {
     path: ["/","/dashboard"],
@@ -130,7 +235,7 @@ export const PathListFuncional = [
     component: DashboardPage
   },
   {
-    path: "/panel/grupos/:url?",
+    path: "/panel/grupos(/:url?)(/:grupo_id?)",
     groups: ["administradores"],
     name: "Grupos usuarios",
     component: GroupsPage
@@ -188,16 +293,16 @@ export const navFuncional = [
     icon: "",
     childrens: [
       {
+        title: "Grupos y Permisos",
+        url: "/panel/grupos/",
+        icon: "",
+        slug: "panel-grupos",
+      },
+      {
         title: "Usuarios",
         url: "/panel/usuarios/",
         icon: "",
         slug: "panel-usuarios",
-      },
-      {
-        title: "Grupos",
-        url: "/panel/grupos/",
-        icon: "",
-        slug: "panel-grupos",
       },
       {
         title: "Consultar Empresa",

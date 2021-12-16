@@ -15,3 +15,49 @@
     font-size: 13px;
     font-weight: 500;
 }
+
+.inputCodigoTlf{
+    width: 25%;
+    vertical-align: top;
+    border-radius: 5px 0px 0px 5px;
+    display: inline-block;
+}
+
+.inputTlf{
+    float: right;
+    vertical-align: top;
+    border-radius: 0px 5px 5px 0px;
+    width: 75%;
+}
+.generatePass{
+    color: #0400fb;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 11px;
+    display: block;
+    font-weight: 400;
+    margin-top: 5px;
+}
+
+.iconShowPass{
+    position: relative;
+    float: right;
+    right: 8px;
+    top: -28px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.labelDetail, .spanDetail{
+    display: block;
+}
+
+.labelDetail{
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.spanDetail{
+    font-size: 14px;
+    font-weight: 300;
+}

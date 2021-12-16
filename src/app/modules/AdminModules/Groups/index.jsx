@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { BtnAddTable } from "../ModulesTable/btnAddtable";
 import { CreateGroup } from "./createGroup";
+import { DetailsGroup } from "./detailsGroup";
 import { UserGroupsTable } from "./UserGropusTable";
 
 export const GroupsModule = () => {
 
     const [title, setTitle] = useState("Grupos de usuarios");
-    const { url } = useParams();
+    const { url, grupo_id } = useParams();
+    
     const [action, setAction] = useState("");
     const [icon, setIcon] = useState("add");
 
@@ -23,6 +25,11 @@ export const GroupsModule = () => {
                 setAction("update");
                 setIcon("back");
                 break;
+            case "detalles":
+                    setTitle("Información del grupo");
+                    setAction("details");
+                    setIcon("back");
+                    break;
             default:
                 setTitle("Grupos de usuarios");
                 setAction("list");
@@ -41,8 +48,12 @@ export const GroupsModule = () => {
                 <div className="card-body d-flex flex-column">
                     <div className="tab-content">
                         <BtnAddTable link={!url ? "/panel/grupos/crear-nuevo" : "/panel/grupos/"} icon={icon} />
-                        { (url == "crear-nuevo" || url == "modificar") && <CreateGroup action={action} />}
-                        {!url && <UserGroupsTable url={url} />}
+                        
+                        {
+                            (action == "add" || action == "update") ? <CreateGroup action={action} /> 
+                            : action == "details" ? <DetailsGroup grupoId={grupo_id} /> : <UserGroupsTable />
+                        }
+
                     </div>
                 </div>
             </div>

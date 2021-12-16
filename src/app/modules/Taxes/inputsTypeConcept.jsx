@@ -3,6 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import { Field } from "formik";
 import BaseInput from "../Forms/BaseInputs";
 import BaseSelect from "../Forms/BaseSelect";
+import BaseInputMonto from "../Forms/BaseInputMonto";
 
 export const ActaReparo = ({extraOnChange, formatoFecha}) => {
     return (
@@ -45,9 +46,9 @@ export const ActaReparo = ({extraOnChange, formatoFecha}) => {
                     <Field
                         id="montoActa"
                         name="montoActa"
-                        component={BaseInput}
+                        component={BaseInputMonto}
+                        maxLength="20"
                         extraOnChange={extraOnChange}
-                        maxLength="10"
                     />
                 </Col>
             </Row>
@@ -72,8 +73,8 @@ export const InteresesMoratorios = ({extraOnChange,formatoFecha}) => {
                     <Field
                         id="monto-intereses-moratorios"
                         name="montoInteresesMoratorios"
-                        component={BaseInput}
-                        maxLength="10"
+                        component={BaseInputMonto}
+                        maxLength="20"
                         extraOnChange={extraOnChange}
                     />
                 </Col>
@@ -148,8 +149,8 @@ export const ChequeDevuelto = ({extraOnChange,formatoFecha}) => {
                     <Field
                         id="monto-cheque"
                         name="montoCheque"
-                        component={BaseInput}
-                        maxLength="10"
+                        component={BaseInputMonto}
+                        maxLength="20"
                         extraOnChange={extraOnChange}
                     />
                 </Col>
@@ -225,8 +226,8 @@ export const ConvenioPago = ({extraOnChange,formatoFecha}) => {
                     <Field
                         id="monto-convenio"
                         name="montoConvenio"
-                        component={BaseInput}
-                        maxLength="10"
+                        component={BaseInputMonto}
+                        maxLength="20"
                         extraOnChange={extraOnChange}
                     />
                 </Col>
@@ -237,8 +238,8 @@ export const ConvenioPago = ({extraOnChange,formatoFecha}) => {
                     <Field
                         id="monto-interese"
                         name="montoInteresesConvenio"
-                        component={BaseInput}
-                        maxLength="10"
+                        component={BaseInputMonto}
+                        maxLength="20"
                         extraOnChange={extraOnChange}
                     />
                 </Col>
@@ -264,8 +265,8 @@ export const MultasPorcentuales = ({extraOnChange}) => {
                     <Field
                         id="monto-multa"
                         name="montoMulta"
-                        component={BaseInput}
-                        extraOnChange={extraOnChange}
+                        component={BaseInputMonto}
+                        maxLength="20"
                         maxLength="10"
                     />
                 </Col>
@@ -316,8 +317,8 @@ export const IncumplimientoDeberesFormales = ({extraOnChange,formatoFecha}) => {
                     <Field
                         id="monto-resolucion-form"
                         name="montoMultaResolucionForm"
-                        component={BaseInput}
-                        extraOnChange={extraOnChange}
+                        component={BaseInputMonto}
+                        maxLength="20"
                         maxLength="10"
                     />
                 </Col>
@@ -368,9 +369,9 @@ export const IncumplimientoDeberesMateriales = ({extraOnChange,formatoFecha}) =>
                     <Field
                         id="monto-multa-resolucion-mat"
                         name="montoMultaResolucionMat"
-                        component={BaseInput}
+                        component={BaseInputMonto}
+                        maxLength="20"
                         extraOnChange={extraOnChange}
-                        maxLength="10"
                     />
                 </Col>
             </Row>
@@ -384,7 +385,7 @@ export const CreditoFiscal = ({extraOnChange}) => {
         <>
             <Row className="mt-4 mb-4">
                 <Col xs="12">
-                    <h5>Saldo a Compensar por Crédito Fiscal</h5>
+                    <h4>Saldo a Compensar por Crédito Fiscal</h4>
                 </Col>
             </Row>
             <Row>
@@ -395,9 +396,9 @@ export const CreditoFiscal = ({extraOnChange}) => {
                     <Field
                         id="monto-credito-fiscal"
                         name="montoCredito"
-                        component={BaseInput}
+                        component={BaseInputMonto}
+                        maxLength="20"
                         extraOnChange={extraOnChange}
-                        maxLength="10"
                     />
                 </Col>
             </Row>
@@ -447,9 +448,9 @@ export const ResolucionAdministrativa = ({extraOnChange,formatoFecha}) => {
                     <Field
                         id="monto-multa-resolucion-admin"
                         name="montoMultaResolucionAdmin"
-                        component={BaseInput}
+                        component={BaseInputMonto}
+                        maxLength="20"
                         extraOnChange={extraOnChange}
-                        maxLength="10"
                     />
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -459,9 +460,9 @@ export const ResolucionAdministrativa = ({extraOnChange,formatoFecha}) => {
                     <Field
                         id="monto-interese-resolucion-admin"
                         name="montoInteresesResolucionAdmin"
-                        component={BaseInput}
+                        component={BaseInputMonto}
+                        maxLength="20"
                         extraOnChange={extraOnChange}
-                        maxLength="10"
                     />
                 </Col>
             </Row>
@@ -511,9 +512,9 @@ export const ResolucionCulminatoriaSumario = ({extraOnChange,formatoFecha}) => {
                     <Field
                         id="monto-multa-resolucion-cul"
                         name="montoMultaResolucionCul"
-                        component={BaseInput}
-                        extraOnChange={extraOnChange}   
-                        maxLength="10"
+                        component={BaseInputMonto}
+                        maxLength="20"
+                        extraOnChange={extraOnChange}
                     />
                 </Col>
             </Row>
