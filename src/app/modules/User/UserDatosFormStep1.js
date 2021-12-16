@@ -394,8 +394,9 @@ const UserDatosFormStep1 = (props) => {
   }
 
   const companiesChangeHandler = (event) => {
-
+    props.cambiarActaEdicion(false);
     setSpinner(true);
+
     axios.get(`${API_URL}user_company/fondoporid/${event.target.value}/`, axiosConfig)
       .then(function (res) {
         console.log("get_user_company::", res);

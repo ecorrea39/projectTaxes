@@ -952,11 +952,11 @@ const UserDatosFormStep3 = (props) => {
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.municipio}
+                                  value={formik.values.ciudad}
                                   ref={municipioRef}
                                   disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     >
-                      <option key="0" relacion="" value="">Seleccione la Ciudadad</option>
+                      <option key="0" relacion="" value="">Seleccione la Ciudad</option>
 
                       {ciudades.map((elemento) =>
                         <option key={elemento.id} relacion={elemento.relacion} value={elemento.id}>{elemento.name}</option>
@@ -1096,7 +1096,7 @@ const UserDatosFormStep3 = (props) => {
                 <Col md={3}>
                   <Form.Group as={Col} controlId="local" style={formulario}>
                     <Form.Label style={textLabelColor}>Nomenclatura</Form.Label>
-                    <Form.Control size="md" type="text" placeholder="Local"
+                    <Form.Control size="md" type="text" placeholder="Nomenclatura"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.local}
