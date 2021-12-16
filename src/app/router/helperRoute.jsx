@@ -109,13 +109,14 @@ export const PathListContribuyente = [
     groups: ["contribuyentes", "parciales"],
     name: "user-profile",
     component: UserProfilePage
-  },
-  {
-    path: "/user-datos",
-    groups: ["contribuyentes", "parciales"],
-    name: "Cambiar clave",
-    component: UserDatosPage
   }
+  // ,
+  // {
+  //   path: "/user-datos",
+  //   groups: ["contribuyentes", "parciales"],
+  //   name: "Cambiar clave",
+  //   component: UserDatosPage
+  // }
 ];
 
 export const PathListFuncional = [
@@ -462,13 +463,14 @@ export const navContribuyentes = [
         url: "/user-datos",
         icon: "",
         slug: "modificar-perfil",
-      },
-      {
-        title: "Cambiar Clave",
-        url: "/user-datos",
-        icon: "",
-        slug: "cambiar-clave",
-      },
+      }
+      // ,
+      // {
+      //   title: "Cambiar Clave",
+      //   url: "/user-datos",
+      //   icon: "",
+      //   slug: "cambiar-clave",
+      // },
     ]
   },
   {

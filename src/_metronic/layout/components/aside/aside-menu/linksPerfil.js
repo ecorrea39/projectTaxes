@@ -20,14 +20,14 @@ export function LinksPerfil({getMenuItemActive}) {
           </NavLink>
         </li>
 
-        <li className={`menu-item ${getMenuItemActive("/e-commerce/products")}`} aria-haspopup="true">
-          <NavLink className="menu-link" to="#">
-            <i className="menu-bullet menu-bullet-dot">
-              <span />
-            </i>
-            <span className="menu-text">Cambiar clave</span>
-          </NavLink>
-        </li>
+        {/*<li className={`menu-item ${getMenuItemActive("/e-commerce/products")}`} aria-haspopup="true">*/}
+        {/*  <NavLink className="menu-link" to="#">*/}
+        {/*    <i className="menu-bullet menu-bullet-dot">*/}
+        {/*      <span />*/}
+        {/*    </i>*/}
+        {/*    <span className="menu-text">Cambiar clave</span>*/}
+        {/*  </NavLink>*/}
+        {/*</li>*/}
     </>
   );
 }
