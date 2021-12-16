@@ -41,6 +41,9 @@ const UsersPage = lazy(() =>
 const PnaPage = lazy(() =>
     import ("../pages/pna")
 );
+const FusionarEmpresasPage = lazy(() =>
+    import ("../pages/fusionarEmpresas")
+);
 
 /**
  * En este objeto se definen la estrutura de las rutas que se crearan segun el grupo del usuario que se logea en la app.
@@ -259,6 +262,12 @@ export const PathListFuncional = [
     groups: ["administradores"],
     name: "PNA Certificados",
     component: PnaPage
+  },
+  {
+    path: "/fusionar_empresas",
+    groups: ["administradores"],
+    name: "Fusionar Entidades de Trabajo",
+    component: FusionarEmpresasPage
   }
 ];
 
@@ -491,6 +500,20 @@ export const navFuncional = [
         url: "/pna_certificado",
         icon: "",
         slug: "pna-certificado",
+      }
+    ]
+  },
+  {
+    titleSection: "Entidades de Trabajo",
+    title: "Entidades de Trabajo",
+    groups: ["administradores"],
+    icon: "",
+    childrens: [
+      {
+        title: "Fusionar Entidades de Trabajo",
+        url: "/fusionar_empresas",
+        icon: "",
+        slug: "fusionar-empresas",
       }
     ]
   }
