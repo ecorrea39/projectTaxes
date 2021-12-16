@@ -714,7 +714,7 @@ const UserDatosFormStep4 = (props) => {
                                   value={formik.values.codigo_de_area_representante_legal1}
                                   ref={codigo_de_area_representante_legal1Ref}
                     >
-                      <option key="0" value="">Seleccione el Código de Area</option>
+                      <option key="0" value=""></option>
 
                       {codigosCelulares.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
@@ -863,7 +863,7 @@ const UserDatosFormStep4 = (props) => {
                                   value={formik.values.codigo_de_area_representante_legal2}
                                   ref={codigo_de_area_representante_legal2Ref}
                     >
-                      <option key="0" value="">Seleccione el Código de Area</option>
+                      <option key="0" value=""></option>
 
                       {codigosCelulares.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
@@ -1012,7 +1012,7 @@ const UserDatosFormStep4 = (props) => {
                                   value={formik.values.codigo_de_area_representante_legal3}
                                   ref={codigo_de_area_representante_legal3Ref}
                     >
-                      <option key="0" value="">Seleccione el Código de Area</option>
+                      <option key="0" value=""></option>
 
                       {codigosCelulares.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
