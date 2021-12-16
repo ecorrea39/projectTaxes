@@ -32,6 +32,9 @@ const UserDatosPage = lazy(() =>
 const MapaPage = lazy(() =>
   import("./modules/Mapa/Mapa")
 );
+const QueryBuilderPage = lazy(() =>
+  import("./modules/QueryBuilder/QueryBuilder")
+);
 const FondosDeComercioPage = lazy(() =>
   import("./modules/FondoDeComercio/FondoDeComercio")
 );
@@ -76,6 +79,7 @@ export default function BasePage() {
         <Route path="/e-commerce" component={ECommercePage} />
         <Route path="/user-profile" component={UserProfilePage} />
         <Route path="/user-datos" component={UserDatosPage} />
+        <Route path="/query-builder" component={QueryBuilderPage} />
         <Route path="/mapa" component={MapaPage} />
         <Route path="/fondosdecomercio" component={FondosDeComercioPage} />
         <Route path="/comprobantedeinscripcion" component={ReporteComprobanteDeInscripcionPage} />

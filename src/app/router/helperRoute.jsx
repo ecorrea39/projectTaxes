@@ -8,6 +8,12 @@ const UserDatosPage = lazy(() =>
 const MapaPage = lazy(() =>
   import("../modules/Mapa/Mapa")
 );
+// const QueryBuilderPage = lazy(() =>
+//   import("../modules/QueryBuilder/QueryBuilder")
+// );
+const QueryListPage = lazy(() =>
+  import("../modules/QueryList/QueryList")
+);
 const FondosDeComercioPage = lazy(() =>
   import("../modules/FondoDeComercio/FondoDeComercio")
 );
@@ -142,6 +148,18 @@ const FusionarEmpresasPage = lazy(() =>
     groups: ["administradores"],
     name: "Mapa",
     component: MapaPage
+  },
+  // {
+  //   path: "/query-builder",
+  //   groups: ["administradores"],
+  //   name: "Definir Consulta",
+  //   component: QueryBuilderPage
+  // },
+  {
+    path: "/query-list",
+    groups: ["administradores"],
+    name: "Consultas Dinámicas",
+    component: QueryListPage
   },
   {
     path: "/pna_certificado",
@@ -372,6 +390,12 @@ export const navFuncional = [
         url: "/mapa",
         icon: "",
         slug: "mapa",
+      },
+      {
+        title: "Consultas Dinámicas",
+        url: "/query-list",
+        icon: "",
+        slug: "query-list",
       }
     ]
   },

@@ -1,0 +1,70 @@
+const type_map = {
+    'bigint': 'number',
+    'bigserial': 'number',
+    'boolean': 'boolean',
+    'character': 'text',
+    'character varying': 'text',
+    'date': 'date',
+    'double precision': 'number',
+    'integer': 'number',
+    'money': 'number',
+    'numeric': 'number',
+    'real': 'number',
+    'smallint': 'number',
+    'smallserial': 'number',
+    'serial': 'number',
+    'text': 'text',
+    'time': 'time',
+    'time without time zone': 'time',
+    'timestamp with time zone': 'datetime',
+    'timestamp': 'datetime',
+    'uuid': 'text'
+};
+
+const widget_map = {
+    'bigint': ['number'],
+    'bigserial': ['number'],
+    'boolean': ['boolean'],
+    'character': ['text'],
+    'character varying': ['text'],
+    'date': ['date'],
+    'double precision': ['number'],
+    'integer': ['number'],
+    'money': ['number'],
+    'numeric': ['number'],
+    'real': ['number'],
+    'smallint': ['number'],
+    'smallserial': ['number'],
+    'serial': ['number'],
+    'text': ['text'],
+    'time': ['time'],
+    'time without time zone': ['time'],
+    'timestamp with time zone': ['time'],
+    'timestamp': ['datetime'],
+    'uuid': ['text']
+};
+
+const operator_map = {
+    'bigint': ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal', 'between', 'not_between', 'is_null', 'is_not_null'],
+    'bigserial': ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal', 'between', 'not_between', 'is_null', 'is_not_null'],
+    'boolean': ['equal'],
+    'character': ['equal', 'not_equal', 'like', 'not_like', 'starts_with', 'ends_with', 'is_null', 'is_not_null'],
+    'character varying': ['equal', 'not_equal', 'like', 'not_like', 'starts_with', 'ends_with', 'is_null', 'is_not_null'],
+    'date': ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal', 'between', 'not_between', 'is_null', 'is_not_null'],
+    'double precision': ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal', 'between', 'not_between', 'is_null', 'is_not_null'],
+    'integer': ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal', 'between', 'not_between', 'is_null', 'is_not_null'],
+    'money': ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal', 'between', 'not_between', 'is_null', 'is_not_null'],
+    'numeric': ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal', 'between', 'not_between', 'is_null', 'is_not_null'],
+    'real': ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal', 'between', 'not_between', 'is_null', 'is_not_null'],
+    'smallint': ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal', 'between', 'not_between', 'is_null', 'is_not_null'],
+    'smallserial': ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal', 'between', 'not_between', 'is_null', 'is_not_null'],
+    'serial': ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal', 'between', 'not_between', 'is_null', 'is_not_null'],
+    'text': ['equal', 'not_equal', 'like', 'not_like', 'starts_with', 'ends_with', 'is_null', 'is_not_null'],
+    'time': ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal', 'between', 'not_between', 'is_null', 'is_not_null'],
+    'time without time zone': ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal', 'between', 'not_between', 'is_null', 'is_not_null'],
+    'timestamp with time zone': ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal', 'between', 'not_between', 'is_null', 'is_not_null'],
+    'timestamp': ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal', 'between', 'not_between', 'is_null', 'is_not_null'],
+    'uuid': ['equal', 'not_equal', 'like', 'not_like', 'starts_with', 'ends_with', 'is_null', 'is_not_null']
+};
+
+export { type_map, widget_map, operator_map };
