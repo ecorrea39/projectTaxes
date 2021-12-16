@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef, useContext} from "react";
-import {Button, Card, Col, Container, Form, Modal, Row, SplitButton} from "react-bootstrap";
+import {Button, Card, Col, Container, Form, Modal, Row, Spinner, SplitButton} from "react-bootstrap";
 import {FormattedMessage, useIntl} from "react-intl";
 import * as Yup from "yup";
 import {useFormik, Formik, Field} from "formik";
@@ -52,6 +52,7 @@ const UserDatosFormStep1 = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [actasDeAsamblea, setActasDeAsamblea] = useState([]);
   const [showCrearModal, setShowCrearModal] = useState(false);
+  const [spinner, setSpinner] = useState(false);
 
   const intl = useIntl();
   const API_URL = `${process.env.REACT_APP_API_URL}`;
@@ -117,6 +118,8 @@ const UserDatosFormStep1 = (props) => {
 
   const cargarDataInicial = () => {
     rifToSearch = localStorage.getItem('rifToSearch');
+
+    setSpinner(true);
     axios.get(`${API_URL}user_company/${rifToSearch}/`, axiosConfig)
       .then(function (res) {
         console.log("get_user_company::", res);
@@ -154,6 +157,9 @@ const UserDatosFormStep1 = (props) => {
       alert("Error buscando datos de la empresa del usuario")
       disableLoading();
 
+    })
+    .finally(() => {
+      setSpinner(false);
     });
   }
 
@@ -162,6 +168,7 @@ const UserDatosFormStep1 = (props) => {
     let p = new Promise(function (resolve, reject) {
       enableLoading();
 
+      setSpinner(true);
       axios.get(`${API_URL}company_class/`, axiosConfig)
         .then(function (res) {
           console.log("resFormStep1_company_class", res);
@@ -196,6 +203,9 @@ const UserDatosFormStep1 = (props) => {
         disableLoading();
 
         reject(new Error('Error al consultar los datos de las clases de empresa'));
+      })
+      .finally(() => {
+        setSpinner(false);
       });
     })
 
@@ -208,6 +218,7 @@ const UserDatosFormStep1 = (props) => {
     let p = new Promise(function (resolve, reject) {
       enableLoading();
 
+      setSpinner(true);
       axios.get(`${API_URL}estatus/`, axiosConfig)
         .then(function (res) {
           console.log("resFormStep1_estatus", res);
@@ -226,7 +237,13 @@ const UserDatosFormStep1 = (props) => {
               "name": elemDataName
             };
 
-            estatusArray.push(rObj);
+            if (groups == 'administradores') {
+              estatusArray.push(rObj);
+            } else {
+              if (id == 1) {
+                estatusArray.push(rObj);
+              }
+            }
           });
 
           estatusArray.sort((a, b) => a.name < b.name ? -1 : 1);
@@ -242,6 +259,9 @@ const UserDatosFormStep1 = (props) => {
         disableLoading();
 
         reject(new Error('Error al consultar los datos de los Estatus'));
+      })
+      .finally(() => {
+        setSpinner(false);
       });
     })
 
@@ -253,6 +273,7 @@ const UserDatosFormStep1 = (props) => {
     let p = new Promise(function (resolve, reject) {
       enableLoading();
 
+      setSpinner(true);
       axios.get(`${API_URL}economic_activity/`, axiosConfig)
         .then(function (res) {
           console.log("resFormStep1_economic_activity", res);
@@ -288,6 +309,9 @@ const UserDatosFormStep1 = (props) => {
         disableLoading();
 
         reject(new Error('Error al consultar los datos de las Actividades Económicas'));
+      })
+      .finally(() => {
+        setSpinner(false);
       });
     })
 
@@ -303,6 +327,7 @@ const UserDatosFormStep1 = (props) => {
       setRifActual(rifToSearch);
       console.log("rifTosearch:::::", rifToSearch);
 
+      setSpinner(true);
       axios.get(`${API_URL}user_company/fondos/${rifToSearch}/`, axiosConfig)
         .then(function (res) {
           console.log("resFormStep1_fondos", res);
@@ -346,6 +371,9 @@ const UserDatosFormStep1 = (props) => {
         disableLoading();
 
         reject(new Error('Error al consultar los datos de las Compañías asociadas al RIF'));
+      })
+      .finally(() => {
+        setSpinner(false);
       });
     })
 
@@ -366,6 +394,8 @@ const UserDatosFormStep1 = (props) => {
   }
 
   const companiesChangeHandler = (event) => {
+    props.cambiarActaEdicion(false);
+    setSpinner(true);
 
     axios.get(`${API_URL}user_company/fondoporid/${event.target.value}/`, axiosConfig)
       .then(function (res) {
@@ -404,6 +434,9 @@ const UserDatosFormStep1 = (props) => {
       alert("Error buscando datos de la empresa del usuario")
       disableLoading();
 
+    })
+    .finally(() => {
+      setSpinner(false);
     });
   }
 
@@ -414,6 +447,7 @@ const UserDatosFormStep1 = (props) => {
 
   const handleEditar = () => {
 
+    setSpinner(true);
     axios.get(`${API_URL}acta_asamblea/${rif}/`, axiosConfig)
       .then(function (res) {
         console.log("get_user_company_acta_asamblea::", res);
@@ -456,8 +490,10 @@ const UserDatosFormStep1 = (props) => {
 
       console.log("errCargandoActasDeAsamblea", err);
       alert("Error buscando datos de las actas de asamblea")
+    })
+    .finally(() => {
+      setSpinner(false);
     });
-
   }
 
   const handleConsultarEmpresa = () => {
@@ -574,6 +610,7 @@ const UserDatosFormStep1 = (props) => {
       }
     };
 
+    setSpinner(true);
     axios.post(`${API_URL}users/crear/`, dataCrear, axiosConfigCrear).then(function (res) {
 
       console.log("registerResCrear", res);
@@ -608,6 +645,9 @@ const UserDatosFormStep1 = (props) => {
       } else {
         alert('Error de comunicación en el proceso de Registro');
       }
+    })
+    .finally(() => {
+      setSpinner(false);
     });
 
     setShowCrearModal(false);
@@ -754,6 +794,7 @@ const UserDatosFormStep1 = (props) => {
         }
       };
 
+      setSpinner(true);
       axios.post(`${API_URL}user_company/`, data, axiosConfig)
         .then(function (res) {
           console.log("resFormStep1::::", res);
@@ -811,6 +852,9 @@ const UserDatosFormStep1 = (props) => {
         } else {
           alert("Error al guardar los Datos de la Empresa");
         }
+      })
+      .finally(() => {
+        setSpinner(false);
       });
     },
   });
@@ -986,6 +1030,7 @@ const UserDatosFormStep1 = (props) => {
           <Col md={4}>
             <Card.Title>
               Datos de la Empresa <span>({rifActual})</span>
+              {spinner && <Spinner animation="border" variant="danger" />}
             </Card.Title>
           </Col>
           <Col md={3} style={textLabelColor}>
@@ -1203,7 +1248,6 @@ const UserDatosFormStep1 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.numero_patronal}
                                   maxLength="20"
-                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.numero_patronal && formik.errors.numero_patronal ? (
@@ -1222,7 +1266,6 @@ const UserDatosFormStep1 = (props) => {
                                   onBlur={formik.handleBlur}
                                   value={formik.values.numero_de_trabajadores}
                                   maxLength="7"
-                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.numero_de_trabajadores && formik.errors.numero_de_trabajadores ? (
@@ -1248,6 +1291,7 @@ const UserDatosFormStep1 = (props) => {
                   >
                     Siguiente
                   </Button>
+                  {spinner && <Spinner animation="border" variant="danger" />}
                 </Col>
               </Row>
             </Container>

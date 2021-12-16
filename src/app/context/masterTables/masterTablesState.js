@@ -16,6 +16,9 @@ export const MasterTablesState = ({ children }) => {
     const [actividadesEconomicas, setActividadesEconomicas] = useState([]);
     const [conceptos, setConceptos] = useState([]);
     const [estados, setEstados] = useState([]);
+    const [municipios, setMunicipios] = useState([]);
+    const [parroquias, setParroquias] = useState([]);
+    const [ciudades, setCiudades] = useState([]);
     const [registrosMercantiles, setRegistrosMercantiles] = useState([]);
     const [medidaValor, setMedidaValor] = useState([]);
     const [motivoSancion, setMotivoSancion] = useState([]);
@@ -27,8 +30,16 @@ export const MasterTablesState = ({ children }) => {
     const [locales, setLocales] = useState([]);
     const [edificaciones, setEdificaciones] = useState([]);
     const [tipoDocumento, setTipoDocumento] = useState([]);
+    const [tipoContribuyente, setTipoContribuyente] = useState([]);
+    const [cuentasContables, setCuentasContables] = useState([]);
+    const [firmasAutorizadas, setFirmasAutorizadas] = useState([]);
+    const [unidadEstadal, setUnidadEstadal] = useState([]);
     const [formDataTables, setFormDataTables] = useState({});
     const [registroSeleccionado, setRegistroSeleccionado] = useState({});
+
+    const listReportes = ["Certificado de Solvencia","Resolución de incumplimiento de deberes formales"];
+    const listRegiones = ['Central','Centro Occidental','Dependencias Federales','Guayana','La Guaira','Los Andres','Los Llanos','Nor Oriental','Otras Dependencias Federales (M)','Región Capital','Registro de Normalización (Municipio)','Zuliana'];
+    const listRedi = ['Redi Andres','Redi Central','Redi Centro Occidente','Redi Guayana','Redi Llanos','Redi Oriente'];
 
     let dataAux = [];
 
@@ -44,6 +55,9 @@ export const MasterTablesState = ({ children }) => {
         getConceptos();
         getRegistrosMercantiles();
         getEstados();
+        getMunicipios();
+        getParroquias();
+        getCiudades();
         getMedidaValor();
         getMotivoSancion();
         getDiasFestivos();
@@ -54,6 +68,10 @@ export const MasterTablesState = ({ children }) => {
         getLocales();
         getEdificaciones();
         getTipoDocumento();
+        getTipoContribuyente();
+        getCuentasContables();
+        getFirmasAutorizadas();
+        getUnidadEstadalTributos();
     },[]);
 
     const getBancos = async () => {
@@ -334,13 +352,101 @@ export const MasterTablesState = ({ children }) => {
             arreglo.map((x, i) => {
                 lista.push(
                     {
+                        "id": arreglo[i].id,
                         "cod_estado": arreglo[i].attributes.cod_estado,
-                        "descripcion": arreglo[i].attributes.descripcion
+                        "descripcion": arreglo[i].attributes.descripcion,
+                        "region": arreglo[i].attributes.region,
+                        "redi": arreglo[i].attributes.redi,
+                        "unidad_estadal": arreglo[i].attributes.unidad_estadal
                     }
                 )
             });
             lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
             setEstados(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getMunicipios = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/geographic_data_municipios/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "cod_municipio": arreglo[i].attributes.cod_municipio,
+                        "id_estado": arreglo[i].attributes.id_estado,
+                        "descripcion": arreglo[i].attributes.descripcion,
+                        "estado": arreglo[i].attributes['id_estado_estado.descripcion']
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setMunicipios(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getParroquias = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/geographic_data_parroquias/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "id_municipio": arreglo[i].attributes.id_municipio,
+                        "descripcion": arreglo[i].attributes.descripcion,
+                        "municipio": arreglo[i].attributes['id_municipio_municipio.descripcion']
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setParroquias(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getCiudades = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/geographic_data_ciudades/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "id_municipio": arreglo[i].attributes.id_municipio,
+                        "id_estado": arreglo[i].attributes.id_estado,
+                        "descripcion": arreglo[i].attributes.descripcion,
+                        "municipio": arreglo[i].attributes['id_municipio_municipio.descripcion'],
+                        "estado": arreglo[i].attributes['id_estado_estado.descripcion']
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setCiudades(lista);
 
         } catch (error) {
             console.log(error)
@@ -602,6 +708,119 @@ export const MasterTablesState = ({ children }) => {
 
     }
 
+    const getTipoContribuyente = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/tipo_contribuyente/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "name": arreglo[i].attributes.name,
+                        "descripcion": arreglo[i].attributes.descripcion
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setTipoContribuyente(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getCuentasContables = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/cuentas_contables/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "concepto": arreglo[i].attributes.concepto,
+                        "codigo_cuenta": arreglo[i].attributes.codigo_cuenta,
+                        "naturaleza_cuenta": arreglo[i].attributes.naturaleza_cuenta,
+                        "grupo": arreglo[i].attributes.grupo,
+                        "sub_grupo": arreglo[i].attributes.sub_grupo,
+                        "auxiliar": arreglo[i].attributes.auxiliar
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setCuentasContables(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getFirmasAutorizadas = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/firmas_autorizadas/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "documento": listReportes.filter(x => x === arreglo[i].attributes.documento),
+                        "reporte": "",
+                        "nombre": arreglo[i].attributes.nombre,
+                        "cargo": arreglo[i].attributes.cargo,
+                        "ngaceta": arreglo[i].attributes.ngaceta,
+                        "fecha_gaceta": arreglo[i].attributes.fecha_gaceta,
+                        "orden_administrativa": arreglo[i].attributes.orden_administrativa
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setFirmasAutorizadas(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const getUnidadEstadalTributos = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/unidad_estadal/', clientAxios);
+
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "cod": arreglo[i].attributes.cod,
+                        "asignacion": arreglo[i].attributes.asignacion
+                    }
+                )
+            });
+            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setUnidadEstadal(lista);
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
     const obtenerValores = (valores) => {
         setRegistroSeleccionado(valores);
     }
@@ -610,7 +829,7 @@ export const MasterTablesState = ({ children }) => {
         setRegistroSeleccionado({});
     }
 
-    const validarDescripcion = (e, props) => {
+    const validarDescripcion = (e, props, formik) => {
 
         let busqueda = false;
         let valor = e.target.value.toUpperCase();
@@ -719,9 +938,57 @@ export const MasterTablesState = ({ children }) => {
                 });
                 break;
 
-            case "tipo_documento":
+            case "tipo-documento":
                 tipoDocumento.map((x) => {
                     if(x.name.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "tipo-contribuyente":
+                tipoContribuyente.map((x) => {
+                    if(x.name.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "estados":
+                estados.map((x) => {
+                    if(x.descripcion.toUpperCase().trim() === valor.trim()) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "municipios":
+                municipios.map((x) => {
+                    if(x.descripcion.toUpperCase().trim() === valor.trim() && Number(x.id_estado) === Number(formik.values.id_estado)) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "parroquias":
+                parroquias.map((x) => {
+                    if(x.descripcion.toUpperCase().trim() === valor.trim() && Number(x.id_municipio) === Number(formik.values.id_municipio)) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "ciudades":
+                ciudades.map((x) => {
+                    if(x.descripcion.toUpperCase().trim() === valor.trim() && Number(x.id_municipio) === Number(formik.values.id_municipio) && Number(x.id_estado) === Number(formik.values.id_estado)) {
+                        busqueda = true;
+                    }
+                });
+                break;
+
+            case "unidad-estadal-tributos":
+                unidadEstadal.map((x) => {
+                    if(x.asignacion.toUpperCase().trim() === valor.trim()) {
                         busqueda = true;
                     }
                 });
@@ -833,6 +1100,38 @@ export const MasterTablesState = ({ children }) => {
 
                         case "tipo-documentos":
                             urlTabla = `/tipo_documento/${valores.id}`;
+                            break;
+
+                        case "tipo-contribuyente":
+                            urlTabla = `/tipo_contribuyente/${valores.id}`;
+                            break;
+
+                        case "cuentas-contables":
+                            urlTabla = `/cuentas_contables/${valores.id}`;
+                            break;
+
+                        case "firmas-autorizadas":
+                            urlTabla = `/firmas_autorizadas/${valores.id}`;
+                            break;
+
+                        case "estados":
+                            urlTabla = `/geographic_data_estados/${valores.id}`;
+                            break;
+
+                        case "municipios":
+                            urlTabla = `/geographic_data_municipios/${valores.id}`;
+                            break;
+
+                        case "parroquias":
+                            urlTabla = `/geographic_data_parroquias/${valores.id}`;
+                            break;
+
+                        case "ciudades":
+                            urlTabla = `/geographic_data_ciudades/${valores.id}`;
+                            break;
+
+                        case "unidad-estadal-tributos":
+                            urlTabla = `/unidad_estadal/${valores.id}`;
                             break;
 
                         default:
@@ -966,6 +1265,46 @@ export const MasterTablesState = ({ children }) => {
                     urlTabla = "/tipo_documento/";
                     break;
 
+                case "tipo-contribuyente":
+                    dataType = "saveTipoContribuyente";
+                    urlTabla = "/tipo_contribuyente/";
+                    break;
+
+                case "cuentas-contables":
+                    dataType = "saveCuentasContables";
+                    urlTabla = "/cuentas_contables/";
+                    break;
+
+                case "firmas-autorizadas":
+                    dataType = "saveFirmasAutorizadas";
+                    urlTabla = "/firmas_autorizadas/";
+                    break;
+
+                case "estados":
+                    dataType = "saveGeographicDataEstados";
+                    urlTabla = "/geographic_data_estados/";
+                    break;
+
+                case "municipios":
+                    dataType = "saveGeographicDataMunicipios";
+                    urlTabla = "/geographic_data_municipios/";
+                    break;
+
+                case "parroquias":
+                    dataType = "saveGeographicDataParroquias";
+                    urlTabla = "/geographic_data_parroquias/";
+                    break;
+
+                case "ciudades":
+                    dataType = "saveGeographicDataCiudades";
+                    urlTabla = "/geographic_data_ciudades/";
+                    break;
+
+                case "unidad-estadal-tributos":
+                    dataType = "saveunidad_estadal";
+                    urlTabla = "/unidad_estadal/";
+                    break;
+
                 default:
                     break;
             }
@@ -973,8 +1312,6 @@ export const MasterTablesState = ({ children }) => {
             requestConfig.data.type = dataType;
             requestConfig.data.attributes = valores;
             requestConfig.data.id = (props.accion !== 'Agregar') ? valores.id : '';
-
-            console.log('requestConfig ', requestConfig)
 
             if(props.accion === 'Agregar') {
                 const respuesta = await clientAxios.post(urlTabla, requestConfig);
@@ -1081,6 +1418,38 @@ export const MasterTablesState = ({ children }) => {
 
             case "tipo-documentos":
                 getTipoDocumento();
+                break;
+
+            case "tipo-contribuyente":
+                getTipoContribuyente();
+                break;
+
+            case "cuentas-contables":
+                getCuentasContables();
+                break;
+
+            case "firmas-autorizadas":
+                getFirmasAutorizadas();
+                break;
+
+            case "estados":
+                getEstados();
+                break;
+
+            case "municipios":
+                getMunicipios();
+                break;
+
+            case "parroquias":
+                getParroquias();
+                break;
+
+            case "ciudades":
+                getCiudades();
+                break;
+
+            case "unidad-estadal-tributos":
+                getUnidadEstadalTributos();
                 break;
 
             default:
@@ -1196,12 +1565,97 @@ export const MasterTablesState = ({ children }) => {
             );
         }
 
-        /* ttipo de documento */
+        /* tipo de documento */
         if (columnas === 'col-12') {
             search = dataAux.filter(item =>
                 item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
                 || item.id.toString().includes(palabra)
                 || item.codigo.toString().includes(palabra)
+            );
+        }
+
+        /* tipo de contribuyente */
+        if (columnas === 'col-13') {
+            search = dataAux.filter(item =>
+                item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.descripcion.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+            );
+        }
+
+        /* cuentas contables */
+        if (columnas === 'col-14') {
+            search = dataAux.filter(item => //aqui
+                item.concepto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.codigo_cuenta.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.naturaleza_cuenta.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.grupo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.sub_grupo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.auxiliar.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+            );
+        }
+
+        /* firmas autorizadas */
+        if (columnas === 'col-15') {
+            search = dataAux.filter(item =>
+                item.nombre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.cargo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+                || item.ngaceta.toString().includes(palabra)
+                || item.fecha_gaceta.toString().includes(palabra)
+                || item.orden_administrativa.toString().includes(palabra)
+            );
+        }
+
+        /* estados */
+        if (columnas === 'col-16') {
+            search = dataAux.filter(item =>
+                item.region.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.redi.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.descripcion.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+                || item.cod_estado.toString().includes(palabra)
+                || item.unidad_estadal.toString().includes(palabra)
+            );
+        }
+
+        /* municipios */
+        if (columnas === 'col-17') {
+            search = dataAux.filter(item =>
+                item.descripcion.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.estado.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+                || item.cod_municipio.toString().includes(palabra)
+            );
+        }
+
+        /* parroquias */
+        if (columnas === 'col-18') {
+            search = dataAux.filter(item =>
+                item.descripcion.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.municipio.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+                || item.id_municipio.toString().includes(palabra)
+            );
+        }
+
+        /* ciudades */
+        if (columnas === 'col-19') {
+            search = dataAux.filter(item =>
+                item.descripcion.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.municipio.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.estado.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+            );
+        }
+
+        /* unidad estadal de tributos */
+        if (columnas === 'col-20') {
+            search = dataAux.filter(item =>
+                item.asignacion.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase())
+                || item.id.toString().includes(palabra)
+                || item.cod.toString().includes(palabra)
             );
         }
 
@@ -1283,6 +1737,38 @@ export const MasterTablesState = ({ children }) => {
 
                 case "tipo-documentos":
                     setTipoDocumento(search);
+                    break;
+
+                case "tipo-contribuyente":
+                    setTipoContribuyente(search);
+                    break;
+
+                case "cuentas-contables":
+                    setCuentasContables(search);
+                    break;
+
+                case "firmas-autorizadas":
+                    setFirmasAutorizadas(search);
+                    break;
+
+                case "estados":
+                    setEstados(search);
+                    break;
+
+                case "municipios":
+                    setMunicipios(search);
+                    break;
+
+                case "parroquias":
+                    setParroquias(search);
+                    break;
+
+                case "ciudades":
+                    setCiudades(search);
+                    break;
+
+                case "unidad-estadal-tributos":
+                    setUnidadEstadal(search);
                     break;
 
                 default:
@@ -1385,6 +1871,38 @@ export const MasterTablesState = ({ children }) => {
                 dataAux = tipoDocumento;
                 break;
 
+            case "tipo-contribuyente":
+                dataAux = tipoContribuyente;
+                break;
+
+            case "cuentas-contables":
+                dataAux = cuentasContables;
+                break;
+
+            case "firmas-autorizadas":
+                dataAux = firmasAutorizadas;
+                break;
+
+            case "estados":
+                dataAux = estados;
+                break;
+
+            case "municipios":
+                dataAux = municipios;
+                break;
+
+            case "parroquias":
+                dataAux = parroquias;
+                break;
+
+            case "ciudades":
+                dataAux = ciudades;
+                break;
+
+            case "unidad-estadal-tributos":
+                dataAux = unidadEstadal;
+                break;
+
             default:
                 break;
         }
@@ -1402,6 +1920,9 @@ export const MasterTablesState = ({ children }) => {
         conceptos,
         registrosMercantiles,
         estados,
+        municipios,
+        parroquias,
+        ciudades,
         medidaValor,
         motivoSancion,
         diasFestivos,
@@ -1412,6 +1933,13 @@ export const MasterTablesState = ({ children }) => {
         locales,
         edificaciones,
         tipoDocumento,
+        tipoContribuyente,
+        cuentasContables,
+        firmasAutorizadas,
+        unidadEstadal,
+        listReportes,
+        listRegiones,
+        listRedi,
         submitMasterTables,
         setFormDataTables,
         deleteMasterTables,

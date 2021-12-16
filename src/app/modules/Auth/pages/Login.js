@@ -130,6 +130,7 @@ function Login(props) {
         localStorage.setItem('mail', attr.mail);
         localStorage.setItem('phone_number_mobile', attr.phone_number_mobile);
         localStorage.setItem('groups', attr.groups);
+        localStorage.setItem('codigoUnidadEstadal', attr.codigoUnidadEstadal);
 
         authCtx.login(attr.authorization.token);
         

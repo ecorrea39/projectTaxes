@@ -137,7 +137,7 @@ export const ReportsState = ({ children }) => {
 
             Swal.fire({
                 title: "Reportes del Contribuyente",
-                text: "Certificado de solvencia ejecutado con éxito!",
+                text: "Reporte ejecutado con éxito!",
                 icon: "success",
                 button: "Ok"
             }).then((value) => {
@@ -147,7 +147,7 @@ export const ReportsState = ({ children }) => {
             console.log(error)
             Swal.fire({
                 title: "Reportes del Contribuyente",
-                text: "Error al generar reporte de certificado de solvencia !",
+                text: "Error al generar solvencia !",
                 icon: "error",
                 button: "Ok",
             }).then((value) => {

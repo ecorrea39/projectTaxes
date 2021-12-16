@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef, useContext} from "react";
-import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
+import {Button, Card, Col, Container, Form, Row, Spinner} from "react-bootstrap";
 import {FormattedMessage, useIntl} from "react-intl";
 import {useFormik} from "formik";
 import * as Yup from "yup";
@@ -85,6 +85,7 @@ const UserDatosFormStep4 = (props) => {
 
   const [loading, setLoading] = useState(false);
   const [siguiente, setSiguiente] = useState(false);
+  const [spinner, setSpinner] = useState(false);
 
   const generalCtx = useContext(GeneralContext);
 
@@ -132,6 +133,7 @@ const UserDatosFormStep4 = (props) => {
 
   useEffect(() => {
 
+    setSpinner(true);
     axios.get(`${API_URL}user_manager_data/fondoporid/${generalCtx.theIdUserInformacionProfile}/`, axiosConfig)
       .then(function (res) {
         console.log("get_user_company::", res);
@@ -174,7 +176,10 @@ const UserDatosFormStep4 = (props) => {
       alert("Error buscando datos de los representantes legales de la empresa del usuario");
       disableLoading();
 
-    });
+    })
+      .finally(() => {
+        setSpinner(false);
+      });
 
   }, []);
 
@@ -296,24 +301,7 @@ const UserDatosFormStep4 = (props) => {
         intl.formatMessage({
           id: "AUTH.VALIDATION.RANGELEN",
         }, {min: 1, max: 8})
-        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 8)))
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 8))),
     cedula_representante_legal3: Yup
       .number().positive(
         intl.formatMessage({
@@ -324,24 +312,7 @@ const UserDatosFormStep4 = (props) => {
         intl.formatMessage({
           id: "AUTH.VALIDATION.RANGELEN",
         }, {min: 1, max: 8})
-        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 8)))
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 8))),
     nombre_representante_legal1: Yup.string()
       .min(1,
         intl.formatMessage({
@@ -369,24 +340,7 @@ const UserDatosFormStep4 = (props) => {
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
         }, {max: 30})
-      )
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+      ),
     nombre_representante_legal3: Yup.string()
       .min(1,
         intl.formatMessage({
@@ -397,24 +351,7 @@ const UserDatosFormStep4 = (props) => {
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
         }, {max: 30})
-      )
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+      ),
     apellido_representante_legal1: Yup.string()
       .min(1,
         intl.formatMessage({
@@ -442,24 +379,7 @@ const UserDatosFormStep4 = (props) => {
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
         }, {max: 30})
-      )
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+      ),
     apellido_representante_legal3: Yup.string()
       .min(1,
         intl.formatMessage({
@@ -470,66 +390,15 @@ const UserDatosFormStep4 = (props) => {
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
         }, {max: 30})
-      )
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+      ),
     codigo_de_area_representante_legal1: Yup.string()
       .required(
         intl.formatMessage({
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
         })
       ),
-    codigo_de_area_representante_legal2: Yup.string()
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
-    codigo_de_area_representante_legal3: Yup.string()
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+    codigo_de_area_representante_legal2: Yup.string(),
+    codigo_de_area_representante_legal3: Yup.string(),
     telefono_representante_legal1: Yup
       .number().positive(
         intl.formatMessage({
@@ -557,24 +426,7 @@ const UserDatosFormStep4 = (props) => {
         intl.formatMessage({
           id: "AUTH.VALIDATION.RANGELEN",
         }, {min: 1, max: 7})
-        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 7)))
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 7))),
     telefono_representante_legal3: Yup
       .number().positive(
         intl.formatMessage({
@@ -585,24 +437,7 @@ const UserDatosFormStep4 = (props) => {
         intl.formatMessage({
           id: "AUTH.VALIDATION.RANGELEN",
         }, {min: 1, max: 7})
-        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 7)))
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 7))),
     correo_electronico_representante_legal1: Yup.string()
       .email(
         intl.formatMessage({
@@ -640,24 +475,7 @@ const UserDatosFormStep4 = (props) => {
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
         }, {max: 80})
-      )
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+      ),
     correo_electronico_representante_legal3: Yup.string()
       .email(
         intl.formatMessage({
@@ -673,24 +491,7 @@ const UserDatosFormStep4 = (props) => {
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
         }, {max: 80})
-      )
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+      ),
     cargo_representante_legal1: Yup.string()
       .min(1,
         intl.formatMessage({
@@ -718,24 +519,7 @@ const UserDatosFormStep4 = (props) => {
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
         }, {max: 30})
-      )
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+      ),
     cargo_representante_legal3: Yup.string()
       .min(1,
         intl.formatMessage({
@@ -746,24 +530,7 @@ const UserDatosFormStep4 = (props) => {
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
         }, {max: 30})
-      )
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+      ),
   });
 
   const enableLoading = () => {
@@ -803,6 +570,7 @@ const UserDatosFormStep4 = (props) => {
         }
       };
 
+      setSpinner(true);
       axios.post(`${API_URL}user_manager_data/`, data, axiosConfig)
         .then(function (res) {
 
@@ -850,7 +618,10 @@ const UserDatosFormStep4 = (props) => {
         disableLoading();
 
         alert("Error al guardar los Datos de los Representantes Legales");
-      });
+      })
+        .finally(() => {
+          setSpinner(false);
+        });
     },
   });
 
@@ -859,6 +630,7 @@ const UserDatosFormStep4 = (props) => {
       <Card.Body>
         <Card.Title>
           Datos del Representante Legal
+          {spinner && <Spinner animation="border" variant="danger"/>}
         </Card.Title>
         <Card.Body>
           <form
@@ -942,7 +714,7 @@ const UserDatosFormStep4 = (props) => {
                                   value={formik.values.codigo_de_area_representante_legal1}
                                   ref={codigo_de_area_representante_legal1Ref}
                     >
-                      <option key="0" value="">Seleccione el Código de Area</option>
+                      <option key="0" value=""></option>
 
                       {codigosCelulares.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
@@ -1091,7 +863,7 @@ const UserDatosFormStep4 = (props) => {
                                   value={formik.values.codigo_de_area_representante_legal2}
                                   ref={codigo_de_area_representante_legal2Ref}
                     >
-                      <option key="0" value="">Seleccione el Código de Area</option>
+                      <option key="0" value=""></option>
 
                       {codigosCelulares.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
@@ -1240,7 +1012,7 @@ const UserDatosFormStep4 = (props) => {
                                   value={formik.values.codigo_de_area_representante_legal3}
                                   ref={codigo_de_area_representante_legal3Ref}
                     >
-                      <option key="0" value="">Seleccione el Código de Area</option>
+                      <option key="0" value=""></option>
 
                       {codigosCelulares.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
@@ -1345,6 +1117,7 @@ const UserDatosFormStep4 = (props) => {
                   >
                     Siguiente
                   </Button>
+                  {spinner && <Spinner animation="border" variant="danger"/>}
                 </Col>
               </Row>
             </Container>

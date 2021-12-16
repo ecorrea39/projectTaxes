@@ -415,6 +415,54 @@ export const navFuncional = [
         url: "/tablas/tipo-documentos",
         icon: "",
         slug: "tablas-tipo-documentos"
+      },
+      {
+        title: "Tipos de Contribuyentes",
+        url: "/tablas/tipo-contribuyente",
+        icon: "",
+        slug: "tablas-tipo-contribuyente"
+      },
+      {
+        title: "Cuentas Contables",
+        url: "/tablas/cuentas-contables",
+        icon: "",
+        slug: "tablas-cuentas-contables"
+      },
+      {
+        title: "Firmas Autorizadas",
+        url: "/tablas/firmas-autorizadas",
+        icon: "",
+        slug: "tablas-firmas-autorizadas"
+      },
+      {
+        title: "Estados",
+        url: "/tablas/estados",
+        icon: "",
+        slug: "tablas-estados"
+      },
+      {
+        title: "Municipios",
+        url: "/tablas/municipios",
+        icon: "",
+        slug: "tablas-municipios"
+      },
+      {
+        title: "Parroquías",
+        url: "/tablas/parroquias",
+        icon: "",
+        slug: "tablas-parroquias"
+      },
+      {
+        title: "Ciudades",
+        url: "/tablas/ciudades",
+        icon: "",
+        slug: "tablas-ciudades"
+      },
+      {
+        title: "Unidad Estadal de Tributos",
+        url: "/tablas/unidad-estadal-tributos",
+        icon: "",
+        slug: "tablas-unidad-estadal-tributos"
       }
     ]
   },

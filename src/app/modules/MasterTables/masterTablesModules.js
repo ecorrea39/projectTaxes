@@ -86,6 +86,38 @@ function MasterTablesModule() {
             title = "Tipo de Documentos";
             break;
 
+        case "tipo-contribuyente":
+            title = "Tipo de Contribuyentes";
+            break;
+
+        case "cuentas-contables":
+            title = "Cuentas Contables";
+            break;
+
+        case "firmas-autorizadas":
+            title = "Firmas Autorizadas";
+            break;
+
+        case "estados":
+            title = "Estados";
+            break;
+
+        case "municipios":
+            title = "Municipios";
+            break;
+
+        case "parroquias":
+            title = "Parroquías";
+            break;
+
+        case "ciudades":
+            title = "Ciudades";
+            break;
+
+        case "unidad-estadal-tributos":
+            title = "Unidad Estadal de Tributos";
+            break;
+
         default:
             break;
     }
