@@ -9,7 +9,6 @@ export const Routes = () => {
   let isAuthorized = authCtx.isLoggedIn;
   const PathList = authCtx.accesRouters;
   const urlDash = authCtx.urlDash;
-
     return (
       <>
         {isAuthorized

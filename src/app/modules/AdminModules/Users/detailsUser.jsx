@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import UsersContext from "../../../context/users/usersContext";
 import { Button, Col, Row } from "react-bootstrap";
 import styles from "../panel.module.css";
-import {ShowPermissions} from "./showPermissions";
+import { ShowPermissions } from "../ModulesTable/showPermissions";
 
 export const DetailsUser = () => {
 

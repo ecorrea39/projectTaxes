@@ -4,10 +4,11 @@ import Swal from "sweetalert2";
 import { MyDataTable } from "../ModulesTable/MyDataTable";
 import { ActionsTable } from "../ModulesTable/actionsTable";
 import { SearchTable } from "../ModulesTable/searchTable";
+import { Link } from "react-router-dom";
 
 export const UserTable = () => {
 
-    const { setUserSlct, usersList, statusList, groupsList, loadingTable, updateUserStatus, printInfoUser } = useContext(UsersContext);
+    const { setUserSlct, usersList, statusList, groupsList, loadingTable, updateUserStatus, linkPrintInfoUser } = useContext(UsersContext);
     
     const [dataFilter, setDataFilter] = useState(usersList);
 
@@ -34,8 +35,12 @@ export const UserTable = () => {
     }
 
     const selectGroup = (id) => {
-        let group = groupsList.find(element => element.id == id );
-        return group.name;
+        if(id != "") {
+            let group = groupsList.find(element => element.id == id );
+            if (group) return group.name;
+            return "S/G"
+        }
+        return "S/G"
     }
 
     const alertNotice = (action,row) => {
@@ -65,7 +70,7 @@ export const UserTable = () => {
     }
 
     const printInfo = (Userid) => {
-        printInfoUser({user_id: Userid});
+        window.open( linkPrintInfoUser+Userid );
     }
 
     const columns = [
@@ -97,12 +102,20 @@ export const UserTable = () => {
         },
         {
             name: 'Fecha de creación',
-            selector: row => row.attributes.fecha_creacion,
+            selector: row => row.attributes.fecha_de_registro,
             sortable: true,
         },
         {
             name: 'Grupo asignado',
-            selector: row => selectGroup(row.attributes['user_grupos_usuarios.grupo_id']),
+            selector: row => (
+                <>
+                {
+                    <Link to={`/panel/grupos/detalles/${row.attributes['user_grupos_usuarios.grupo_id']}`}>
+                       { selectGroup(row.attributes['user_grupos_usuarios.grupo_id']) }
+                    </Link>
+                }
+                </>
+            ),
             sortable: true,
         },
         {

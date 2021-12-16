@@ -14,13 +14,6 @@ export const BtnAddTable = ({link, icon}) => {
                     to={`${link}`}>
                 { icon == "add" ? <AddIcon></AddIcon> : <ArrowBackIcon></ArrowBackIcon> }
             </NavLink>
-            {/*<a  title="Agregar"
-                onClick={handleAdd}
-                className={`
-                    btn btn-icon btn-warning btn-hover-light btn-md
-                    rounded-circle ${panel.btnAddItem}`}>
-            <AddIcon></AddIcon>
-            </a>*/}
         </>
     )
 }

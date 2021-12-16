@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { PathListContribuyente, PathListFuncional } from "../router/helperRoute";
+import { PathList, PathListFuncional } from "../router/helperRoute";
 import jwt_decode from "jwt-decode";
 
 const AuthContext = React.createContext({
@@ -23,20 +23,20 @@ export const AuthContextProvider = (props) => {
 
   const definedRouters = () => {
     let routers = [];
-    if(userType == "user") {
-      PathListContribuyente.map((router) => {
-        if(router.groups.indexOf(userGroup) > -1) {
-          routers.push(router);
-        }
-      });
-    }
-    if(userType == "funcional") {
+
+    PathList.map((router) => {
+      if(router.groups.indexOf(userGroup) > -1) {
+        routers.push(router);
+      }
+    });
+    
+    /*if(userType == "funcional") {
       PathListFuncional.map((router) => {
         if(router.groups.indexOf(userGroup) > -1) {
           routers.push(router);
         }
       });
-    }
+    }*/
     setAccessRouters(routers);
   }
 
@@ -58,7 +58,7 @@ export const AuthContextProvider = (props) => {
     return;
   }
   useEffect(()=>{
-    if(token) {
+    if(localStorage.getItem("authToken")) {
       let tokenDecoded = jwt_decode(token);
       setUserGroup(tokenDecoded.data.groups[0]);
     }

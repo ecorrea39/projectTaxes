@@ -37,7 +37,6 @@ export const RouterPublic = ({isAuth,urlDash}) => {
 };
 
 export const RouterPrivate = ({isAuth,pathList,urlDash}) => {
-    console.log(urlDash)
     return (
         <>
         {

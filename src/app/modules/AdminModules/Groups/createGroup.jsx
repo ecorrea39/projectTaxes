@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Formik } from "formik";
 import * as Yup from 'yup';
 import { BaseFormik } from "./baseFormik";
@@ -13,12 +13,11 @@ export const CreateGroup = (props) => {
     const { action } = props;
     const { addNewGroup, updateGroup, formPermisos } = useContext(GroupsContext);
 
-    const handleSubmit = async (values, actions) => {
+    const handleSubmit = async (values, actions) => {        
         
-        values.permisos = formPermisos;
-        values.status = parseInt(values.status);
-
         if(action === "add") {
+            values.permisos = formPermisos
+            console.log(values)
             await addNewGroup(values);
             Swal.fire({
                 title: `Operación exitosa`,
@@ -30,16 +29,14 @@ export const CreateGroup = (props) => {
             await updateGroup(values);
             Swal.fire({
                 title: `Operación exitosa`,
-                text: `El grupo ${values.name} se ha actualizado con exito.`,
+                text: `El grupo ${formPermisos.name} se ha actualizado con exito.`,
                 button: "Ok",
                 icon: 'success'
             });
         }
-
         actions.setSubmitting(false);
         actions.resetForm();
         history.push("/panel/grupos");
-       
     }
 
     const initialValues = { name: "", permisos: [] };

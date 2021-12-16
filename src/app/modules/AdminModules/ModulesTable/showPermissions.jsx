@@ -2,7 +2,6 @@ import React from "react";
 import { Col, Row, Table } from "react-bootstrap";
 import VpnKeyOutlinedIcon from '@material-ui/icons/VpnKeyOutlined';
 import style from "../panel.module.css";
-import Checkbox from '@material-ui/core/Checkbox';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 

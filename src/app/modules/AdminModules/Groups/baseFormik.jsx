@@ -77,7 +77,7 @@ export const BaseFormik = ({props,formik,history}) => {
             formik.resetForm();
             setListPermissions(formPermisos);
         }
-    },[action]);
+    },[action, groupSlct]);
 
     return (
         <Form className="form form-label-right">

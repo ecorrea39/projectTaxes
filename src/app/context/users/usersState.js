@@ -10,6 +10,7 @@ export const UsersState = ({ children }) => {
     const [groupsList, setGroupsList] = useState([]);
     const [loadingTable, setLoadingTable] = useState(false);
     const [unidadesEstatales, setUnidadesEstatales] = useState([]);
+    const [linkPrintInfoUser, setLinkRecibo] = useState(process.env.REACT_APP_API_URL+"reports/usuario_administrativo/");
     const [statusList, setStatusList] = useState([
         {
             status: "0",
@@ -110,7 +111,8 @@ export const UsersState = ({ children }) => {
             formData.grupo = grupo;
             requestConfig.data.type = "saveAccessControl";
             requestConfig.data.attributes = formData;
-            await clientAxios.post('/access_control/',requestConfig);
+            await clientAxios.post('/access_control/users/grupos',requestConfig);
+            getUsers();
             return;
 
         } catch (error) {
@@ -147,17 +149,6 @@ export const UsersState = ({ children }) => {
         }
     }
 
-    const printInfoUser = (formData) => {
-        console.log(formData)
-        try {
-            requestConfig.data.type = "updateUser";
-            requestConfig.data.attributes = formData;
-            // const respuesta = await clientAxios.get('/cuentas_banco/');
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
     const valuesContext = {
         usersList,
         userSlct,
@@ -165,6 +156,7 @@ export const UsersState = ({ children }) => {
         unidadesEstatales,
         statusList,
         loadingTable,
+        linkPrintInfoUser,
         setStatusList,
         setUnidadesEstatales,
         setGroupsList,
@@ -172,8 +164,8 @@ export const UsersState = ({ children }) => {
         setUserSlct,
         addNewUser,
         updateUser,
-        updateUserStatus,
-        printInfoUser
+        updateUserStatus
+        
     }
 
     return (

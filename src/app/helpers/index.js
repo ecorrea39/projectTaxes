@@ -23,3 +23,63 @@ export const formatearfecha = (f, formato) => {
 
     return fecha;
 }
+
+export const GenerarCodBanesco = () => {
+
+    let codigo,j,k,arrayCode;
+    let array = [];
+    let startCode = "INCES";
+    const regex = /,/g;
+
+    for(let i = 0; i <= 9; i++) {
+        var num = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
+        array.push(num);
+    }
+
+    for (let i = array.length; i; i--) {
+        j = Math.floor(Math.random() * i);
+        k = array[i - 1];
+        array[i - 1] = array[j];
+        array[j] = k;
+        arrayCode = array.toString();
+    }
+
+    codigo = arrayCode.replace(regex,"");
+
+    return startCode+codigo;
+
+}
+
+export const formatearMontos = (monto) => {
+    return (
+        monto
+            .toFixed(2)
+            .replace('.', ',')
+            .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1')
+    )
+}
+
+export const formatearMontosII = (monto) => {
+    console.log(monto)
+
+    if(monto.includes(",")) {
+        return (
+            monto
+                //.toFixed(2)
+                .replace(/,/g, '.')
+        )
+    } else {
+        return monto;
+    }
+
+    
+}
+
+export const formatearMontosIII = (monto) => {
+    return (
+        monto
+            .replace('.', '')
+            .replace(',', '.')
+            .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1')
+    )
+}

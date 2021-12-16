@@ -16,7 +16,6 @@ export const UserGroupsTable = ({url}) => {
     }
 
     const selectStatus = (id) => {
-
         let status = statusList.find(element => element.status == id );
         return status.name;
     }
