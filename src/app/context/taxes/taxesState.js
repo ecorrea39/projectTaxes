@@ -45,6 +45,22 @@ export const TaxesState = ({ children }) => {
                 sustitutiva: "1",
                 terms: true,
                 trimestre: "1"
+            },
+            {
+                ano_declaracion: "2021",
+                concepto_pago: "1",
+                estatus: "1",
+                fecha_declaracion: "2020-04-22",
+                fecha_emision: "0001-01-01",
+                monto_intereses: "0",
+                monto_multa: "0",
+                monto_pagado: "1875",
+                monto_tributo: 37.5,
+                ntrabajadores: "25",
+                ntrabajadores_liquidados: "0",
+                sustitutiva: "1",
+                terms: true,
+                trimestre: "1"
             }
         ],
         termsG: true
@@ -56,10 +72,62 @@ export const TaxesState = ({ children }) => {
     const [declaracionSustitutiva, setDeclaracionSustitutiva] = useState(false);
     const [declaracionSeleccionada, setDeclaracionSeleccionada] = useState([]);
     const [totalTributoDeclarado, setTotalTributoDeclarado] = useState();
-    const [declaracionesRealizadas, setDeclaracionesRealizadas] = useState([{
-        attributes: {id_tributo: 2},
-        typw: "tributeDeclaration"
-    }]);
+    const [declaracionesRealizadas, setDeclaracionesRealizadas] = useState([
+        {
+            attributes: {
+                data: {
+                    ano_declaracion: "2021",
+                    concepto_pago: 1,
+                    createdAt: "2021-12-22T18:37:42.996Z",
+                    created_by: 2,
+                    estatus: 1,
+                    fecha_declaracion: "2020-04-22",
+                    fecha_emision: "0001-01-01T00:00:00.000Z",
+                    id: 6,
+                    last_modified_by: null,
+                    monto_intereses: "0.00",
+                    monto_multa: "0.00",
+                    monto_pagado: "2500.00",
+                    monto_tributo: "50.00",
+                    ntrabajadores: 25,
+                    ntrabajadores_liquidados: 0,
+                    sustitutiva: 1,
+                    terms: true,
+                    trimestre: 1,
+                    updatedAt: "2021-12-22T18:37:42.996Z",
+                    users_id: 2
+                },
+                typw: "tributeDeclaration"
+            }
+        },
+        {
+            attributes: {
+                data: {
+                    ano_declaracion: "2021",
+                    concepto_pago: 1,
+                    createdAt: "2021-12-22T18:37:42.996Z",
+                    created_by: 2,
+                    estatus: 1,
+                    fecha_declaracion: "2020-04-22",
+                    fecha_emision: "0001-01-01T00:00:00.000Z",
+                    id: 7,
+                    last_modified_by: null,
+                    monto_intereses: "0.00",
+                    monto_multa: "0.00",
+                    monto_pagado: "2500.00",
+                    monto_tributo: "50.00",
+                    ntrabajadores: 25,
+                    ntrabajadores_liquidados: 0,
+                    sustitutiva: 1,
+                    terms: true,
+                    trimestre: 1,
+                    updatedAt: "2021-12-22T18:37:42.996Z",
+                    users_id: 2
+                },
+                typw: "tributeDeclaration"
+            }
+        }            
+    ]);
     const [selConcepto, setSelConcepto] = useState([]);
     const estatus = ['eliminada', 'creada', 'definitiva', 'pagada' ];
     const nrif = odb.get('rif');

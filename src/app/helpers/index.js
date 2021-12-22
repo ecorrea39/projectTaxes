@@ -76,10 +76,11 @@ export const formatearMontosII = (monto) => {
 }
 
 export const formatearMontosIII = (monto) => {
+    console.log(monto)
     return (
         monto
-            .replace('.', '')
-            .replace(',', '.')
-            .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1')
+            .replace(/./g, ',')
+            // .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1')
     )
+    
 }

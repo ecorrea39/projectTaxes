@@ -19,6 +19,8 @@ export default function BaseInputMonto (props) {
             <NumberFormat 
                 type={type ? type : "text"}
                 decimalSeparator={','}
+                fixedDecimalScale={true}
+                decimalScale={2}
                 // prefix={'Bs. D '}
                 className={
                     `form-control

@@ -6,46 +6,104 @@ import TaxesContext from "../../context/taxes/taxesContext";
 import { ListConcepts } from "./listConcepts";
 import { formatearMontos, formatearMontosII, GenerarCodBanesco } from "../../helpers";
 import { CreditoFiscal } from "./inputsTypeConcept";
+import { ListTaxes } from "./listTaxes";
+import Swal from "sweetalert2";
 
 export const BaseFormikSummary = ({conceptos,formik,listDeclaraciones}) => {
 
     const { totalTributoDeclarado, setCreditoFiscal, creditoFiscal,
         declaracionesRealizadas } = useContext(TaxesContext);
-    
-    const calcularCreditoFiscal = (montoAPagar,montoIntereses) => {
 
-        // console.log( montoAPagar,montoIntereses )
+    const [ totales, setTotates ] = useState({
+        intereses: 0,
+        multa: 0,
+        tributos: 0,
+        montoPagar: 0
+    });
+    
+    const calcularCreditoFiscal = (montoAPagar) => {
        
-        let resta = parseFloat( formatearMontosII(montoAPagar) ) - parseFloat(totalTributoDeclarado) - parseFloat( formatearMontosII(montoIntereses) );
-        // console.log( "resta ", resta )
+        let resta = montoAPagar - totales.tributos.toFixed(2) - totales.intereses.toFixed(2) ;
+        
         if ( resta > 0 )  {
-            // ESTO SE DEBE CAMBIAR 
-            setCreditoFiscal({
-                montoCredito: resta.toFixed(2)
+            Swal.fire({
+                icon: 'question',
+                title: 'Credito Fiscal',
+                text: `Usted tiene una diferencia a favor de Bs. ${formatearMontos(resta)}. ¿Desea aceptar este credito ?`,
+                showConfirmButton: true,
+                showDenyButton: true,
+                confirmButtonText: 'Aceptar credito fiscal',
+                denyButtonText: 'Cancelar',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // ESTO SE DEBE CAMBIAR 
+                    setCreditoFiscal({
+                        montoCredito: resta
+                    });
+                    formik.setFieldValue("montoCredito",  formatearMontos(resta));
+                }
             });
-            formik.setFieldValue("montoCredito",  formatearMontos(resta));
         } else {
             // ESTO SE DEBE CAMBIAR 
-            setCreditoFiscal({montoCredito: ""});
-            formik.setFieldValue("montoCredito", "");
+            setCreditoFiscal({montoCredito: 0.00});
+            formik.setFieldValue("montoCredito", "0,00");
         }
     }
 
-    const calcularMontos = async () => {
+    const calcularMontosTotates = (tributos,op) => {
+
+        listDeclaraciones.declaraciones.map( (dec,index) => {
+
+            let idTributo = dec.idTributo;
+            
+            if( tributos.indexOf(idTributo) > -1 ) {
+                
+                if(op == "resta") {
+                    totales.tributos -= parseFloat( dec.totalTributo );
+                    totales.intereses -= parseFloat( dec.intereses );
+                } else {
+                    totales.tributos += parseFloat( dec.totalTributo );
+                    totales.intereses += parseFloat( dec.intereses );
+                }
+                
+                setTotates(totales);
+            }
+
+        });
+        totales.montoPagar = totales.tributos + totales.intereses;
+        setTotates(totales);
+
+        formik.setFieldValue("montoTributo", totales.tributos );
+        formik.setFieldValue("montoIntereses", totales.intereses );
+        // formik.setFieldValue("montoPagar", totales.montoPagar );
+    }
+
+    // Asignacion inicial de los montos
+    const asignarMontos = async () => {
         
         let montoIntereses = listDeclaraciones.totales.intereses;
         let montoTributo = listDeclaraciones.totales.tributos;
         let montoAPagar = listDeclaraciones.totales.tributos + montoIntereses;
-        console.log(montoIntereses)
-        console.log(montoAPagar)
-        formik.setFieldValue("montoIntereses", montoIntereses );
+
+        formik.setFieldValue("montoIntereses", formatearMontos(montoIntereses) );
         formik.setFieldValue("montoTributo", formatearMontos(montoTributo) );
         formik.setFieldValue("montoPagar", formatearMontos(montoAPagar) );
-    
+
+        totales.intereses = montoIntereses;
+        totales.tributos = montoTributo;
+        totales.montoPagar = montoAPagar;
+
+        setTotates({
+            intereses: montoIntereses,
+            tributos: montoTributo,
+            montoPagar: montoAPagar,
+            multa: 0
+        })
+
         if(montoAPagar){
-            calcularCreditoFiscal(formatearMontos(montoAPagar),formatearMontos(montoIntereses));
+            calcularCreditoFiscal(montoAPagar);
         }
-       
+    
     }
 
     const handleCredito = (value,input) => {    
@@ -67,23 +125,16 @@ export const BaseFormikSummary = ({conceptos,formik,listDeclaraciones}) => {
     }
 
     useEffect(()=>{
-        /*let montoIntereses = totalIntereses();
-        let montoAPagar =  parseFloat(formik.values.montoPagar);
-      
+        let montoAPagar = formik.values.montoPagar;
         if(montoAPagar){
-            setMontoAPagar(montoAPagar);
-            setMontoIntereses(montoIntereses);
-            calcularCreditoFiscal(formatearMontos(montoAPagar),formatearMontos(montoIntereses));
-        }*/
+            calcularCreditoFiscal( formatearMontosII(montoAPagar) );
+        }
+        
     },[formik.values.montoPagar]);
 
     useEffect(()=>{
-        // calcularMontos();
-    },[totalTributoDeclarado]);
-    useEffect(()=>{
-        console.log(listDeclaraciones)
         if(listDeclaraciones.declaraciones) {
-            calcularMontos();
+            asignarMontos();
         }
     },[listDeclaraciones]);
 
@@ -91,7 +142,7 @@ export const BaseFormikSummary = ({conceptos,formik,listDeclaraciones}) => {
         if(declaracionesRealizadas) {
             let array = [];
             declaracionesRealizadas.map(dec=>{
-                array.push(dec.attributes.id_tributo)
+                array.push(dec.attributes.data.id)
             });
             formik.setFieldValue("tributos", array);
         }
@@ -104,9 +155,10 @@ export const BaseFormikSummary = ({conceptos,formik,listDeclaraciones}) => {
         <>
             {
                 listDeclaraciones.declaraciones &&
-                <InputsTaxes
+                <ListTaxes
                     listDeclaraciones={listDeclaraciones.declaraciones}
-                    formik={formik} />
+                    formik={formik}
+                    calcularMontosTotates={calcularMontosTotates} />
             }
             
             {
@@ -122,6 +174,8 @@ export const BaseFormikSummary = ({conceptos,formik,listDeclaraciones}) => {
             </Row>
 
             <CreditoFiscal extraOnChange={handleCredito} />
+
+            <InputsTaxes />
 
             <Row className="mt-4 mb-4">
                 <Col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">

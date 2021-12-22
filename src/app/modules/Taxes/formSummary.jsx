@@ -1,19 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Form, Formik } from "formik";
-import { Button, Col, Row } from "react-bootstrap";
 import { initialValuesSummary } from "./initialValues";
 import { SchemaSummary } from "./validateSchemas";
 import TaxesContext from "../../context/taxes/taxesContext";
 import Swal from "sweetalert2";
 import { BaseFormikSummary } from "./baseFormikSummary";
-import { formatearMontos, formatearMontosII, formatearMontosIII } from "../../helpers";
+import { formatearMontosII } from "../../helpers";
 
 function FormSummary() {
 
     const {
-            setFormSummary, setStepTaxes, conceptos, totalTributoDeclarado, formDataDeclaration, setFormDataDeclaration,
+            setFormSummary, setStepTaxes, conceptos, totalTributoDeclarado, declaracionesRealizadas,
             actaReparo, reAdmin, reCul, debForm, debMat, creditoFiscal, conv, cheq, multa, intereses
         } = useContext(TaxesContext);
+
     const [filterConcepts, setFilterConcepts] = useState([]);
     const [detallesDeclaraciones, setDetDeclaraciones] = useState([]);
 
@@ -118,7 +118,9 @@ function FormSummary() {
     }
 
     const handleSubmit = async (values) => {
-        let calculo = calcularMonto(values);
+        // esta validacion solicitaron quitarla
+        // let calculo = calcularMonto(values);
+        let calculo = {continue: true};
         if(calculo.continue) {
             setFormSummary(values);
             setStepTaxes(3);
@@ -132,6 +134,7 @@ function FormSummary() {
         }
     }
 
+    // Crear lista para mostrar acordeon de declaraciones
     const createListDetails = async () => {
         let array = {
             declaraciones:[],
@@ -140,22 +143,22 @@ function FormSummary() {
                 tributos: 0
             }
         };
-        let result = await formDataDeclaration.declaraciones.map( async (element,index) => {
+        let result = await declaracionesRealizadas.map( async (element,index) => {
             let totalesDec = await calcularIntereses(element);
             let detalles = {
-                ano_declaracion: element.ano_declaracion,
-                conceptoId: element.concepto_pago,
-                fecha_declaracion: element.fecha_declaracion,
+                ano_declaracion: element.attributes.data.ano_declaracion,
+                conceptoId: element.attributes.data.concepto_pago,
+                fecha_declaracion: element.attributes.data.fecha_declaracion,
                 intereses: totalesDec.intereses,
-                multa: element.monto_multa,
-                monto: element.monto_tributo,
+                multa: element.attributes.data.monto_multa,
+                monto: element.attributes.data.monto_tributo,
                 totalTributo: totalesDec.tributo,
-                trimestre: element.trimestre,
+                trimestre: element.attributes.data.trimestre,
                 name: "",
+                idTributo: element.attributes.data.id,
                 id: index+1,
                 checked: true
             }
-            console.log(array)
             array.declaraciones.push(detalles);
             array.totales.intereses +=  detalles.intereses;
             array.totales.tributos +=  detalles.totalTributo;
@@ -177,8 +180,8 @@ function FormSummary() {
          * saber los dias habiles
          * Saber la fecha actual (DD/MM/YYYY)
          */
-        let anioDeclaracion = declaracion.ano_declaracion;
-        let trimestre = declaracion.trimestre;
+        let anioDeclaracion = declaracion.attributes.data.ano_declaracion;
+        let trimestre = declaracion.attributes.data.trimestre;
         let anioActual = "2021";
         let mesActual = "12";
         let diaActual = "15";
@@ -216,7 +219,6 @@ function FormSummary() {
     }
 
     const calcularMontoIntereses = (tiempo,tasa,capital) => {
-        
         /**
          * Formula para el calculo
          * CAPITAL X TASA X TIEMPO
@@ -241,20 +243,15 @@ function FormSummary() {
             1. Tasa Promedio del Mes = (Tasa del Mes / 365) * (Dias del Mes)
             2. Deuda Total = Sumatoria de la Tasas Promedio * Monto
         */
-        
         let diasDeMora = calcularDias( declaracion );
         let tasaDeIntereses = calcularTasa();
-        let montoDeIntereses = calcularMontoIntereses(diasDeMora,tasaDeIntereses,declaracion.monto_tributo);
+        let montoDeIntereses = calcularMontoIntereses(diasDeMora,tasaDeIntereses,declaracion.attributes.data.monto_tributo);
         
         return {
-            intereses: parseFloat(montoDeIntereses.toFixed(2)),
-            tributo: parseFloat(declaracion.monto_tributo)
+            intereses: parseFloat(montoDeIntereses),
+            tributo: parseFloat(declaracion.attributes.data.monto_tributo)
         }
     }
-    
-    useEffect(()=>{
-       // calcularIntereses();
-    },[detallesDeclaraciones]);
 
     useEffect(()=>{
         setFilterConcepts(conceptos.filter(x => x.id > 2 && x.id != 12 ));
