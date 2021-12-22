@@ -8,7 +8,7 @@ import Checkbox from "../Forms/BaseCheckbox";
 import css from '../Forms/checkbox.module.css';
 import BaseInputMonto from "../Forms/BaseInputMonto";
 
-export const InputsTaxes = ({listDeclaraciones,formik, calcularCreditoFiscal}) => {
+export const InputsTaxes = ({listDeclaraciones,formik}) => {
 
     const {conceptos,totalTributoDeclarado,setTotalTributoDeclarado} = useContext(TaxesContext);
 
@@ -24,12 +24,16 @@ export const InputsTaxes = ({listDeclaraciones,formik, calcularCreditoFiscal}) =
         let indice = tributos.indexOf(conc.conceptoId);
 
         if(checkEd) {
+
             setTotalTributoDeclarado(totalTributoDeclarado+conc.monto);
             formik.setFieldValue("tributos", [...tributos, conc.conceptoId]);
+
         } else {
+
             setTotalTributoDeclarado(totalTributoDeclarado-conc.monto);
             tributos.splice(indice, 1);
             formik.setFieldValue("tributos", tributos);
+            
         }
     }
     

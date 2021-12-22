@@ -60,7 +60,8 @@ export const AuthContextProvider = (props) => {
   useEffect(()=>{
     if(localStorage.getItem("authToken")) {
       let tokenDecoded = jwt_decode(token);
-      setUserGroup(tokenDecoded.data.groups[0]);
+      setUserGroup("contribuyentes");
+      //setUserGroup(tokenDecoded.data.groups[0]);
     }
     setUserIsLoggedIn(!!token);
   },[]);

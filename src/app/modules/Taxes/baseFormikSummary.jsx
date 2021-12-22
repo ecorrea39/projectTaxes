@@ -10,10 +10,7 @@ import { CreditoFiscal } from "./inputsTypeConcept";
 export const BaseFormikSummary = ({conceptos,formik,listDeclaraciones}) => {
 
     const { totalTributoDeclarado, setCreditoFiscal, creditoFiscal,
-        declaracionesRealizadas, formDataDeclaration } = useContext(TaxesContext);
-    
-    const [montoAPagar, setMontoAPagar] = useState("");
-    const [montoIntereses, setMontoIntereses] = useState("");
+        declaracionesRealizadas } = useContext(TaxesContext);
     
     const calcularCreditoFiscal = (montoAPagar,montoIntereses) => {
 
@@ -34,27 +31,18 @@ export const BaseFormikSummary = ({conceptos,formik,listDeclaraciones}) => {
         }
     }
 
-    const totalIntereses = () => {
-
-        let montoIntereses = 0;
-        listDeclaraciones.map(dec=>{
-            montoIntereses += parseFloat( dec.intereses );
-        });
-
-        return montoIntereses;
-    }
-
     const calcularMontos = async () => {
-
-        let montoIntereses = await totalIntereses();
-        let montoAPagar = totalTributoDeclarado + montoIntereses;
-        console.log(totalTributoDeclarado , montoIntereses)
+        
+        let montoIntereses = listDeclaraciones.totales.intereses;
+        let montoTributo = listDeclaraciones.totales.tributos;
+        let montoAPagar = listDeclaraciones.totales.tributos + montoIntereses;
+        console.log(montoIntereses)
+        console.log(montoAPagar)
         formik.setFieldValue("montoIntereses", montoIntereses );
+        formik.setFieldValue("montoTributo", formatearMontos(montoTributo) );
         formik.setFieldValue("montoPagar", formatearMontos(montoAPagar) );
     
         if(montoAPagar){
-            setMontoAPagar(montoAPagar);
-            setMontoIntereses(montoIntereses);
             calcularCreditoFiscal(formatearMontos(montoAPagar),formatearMontos(montoIntereses));
         }
        
@@ -90,7 +78,13 @@ export const BaseFormikSummary = ({conceptos,formik,listDeclaraciones}) => {
     },[formik.values.montoPagar]);
 
     useEffect(()=>{
-        calcularMontos();
+        // calcularMontos();
+    },[totalTributoDeclarado]);
+    useEffect(()=>{
+        console.log(listDeclaraciones)
+        if(listDeclaraciones.declaraciones) {
+            calcularMontos();
+        }
     },[listDeclaraciones]);
 
     useEffect(()=>{
@@ -109,9 +103,9 @@ export const BaseFormikSummary = ({conceptos,formik,listDeclaraciones}) => {
     return (
         <>
             {
-                formDataDeclaration.declaraciones &&
+                listDeclaraciones.declaraciones &&
                 <InputsTaxes
-                    listDeclaraciones={listDeclaraciones}
+                    listDeclaraciones={listDeclaraciones.declaraciones}
                     formik={formik} />
             }
             

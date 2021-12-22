@@ -15,7 +15,6 @@ function FormSummary() {
             actaReparo, reAdmin, reCul, debForm, debMat, creditoFiscal, conv, cheq, multa, intereses
         } = useContext(TaxesContext);
     const [filterConcepts, setFilterConcepts] = useState([]);
-    const [declaraciones, setDeclaraciones] = useState(formDataDeclaration.declaraciones);
     const [detallesDeclaraciones, setDetDeclaraciones] = useState([]);
 
     const calcularMonto = (values) => {
@@ -133,25 +132,37 @@ function FormSummary() {
         }
     }
 
-    const createListDetails = () => {
-        let array = [];
-        formDataDeclaration.declaraciones.map((element,index) => {
+    const createListDetails = async () => {
+        let array = {
+            declaraciones:[],
+            totales: {
+                intereses: 0,
+                tributos: 0
+            }
+        };
+        let result = await formDataDeclaration.declaraciones.map( async (element,index) => {
+            let totalesDec = await calcularIntereses(element);
             let detalles = {
                 ano_declaracion: element.ano_declaracion,
                 conceptoId: element.concepto_pago,
                 fecha_declaracion: element.fecha_declaracion,
-                intereses: element.monto_intereses,
+                intereses: totalesDec.intereses,
                 multa: element.monto_multa,
                 monto: element.monto_tributo,
+                totalTributo: totalesDec.tributo,
                 trimestre: element.trimestre,
-              
                 name: "",
                 id: index+1,
                 checked: true
             }
-            array.push(detalles);
+            console.log(array)
+            array.declaraciones.push(detalles);
+            array.totales.intereses +=  detalles.intereses;
+            array.totales.tributos +=  detalles.totalTributo;
+
         });
         setDetDeclaraciones(array);
+        return result;
     }
 
     const restaFechas = (f1,f2) => {
@@ -220,7 +231,7 @@ function FormSummary() {
 
     }
 
-    const calcularIntereses = () => {
+    const calcularIntereses = (declaracion) => {
 
         // Fórmula utilizada para el cálculo de los Intereses de manera mensual.
         /*
@@ -231,27 +242,23 @@ function FormSummary() {
             2. Deuda Total = Sumatoria de la Tasas Promedio * Monto
         */
         
-        // let declaraciones = [...formDataDeclaration];
-        let array = [];
-        declaraciones.map(declaracion=>{
-            let diasDeMora = calcularDias( declaracion );
-            let tasaDeIntereses = calcularTasa();
-            let montoDeIntereses = calcularMontoIntereses(diasDeMora,tasaDeIntereses,declaracion.monto_tributo);
-            declaracion.monto_intereses = montoDeIntereses.toFixed(2);
-            array.push(declaracion);
-        });
-        setDeclaraciones(array);
+        let diasDeMora = calcularDias( declaracion );
+        let tasaDeIntereses = calcularTasa();
+        let montoDeIntereses = calcularMontoIntereses(diasDeMora,tasaDeIntereses,declaracion.monto_tributo);
+        
+        return {
+            intereses: parseFloat(montoDeIntereses.toFixed(2)),
+            tributo: parseFloat(declaracion.monto_tributo)
+        }
     }
     
     useEffect(()=>{
-        createListDetails();
-    },[declaraciones]);
+       // calcularIntereses();
+    },[detallesDeclaraciones]);
 
     useEffect(()=>{
         setFilterConcepts(conceptos.filter(x => x.id > 2 && x.id != 12 ));
-        if(declaraciones) {
-            calcularIntereses();
-        }
+        createListDetails();
     },[]);
 
     return (
