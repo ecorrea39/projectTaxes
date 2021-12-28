@@ -12,12 +12,14 @@ function FusionarEmpresasModule() {
             <div className="col-lg-12">
                 <div className={`card card-custom card-stretch gutter-b`}>
                     {/* Header */}
-                    <div className="card-header border-0 pt-5">
+                    <div className="border-0 pl-10 pt-10">
                         <TitleFusionarEmpresas title={title}/>
                     </div>
                     {/* Body */}
                     <div className="card-body d-flex flex-column">
-                        <FusionarEmpresas />
+                        {
+                            <FusionarEmpresas titulo={title} />
+                        }
                     </div>
                 </div>
             </div>

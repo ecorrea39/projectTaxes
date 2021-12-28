@@ -85,8 +85,7 @@ export const TaxesState = ({ children }) => {
     const [debForm, setDebForm] = useState({
         numResolucionForm: "",
         fechaResolucionForm: "",
-        montoMultaResolucionForm: "",
-
+        montoMultaResolucionForm: ""
     });
     const [debMat, setDebMat] = useState({
         numResolucionMat: "",
@@ -99,7 +98,7 @@ export const TaxesState = ({ children }) => {
         numGiroConvenioPago: "",
         fechaVencConvenio: "",
         montoConvenio: "",
-        montoInteresesConvenio: "",
+        montoInteresesConvenio: ""
     });
     const [cheq, setCheq] = useState({
         numCheque: "",
@@ -273,6 +272,7 @@ export const TaxesState = ({ children }) => {
                     }
                 )
             })
+            histo.sort(fieldSorter(['concepto_pago','ano_declaracion', 'trimestre']));
             setHistorico(histo);
             setHistoricoOriginal(histo);
 
@@ -281,6 +281,12 @@ export const TaxesState = ({ children }) => {
         }
 
     }
+
+    const fieldSorter = (fields) => (a, b) => fields.map(o => {
+        let dir = 1;
+        if (o[0] === '-') { dir = -1; o=o.substring(1); }
+        return a[o] > b[o] ? dir : a[o] < b[o] ? -(dir) : 0;
+    }).reduce((p, n) => p ? p : n, 0);
 
     const getFechaFutura = () => {
         const fecha = new Date();
@@ -312,7 +318,11 @@ export const TaxesState = ({ children }) => {
         }).format(number)
     }
 
-    const sustituirDeclaracion = (seleccion, i, props) => {
+    const sustituirDeclaracion = (i, props) => {
+
+        const seleccion = i;
+
+        console.log('sel -- ', seleccion)
 
         try {
             if (seleccion.estatus === 2 || seleccion.estatus === 3 ) {
@@ -347,11 +357,13 @@ export const TaxesState = ({ children }) => {
         }
     }
 
+
     const validateAmount = (montoConcepto, monto) => {
         if(montoConcepto + totalTributoDeclarado > monto) {
             Swal.fire({
                 icon: 'error',
-                title: 'Verifique que los montos de los conceptos no superen al monto del pago.',
+                title: "Pago de tributos",
+                text: 'Verifique que los montos de los conceptos no superen al monto del pago.',
                 showConfirmButton: false,
                 timer: 3000
             })
@@ -478,6 +490,56 @@ export const TaxesState = ({ children }) => {
         }
     }
 
+    const revisarDeclaracion = (valores, i) => {
+
+        let con = valores[i].concepto_pago;
+        let ano = valores[i].ano_declaracion;
+        let tri = valores[i].trimestre;
+
+        try {
+            let buscar = [];
+
+            if( i > 0 ) {
+
+                if(con !== '' && ano !=='' && tri !='' && valores.length >= 2) {
+                    buscar = valores.filter(x => Number(x.concepto_pago) === Number(con) && Number(x.ano_declaracion) === Number(ano) && Number(x.trimestre) === Number(tri));
+                    if( buscar.length === 0 ) {
+                        buscar = historico.filter(x => Number(x.concepto_pago) === Number(con) && Number(x.ano_declaracion) === Number(ano) && Number(x.trimestre) === Number(tri));
+                    }
+
+                    if( buscar.length > 1 ) {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Declaración de tributos',
+                            text: "Periodo para declarar ya existe!",
+                            button: "Ok",
+                            timer: 2000
+                        });
+                        valores[i].trimestre = "";
+                    }
+                }
+            } else {
+                if(con !== '' && ano !=='' && tri !='' && valores.length >= 1) {
+                    buscar = historico.filter(x => Number(x.concepto_pago) === Number(con) && Number(x.ano_declaracion) === Number(ano) && Number(x.trimestre) === Number(tri));
+
+                    if( buscar.length > 1 ) {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Declaración de tributos',
+                            text: "Periodo a declarar ya existe o fue procesado!",
+                            button: "Ok",
+                            timer: 2000
+                        });
+                        valores[i].trimestre = "";
+                    }
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
     const showSelConcepto = (a) => {
 
         let arreglo = a;
@@ -550,7 +612,8 @@ export const TaxesState = ({ children }) => {
         showSelConcepto,
         setModalidadPagos,
         setLinkRecibo,
-        setDeclaracionesRealizadas
+        setDeclaracionesRealizadas,
+        revisarDeclaracion
     }
 
     return (

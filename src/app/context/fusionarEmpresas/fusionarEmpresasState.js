@@ -6,10 +6,42 @@ import Swal from "sweetalert2";
 
 export const FusionarEmpresasState = ({ children }) => {
 
+    const [fusionarEmpresas, setFusionarEmpresas] = useState([]);
+    const [registroSeleccionado, setRegistroSeleccionado] = useState({});
+    const [formDataPna, setFormDataPna] = useState({});
+
+    let dataAux = [];
+
     useEffect(() => {
+        getFusionarEmpresas();
     },[]);
 
-    const submitFusionarEmpresas = async (valor) => {
+    const getFusionarEmpresas = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/fusionar_entidades/', clientAxios);
+            let arreglo = [];
+            let lista = [];
+            arreglo = respuesta.data.data;
+            arreglo.map((x, i) => {
+                lista.push(
+                    {
+                        "id": arreglo[i].id,
+                        "uidfusionada": arreglo[i].attributes.uidfusionada,
+                        "uidadsorbe": arreglo[i].attributes.uidadsorbe
+                    }
+                )
+            });
+            //lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            setFusionarEmpresas(lista)
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const submitFusionarEmpresas = async (valor, props) => {
             // 1) cambiar estatus a empresa fusionada
             //    user_information --> estatus === 4
 
@@ -31,28 +63,40 @@ export const FusionarEmpresasState = ({ children }) => {
 
         try {
 
-            const dataType = "saveFuisonarEntidades";
-            const url = "/fusionar_entidades/";
-            const valores = {
-                uidfusionada: valor.tipo_fusionar + valor.rif_fusionar,
-                uidadsorbe: valor.tipo_absorbe + valor.rif_absorbe
-            }
-
-            requestConfig.data.type = dataType;
-            requestConfig.data.attributes = valores;
-
-            console.log('valores ', valores)
-
-            const respuesta = await clientAxios.post(url, requestConfig);
-
             Swal.fire({
                 title: 'Fusionar Entidades de Trabajo',
-                text: 'Datos guadados con éxito!',
-                icon: "success",
-                button: "Ok",
-                timer: 1500
-            }).then((value) => {
-                //actualizarTablas(props.tabla);
+                text: 'Esta seguro de realizar este proceso, ya que el mismo es irreversible?',
+                icon: 'info',
+                showDenyButton: true,
+                denyButtonText: `Cancelar`,
+                confirmButtonText: 'Fusionar',
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+                    const dataType = "saveFuisonarEntidades";
+                    const url = "/fusionar_entidades/";
+                    const valores = {
+                        uidfusionada: valor.tipo_fusionar + valor.rif_fusionar,
+                        uidadsorbe: valor.tipo_absorbe + valor.rif_absorbe
+                    }
+
+                    requestConfig.data.type = dataType;
+                    requestConfig.data.attributes = valores;
+
+                    const respuesta = clientAxios.post(url, requestConfig);
+
+                    props.onHide();
+
+                    Swal.fire({
+                        title: 'Fusionar Entidades de Trabajo',
+                        text: 'Datos guadados con éxito!',
+                        icon: "success",
+                        button: "Ok",
+                        timer: 1500
+                    }).then((value) => {
+                        getFusionarEmpresas();
+                    });
+                }
             });
         } catch (error) {
             console.log(error)
@@ -66,8 +110,32 @@ export const FusionarEmpresasState = ({ children }) => {
         }
     }
 
+    const filtrarElementos = async (palabra) => {
+
+        await getListaOriginal();
+
+        let search = ""
+
+        search = dataAux.filter(item =>
+            /*item.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(palabra.toLowerCase()) || item.id.toString().includes(palabra)
+            ||*/ item.uidfusionada.toString().includes(palabra)
+            || item.uidadsorbe.toString().includes(palabra)
+        );
+
+        if(palabra === '') {
+            getFusionarEmpresas();
+        } else {
+            setFusionarEmpresas(search);
+        }
+
+    }
+
+    const getListaOriginal = () => { dataAux = fusionarEmpresas; }
+
     const valuesContext = {
-        submitFusionarEmpresas
+        submitFusionarEmpresas,
+        fusionarEmpresas,
+        filtrarElementos
     }
 
     return (

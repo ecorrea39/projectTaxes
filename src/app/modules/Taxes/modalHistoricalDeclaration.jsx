@@ -6,213 +6,251 @@ import DeudasTrimestresDeclarados from '../../modules/AccountStatus/deudasTrimes
 import TaxesContext from "../../context/taxes/taxesContext";
 import SVG from "react-inlinesvg";
 import {toAbsoluteUrl} from "../../../../src/_metronic/_helpers";
-
+import DataTable from 'react-data-table-component';
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import paginationFactory from 'react-bootstrap-table2-paginator'
-import {isEqual} from "lodash";
+import Search from "@material-ui/icons/Search";
 
 function ModalHistoricalDeclaration(props) {
 
     const { estatus, formatNumber, historico, formatearfecha, sustituirDeclaracion, anos, trimestres, filtarHistorico } = useContext(TaxesContext);
-    const styleBtnSeleccionar = { borderRadius: '50%' }
-    const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", marginTop: "1%", marginBottom: "1%" }
     const selectStatus = estatus;
 
+    const sortIcon = <ArrowDownward />;
+
     let [selected, setSelected] = useState(false);
+
+    const columnas = [
+        {
+            name: "",
+            button: true,
+            cell: row => (
+                <>
+                    <input type="checkbox" name={'selector'} onClick={()=>sustituirDeclaracion(row, props)} />
+                </>
+            ),
+            width: "15px"
+        },
+        {
+            name: "Concepto",
+            selector: row => row.concepto_pago_name,
+            sortable: true,
+            maxWidth: "200px"
+        },
+        {
+            name: "Año",
+            selector: row => row.ano_declaracion,
+            sortable: true,
+            width: "60px"
+        },
+        {
+            name: "Trim.",
+            selector: row => row.trimestre,
+            sortable: true,
+            width: "70px"
+        },
+        {
+            name: "Fecha declarac.",
+            selector: row => row.fecha_declaracion,
+            sortable: true,
+            width: "130px"
+        },
+        {
+            name: "Fecha emisión",
+            selector: row => row.fecha_emision,
+            sortable: true,
+            maxWidth: "130px"
+        },
+        {
+            name: "Monto",
+            selector: row => row.monto_pagado,
+            sortable: true,
+            maxWidth: "100px"
+        },
+        {
+            name: "Cant. Trab.",
+            selector: row => row.ntrabajadores,
+            sortable: true,
+            maxWidth: "120px"
+        },
+        {
+            name: "Monto tributo",
+            selector: row => row.monto_tributo,
+            sortable: true,
+            maxWidth: "150px"
+        },
+        {
+            name: "Estatus",
+            selector: row => row.estatus_name,
+            sortable: true,
+            maxWidth: "100px"
+        }
+    ];
+
+    const paginationOptions = {
+        rowsPerPageText: "Filas por página",
+        rangeSeparatorText: "de",
+        selectAllRowsItem: true,
+        selectAllRowsItemText: "Todos"
+    };
+
+    const customStyles = {
+        rows: {
+            style: {
+                minHeight: '40px',
+            }
+        },
+        headCells: {
+            style: {
+                paddingLeft: '8px',
+                paddingRight: '8px',
+            },
+        },
+        cells: {
+            style: {
+                paddingLeft: '8px',
+                paddingRight: '8px',
+            },
+        },
+    };
 
     return (
         <>
             <Modal {...props} size="xl" aria-labelledby="contained-modal-title-vcenter" centered >
                 <Modal.Body>
-                    <div className={`card card-custom`} >
-                        <div className="card-header border-0 py-5">
-                            <h3 className="card-title align-items-start flex-column">
-                                <span className="card-label font-weight-bolder text-dark">Declaración de tributos</span>
-                                <span className="text-muted mt-3 font-weight-bold font-size-sm">Histórico de tributos declarados</span>
-                            </h3>
-                            <div className="card-toolbar">
-                                <a href="#" variant="outline-info"
-                                   className="btn btn-info font-weight-bolder font-size-sm mr-3"
-                                   size="sm"
-                                   data-dismiss="modal" data-backdrop="false"
-                                   onClick={props.onHide}>Cerrar</a>
-                            </div>
+                    <div className="tab-content px-5">
+                        <h3>
+                            <span className="card-label font-weight-bolder text-dark">Declaración de tributos</span>
+                            <br/>
+                            <span className="text-muted mt-3 font-weight-bold font-size-sm">Histórico de tributos declarados</span>
+                        </h3>
+                        <div>
+                            <a href="#" variant="outline-info"
+                               className="btn btn-info font-weight-bolder font-size-sm mr-3"
+                               size="sm"
+                               data-dismiss="modal" data-backdrop="false"
+                               style={{position: 'absolute', top: '10%', right: '5%' }}
+                               onClick={props.onHide}>Cerrar</a>
                         </div>
-                        <div className="px-5 border-0 ">
-                            <div>
-                                <Formik
-                                    initialValues={{
-                                        ano_declaracion: "",
-                                        trimestre: "",
-                                        estatus: ""
-                                    }}
-                                    onSubmit={(values) => { filtarHistorico(values); }}
-                                >
-                                    {({
-                                          values,
-                                          handleSubmit,
-                                          handleBlur,
-                                          handleChange,
-                                          setFieldValue,
-                                      }) => (
-                                        <form onSubmit={handleSubmit} className="form form-label-right">
-                                            <div className="form-group row">
-                                                <div className="col-lg-4">
-                                                    <select
-                                                        className="form-control"
-                                                        name="estatus"
-                                                        placeholder="Filtro por estatus"
-                                                        onChange={(e) => {
-                                                            setFieldValue("estatus", e.target.value);
-                                                            handleSubmit();
-                                                        }}
-                                                        onBlur={handleBlur}
-                                                        value={values.estatus}
-                                                    >
-                                                        <option value="" disabled>seleccione</option>
-                                                        <option value="">todos</option>
-                                                        {
-                                                            selectStatus.map((s, i) => {
-                                                                return <option key={i} value={s}>{s}</option>
-                                                            })
-                                                        }
-                                                    </select>
-                                                    <small className="form-text text-muted">
-                                                        <b>Filtro</b> por estatus
-                                                    </small>
-                                                </div>
-                                                <div className="col-lg-4">
-                                                    <select
-                                                        className="form-control"
-                                                        name="ano_declaracion"
-                                                        placeholder="Filtro por año"
-                                                        onChange={(e) => {
-                                                            setFieldValue("ano_declaracion", e.target.value);
-                                                            handleSubmit();
-                                                        }}
-                                                        onBlur={handleBlur}
-                                                        value={values.ano_declaracion}
-                                                    >
-                                                        <option value="" disabled>seleccione</option>
-                                                        <option value="">todos</option>
-                                                        {
-                                                            anos.map((s, i) => {
-                                                                return <option key={i} value={s}>{s}</option>
-                                                            })
-                                                        }
-                                                    </select>
-                                                    <small className="form-text text-muted">
-                                                        <b>Filtro</b> por año
-                                                    </small>
-                                                </div>
-                                                <div className="col-lg-4">
-                                                    <select
-                                                        className="form-control"
-                                                        placeholder="Fitro por trimestre"
-                                                        name="trimestre"
-                                                        onBlur={handleBlur}
-                                                        onChange={(e) => {
-                                                            setFieldValue("trimestre", e.target.value);
-                                                            handleSubmit();
-                                                        }}
-                                                        value={values.trimestre}
-                                                    >
-                                                        <option value="" disabled>seleccione</option>
-                                                        <option value="">todos</option>
-                                                        {
-                                                            trimestres.map((s, i) => {
-                                                                return <option key={s.id} value={s.id}>{s.name}</option>
-                                                            })
-                                                        }
-                                                    </select>
-                                                    <small className="form-text text-muted">
-                                                        <b>Filtro</b> por trimestre
-                                                    </small>
-                                                </div>
+                    </div>
+                    <div className="px-5 mt-6 border-0 ">
+                        <div>
+                            <Formik
+                                initialValues={{
+                                    ano_declaracion: "",
+                                    trimestre: "",
+                                    estatus: ""
+                                }}
+                                onSubmit={(values) => {
+                                    filtarHistorico(values);
+                                }}
+                            >
+                                {({
+                                      values,
+                                      handleSubmit,
+                                      handleBlur,
+                                      handleChange,
+                                      setFieldValue,
+                                  }) => (
+                                    <form onSubmit={handleSubmit} className="form form-label-right">
+                                        <div className="form-group row">
+                                            <div className="col-lg-4">
+                                                <select
+                                                    className="form-control"
+                                                    name="estatus"
+                                                    placeholder="Filtro por estatus"
+                                                    onChange={(e) => {
+                                                        setFieldValue("estatus", e.target.value);
+                                                        handleSubmit();
+                                                    }}
+                                                    onBlur={handleBlur}
+                                                    value={values.estatus}
+                                                >
+                                                    <option value="" disabled>seleccione</option>
+                                                    <option value="">todos</option>
+                                                    {
+                                                        selectStatus.map((s, i) => {
+                                                            return <option key={i} value={s}>{s}</option>
+                                                        })
+                                                    }
+                                                </select>
+                                                <small className="form-text text-muted">
+                                                    <b>Filtro</b> por estatus
+                                                </small>
                                             </div>
-                                        </form>
-                                    )}
-                                </Formik>
-                            </div>
+                                            <div className="col-lg-4">
+                                                <select
+                                                    className="form-control"
+                                                    name="ano_declaracion"
+                                                    placeholder="Filtro por año"
+                                                    onChange={(e) => {
+                                                        setFieldValue("ano_declaracion", e.target.value);
+                                                        handleSubmit();
+                                                    }}
+                                                    onBlur={handleBlur}
+                                                    value={values.ano_declaracion}
+                                                >
+                                                    <option value="" disabled>seleccione</option>
+                                                    <option value="">todos</option>
+                                                    {
+                                                        anos.map((s, i) => {
+                                                            return <option key={i} value={s}>{s}</option>
+                                                        })
+                                                    }
+                                                </select>
+                                                <small className="form-text text-muted">
+                                                    <b>Filtro</b> por año
+                                                </small>
+                                            </div>
+                                            <div className="col-lg-4">
+                                                <select
+                                                    className="form-control"
+                                                    placeholder="Fitro por trimestre"
+                                                    name="trimestre"
+                                                    onBlur={handleBlur}
+                                                    onChange={(e) => {
+                                                        setFieldValue("trimestre", e.target.value);
+                                                        handleSubmit();
+                                                    }}
+                                                    value={values.trimestre}
+                                                >
+                                                    <option value="" disabled>seleccione</option>
+                                                    <option value="">todos</option>
+                                                    {
+                                                        trimestres.map((s, i) => {
+                                                            return <option key={s.id} value={s.id}>{s.name}</option>
+                                                        })
+                                                    }
+                                                </select>
+                                                <small className="form-text text-muted">
+                                                    <b>Filtro</b> por trimestre
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </form>
+                                )}
+                            </Formik>
                         </div>
-                        <div className="tab-content px-5">
-                                <div className="table-responsive">
+                    </div>
 
-                                    <Table responsive="sm" className="table-vertical-center table-head-bg" pagination={ paginationFactory() }>
-                                        <thead>
-                                            <tr className="text-left text-uppercase">
-                                                <th style={{minWidth: "15px"}}></th>
-                                                <th style={{minWidth: "180px"}}>Concepto</th>
-                                                <th style={{minWidth: "50px"}}>Año</th>
-                                                <th style={{minWidth: "50px"}}>Trim.</th>
-                                                <th style={{minWidth: "100px"}}>Fecha declaración</th>
-                                                <th style={{minWidth: "100px"}}>Fecha emisión</th>
-                                                <th style={{minWidth: "100px"}}>Monto nómina</th>
-                                                <th style={{minWidth: "50px"}}>Cant. Trab.</th>
-                                                <th style={{minWidth: "100px"}}>Monto tributo</th>
-                                                <th style={{minWidth: "100px"}}>Estatus</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        {
-                                            historico.map((s, i) => {
-                                                return (
-                                                    <tr key={i}>
+                    <div className="tab-content px-5">
+                        <div className="table-responsive">
 
-                                                        <td>
-                                                            {/*
-                                                            <a href="#" size="sm" title="seleccionar declaración" className="btn btn-success font-weight-bolder font-size-sm mr-3"
-                                                               checked={()=>sustituirDeclaracion(historico[i])} >Seleccionar</a>
-                                                            <input type="checkbox" name={`sel${i}`} id={`sel${i}`} onClick={()=>sustituirDeclaracion(historico[i], i, props)} />
-                                                            */}
-                                                            <input type="radio" name={'selector'} onClick={()=>sustituirDeclaracion(historico[i], i, props)}  />
-                                                        </td>
-                                                        <td>
-                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.concepto_pago_name}</span>
-                                                            {/*
-                                                            <span className="text-muted font-weight-bold">Estatus: - {s.estatus_name} -</span>
-                                                            */}
-                                                        </td>
-                                                        <td>
-                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.ano_declaracion}</span>
-                                                            <span className="text-muted font-weight-bold"></span>
-                                                        </td>
-                                                        <td>
-                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.trimestre}</span>
-                                                            <span className="text-muted font-weight-bold"></span>
-                                                        </td>
-                                                        <td>
-                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.fecha_declaracion}</span>
-                                                            <span className="text-muted font-weight-bold"></span>
-                                                        </td>
-                                                        <td>
-                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.fecha_emision}</span>
-                                                            <span className="text-muted font-weight-bold"></span>
-                                                        </td>
-                                                        <td>
-                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{formatNumber(s.monto_pagado)}</span>
-                                                            <span className="text-muted font-weight-bold"></span>
-                                                        </td>
-                                                        <td>
-                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.ntrabajadores}</span>
-                                                            <span className="text-muted font-weight-bold"></span>
-                                                        </td>
-                                                        <td>
-                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{formatNumber(s.monto_tributo)}</span>
-                                                            <span className="text-muted font-weight-bold"></span>
-                                                        </td>
-                                                        <td>
-                                                            <span className="text-dark-75 font-weight-bolder d-block font-size-sm">{s.estatus_name}</span>
-                                                            <span className="text-muted font-weight-bold"></span>
-                                                        </td>
-
-                                                    </tr>
-                                                )
-                                            })
-                                        }
-                                        </tbody>
-                                    </Table>
-                                </div>
-                            </div>
+                            <DataTable
+                                columns={columnas}
+                                data={historico}
+                                pagination
+                                paginationComponentOptions={paginationOptions}
+                                fixedHeader
+                                fixedHeaderScrollHeight="500px"
+                                paginationPerPage={5}
+                                paginationRowsPerPageOptions={[5, 10, 25, 50]}
+                                sortIcon={sortIcon}
+                                customStyles={customStyles}
+                                responsive={true}
+                                noDataComponent="No existen datos para mostrar"
+                            />
+                        </div>
                     </div>
                 </Modal.Body>
             </Modal>

@@ -6,8 +6,9 @@ import BaseInput from "../Forms/BaseInputs";
 import BaseSelect from "../Forms/BaseSelect";
 import Checkbox from "../Forms/BaseCheckbox";
 import ModalHistoricalDeclaration from './modalHistoricalDeclaration';
+import Swal from "sweetalert2";
 
-export const BaseFormikStatementTaxes = ({ concepts, formik, anos, trimestres, formatearfecha, formatoFechaFutura, showSelConcepto, seleccionado, nrif, declaracionSustitutiva, declaSeleccionada }) => {
+export const BaseFormikStatementTaxes = ({ concepts, formik, anos, trimestres, formatearfecha, formatoFechaFutura, showSelConcepto, seleccionado, nrif, declaracionSustitutiva, declaSeleccionada, revisarDeclaracion }) => {
 
     const label_terms = "Declaro bajo fe de juramento, que la información aquí suministrada es fiel y exacta y estará sometida a control posterior, so pena de incurrir en suministrar información incompleta, falso-forjado ó errónea conforme a los parámetros previstos en el Código Orgánico Tributario.";
     const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", padding: "8px 35px 5px 35px", marginTop: "2%" }
@@ -105,7 +106,7 @@ export const BaseFormikStatementTaxes = ({ concepts, formik, anos, trimestres, f
                     break;
             }
 
-            arreglo[i].monto_tributo = monto;
+            arreglo[i].monto_tributo = monto.toFixed(2);
 
         } catch (error) {
             console.log(error)
@@ -208,7 +209,8 @@ export const BaseFormikStatementTaxes = ({ concepts, formik, anos, trimestres, f
                                                         name={`declaraciones[${index}].trimestre`}
                                                         type="select"
                                                         component={BaseSelect}
-                                                        disabled={declaracionSustitutiva}>
+                                                        disabled={declaracionSustitutiva}
+                                                        onBlur={revisarDeclaracion(formik.values.declaraciones, index)}>
                                                         <option value="" disabled>seleccione</option>
                                                         {
                                                             trimestres.map((s) => {

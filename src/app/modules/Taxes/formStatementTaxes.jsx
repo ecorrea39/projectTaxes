@@ -17,7 +17,7 @@ function FormStatementTaxes({ step }) {
     const {
         conceptos, anos, trimestres, formatoFechaFutura, setFormDataDeclaration,
         submitDeclaration, formatearfecha, nrif, declaracionSeleccionada, declaracionSustitutiva,
-        selConcepto, showSelConcepto, setStepTaxes  } = useContext(TaxesContext);
+        selConcepto, showSelConcepto, setStepTaxes, revisarDeclaracion  } = useContext(TaxesContext);
 
     const concepts = conceptos.filter(x => x.id < 3);
     const seleccionado = selConcepto;
@@ -62,7 +62,9 @@ function FormStatementTaxes({ step }) {
                                 nrif={nrif}
                                 show={show}
                                 declaracionSustitutiva={declaracionSustitutiva}
-                                declaSeleccionada={declaSeleccionada} />
+                                declaSeleccionada={declaSeleccionada}
+                                revisarDeclaracion={revisarDeclaracion}
+                            />
                         </Form>
                     )
                 }

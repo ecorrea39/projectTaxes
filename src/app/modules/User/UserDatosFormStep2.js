@@ -5,6 +5,7 @@ import {useFormik} from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import GeneralContext from "../../store/general-context";
+import Swal from "sweetalert2";
 
 const textLabelColor = {
   'color': '#5A5EFF',
@@ -65,22 +66,18 @@ const UserDatosFormStep2 = (props) => {
 
   useEffect(() => {
 
-    console.log("registradoValor::", props.registradoValor);
-
-
-
+    //console.log("registradoValor::", props.registradoValor);
 
     cargaDeEstados().then((resolvedValueEstados) => {
-      console.log("resolvedValueEstados", resolvedValueEstados);
+      //console.log("resolvedValueEstados", resolvedValueEstados);
 
       cargaDeOficinas().then((resolvedValueOficinas) => {
-        console.log("resolvedValueOficinas", resolvedValueOficinas);
-
+        //console.log("resolvedValueOficinas", resolvedValueOficinas);
 
         setSpinner(true);
         axios.get(`${API_URL}user_mercantil_data/fondoporid/${generalCtx.theIdUserInformacionProfile}/`, axiosConfig)
           .then(function (res) {
-            console.log("get_user_company::", res);
+            //console.log("get_user_company::", res);
 
             if (res.data.data != null) {
 
@@ -95,14 +92,23 @@ const UserDatosFormStep2 = (props) => {
 
               setInitialValues(initialValuesJson);
             } else {
-              alert("No existe información alguna registrada del usuario");
+              //alert("No existe información alguna registrada del usuario");
             }
 
             disableLoading();
           }).catch((err) => {
 
           console.log("errGetUserCompany", err);
-          alert("Error buscando datos mercantiles de la empresa del usuario")
+          //alert("Error buscando datos mercantiles de la empresa del usuario")
+
+          Swal.fire({
+            title: "Registro de Contribuyente",
+            text: "Error buscando datos mercantiles!",
+            icon: "error",
+            button: "Ok",
+            timer: 2000
+          })
+
           disableLoading();
 
         })
@@ -117,7 +123,15 @@ const UserDatosFormStep2 = (props) => {
 
     }, (error) => {
       console.log("cargaDeEstadosFallido", error);
-      alert(error);
+      //alert(error);
+      Swal.fire({
+        title: "Registro de Contribuyente",
+        text: "Error buscando datos mercantiles!",
+        icon: "error",
+        button: "Ok",
+        timer: 2000
+      })
+
     });
 
   }, []);
@@ -139,7 +153,7 @@ const UserDatosFormStep2 = (props) => {
       setSpinner(true);
       axios.get(`${API_URL}geographic_data_estados/`, axiosConfig)
         .then(function (res) {
-          console.log("resFormStep2_datos_geograficos_estados", res);
+          //console.log("resFormStep2_datos_geograficos_estados", res);
 
           const arrayData = Array.from(res.data.data);
 
@@ -187,7 +201,7 @@ const UserDatosFormStep2 = (props) => {
       setSpinner(true);
       axios.get(`${API_URL}oficinas_saren/`, axiosConfig)
         .then(function (res) {
-          console.log("resFormStep2_oficinas_saren", res);
+          //console.log("resFormStep2_oficinas_saren", res);
 
           const arrayData = Array.from(res.data.data);
 
@@ -232,7 +246,7 @@ const UserDatosFormStep2 = (props) => {
 
   const handleChangeFiltrarOficinas = (event) => {
 
-    console.log("event.target.value", event.target.value);
+    //console.log("event.target.value", event.target.value);
 
     formik.values.oficina = "";
 
@@ -355,12 +369,12 @@ const UserDatosFormStep2 = (props) => {
       setSubmitting(true);
       enableLoading();
 
-      console.log("values", formik.values);
+      //console.log("values", formik.values);
 
       const rif = localStorage.getItem('rif');
 
-      console.log("rif", rif);
-      console.log("authToken", token);
+      //console.log("rif", rif);
+      //console.log("authToken", token);
 
       let jsonAttributes = formik.values;
 
@@ -393,7 +407,7 @@ const UserDatosFormStep2 = (props) => {
           setSubmitting(false);
           disableLoading();
 
-          console.log("resFormStep2", res);
+          //console.log("resFormStep2", res);
 
           if (siguiente) {
             setSiguiente(false);
@@ -600,6 +614,7 @@ const UserDatosFormStep2 = (props) => {
                   <Button variant="secondary" size="lg" block
                           type="button"
                           onClick={submitSiguiente}
+                          className="btn btn-info font-size-sm w-100"
                           disabled={
                             formik.isSubmitting ||
                             !formik.isValid

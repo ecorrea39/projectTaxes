@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import {useFormik, Formik, Field} from "formik";
 import axios from "axios";
 import GeneralContext from "../../store/general-context";
+import Swal from "sweetalert2";
 
 const textLabelColor = {
   'color': '#5A5EFF',
@@ -67,7 +68,7 @@ const UserDatosFormStep1 = (props) => {
     props.cambiarAdminEdicion(true);
   }
 
-  console.log("groups:::", groups);
+  //console.log("groups:::", groups);
 
   const axiosConfig = {
     headers: {
@@ -79,22 +80,21 @@ const UserDatosFormStep1 = (props) => {
 
   useEffect(() => {
 
-    console.log("tipo", rif.substring(0, 1));
-    console.log("number", rif.substring(1));
-
-    console.log("registradoValor::", props.registradoValor);
+    //console.log("tipo", rif.substring(0, 1));
+    //console.log("number", rif.substring(1));
+    //console.log("registradoValor::", props.registradoValor);
 
     cargaDeClasesDeEmpresa().then((resolvedValueCargaDeClasesDeEmpresa) => {
-      console.log("resolvedValueCargaDeClasesDeEmpresa", resolvedValueCargaDeClasesDeEmpresa);
+      //console.log("resolvedValueCargaDeClasesDeEmpresa", resolvedValueCargaDeClasesDeEmpresa);
 
       cargaDeEstatus().then((resolvedValueCargaDeEstatus) => {
-        console.log("resolvedValueCargaDeEstatus", resolvedValueCargaDeEstatus);
+        //console.log("resolvedValueCargaDeEstatus", resolvedValueCargaDeEstatus);
 
         cargaDeActividadesEconomicas().then((resolvedValueCargaDeActividadesEconomicas) => {
-          console.log("resolvedValueCargaDeActividadesEconomicas", resolvedValueCargaDeActividadesEconomicas);
+          //console.log("resolvedValueCargaDeActividadesEconomicas", resolvedValueCargaDeActividadesEconomicas);
 
           cargaDeEmpresas().then((resolvedValueCargaDeEmpresas) => {
-            console.log("resolvedValueCargaDeEmpresas", resolvedValueCargaDeEmpresas);
+            //console.log("resolvedValueCargaDeEmpresas", resolvedValueCargaDeEmpresas);
 
             cargarDataInicial();
           }, (error) => {
@@ -122,7 +122,7 @@ const UserDatosFormStep1 = (props) => {
     setSpinner(true);
     axios.get(`${API_URL}user_company/${rifToSearch}/`, axiosConfig)
       .then(function (res) {
-        console.log("get_user_company::", res);
+        //console.log("get_user_company::", res);
 
         if (res.data.data != null) {
 
@@ -147,14 +147,22 @@ const UserDatosFormStep1 = (props) => {
         } else {
           generalCtx.iniIdUserInformacionProfile("-");
           props.cambiarRegistrado(false);
-          alert("No existe información alguna registrada del usuario");
+          //alert("No existe información alguna registrada del usuario");
         }
 
         disableLoading();
       }).catch((err) => {
 
       console.log("errGetUserCompany", err);
-      alert("Error buscando datos de la empresa del usuario")
+      //alert("Error buscando datos de la empresa del usuario")
+
+      Swal.fire({
+        title: "Registro de Contribuyente",
+        text: "Error buscando datos de la empresa del usuario!",
+        icon: "error",
+        button: "Ok",
+        timer: 2000
+      })
       disableLoading();
 
     })
@@ -171,7 +179,7 @@ const UserDatosFormStep1 = (props) => {
       setSpinner(true);
       axios.get(`${API_URL}company_class/`, axiosConfig)
         .then(function (res) {
-          console.log("resFormStep1_company_class", res);
+          //console.log("resFormStep1_company_class", res);
 
           const arrayData = Array.from(res.data.data);
 
@@ -190,9 +198,9 @@ const UserDatosFormStep1 = (props) => {
           });
 
           clasesEmpresaArray.sort((a, b) => a.name < b.name ? -1 : 1);
-          console.log("clasesEmpresaArray", clasesEmpresaArray);
+          //console.log("clasesEmpresaArray", clasesEmpresaArray);
           setClasesEmpresa(clasesEmpresaArray);
-          console.log("clasesEmpresa::", clasesEmpresa);
+          //console.log("clasesEmpresa::", clasesEmpresa);
 
           disableLoading();
           resolve('Clases de Empresa cargado Exitosamente');
@@ -221,7 +229,7 @@ const UserDatosFormStep1 = (props) => {
       setSpinner(true);
       axios.get(`${API_URL}estatus/`, axiosConfig)
         .then(function (res) {
-          console.log("resFormStep1_estatus", res);
+          //console.log("resFormStep1_estatus", res);
 
           const arrayData = Array.from(res.data.data);
 
@@ -248,7 +256,7 @@ const UserDatosFormStep1 = (props) => {
 
           estatusArray.sort((a, b) => a.name < b.name ? -1 : 1);
           setEstatus(estatusArray);
-          console.log("estatus::", estatus);
+          //console.log("estatus::", estatus);
           disableLoading();
 
           resolve('Clases de Empresa cargado Exitosamente');
@@ -276,7 +284,7 @@ const UserDatosFormStep1 = (props) => {
       setSpinner(true);
       axios.get(`${API_URL}economic_activity/`, axiosConfig)
         .then(function (res) {
-          console.log("resFormStep1_economic_activity", res);
+          //console.log("resFormStep1_economic_activity", res);
 
           const arrayData = Array.from(res.data.data);
 
@@ -297,7 +305,7 @@ const UserDatosFormStep1 = (props) => {
 
           actividadesEconomicasArray.sort((a, b) => a.name < b.name ? -1 : 1);
           setActividadesEconomicas(actividadesEconomicasArray);
-          console.log("actividadesEconomicas::", actividadesEconomicas);
+          //console.log("actividadesEconomicas::", actividadesEconomicas);
 
           disableLoading();
 
@@ -325,12 +333,12 @@ const UserDatosFormStep1 = (props) => {
 
       const rifToSearch = localStorage.getItem('rifToSearch');
       setRifActual(rifToSearch);
-      console.log("rifTosearch:::::", rifToSearch);
+      //console.log("rifTosearch:::::", rifToSearch);
 
       setSpinner(true);
       axios.get(`${API_URL}user_company/fondos/${rifToSearch}/`, axiosConfig)
         .then(function (res) {
-          console.log("resFormStep1_fondos", res);
+          //console.log("resFormStep1_fondos", res);
 
           const arrayData = Array.from(res.data.data);
 
@@ -348,7 +356,7 @@ const UserDatosFormStep1 = (props) => {
                 "name": elemDataName
               };
 
-              console.log("rObjCompanies", rObj);
+              //console.log("rObjCompanies", rObj);
 
               companiesArray.push(rObj);
             });
@@ -359,7 +367,7 @@ const UserDatosFormStep1 = (props) => {
           }
 
           setUserCompanies(companiesArray);
-          console.log("companiesArray::", companiesArray);
+          //console.log("companiesArray::", companiesArray);
 
           disableLoading();
 
@@ -399,7 +407,7 @@ const UserDatosFormStep1 = (props) => {
 
     axios.get(`${API_URL}user_company/fondoporid/${event.target.value}/`, axiosConfig)
       .then(function (res) {
-        console.log("get_user_company::", res);
+        //console.log("get_user_company::", res);
 
         if (res.data.data != null) {
 
@@ -424,7 +432,7 @@ const UserDatosFormStep1 = (props) => {
         } else {
           generalCtx.iniIdUserInformacionProfile("-");
           props.cambiarRegistrado(false);
-          alert("No existe información alguna registrada del usuario.");
+          //alert("No existe información alguna registrada del usuario.");
         }
 
         disableLoading();
@@ -450,7 +458,7 @@ const UserDatosFormStep1 = (props) => {
     setSpinner(true);
     axios.get(`${API_URL}acta_asamblea/${rif}/`, axiosConfig)
       .then(function (res) {
-        console.log("get_user_company_acta_asamblea::", res);
+        //console.log("get_user_company_acta_asamblea::", res);
 
         const arrayData = Array.from(res.data.data);
 
@@ -460,8 +468,8 @@ const UserDatosFormStep1 = (props) => {
           arrayData.forEach(function (elemData) {
             const fondoComercioRefC = fondoComercioRef.current.value;
 
-            console.log("fondoComercioRefC::", fondoComercioRefC);
-            console.log("elemData.attributes.users_information_id::", elemData.attributes.users_information_id);
+            //console.log("fondoComercioRefC::", fondoComercioRefC);
+            //console.log("elemData.attributes.users_information_id::", elemData.attributes.users_information_id);
 
             if (elemData.attributes.users_information_id == fondoComercioRefC) {
               let id = elemData.id;
@@ -481,7 +489,14 @@ const UserDatosFormStep1 = (props) => {
         setActasDeAsamblea(actasArray);
 
         if (actasArray.length == 0) {
-          alert("No tiene actas de asamblea cargadas en el módulo de Actas de Asambleas");
+          //alert("No tiene actas de asamblea cargadas en el módulo de Actas de Asambleas");
+          Swal.fire({
+            title: "Registro de Contribuyente",
+            text: "No posee actas de asamblea cargadas!",
+            icon: "info",
+            button: "Ok",
+            timer: 2000
+          })
         } else {
           setShowModal(true);
         }
@@ -503,13 +518,13 @@ const UserDatosFormStep1 = (props) => {
     const numeroRifRefC = numeroRifRef.current.value;
     rifToSearch = tipoRifRefC + numeroRifRefC;
 
-    console.log("tipoRifRefC", tipoRifRefC);
-    console.log("numeroRifRefC", numeroRifRefC);
+    //console.log("tipoRifRefC", tipoRifRefC);
+    //console.log("numeroRifRefC", numeroRifRefC);
 
     localStorage.setItem('rifToSearch', rifToSearch);
 
     cargaDeEmpresas().then((resolvedValueCargaDeEmpresas) => {
-      console.log("resolvedValueCargaDeEmpresas", resolvedValueCargaDeEmpresas);
+      //console.log("resolvedValueCargaDeEmpresas", resolvedValueCargaDeEmpresas);
 
       cargarDataInicial();
     }, (error) => {
@@ -547,7 +562,7 @@ const UserDatosFormStep1 = (props) => {
     localStorage.setItem('rifToSearch', rifToSearch);
 
     cargaDeEmpresas().then((resolvedValueCargaDeEmpresas) => {
-      console.log("resolvedValueCargaDeEmpresas", resolvedValueCargaDeEmpresas);
+      //console.log("resolvedValueCargaDeEmpresas", resolvedValueCargaDeEmpresas);
 
       cargarDataInicial();
     }, (error) => {
@@ -564,7 +579,7 @@ const UserDatosFormStep1 = (props) => {
 
     const actaAsambleaRefC = actaAsambleaRef.current.value;
 
-    console.log("actaAsambleaRefC:::", actaAsambleaRefC);
+    //console.log("actaAsambleaRefC:::", actaAsambleaRefC);
 
     if (actaAsambleaRefC != "") {
       props.cambiarActaEdicion(true);
@@ -584,10 +599,10 @@ const UserDatosFormStep1 = (props) => {
     const emailRefC = emailRef.current.value;
     const passwordRefC = passwordRef.current.value;
 
-    console.log("tipoIdentificacionRefC", tipoIdentificacionRefC);
-    console.log("numeroIdentificacionRefC", numeroIdentificacionRefC);
-    console.log("emailRefC", emailRefC);
-    console.log("passwordRefC", passwordRefC);
+    //console.log("tipoIdentificacionRefC", tipoIdentificacionRefC);
+    //console.log("numeroIdentificacionRefC", numeroIdentificacionRefC);
+    //console.log("emailRefC", emailRefC);
+    //console.log("passwordRefC", passwordRefC);
 
     const dataCrear = {
       jsonapi: {version: '1.0'},
@@ -619,7 +634,7 @@ const UserDatosFormStep1 = (props) => {
       setRifActual(tipoIdentificacionRefC + numeroIdentificacionRefC);
 
       cargaDeEmpresas().then((resolvedValueCargaDeEmpresas) => {
-        console.log("resolvedValueCargaDeEmpresasCrearUsuario", resolvedValueCargaDeEmpresas);
+        //console.log("resolvedValueCargaDeEmpresasCrearUsuario", resolvedValueCargaDeEmpresas);
 
         cargarDataInicial();
       }, (error) => {
@@ -643,7 +658,14 @@ const UserDatosFormStep1 = (props) => {
 
         alert(txt);
       } else {
-        alert('Error de comunicación en el proceso de Registro');
+        //alert('Error de comunicación en el proceso de Registro');
+        Swal.fire({
+          title: "Registro de Contribuyente",
+          text: "Error de comunicación en el proceso de Registro!",
+          icon: "error",
+          button: "Ok",
+          timer: 2000
+        })
       }
     })
     .finally(() => {
@@ -706,7 +728,7 @@ const UserDatosFormStep1 = (props) => {
         })
       ),
     numero_patronal: Yup.string()
-      .min(1,
+      /*.min(1,
         intl.formatMessage({
           id: "AUTH.VALIDATION.MIN_LENGTH",
         }, {min: 8})
@@ -720,7 +742,7 @@ const UserDatosFormStep1 = (props) => {
         intl.formatMessage({
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
         })
-      ),
+      )*/,
     numero_de_trabajadores: Yup
       .number().positive(
         intl.formatMessage({
@@ -770,13 +792,13 @@ const UserDatosFormStep1 = (props) => {
       setSubmitting(true);
       enableLoading();
 
-      console.log("values", formik.values);
+      //console.log("values", formik.values);
 
       const rif = localStorage.getItem('rif');
 
-      console.log("rif", rif);
-      console.log("authToken", token);
-      console.log("submit_formik::", formik);
+      //console.log("rif", rif);
+      //console.log("authToken", token);
+      //console.log("submit_formik::", formik);
 
       let jsonAttributes = formik.values;
 
@@ -797,9 +819,9 @@ const UserDatosFormStep1 = (props) => {
       setSpinner(true);
       axios.post(`${API_URL}user_company/`, data, axiosConfig)
         .then(function (res) {
-          console.log("resFormStep1::::", res);
+          //console.log("resFormStep1::::", res);
 
-          console.log("res.data.data.id", res.data.data.id);
+          //console.log("res.data.data.id", res.data.data.id);
 
           generalCtx.iniIdUserInformacionProfile(res.data.data.id);
 
@@ -826,7 +848,16 @@ const UserDatosFormStep1 = (props) => {
           setSubmitting(false);
           disableLoading();
 
-          alert("Información inicial cargada satisfactoriamente");
+          //alert("Información inicial cargada satisfactoriamente");
+          //LOANPAS
+
+          Swal.fire({
+            title: "Registro de Contribuyente",
+            text: "Datos de la empresa guardados con éxito!",
+            icon: "success",
+            button: "Ok",
+            timer: 2000
+          });
 
           if (siguiente) {
             setSiguiente(false);
@@ -847,10 +878,16 @@ const UserDatosFormStep1 = (props) => {
             default:
               alert("Error al guardar los Datos de la Empresa");
           }
-
           alert(txt);
         } else {
-          alert("Error al guardar los Datos de la Empresa");
+          //alert("Error al guardar los Datos de la Empresa");
+          Swal.fire({
+            title: "Registro de Contribuyente",
+            text: "Error al guardar los Datos de la Empresa!",
+            icon: "error",
+            button: "Ok",
+            timer: 2000
+          })
         }
       })
       .finally(() => {
@@ -871,9 +908,7 @@ const UserDatosFormStep1 = (props) => {
             <Col md={2}>
               <Form.Group controlId="tipo" className="p-0">
                 {/*<Form.Label>State</Form.Label>*/}
-                <Form.Control as="select"
-                              ref={tipoRifRef}
-                >
+                <Form.Control as="select" ref={tipoRifRef}>
 
                   <FormattedMessage id='AUTH.GENERAL.IDENTIFICATIONTYPE'>
                     {(message) => <option value="">{message}</option>}
@@ -900,18 +935,12 @@ const UserDatosFormStep1 = (props) => {
               />
             </Col>
             <Col md={2}>
-              <Button variant="secondary" size="lg" block
-                      type="button"
-                      onClick={handleConsultarEmpresa}
-              >
+              <Button variant="secondary" size="lg" block type="button" onClick={handleConsultarEmpresa}>
                 Consultar
               </Button>
             </Col>
             <Col md={2}>
-              <Button variant="secondary" size="lg" block
-                      type="button"
-                      onClick={handleCrearEmpresa}
-              >
+              <Button variant="secondary" size="lg" block type="button" onClick={handleCrearEmpresa}>
                 Crear
               </Button>
 
@@ -921,19 +950,12 @@ const UserDatosFormStep1 = (props) => {
                 </Modal.Header>
                 <Modal.Body>
 
-
-
-
-
-
                   <Row>
                     <Col md={3}>
                       {/* begin: tipo */}
                       <Form.Group controlId="tipo" className="p-0" >
                         {/*<Form.Label>State</Form.Label>*/}
-                        <Form.Control as="select"
-                                      ref={tipoIdentificacionRef}
-                        >
+                        <Form.Control as="select" ref={tipoIdentificacionRef}>
 
                           <FormattedMessage id='AUTH.GENERAL.IDENTIFICATIONTYPE'>
                             {(message) => <option value="">{message}</option>}
@@ -993,31 +1015,19 @@ const UserDatosFormStep1 = (props) => {
                   </div>
                   {/* end: Password */}
 
-
-
-
                 </Modal.Body>
                 <Modal.Footer>
-                  <Button variant="secondary"
-                          onClick={handleCloseCrear}
-                  >
+                  <Button variant="secondary" onClick={handleCloseCrear}>
                     Cerrar
                   </Button>
-                  <Button variant="secondary"
-                          onClick={handleAceptarCrear}
-                  >
+                  <Button variant="secondary" onClick={handleAceptarCrear}>
                     Aceptar
                   </Button>
-
-
                 </Modal.Footer>
               </Modal>
             </Col>
             <Col md={2}>
-              <Button variant="secondary" size="lg" block
-                      type="button"
-                      onClick={handleResetRif}
-              >
+              <Button variant="secondary" size="lg" block type="button" onClick={handleResetRif}>
                 Usar mi RIF
               </Button>
             </Col>
@@ -1033,16 +1043,14 @@ const UserDatosFormStep1 = (props) => {
               {spinner && <Spinner animation="border" variant="danger" />}
             </Card.Title>
           </Col>
-          <Col md={3} style={textLabelColor}>
+          <Col md={4} style={textLabelColor}>
             {mostrarComboEmpresas && 'Empresa Principal y Fondos de Comercio'}
           </Col>
-          <Col md={5}>
+          <Col md={4}>
             {mostrarComboEmpresas &&
             <form>
               <Form.Group controlId="fondoComercio">
-                <Form.Control as="select" onChange={companiesChangeHandler}
-                              ref={fondoComercioRef}
-                >
+                <Form.Control as="select" onChange={companiesChangeHandler} ref={fondoComercioRef}>
 
                   {userCompanies.map((elemento) =>
                     <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
@@ -1061,10 +1069,8 @@ const UserDatosFormStep1 = (props) => {
           &&
           <Row>
             <Col md={12}>
-              <Button variant="secondary" size="lg" block
-                      type="button"
-                      onClick={handleEditar}
-              >
+              <Button variant="secondary" size="md" block type="button" onClick={handleEditar}
+                      className="btn btn-info font-size-sm w-100">
                 Editar Información de la Empresa mediante un Acta de Asamblea
               </Button>
 
@@ -1075,9 +1081,7 @@ const UserDatosFormStep1 = (props) => {
                 <Modal.Body>
                   <form>
                     <Form.Group controlId="actasDeAsamblea">
-                      <Form.Control as="select"
-                                    ref={actaAsambleaRef}
-                      >
+                      <Form.Control as="select" ref={actaAsambleaRef}>
 
                         <option key="0" value="">Seleccione el acta de Asamblea</option>
 
@@ -1105,8 +1109,7 @@ const UserDatosFormStep1 = (props) => {
         <Card.Body>
           <form
             onSubmit={formik.handleSubmit}
-            className="form fv-plugins-bootstrap fv-plugins-framework"
-          >
+            className="form fv-plugins-bootstrap fv-plugins-framework">
             <Container>
               <Row>
                 <Col xs="12" sm="12" md="6" lg="6" xl="6" xxl="6">
@@ -1283,11 +1286,9 @@ const UserDatosFormStep1 = (props) => {
                 <Col md={12}>
                   <Button variant="secondary" size="lg" block
                           type="button"
+                          className="btn btn-info font-size-sm w-100"
                           onClick={submitSiguiente}
-                          disabled={
-                            formik.isSubmitting ||
-                            !formik.isValid
-                          }
+                          disabled={formik.isSubmitting || !formik.isValid}
                   >
                     Siguiente
                   </Button>

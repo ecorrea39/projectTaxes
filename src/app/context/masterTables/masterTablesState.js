@@ -91,7 +91,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            lista.sort(fieldSorter(['nom_banco']));
             setBancos(lista)
 
         } catch (error) {
@@ -116,7 +116,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            lista.sort(fieldSorter(['name']));
             setTrimestres(lista)
 
         } catch (error) {
@@ -141,7 +141,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            lista.sort(fieldSorter(['name']));
             setFormasPago(lista)
 
         } catch (error) {
@@ -169,7 +169,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            lista.sort(fieldSorter(['name']));
             setCuentasRecaudadoras(lista)
 
         } catch (error) {
@@ -195,7 +195,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            lista.sort(fieldSorter(['name']));
             setEstatus(lista);
 
         } catch (error) {
@@ -222,7 +222,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            lista.sort(fieldSorter(['name']));
             setClaseEmpresa(lista);
 
         } catch (error) {
@@ -247,7 +247,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            lista.sort(fieldSorter(['name']));
             setMotores(lista);
 
         } catch (error) {
@@ -275,7 +275,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            lista.sort(fieldSorter(['name']));
             setActividadesEconomicas(lista);
 
         } catch (error) {
@@ -301,7 +301,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            lista.sort(fieldSorter(['name']));
             setConceptos(lista);
 
         } catch (error) {
@@ -332,7 +332,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            lista.sort(fieldSorter(['estado_name']));
             setRegistrosMercantiles(lista);
 
         } catch (error) {
@@ -361,7 +361,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            lista.sort(fieldSorter(['descripcion']));
             setEstados(lista);
 
         } catch (error) {
@@ -389,7 +389,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            lista.sort(fieldSorter(['descripcion']));
             setMunicipios(lista);
 
         } catch (error) {
@@ -416,7 +416,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            lista.sort(fieldSorter(['descripcion']));
             setParroquias(lista);
 
         } catch (error) {
@@ -445,7 +445,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            lista.sort(fieldSorter(['descripcion']));
             setCiudades(lista);
 
         } catch (error) {
@@ -472,7 +472,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            lista.sort(fieldSorter(['fecha']));
             setMedidaValor(lista);
 
         } catch (error) {
@@ -498,7 +498,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            lista.sort(fieldSorter(['name']));
             setMotivoSancion(lista);
 
         } catch (error) {
@@ -525,7 +525,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.ano - b.ano ? -1 : +(a.ano > b.ano));
+            lista.sort(fieldSorter(['ano', 'fecha']));
             setDiasFestivos(lista);
 
         } catch (error) {
@@ -556,7 +556,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.ano - b.ano ? -1 : +(a.ano > b.ano));
+            lista.sort(fieldSorter(['ano', 'mes']));
             setTasaIntereses(lista);
 
         } catch (error) {
@@ -598,7 +598,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            lista.sort(fieldSorter(['name']));
             setSectores(lista);
 
         } catch (error) {
@@ -623,7 +623,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            lista.sort(fieldSorter(['name']));
             setVialidades(lista);
 
         } catch (error) {
@@ -648,7 +648,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            lista.sort(fieldSorter(['name']));
             setLocales(lista);
 
         } catch (error) {
@@ -673,7 +673,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            lista.sort(fieldSorter(['name']));
             setEdificaciones(lista);
 
         } catch (error) {
@@ -699,7 +699,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            lista.sort(fieldSorter(['codigo', 'name']));
             setTipoDocumento(lista);
 
         } catch (error) {
@@ -725,7 +725,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            lista.sort(fieldSorter(['name']));
             setTipoContribuyente(lista);
 
         } catch (error) {
@@ -755,7 +755,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            lista.sort(fieldSorter(['codigo_cuenta']));
             setCuentasContables(lista);
 
         } catch (error) {
@@ -786,7 +786,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            lista.sort(fieldSorter(['documento']));
             setFirmasAutorizadas(lista);
 
         } catch (error) {
@@ -812,7 +812,7 @@ export const MasterTablesState = ({ children }) => {
                     }
                 )
             });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));
+            lista.sort(fieldSorter(['cod']));
             setUnidadEstadal(lista);
 
         } catch (error) {
@@ -1907,6 +1907,12 @@ export const MasterTablesState = ({ children }) => {
                 break;
         }
     }
+
+    const fieldSorter = (fields) => (a, b) => fields.map(o => {
+        let dir = 1;
+        if (o[0] === '-') { dir = -1; o=o.substring(1); }
+        return a[o] > b[o] ? dir : a[o] < b[o] ? -(dir) : 0;
+    }).reduce((p, n) => p ? p : n, 0);
 
     const valuesContext = {
         bancos,

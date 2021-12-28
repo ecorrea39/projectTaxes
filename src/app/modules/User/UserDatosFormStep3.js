@@ -5,6 +5,18 @@ import {useFormik} from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import GeneralContext from "../../store/general-context";
+import Swal from "sweetalert2";
+
+const token = localStorage.getItem('authToken');
+const mail = localStorage.getItem('mail');
+
+const axiosConfig = {
+  headers: {
+    Accept: 'application/vnd.api+json',
+    'Content-Type': 'application/vnd.api+json',
+    Authorization: `Bearer ${token}`
+  }
+};
 
 const listaCodCelular = () => {
   const array = [
@@ -72,40 +84,6 @@ const listaCodCelular = () => {
   return array.sort((a, b) => a.name < b.name ? -1 : +(a.name > b.name));
 };
 
-const listaSector = () => {
-  const array = [
-    { "id": "1", "name": "Barrio" },
-    { "id": "2", "name": "Caserio" },
-    { "id": "3", "name": "Conjunto Residencial" },
-    { "id": "4", "name": "Sector" },
-    { "id": "5", "name": "Urbanización" },
-    { "id": "6", "name": "Zona" }
-  ];
-  return array.sort((a,b) => a.name < b.name ? -1 : +(a.name > b.name));
-};
-
-const listaVialidad = () => {
-  const array = [
-    { "id": "1", "name": "Calle" },
-    { "id": "2", "name": "Avenida" },
-    { "id": "3", "name": "Vereda" },
-    { "id": "4", "name": "Carretera" },
-    { "id": "5", "name": "Esquina" },
-    { "id": "6", "name": "Carrera" }
-  ];
-  return array.sort((a,b) => a.name < b.name ? -1 : +(a.name > b.name));
-};
-
-const listaEdificacion = () => {
-  const array = [
-    { "id": "1", "name": "Casa" },
-    { "id": "2", "name": "Centro Comercial" },
-    { "id": "3", "name": "Edificio" },
-    { "id": "4", "name": "Quinta" },
-    { "id": "5", "name": "Local" }
-  ];
-  return array.sort((a,b) => a.name < b.name ? -1 : +(a.name > b.name));
-};
 
 const textLabelColor = {
   'color': '#5A5EFF',
@@ -117,6 +95,10 @@ const formulario = {
 }
 
 const UserDatosFormStep3 = (props) => {
+
+  const [sectores, setSectores] = useState([]);
+  const [vialidades, setVialidades] = useState([]);
+  const [edificaciones, setEdificaciones] = useState([]);
 
   const generalCtx = useContext(GeneralContext);
 
@@ -136,7 +118,7 @@ const UserDatosFormStep3 = (props) => {
     numero_telefono_compania1:"",
     codigo_telefono_compania2:"",
     numero_telefono_compania2:"",
-    correo_empresa:""
+    correo_empresa: mail
   });
 
   const estadoRef = useRef();
@@ -162,7 +144,6 @@ const UserDatosFormStep3 = (props) => {
   const intl = useIntl();
   const API_URL = `${process.env.REACT_APP_API_URL}`;
 
-  const token = localStorage.getItem('authToken');
   const rif = localStorage.getItem('rif');
 
   const axiosConfig = {
@@ -175,22 +156,26 @@ const UserDatosFormStep3 = (props) => {
 
   useEffect(() => {
 
+    listaSector();
+    listaVialidad();
+    listaEdificacion();
+
     cargaDeEstados().then((resolvedValueEstados) => {
-      console.log("resolvedValueEstados", resolvedValueEstados);
+      //console.log("resolvedValueEstados", resolvedValueEstados);
 
       cargaDeMunicipios().then((resolvedValueMunicipios) => {
-        console.log("resolvedValueMunicipios", resolvedValueMunicipios);
+        //console.log("resolvedValueMunicipios", resolvedValueMunicipios);
 
         cargaDeParroquias().then((resolvedValueParroquias) => {
-          console.log("resolvedValueParroquias", resolvedValueParroquias);
+          //console.log("resolvedValueParroquias", resolvedValueParroquias);
 
           cargaDeCiudades().then((resolvedValueCiudades) => {
-            console.log("resolvedValueCiudades", resolvedValueCiudades);
+            //console.log("resolvedValueCiudades", resolvedValueCiudades);
 
             setSpinner(true);
             axios.get(`${API_URL}user_geographic_data/fondoporid/${generalCtx.theIdUserInformacionProfile}/`, axiosConfig)
               .then(function (res) {
-                console.log("get_user_company::", res);
+                //console.log("get_user_company::", res);
 
                 if (res.data.data != null) {
 
@@ -210,7 +195,7 @@ const UserDatosFormStep3 = (props) => {
                     "numero_telefono_compania1": res.data.data.attributes.numero_telefono_compania1 != null ? res.data.data.attributes.numero_telefono_compania1 : "",
                     "codigo_telefono_compania2": res.data.data.attributes.codigo_telefono_compania2 != null ? res.data.data.attributes.codigo_telefono_compania2 : "",
                     "numero_telefono_compania2": res.data.data.attributes.numero_telefono_compania2 != null ? res.data.data.attributes.numero_telefono_compania2 : "",
-                    "correo_empresa": res.data.data.attributes.correo_empresa != null ? res.data.data.attributes.correo_empresa : ""
+                    "correo_empresa": res.data.data.attributes.correo_empresa != null ? res.data.data.attributes.correo_empresa : mail
                   };
 
                   setInitialValues(initialValuesJson);
@@ -251,6 +236,78 @@ const UserDatosFormStep3 = (props) => {
 
   }, []);
 
+  const listaSector = async () => {
+
+    try {
+
+      const respuesta = await axios.get(`${API_URL}sectores/`, axiosConfig)
+
+      let arreglo = [];
+      let lista = [];
+      arreglo = respuesta.data.data;
+      arreglo.map((x, i) => {
+        lista.push(
+            {
+              "id": arreglo[i].id,
+              "name": arreglo[i].attributes.name
+            }
+        )
+      });
+      setSectores(lista);
+
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+  const listaVialidad = async () => {
+
+    try {
+
+      const respuesta = await axios.get(`${API_URL}vialidades/`, axiosConfig)
+
+      let arreglo = [];
+      let lista = [];
+      arreglo = respuesta.data.data;
+      arreglo.map((x, i) => {
+        lista.push(
+            {
+              "id": arreglo[i].id,
+              "name": arreglo[i].attributes.name
+            }
+        )
+      });
+      setVialidades(lista);
+
+    } catch (error) {
+      console.log(error)
+    }
+
+  };
+
+  const listaEdificacion = async () => { //loanpas
+    try {
+
+      const respuesta = await axios.get(`${API_URL}edificaciones/`, axiosConfig)
+
+      let arreglo = [];
+      let lista = [];
+      arreglo = respuesta.data.data;
+      arreglo.map((x, i) => {
+        lista.push(
+            {
+              "id": arreglo[i].id,
+              "name": arreglo[i].attributes.name
+            }
+        )
+      });
+      setEdificaciones(lista);
+
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
   const cargaDeEstados = () => {
 
     let p = new Promise(function (resolve, reject) {
@@ -259,7 +316,7 @@ const UserDatosFormStep3 = (props) => {
       setSpinner(true);
       axios.get(`${API_URL}geographic_data_estados/`, axiosConfig)
         .then(function (res) {
-          console.log("resFormStep3_datos_geograficos_estados", res);
+          //console.log("resFormStep3_datos_geograficos_estados", res);
 
           const arrayData = Array.from(res.data.data);
 
@@ -307,7 +364,7 @@ const UserDatosFormStep3 = (props) => {
       setSpinner(true);
       axios.get(`${API_URL}geographic_data_municipios/`, axiosConfig)
         .then(function (res) {
-          console.log("resFormStep3_datos_geograficos_municipios", res);
+          //console.log("resFormStep3_datos_geograficos_municipios", res);
 
           const arrayData = Array.from(res.data.data);
 
@@ -358,7 +415,7 @@ const UserDatosFormStep3 = (props) => {
       setSpinner(true);
       axios.get(`${API_URL}geographic_data_parroquias/`, axiosConfig)
         .then(function (res) {
-          console.log("resFormStep3_datos_geograficos_parroquias", res);
+          //console.log("resFormStep3_datos_geograficos_parroquias", res);
 
           const arrayData = Array.from(res.data.data);
 
@@ -409,7 +466,7 @@ const UserDatosFormStep3 = (props) => {
       setSpinner(true);
       axios.get(`${API_URL}geographic_data_ciudades`, axiosConfig)
         .then(function (res) {
-          console.log("resFormStep3_datos_geograficos_ciudades", res);
+          //console.log("resFormStep3_datos_geograficos_ciudades", res);
 
           const arrayData = Array.from(res.data.data);
 
@@ -452,9 +509,6 @@ const UserDatosFormStep3 = (props) => {
     return p;
   };
 
-  const sectores = listaSector();
-  const vialidades = listaVialidad();
-  const edificaciones = listaEdificacion();
   const codigosCelulares = listaCodCelular();
 
   const customHandleChangeNumeroDeTelefono1 = (event) => {
@@ -752,12 +806,12 @@ const UserDatosFormStep3 = (props) => {
       setSubmitting(true);
       enableLoading();
 
-      console.log("values", formik.values);
+      //console.log("values", formik.values);
 
       const rif = localStorage.getItem('rif');
 
-      console.log("rif", rif);
-      console.log("authToken", token);
+      //console.log("rif", rif);
+      //console.log("authToken", token);
 
       let jsonAttributes = formik.values;
 
@@ -807,7 +861,7 @@ const UserDatosFormStep3 = (props) => {
           setSubmitting(false);
           disableLoading();
 
-          console.log("resFormStep3", res);
+          //console.log("resFormStep3", res);
 
           if (siguiente) {
             setSiguiente(false);
@@ -1000,8 +1054,8 @@ const UserDatosFormStep3 = (props) => {
 
                 <Col md={4}>
                   <Form.Group as={Col} controlId="sector_texto" style={formulario}>
-                    <Form.Label style={textLabelColor}>Sector Texto</Form.Label>
-                    <Form.Control size="md" type="text" placeholder="sector_texto"
+                    <Form.Label style={textLabelColor}>Sector (descripción)</Form.Label>
+                    <Form.Control size="md" type="text" placeholder="sector (descripción)"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.sector_texto}
@@ -1050,8 +1104,8 @@ const UserDatosFormStep3 = (props) => {
 
                 <Col md={3}>
                   <Form.Group as={Col} controlId="vialidad_texto" style={formulario}>
-                    <Form.Label style={textLabelColor}>Vialidad Texto</Form.Label>
-                    <Form.Control size="md" type="text" placeholder="vialidad_texto"
+                    <Form.Label style={textLabelColor}>Vialidad (descripción)</Form.Label>
+                    <Form.Control size="md" type="text" placeholder="vialidad (descripción)"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.vialidad_texto}
@@ -1251,6 +1305,7 @@ const UserDatosFormStep3 = (props) => {
                   <Button variant="secondary" size="lg" block
                           type="button"
                           onClick={submitSiguiente}
+                          className="btn btn-info font-size-sm w-100"
                           disabled={
                             formik.isSubmitting ||
                             !formik.isValid
