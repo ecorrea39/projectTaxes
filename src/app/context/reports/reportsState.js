@@ -98,21 +98,7 @@ export const ReportsState = ({ children }) => {
 
     const getContribuyente = async () => {
 
-        try {/*
-            const respuesta = await clientAxios.get('/trimestres/', clientAxios);
-            let arreglo = [];
-            let lista = [];
-            arreglo = respuesta.data.data;
-            arreglo.map((x, i) => {
-                lista.push(
-                    {
-                        "id": arreglo[i].id,
-                        "name": arreglo[i].attributes.name,
-                    }
-                )
-            });
-            lista.sort((a, b) => a.name - b.name ? -1 : +(a.name > b.name));*/
-
+        try {
             let rif = odb.get('rif');
             let name = odb.get('name');
 

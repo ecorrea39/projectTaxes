@@ -85,8 +85,7 @@ export const TaxesState = ({ children }) => {
     const [debForm, setDebForm] = useState({
         numResolucionForm: "",
         fechaResolucionForm: "",
-        montoMultaResolucionForm: "",
-
+        montoMultaResolucionForm: ""
     });
     const [debMat, setDebMat] = useState({
         numResolucionMat: "",
@@ -99,7 +98,7 @@ export const TaxesState = ({ children }) => {
         numGiroConvenioPago: "",
         fechaVencConvenio: "",
         montoConvenio: "",
-        montoInteresesConvenio: "",
+        montoInteresesConvenio: ""
     });
     const [cheq, setCheq] = useState({
         numCheque: "",

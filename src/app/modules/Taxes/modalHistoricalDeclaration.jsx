@@ -129,7 +129,7 @@ function ModalHistoricalDeclaration(props) {
                                className="btn btn-info font-weight-bolder font-size-sm mr-3"
                                size="sm"
                                data-dismiss="modal" data-backdrop="false"
-                               style={{position: 'absolute', top: '5%', right: '10%' }}
+                               style={{position: 'absolute', top: '10%', right: '5%' }}
                                onClick={props.onHide}>Cerrar</a>
                         </div>
                     </div>

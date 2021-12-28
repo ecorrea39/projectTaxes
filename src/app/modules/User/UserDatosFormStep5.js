@@ -39,8 +39,8 @@ const UserDatosFormStep5 = (props) => {
 
     const rif = localStorage.getItem('rif');
 
-    console.log("rif", rif);
-    console.log("authToken", token);
+    //console.log("rif", rif);
+    //console.log("authToken", token);
 
     let jsonAttributes = {};
 
@@ -59,7 +59,7 @@ const UserDatosFormStep5 = (props) => {
     axios.post(`${API_URL}profile_summary/`, data, axiosConfig)
       .then(function (res) {
 
-        console.log("resFormStep5", res);
+        //console.log("resFormStep5", res);
 
         // alert('Guardado exitosamente');
 
@@ -357,7 +357,7 @@ const UserDatosFormStep5 = (props) => {
 
             <Row>
               <Col md={4}>
-                <b>Vialidad Texto</b>
+                <b>Vialidad</b>
               </Col>
 
               <Col md={8}>
@@ -428,7 +428,7 @@ const UserDatosFormStep5 = (props) => {
               </Col>
 
               <Col md={8}>
-                {props.resumenFichaRegistro.cedula_representante_legal1}
+                {props.resumenFichaRegistro.cedulaLetra1}{props.resumenFichaRegistro.cedula_representante_legal1}
               </Col>
             </Row>
 
@@ -490,7 +490,7 @@ const UserDatosFormStep5 = (props) => {
               </Col>
 
               <Col md={8}>
-                {props.resumenFichaRegistro.cedula_representante_legal2}
+                {props.resumenFichaRegistro.cedulaLetra2}{props.resumenFichaRegistro.cedula_representante_legal2}
               </Col>
             </Row>
 
@@ -552,7 +552,7 @@ const UserDatosFormStep5 = (props) => {
               </Col>
 
               <Col md={8}>
-                {props.resumenFichaRegistro.cedula_representante_legal3}
+                {props.resumenFichaRegistro.cedulaLetra3}{props.resumenFichaRegistro.cedula_representante_legal3}
               </Col>
             </Row>
 
