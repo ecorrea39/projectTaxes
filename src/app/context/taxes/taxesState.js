@@ -497,47 +497,27 @@ export const TaxesState = ({ children }) => {
         let tri = valores[i].trimestre;
 
         try {
-            let buscar = [];
+            let buscarHistorico = [];
+            let buscarActual = [];
 
-            if( i > 0 ) {
+            if(con !== '' && ano !=='' && tri !='') {
+                buscarActual = valores.filter(x => Number(x.concepto_pago) === Number(con) && Number(x.ano_declaracion) === Number(ano) && Number(x.trimestre) === Number(tri));
+                buscarHistorico = historico.filter(x => Number(x.concepto_pago) === Number(con) && Number(x.ano_declaracion) === Number(ano) && Number(x.trimestre) === Number(tri));
 
-                if(con !== '' && ano !=='' && tri !='' && valores.length >= 2) {
-                    buscar = valores.filter(x => Number(x.concepto_pago) === Number(con) && Number(x.ano_declaracion) === Number(ano) && Number(x.trimestre) === Number(tri));
-                    if( buscar.length === 0 ) {
-                        buscar = historico.filter(x => Number(x.concepto_pago) === Number(con) && Number(x.ano_declaracion) === Number(ano) && Number(x.trimestre) === Number(tri));
-                    }
-
-                    if( buscar.length > 1 ) {
-                        Swal.fire({
-                            icon: 'info',
-                            title: 'Declaración de tributos',
-                            text: "Periodo para declarar ya existe!",
-                            button: "Ok",
-                            timer: 2000
-                        });
-                        valores[i].trimestre = "";
-                    }
-                }
-            } else {
-                if(con !== '' && ano !=='' && tri !='' && valores.length >= 1) {
-                    buscar = historico.filter(x => Number(x.concepto_pago) === Number(con) && Number(x.ano_declaracion) === Number(ano) && Number(x.trimestre) === Number(tri));
-
-                    if( buscar.length > 1 ) {
-                        Swal.fire({
-                            icon: 'info',
-                            title: 'Declaración de tributos',
-                            text: "Periodo a declarar ya existe o fue procesado!",
-                            button: "Ok",
-                            timer: 2000
-                        });
-                        valores[i].trimestre = "";
-                    }
+                if( buscarActual.length > 1 || buscarHistorico.length  ) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Declaración de tributos',
+                        text: "Periodo para declarar ya existe!",
+                        button: "Ok",
+                        timer: 2000
+                    });
+                    valores[i].trimestre = "";
                 }
             }
         } catch (error) {
             console.log(error)
         }
-
     }
 
     const showSelConcepto = (a) => {
