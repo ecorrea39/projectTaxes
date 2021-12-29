@@ -29,6 +29,9 @@ export const SchemaPayment = Yup.object().shape({
     monto: Yup.string()
         .required('- Campo obligatorio -')
         .max(10, 'Debe ingresar un máximo de 10 digitos'),
+    totalTributos: Yup.string()
+        .required('- Campo obligatorio -')
+        .max(10, 'Debe ingresar un máximo de 10 digitos'),
     fecha: Yup.date()
         .required('- Campo obligatorio -')
         .max(new Date(), "La fecha ingresada no esta permitida")

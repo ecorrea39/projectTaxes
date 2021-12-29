@@ -13,6 +13,7 @@ export const initialValuesPayment = {
     tipo_transaccion: "",
     banco_id: "",
     monto: "",
+    totalTributos: "",
     fecha: ""
 }
 

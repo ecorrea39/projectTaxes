@@ -10,8 +10,9 @@ import {
 import BaseInput from "../Forms/BaseInputs";
 import { InputsByConcepts } from "./inputsByConcepts";
 import TaxesContext from "../../context/taxes/taxesContext";
+import { formatearMontos, formatearMontosII, formatearMontosIII } from "../../helpers";
 
-function ShowConcept({formik}) {
+function ShowConcept({formik,calcularMonto}) {
 
     const { setActaR, actaReparo,
         reAdmin, setReAdmin,
@@ -22,11 +23,12 @@ function ShowConcept({formik}) {
         cheq, setCheq,
         intereses, setIntereses,
         multa, setMulta,
-        creditoFiscal, setCreditoFiscal, formatoFechaFutura } = useContext(TaxesContext);
+        formatoFechaFutura } = useContext(TaxesContext);
 
     const conceptos = formik.values.conceptos;
 
     const handleActa = (value,input,e) => {
+        
         setActaR({
             ...actaReparo,
             [input] : value
@@ -80,6 +82,10 @@ function ShowConcept({formik}) {
             [input] : value
         })
     }
+
+    useEffect(()=>{
+       // calcularMonto(formik.values);
+    },[actaReparo.montoActa])
 
     return (
         <>

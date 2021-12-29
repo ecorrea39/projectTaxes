@@ -34,8 +34,8 @@ export const TaxesState = ({ children }) => {
                 ano_declaracion: "2020",
                 concepto_pago: "1",
                 estatus: "1",
-                fecha_declaracion: "2020-04-13",
-                fecha_emision: "0001-01-01",
+                fecha_declaracion: "2020-04-13", // para calcular los iteres del 2%
+                fecha_emision: "0001-01-01", // para calcular los interes de 0.5%
                 monto_intereses: "0",
                 monto_multa: "0",
                 monto_pagado: "1875",

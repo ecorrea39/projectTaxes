@@ -12,13 +12,15 @@ export const BaseFormik = ({formik}) => {
     const { bancos, formSummary, formatoFechaFutura, modalidadesPagos} = useContext(TaxesContext);
 
     useEffect(()=>{
-        formik.setFieldValue("monto", formSummary.montoPagar);
+        console.log(formSummary)
+        formik.setFieldValue("totalTributos", formSummary.montoPagar);
+        
     },[]);
 
     return (
         <>
             <Row className="mt-4 mb-4">
-                <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6" className="mb-6">
+                <Col xs="12" sm="4" md="4" lg="4" xl="4" xxl="4" className="mb-6">
                     <label htmlFor="referencia" className="font-weight-bold">
                         Numero de referencia
                     </label>
@@ -31,7 +33,7 @@ export const BaseFormik = ({formik}) => {
                         minLength="4"
                     />
                 </Col>
-                <Col xs="12" sm="6" md="6" lg="6" xl="6" xxl="6" className="mb-6">
+                <Col xs="12" sm="4" md="4" lg="4" xl="4" xxl="4" className="mb-6">
                     <label htmlFor="modalidad-pago" className="font-weight-bold">
                         Modalidad de pago
                     </label>
@@ -79,14 +81,13 @@ export const BaseFormik = ({formik}) => {
                 </Col>
                 <Col xs="12" sm="4" md="4" lg="4" xl="4" xxl="4" className="mb-6">
                     <label htmlFor="monto" className="font-weight-bold">
-                        Monto (Bs).
+                        Monto del pago(Bs).
                     </label>
                     <Field
                         id="monto"
                         name="monto"
                         component={BaseInputMonto}
                         maxLength="20"
-                        disabled
                     />
                 </Col>
                 <Col xs="12" sm="4" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -99,6 +100,18 @@ export const BaseFormik = ({formik}) => {
                         name="fecha"
                         component={BaseInput}
                         max={formatoFechaFutura}
+                    />
+                </Col>
+                <Col xs="12" sm="4" md="4" lg="4" xl="4" xxl="4" className="mb-6">
+                    <label htmlFor="monto" className="font-weight-bold">
+                        Total de las obligaciones tributarias (Bs).
+                    </label>
+                    <Field
+                        id="monto"
+                        name="totalTributos"
+                        component={BaseInputMonto}
+                        maxLength="20"
+                        disabled
                     />
                 </Col>
             </Row>

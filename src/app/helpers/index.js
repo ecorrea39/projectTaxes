@@ -51,6 +51,7 @@ export const GenerarCodBanesco = () => {
 }
 
 export const formatearMontos = (monto) => {
+    
     return (
         monto
             .toFixed(2)
@@ -60,27 +61,22 @@ export const formatearMontos = (monto) => {
 }
 
 export const formatearMontosII = (monto) => {
-    console.log(monto)
+    if( isNaN(monto) ) {
+        let newFormat = parseFloat( monto.replace(/,/g, '.') );
+        return newFormat;
+    } else {
+        return monto;
+    }
+}
 
-    if(monto.includes(",")) {
+export const formatearMontosIII = (monto) => {
+    let newMonto = monto.toString();
+    if(newMonto.includes(".")) {
         return (
-            monto
-                //.toFixed(2)
-                .replace(/,/g, '.')
+            newMonto
+                .replace('.',',')
         )
     } else {
         return monto;
     }
-
-    
-}
-
-export const formatearMontosIII = (monto) => {
-    console.log(monto)
-    return (
-        monto
-            .replace(/./g, ',')
-            // .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1')
-    )
-    
 }

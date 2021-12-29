@@ -20,10 +20,10 @@ export const ListTaxes = ({listDeclaraciones,formik, calcularMontosTotates}) => 
         e.persist();
         let checkEd = e.target.checked;
         let tributos = formik.values.tributos;
-        let indice = tributos.indexOf(conc.conceptoId);
+        let indice = tributos.indexOf(conc.idTributo);
 
         if(checkEd) {
-            tributos.push(conc.conceptoId)
+            tributos.push(conc.idTributo)
             formik.setFieldValue("tributos", tributos);
             calcularMontosTotates(tributos,"suma");
         } else {
@@ -32,6 +32,7 @@ export const ListTaxes = ({listDeclaraciones,formik, calcularMontosTotates}) => 
             calcularMontosTotates(tributos,"resta");
         }
     }
+
     
     return (
         <>

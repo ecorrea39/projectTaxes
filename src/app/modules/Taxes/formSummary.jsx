@@ -5,7 +5,7 @@ import { SchemaSummary } from "./validateSchemas";
 import TaxesContext from "../../context/taxes/taxesContext";
 import Swal from "sweetalert2";
 import { BaseFormikSummary } from "./baseFormikSummary";
-import { formatearMontosII } from "../../helpers";
+import { formatearMontosII, formatearMontosIII } from "../../helpers";
 
 function FormSummary() {
 
@@ -13,14 +13,43 @@ function FormSummary() {
             setFormSummary, setStepTaxes, conceptos, totalTributoDeclarado, declaracionesRealizadas,
             actaReparo, reAdmin, reCul, debForm, debMat, creditoFiscal, conv, cheq, multa, intereses
         } = useContext(TaxesContext);
+    const [continueForm, setContinueForm] = useState(false);
+    const [ totales, setTotales ] = useState({
+        intereses: 0,
+        multa: 0,
+        tributos: 0,
+        montoPagar: 0,
+        conceptos: 0,
+        totalPagar: 0,
+    });
 
     const [filterConcepts, setFilterConcepts] = useState([]);
     const [detallesDeclaraciones, setDetDeclaraciones] = useState([]);
 
-    const calcularMonto = (values) => {
-        //console.log(values)
+    // Asignacion inicial de los montos
+    const asignarMontos = () => {
+        
+        let montoIntereses = detallesDeclaraciones.totales.intereses;
+        let montoTributo = detallesDeclaraciones.totales.tributos;
+        let montoConceptos= detallesDeclaraciones.totales.conceptos;
+        let montoAPagar = detallesDeclaraciones.totales.tributos + montoIntereses + montoConceptos;
+        
+        setTotales({
+            intereses: montoIntereses,
+            tributos: montoTributo,
+            montoPagar: montoAPagar,
+            multa: 0,
+            conceptos: montoConceptos,
+            totalPagar: montoAPagar
+        });
+        return;
+    }
+
+    const calcularMontoConceptos = (values) => {
         let detallesConceptos = [];
-        let montoTotal = totalTributoDeclarado + values.montoIntereses;
+        let montoTotal = totales.montoPagar;
+        let montoTotalConceptos = 0;
+        let montoPagar = formatearMontosII(values.montoPagar);
         // ESTO SE DEBE OPTIMIZAR CON URGENCIA
         values.conceptos.map((element,index)=>{
             let concepto = {
@@ -44,37 +73,43 @@ function FormSummary() {
                 concepto.detalle.monto = actaReparo.montoActa;
                 concepto.detalle.fecha_concp = actaReparo.fechaActa;
                 concepto.detalle.nro_doc = actaReparo.numActa;
-                console.log(montoTotal)
-                let monto = formatearMontosII(actaReparo.montoActa) ;
-                montoTotal += parseFloat( monto );
-                //console.log(montoTotal)
+                let monto = actaReparo.montoActa != "" ? formatearMontosII(actaReparo.montoActa) : 0; // Reemplazo la "," por "."
+                montoTotalConceptos += parseFloat( monto );
+                montoTotal += parseFloat( monto ); // convierto a float y sumo al total
             }
             if (element == 9) {
                 concepto.detalle.nro_doc = reAdmin.numResolucionAdmin;
                 concepto.detalle.fecha_concp = reAdmin.fechaResolucionAdmin;
-                concepto.detalle.monto = reAdmin.montoMultaResolucionAdmin;
+               
                 concepto.detalle.monto_intereses = reAdmin.montoInteresesResolucionAdmin;
-                montoTotal += reAdmin.montoMultaResolucionAdmin;
+
+                concepto.detalle.monto = reAdmin.montoMultaResolucionAdmin;
+                let monto = formatearMontosII(reAdmin.montoMultaResolucionAdmin);
+                montoTotalConceptos += parseFloat( monto );
+                montoTotal += parseFloat( monto );
             }
             if (element == 4) {
                 concepto.detalle.nro_doc = reCul.numResolucionCul;
                 concepto.detalle.fecha_concp = reCul.fechaResolucionCul;
                 concepto.detalle.monto = reCul.montoMultaResolucionCul;
                 let monto = formatearMontosII(reCul.montoMultaResolucionCul) ;
+                montoTotalConceptos += parseFloat( monto );
                 montoTotal += parseFloat( monto );
             }
             if (element == 10) {
                 concepto.detalle.nro_doc = debForm.numResolucionForm;
                 concepto.detalle.fecha_concp = debForm.fechaResolucionForm;
                 concepto.detalle.monto = debForm.montoMultaResolucionForm;
-                let monto = formatearMontosII(debForm.montoMultaResolucionForm) ;
+                let monto = formatearMontosII(debForm.montoMultaResolucionForm);
+                montoTotalConceptos += parseFloat( monto );
                 montoTotal += parseFloat( monto );
             }
             if (element == 11) {
                 concepto.detalle.nro_doc = debMat.numResolucionMat;
                 concepto.detalle.fecha_concp = debMat.fechaResolucionMat;
                 concepto.detalle.monto = debMat.montoMultaResolucionMat;
-                let monto = formatearMontosII(debMat.montoMultaResolucionMat) ;
+                let monto = formatearMontosII(debMat.montoMultaResolucionMat);
+                montoTotalConceptos += parseFloat( monto );
                 montoTotal += parseFloat( monto );
             }
             if (element == 5) {
@@ -82,8 +117,13 @@ function FormSummary() {
                 concepto.detalle.fecha_concp = conv.fechaConvenio;
                 concepto.detalle.nro_giro = conv.numGiroConvenioPago;
                 concepto.detalle.fecha_vcto_giro = conv.fechaVencConvenio;
-                concepto.detalle.monto = conv.montoConvenio;
+               
                 concepto.detalle.monto_intereses = conv.montoInteresesConvenio;
+
+                concepto.detalle.monto = conv.montoConvenio;
+                let monto = formatearMontosII(conv.montoInteresesConvenio) ;
+                montoTotalConceptos += parseFloat( monto );
+                montoTotal += parseFloat( monto );
             }
             if (element == 6) {
                 concepto.detalle.nro_doc = cheq.numCheque;
@@ -92,44 +132,71 @@ function FormSummary() {
                 concepto.detalle.fecha_nota_debito = cheq.fechaNotaDebito;
                 concepto.detalle.monto = cheq.montoCheque;
                 let monto = formatearMontosII(cheq.montoCheque) ;
+                montoTotalConceptos += parseFloat( monto );
                 montoTotal += parseFloat( monto );
             }
             if (element == 7) {
                 concepto.detalle.monto = multa.montoMulta;
                 let monto = formatearMontosII(multa.montoMulta) ;
+                montoTotalConceptos += parseFloat( monto );
                 montoTotal += parseFloat( monto );
             }
             if (element == 8) {
                 concepto.detalle.monto = intereses.montoInteresesMoratorios;
                 let monto = formatearMontosII(intereses.montoInteresesMoratorios) ;
+                montoTotalConceptos += parseFloat( monto );
                 montoTotal += parseFloat( monto );
             }
             detallesConceptos.push(concepto);
         });
+        
         values.detallesConceptos = detallesConceptos;
+        let credito = 0;
+        let motoMayor;
+        let montoMenor;
+        
+        if(montoPagar > 0) {
+            if( montoPagar >= montoTotal ) {
+                motoMayor = montoPagar;
+                montoMenor = montoTotal;
+            } else {
+                motoMayor = montoTotal;
+                montoMenor = montoPagar;
+            }
+            let montoCredito = motoMayor - montoMenor - montoTotalConceptos;
+            credito = montoCredito > 0 ? montoCredito : 0;
+        }
 
-        let total = montoTotal + creditoFiscal.montoCredito;
+        let total = montoTotal + credito;
+        let newTotales = {...totales};
+        
+        newTotales.totalPagar = parseFloat(total);
+        newTotales.conceptos = montoTotalConceptos;
+        values.montoPagar = formatearMontosIII( total );
+        setTotales(newTotales);
+        setContinueForm(total > 0);
+        
         //console.log(parseFloat( formatearMontosII(values.montoPagar.toLocaleString('es')) ) )
         //console.log(values.montoPagar.toLocaleString('es'))
         //console.log( parseFloat( formatearMontosII(values.montoPagar) ) )
-        //console.log(total)
+        //console.log(values.montoPagar)
         //console.log("total ", total, "monto ", parseFloat( formatearMontosII(values.montoPagar) ))
-        return {continue: total <= parseFloat( formatearMontosII(values.montoPagar) ), newValues: values};
+        //return {continue: total <= parseFloat( formatearMontosII(values.montoPagar) ), newValues: values};
+        //return {continue: total > 0};
+        return newTotales;
     }
 
     const handleSubmit = async (values) => {
-        // esta validacion solicitaron quitarla
-        // let calculo = calcularMonto(values);
-        let calculo = {continue: true};
-        if(calculo.continue) {
+        if(continueForm) {
+            //await asignarMontos();
             setFormSummary(values);
             setStepTaxes(3);
         } else {
             Swal.fire({
                 icon: 'error',
-                title: 'El monto total de la transaccion es inferior a los montos declarados.',
-                showConfirmButton: false,
-                timer: 4000
+                title: 'Error en el total',
+                text: "Por favor verifique que el total a pagar sea mayor a Bs. 0,00",
+                confirmButtonText: 'Ok'
             });
         }
     }
@@ -140,7 +207,8 @@ function FormSummary() {
             declaraciones:[],
             totales: {
                 intereses: 0,
-                tributos: 0
+                tributos: 0,
+                conceptos: 0
             }
         };
         let result = await declaracionesRealizadas.map( async (element,index) => {
@@ -149,10 +217,10 @@ function FormSummary() {
                 ano_declaracion: element.attributes.data.ano_declaracion,
                 conceptoId: element.attributes.data.concepto_pago,
                 fecha_declaracion: element.attributes.data.fecha_declaracion,
-                intereses: totalesDec.intereses,
+                intereses: parseFloat( totalesDec.intereses ),
                 multa: element.attributes.data.monto_multa,
                 monto: element.attributes.data.monto_tributo,
-                totalTributo: totalesDec.tributo,
+                totalTributo: parseFloat( totalesDec.tributo ),
                 trimestre: element.attributes.data.trimestre,
                 name: "",
                 idTributo: element.attributes.data.id,
@@ -160,8 +228,8 @@ function FormSummary() {
                 checked: true
             }
             array.declaraciones.push(detalles);
-            array.totales.intereses +=  detalles.intereses;
-            array.totales.tributos +=  detalles.totalTributo;
+            array.totales.intereses += detalles.intereses;
+            array.totales.tributos += detalles.totalTributo;
 
         });
         setDetDeclaraciones(array);
@@ -246,10 +314,10 @@ function FormSummary() {
         let diasDeMora = calcularDias( declaracion );
         let tasaDeIntereses = calcularTasa();
         let montoDeIntereses = calcularMontoIntereses(diasDeMora,tasaDeIntereses,declaracion.attributes.data.monto_tributo);
-        
+       
         return {
-            intereses: parseFloat(montoDeIntereses),
-            tributo: parseFloat(declaracion.attributes.data.monto_tributo)
+            intereses: parseFloat(montoDeIntereses).toFixed(2),
+            tributo: parseFloat(declaracion.attributes.data.monto_tributo).toFixed(2)
         }
     }
 
@@ -272,7 +340,11 @@ function FormSummary() {
                             <BaseFormikSummary
                                 formik={formik}
                                 conceptos={filterConcepts}
-                                listDeclaraciones={detallesDeclaraciones} />
+                                listDeclaraciones={detallesDeclaraciones}
+                                totales={totales}
+                                setTotales={setTotales}
+                                asignarMontos={asignarMontos}
+                                calcularMontoConceptos={calcularMontoConceptos} />
                         </Form>
                     )
                 }
