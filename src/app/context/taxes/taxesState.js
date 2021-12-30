@@ -6,11 +6,11 @@ import Swal from "sweetalert2";
 
 export const TaxesState = ({ children }) => {
 
-    const [stepTaxes, setStepTaxes ] = useState(2);
+    const [stepTaxes, setStepTaxes ] = useState(1);
     const [bancos, setBancos] = useState([]);
     const [usts, setUSTs] = useState([]);
     const [conceptos, setConceptos] = useState([
-        {clave: "01", id: "1", name: "Aporte patronal 2%"},
+       /* {clave: "01", id: "1", name: "Aporte patronal 2%"},
         {clave: "02", id: "2", name: "Aporte de los trabajadores 0,5%"},
         {clave: "03", id: "3", name: "Acta de reparo"},
         {clave: "04", id: "4", name: "Resolucion administrativa"},
@@ -21,7 +21,7 @@ export const TaxesState = ({ children }) => {
         {clave: "09", id: "9", name: "Cheques devueltos"},
         {clave: "10", id: "10", name: "Multas porcentuales"},
         {clave: "11", id: "11", name: "Intereses de mora"},
-        {clave: "12", id: "12", name: "Crédito fiscal"}
+        {clave: "12", id: "12", name: "Crédito fiscal"}*/
     ]);
     const [anos, setAnos] = useState([]);
     const [trimestres, setTrimestres] = useState([]);
@@ -29,7 +29,7 @@ export const TaxesState = ({ children }) => {
     const [formDataPayment, setFormDataPayment] = useState({});
     const [formSummary, setFormSummary] = useState({});
     const [formDataDeclaration, setFormDataDeclaration] = useState({
-        declaraciones: [
+        /*declaraciones: [
             {
                 ano_declaracion: "2020",
                 concepto_pago: "1",
@@ -63,7 +63,7 @@ export const TaxesState = ({ children }) => {
                 trimestre: "1"
             }
         ],
-        termsG: true
+        termsG: true*/
     });
     const [userData, setUserData] = useState({});
     const [historico, setHistorico] = useState([]);
@@ -73,7 +73,7 @@ export const TaxesState = ({ children }) => {
     const [declaracionSeleccionada, setDeclaracionSeleccionada] = useState([]);
     const [totalTributoDeclarado, setTotalTributoDeclarado] = useState();
     const [declaracionesRealizadas, setDeclaracionesRealizadas] = useState([
-        {
+        /*{
             attributes: {
                 data: {
                     ano_declaracion: "2021",
@@ -126,7 +126,7 @@ export const TaxesState = ({ children }) => {
                 },
                 typw: "tributeDeclaration"
             }
-        }            
+        }   */         
     ]);
     const [selConcepto, setSelConcepto] = useState([]);
     const estatus = ['eliminada', 'creada', 'definitiva', 'pagada' ];
