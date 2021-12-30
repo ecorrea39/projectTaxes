@@ -10,8 +10,8 @@ import { formatearMontosII, formatearMontosIII } from "../../helpers";
 function FormSummary() {
 
     const {
-            setFormSummary, setStepTaxes, conceptos, totalTributoDeclarado, declaracionesRealizadas,
-            actaReparo, reAdmin, reCul, debForm, debMat, creditoFiscal, conv, cheq, multa, intereses
+            setFormSummary, setStepTaxes, conceptos, declaracionesRealizadas, creditoFiscal,
+            actaReparo, reAdmin, reCul, debForm, debMat, conv, cheq, multa, intereses
         } = useContext(TaxesContext);
     const [continueForm, setContinueForm] = useState(false);
     const [ totales, setTotales ] = useState({
@@ -28,18 +28,17 @@ function FormSummary() {
 
     // Asignacion inicial de los montos
     const asignarMontos = () => {
-        
         let montoIntereses = detallesDeclaraciones.totales.intereses;
         let montoTributo = detallesDeclaraciones.totales.tributos;
-        let montoConceptos= detallesDeclaraciones.totales.conceptos;
-        let montoAPagar = detallesDeclaraciones.totales.tributos + montoIntereses + montoConceptos;
+        let montoConceptos = detallesDeclaraciones.totales.conceptos;
+        let montoAPagar = 0 + detallesDeclaraciones.totales.montoPagar + montoConceptos;
         
         setTotales({
             intereses: montoIntereses,
             tributos: montoTributo,
             montoPagar: montoAPagar,
-            multa: 0,
             conceptos: montoConceptos,
+            multa: 0,
             totalPagar: montoAPagar
         });
         return;
@@ -47,7 +46,7 @@ function FormSummary() {
 
     const calcularMontoConceptos = (values) => {
         let detallesConceptos = [];
-        let montoTotal = totales.montoPagar;
+        let montoTotal = totales.totalPagar;
         let montoTotalConceptos = 0;
         let montoPagar = formatearMontosII(values.montoPagar);
         // ESTO SE DEBE OPTIMIZAR CON URGENCIA
@@ -66,7 +65,7 @@ function FormSummary() {
                     nro_giro: ""
                 }
             };
-
+            console.log(element)
             concepto.idConcepto = element;
 
             if (element == 3) {
@@ -147,6 +146,9 @@ function FormSummary() {
                 montoTotalConceptos += parseFloat( monto );
                 montoTotal += parseFloat( monto );
             }
+            if ( element == 12) {
+               concepto.detalle.monto = creditoFiscal.montoCredito;
+            }
             detallesConceptos.push(concepto);
         });
         
@@ -169,13 +171,16 @@ function FormSummary() {
 
         let total = montoTotal + credito;
         let newTotales = {...totales};
-        
-        newTotales.totalPagar = parseFloat(total);
+        let newDetailsTaxes = {...detallesDeclaraciones};
+        newDetailsTaxes.totales = newTotales;
+        newTotales.montoPagar = parseFloat(total);
         newTotales.conceptos = montoTotalConceptos;
         values.montoPagar = formatearMontosIII( total );
-        setTotales(newTotales);
+        //setTotales(newTotales);
+        setDetDeclaraciones(newDetailsTaxes);
         setContinueForm(total > 0);
-        
+        console.log(values)
+
         //console.log(parseFloat( formatearMontosII(values.montoPagar.toLocaleString('es')) ) )
         //console.log(values.montoPagar.toLocaleString('es'))
         //console.log( parseFloat( formatearMontosII(values.montoPagar) ) )
@@ -189,7 +194,16 @@ function FormSummary() {
     const handleSubmit = async (values) => {
         if(continueForm) {
             //await asignarMontos();
-            setFormSummary(values);
+            //console.log(totales)
+            //console.log(detallesDeclaraciones)
+            //console.log(values)
+            setFormSummary({
+                conceptos: values.conceptos,
+                detallesConceptos: values.detallesConceptos,
+                tributos: values.tributos,
+                totales: detallesDeclaraciones.totales,
+                declaraciones: detallesDeclaraciones.declaraciones
+            });
             setStepTaxes(3);
         } else {
             Swal.fire({
@@ -208,19 +222,23 @@ function FormSummary() {
             totales: {
                 intereses: 0,
                 tributos: 0,
-                conceptos: 0
+                conceptos: 0,
+                multas: 0,
+                montoPagar: 0,
+                totalPagar: 0
             }
         };
         let result = await declaracionesRealizadas.map( async (element,index) => {
             let totalesDec = await calcularIntereses(element);
+            
             let detalles = {
                 ano_declaracion: element.attributes.data.ano_declaracion,
                 conceptoId: element.attributes.data.concepto_pago,
                 fecha_declaracion: element.attributes.data.fecha_declaracion,
                 intereses: parseFloat( totalesDec.intereses ),
                 multa: element.attributes.data.monto_multa,
-                monto: element.attributes.data.monto_tributo,
-                totalTributo: parseFloat( totalesDec.tributo ),
+                monto: parseFloat( element.attributes.data.monto_tributo ),
+                totalTributo: parseFloat( totalesDec.totalTributo ) + parseFloat( totalesDec.intereses ),
                 trimestre: element.attributes.data.trimestre,
                 name: "",
                 idTributo: element.attributes.data.id,
@@ -229,8 +247,8 @@ function FormSummary() {
             }
             array.declaraciones.push(detalles);
             array.totales.intereses += detalles.intereses;
-            array.totales.tributos += detalles.totalTributo;
-
+            array.totales.tributos += parseFloat( detalles.monto );
+            array.totales.montoPagar += parseFloat( detalles.monto ) + detalles.intereses;
         });
         setDetDeclaraciones(array);
         return result;
@@ -315,10 +333,10 @@ function FormSummary() {
         let tasaDeIntereses = calcularTasa();
         let montoDeIntereses = calcularMontoIntereses(diasDeMora,tasaDeIntereses,declaracion.attributes.data.monto_tributo);
        
-        return {
-            intereses: parseFloat(montoDeIntereses).toFixed(2),
-            tributo: parseFloat(declaracion.attributes.data.monto_tributo).toFixed(2)
-        }
+        return { 
+                intereses: parseFloat(montoDeIntereses).toFixed(2),
+                totalTributo: parseFloat(declaracion.attributes.data.monto_tributo).toFixed(2)
+            }        
     }
 
     useEffect(()=>{

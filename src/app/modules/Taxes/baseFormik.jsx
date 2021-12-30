@@ -13,8 +13,8 @@ export const BaseFormik = ({formik}) => {
 
     useEffect(()=>{
         console.log(formSummary)
-        formik.setFieldValue("totalTributos", formSummary.montoPagar);
-        
+        //formik.setFieldValue("totalTributos", formSummary.totales.montoPagar);
+        formik.setFieldValue("monto", formSummary.totales.montoPagar);
     },[]);
 
     return (
@@ -102,7 +102,7 @@ export const BaseFormik = ({formik}) => {
                         max={formatoFechaFutura}
                     />
                 </Col>
-                <Col xs="12" sm="4" md="4" lg="4" xl="4" xxl="4" className="mb-6">
+                <Col xs="12" sm="4" md="4" lg="4" xl="4" xxl="4" className="mb-6 d-none">
                     <label htmlFor="monto" className="font-weight-bold">
                         Total de las obligaciones tributarias (Bs).
                     </label>

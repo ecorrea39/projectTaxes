@@ -13,20 +13,49 @@ export const BaseFormikSummary = ({conceptos,formik,listDeclaraciones, setTotale
 
     const { totalTributoDeclarado, setCreditoFiscal, creditoFiscal,
         declaracionesRealizadas } = useContext(TaxesContext);
+
+    const addDetailsCreditoFiscal = (monto,action) => {
+
+        if (action == "add") {
+            formik.values.detallesConceptos.push(
+                {
+                    detalle: {
+                        monto: monto,
+                        monto_multa: "", 
+                        monto_intereses: "",
+                        nro_doc: "", 
+                        fecha_concp: "", 
+                        fecha_vcto_giro: "", 
+                        fecha_nota_debito: "", 
+                        nota_debito: "",
+                        nro_giro: ""
+                    },
+                    idConcepto: "12"
+                }
+            );
+        } else {
+            let indice;
+            formik.values.detallesConceptos.map( (element,index) => {
+                if(element.indexOf("12")) {
+                    indice = index;
+                }
+            });
+            formik.values.detallesConceptos.splice(indice,1);
+        }
+    }
     
     const calcularCreditoFiscal = async (typeAction) => {
 
         let montoAPagar = formatearMontosII(formik.values.montoPagar);
         let calcularTotales = await calcularMontoConceptos(formik.values);
-
         let motoMayor;
         let montoMenor;
         
-        if( montoAPagar >= calcularTotales.montoPagar ) {
+        if( montoAPagar >= calcularTotales.totalPagar ) {
             motoMayor = montoAPagar;
-            montoMenor = calcularTotales.montoPagar;
+            montoMenor = calcularTotales.totalPagar;
         } else {
-            motoMayor = calcularTotales.montoPagar;
+            motoMayor = calcularTotales.totalPagar;
             montoMenor = montoAPagar;
         }
 
@@ -46,10 +75,22 @@ export const BaseFormikSummary = ({conceptos,formik,listDeclaraciones, setTotale
                     setCreditoFiscal({
                         montoCredito: resta
                     });
+                    
+                    let addConcept = formik.values.conceptos;
+                    addConcept.push("12")
+                    formik.setFieldValue("conceptos", addConcept);
+                    addDetailsCreditoFiscal(parseFloat(resta).toFixed(2),"add");
                     formik.setFieldValue("montoCredito", formatearMontos(resta));
                     formik.setFieldValue("montoPagar",formatearMontos( montoAPagar ) );
                     handleSubmit(typeAction);
                 } else {
+                    let indexConcept = formik.values.conceptos.indexOf("12");
+                    if ( indexConcept > -1 ) {
+                        let newConceptos = formik.values.conceptos;
+                        newConceptos.split(indexConcept,1);
+                        formik.setFieldValue("conceptos", [newConceptos]);
+                        addDetailsCreditoFiscal(0,"remove");
+                    }
                     formik.setFieldValue("montoCredito", "0,00");
                     formik.setFieldValue("montoPagar", montoAPagar);
                 }
@@ -73,12 +114,12 @@ export const BaseFormikSummary = ({conceptos,formik,listDeclaraciones, setTotale
             totalPagar: 0
         };
 
-        listDeclaraciones.declaraciones.map( (dec,index) => {
+        listDeclaraciones.declaraciones.map( (dec) => {
 
             let idTributo = dec.idTributo;
             
             if( tributos.indexOf(idTributo) > -1 ) {
-                newTotales.tributos += parseFloat( dec.totalTributo );
+                newTotales.tributos += parseFloat( dec.monto );
                 newTotales.intereses += parseFloat( dec.intereses );
             }
 
@@ -118,7 +159,7 @@ export const BaseFormikSummary = ({conceptos,formik,listDeclaraciones, setTotale
     useEffect(()=>{
         formik.setFieldValue("montoIntereses", totales.intereses);
         formik.setFieldValue("montoTributo", totales.tributos);
-        formik.setFieldValue("montoPagar", totales.totalPagar);
+        formik.setFieldValue("montoPagar", totales.montoPagar);
     },[totales]);
 
     useEffect(()=>{
@@ -127,6 +168,14 @@ export const BaseFormikSummary = ({conceptos,formik,listDeclaraciones, setTotale
             calcularMontosTotates(tributos);
         }
     },[formik.values.tributos]);
+
+    
+    useEffect(()=>{
+        /*let montoCredito = formik.values.montoCredito;
+        if(montoCredito > 0 ) {
+            calcularMontosTotates(tributos);
+        }*/
+    },[formik.values.montoCredito]);
 
     useEffect(()=>{
         if(listDeclaraciones.declaraciones) {

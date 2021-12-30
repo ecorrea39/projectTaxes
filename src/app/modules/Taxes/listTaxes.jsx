@@ -78,7 +78,7 @@ export const ListTaxes = ({listDeclaraciones,formik, calcularMontosTotates}) => 
                                                             name="tributos"
                                                             component={BaseInputMonto}
                                                             maxLength="20"
-                                                            value={ element.monto}
+                                                            value={ element.monto }
                                                             disabled
                                                         />
                                                     </Col>

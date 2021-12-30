@@ -7,7 +7,8 @@ import BaseInput from "../Forms/BaseInputs";
 
 export default function ReceiptPayment() {
 
-    const { formDataPayment, bancos, getUserData, userData, usts, conceptos, modalidadesPagos, formDataDeclaration, linkRecibo } = useContext(TaxesContext);
+    const { formDataPayment, bancos, getUserData, usts, conceptos, modalidadesPagos,
+            formDataDeclaration, linkRecibo } = useContext(TaxesContext);
 
     const [dataBanco, setDataBanco] = useState({nomBanco: "",numCuenta:""});
     const [listConceptos, setListConceptos] = useState([]);
@@ -134,20 +135,24 @@ export default function ReceiptPayment() {
 
         let conceptos = [];
 
-        if(formDataDeclaration.declaraciones) {
-            let taxes = formDataDeclaration.declaraciones;
+        if(formDataPayment.declaraciones) {
+            let taxes = formDataPayment.declaraciones;
             taxes.map((element) =>{
-                let slcConcept =  selectConcepto(element.concepto_pago);
+                let slcConcept =  selectConcepto(element.conceptoId);
                 let jsonData = {
                     clave: slcConcept.clave,
                     concepto: slcConcept.name,
                     anio: element.ano_declaracion,
                     trimestre: element.trimestre,
                     referencia: formDataPayment.nro_referencia,
-                    monto: element.monto_tributo
+                    monto: element.monto,
+                    intereses: element.intereses,
+                    multa: element.multa,
+                    totalTributo: element.totalTributo
                 }
                 conceptos.push(jsonData)
             });
+            console.log(conceptos)
         }
 
         formDataPayment.detallesConceptos.map((element) => {
@@ -158,15 +163,19 @@ export default function ReceiptPayment() {
                 anio: "N/A",
                 trimestre: "N/A",
                 referencia: formDataPayment.nro_referencia,
-                monto: element.detalle.monto
+                monto: element.detalle.monto,
+                intereses: "N/A",
+                multa: "N/A",
+                totalTributo: element.detalle.monto
             }
             conceptos.push(jsonData)                                 
-        })
+        });
+        console.log(conceptos)
         setListConceptos(conceptos);  
     }
 
     const selectBanco = (b) => {
-        let banco = bancos.find(element => element.id === b );
+        let banco = bancos.find(element => element.id == b );
         let nombreBanco = banco.attributes["id_banco_banco.nom_banco"];
         let trunBanco = nombreBanco.length > 30 ? nombreBanco.slice(0,30) + "..." : nombreBanco;
         let numCuenta = banco.attributes.cuenta_nro;
@@ -174,7 +183,7 @@ export default function ReceiptPayment() {
     }
 
     const selectConcepto = (c) => {
-        let concepto = conceptos.find(element => element.id === c );
+        let concepto = conceptos.find(element => element.id == c );
         let nombreConcepto = concepto.name;
         let trunConcepto = nombreConcepto.length > 30 ? nombreConcepto.slice(0,30) + "..." : nombreConcepto;
         return {name:trunConcepto, clave: concepto.clave};
@@ -182,14 +191,16 @@ export default function ReceiptPayment() {
 
     const selectTipoTransaccion = (tt) => {
         console.log(tt)
-        let tipoTransaccion = modalidadesPagos.find(element => element.id === tt);
+        let tipoTransaccion = modalidadesPagos.find(element => element.id == tt);
         console.log(tipoTransaccion)
         return tipoTransaccion.attributes.name;
     }
 
     const selectUST = (cod) => {
+        console.log(cod)
         if(cod) {
-            let ust = usts.find(element => element.attributes.cod === cod);
+            let ust = usts.find(element => element.attributes.cod == cod);
+            console.log(ust)
             return ust.attributes.asignacion;
         }
     }
@@ -355,6 +366,9 @@ export default function ReceiptPayment() {
                                 <th>Año</th>
                                 <th>Trimestre</th>
                                 <th>Monto (Bs)</th>
+                                <th>Intereses (Bs)</th>
+                                <th>Multa (Bs)</th>
+                                <th>Total (Bs)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -367,6 +381,9 @@ export default function ReceiptPayment() {
                                     <td>{element.anio}</td>
                                     <td>{element.trimestre}</td>
                                     <td>{element.monto}</td>
+                                    <td>{element.intereses}</td>
+                                    <td>{element.multa}</td>
+                                    <td>{element.totalTributo}</td>
                                 </tr>                                    
                             ))
                         }

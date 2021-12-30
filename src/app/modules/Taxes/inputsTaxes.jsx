@@ -18,7 +18,7 @@ export const InputsTaxes = () => {
             <Row className="mt-4 mb-4">
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
                     <label htmlFor="monto-tributo" className="font-weight-bold">
-                        Monto del tributo
+                        Tributos
                     </label>
                     <Field
                         id="monto-tributo"
@@ -30,7 +30,7 @@ export const InputsTaxes = () => {
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
                     <label htmlFor="intereses" className="font-weight-bold">
-                        Interes de mora
+                        Interes
                     </label>
                     <Tooltip title="Esto es un calculo aproximado de los interes." arrow placement="top">
                         <HelpOutlineIcon className="ml-2 mr-2" style={{fontSize: "16px"}} />
@@ -45,7 +45,7 @@ export const InputsTaxes = () => {
                 </Col>
                 <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
                     <label htmlFor="multa" className="font-weight-bold">
-                        Multa %
+                        Multas %
                     </label>
                     <Tooltip title="Esto es un calculo aproximado de la multa %." arrow placement="top">
                         <HelpOutlineIcon className="ml-2 mr-2" style={{fontSize: "16px"}} />
