@@ -7,10 +7,128 @@ import BaseInput from "../Forms/BaseInputs";
 
 export default function ReceiptPayment() {
 
-    const { formDataPayment, bancos, getUserData, userData, conceptos, modalidadesPagos, formDataDeclaration, linkRecibo } = useContext(TaxesContext);
+    const { formDataPayment, bancos, getUserData, userData, usts, conceptos, modalidadesPagos, formDataDeclaration, linkRecibo } = useContext(TaxesContext);
 
     const [dataBanco, setDataBanco] = useState({nomBanco: "",numCuenta:""});
     const [listConceptos, setListConceptos] = useState([]);
+
+    const ust = [
+        {
+            cod: "01",
+            asignacion: "TRIBUTOS CAPITAL, MIRANDA Y VARGAS",
+            estado: "1"
+        },
+        {
+            cod: "01",
+            asignacion: "TRIBUTOS CAPITAL, MIRANDA Y VARGAS",
+            estado: "15"
+        },
+        {
+            cod: "01",
+            asignacion: "TRIBUTOS CAPITAL, MIRANDA Y VARGAS",
+            estado: "24"
+        },
+        {
+            cod: "02",
+            asignacion: "TRIBUTOS ANZOATEGUI",
+            estado: "3"
+        },
+        {
+            cod: "03",
+            asignacion: "TRIBUTOS APURE",
+            estado: "4"
+        },
+        {
+            cod: "04",
+            asignacion: "TRIBUTOS ARAGUA",
+            estado: "5"
+        },
+        {
+            cod: "05",
+            asignacion: "TRIBUTOS BARINAS",
+            estado: "6"
+        },
+        {
+            cod: "06",
+            asignacion: "TRIBUTOS BOLIVAR",
+            estado: "7"
+        },
+        {
+            cod: "07",
+            asignacion: "TRIBUTOS CARABOBO",
+            estado: "8"
+        },
+        {
+            cod: "08",
+            asignacion: "TRIBUTOS COJEDES",
+            estado: "9"
+        },
+        {
+            cod: "09",
+            asignacion: "TRIBUTOS FALCON",
+            estado: "11"
+        },
+        {
+            cod: "10",
+            asignacion: "TRIBUTOS GUARICO",
+            estado: "12"
+        },
+        {
+            cod: "11",
+            asignacion: "TRIBUTOS LARA",
+            estado: "13"
+        },
+        {
+            cod: "12",
+            asignacion: "TRIBUTOS MERIDA",
+            estado: "14"
+        },
+        {
+            cod: "13",
+            asignacion: "TRIBUTOS MONAGAS",
+            estado: "16"
+        },
+        {
+            cod: "14",
+            asignacion: "TRIBUTOS NVA. ESPARTA",
+            estado: "17"
+        },
+        {
+            cod: "15",
+            asignacion: "TRIBUTOS PORTUGUESA",
+            estado: "18"
+        },
+        {
+            cod: "16",
+            asignacion: "TRIBUTOS SUCRE",
+            estado: "19"
+        },
+        {
+            cod: "17",
+            asignacion: "TRIBUTOS TACHIRA",
+            estado: "20"
+        },
+        {
+            cod: "18",
+            asignacion: "TRIBUTOS TRUJILLO",
+            estado: "21"
+        },
+        {
+            cod: "19",
+            asignacion: "TRIBUTOS YARACUY",
+            estado: "22"
+        },
+        {
+            cod: "20",
+            asignacion: "TRIBUTOS ZULIA",
+            estado: "23"
+        },
+        {
+            cod: "21",
+            asignacion: "TRIBUTOS DELTA AMACURO",
+            estado: "10"
+        }
+    ];
 
     const createListConcepts = () => {
 
@@ -63,8 +181,17 @@ export default function ReceiptPayment() {
     }
 
     const selectTipoTransaccion = (tt) => {
+        console.log(tt)
         let tipoTransaccion = modalidadesPagos.find(element => element.id === tt);
+        console.log(tipoTransaccion)
         return tipoTransaccion.attributes.name;
+    }
+
+    const selectUST = (cod) => {
+        if(cod) {
+            let ust = usts.find(element => element.attributes.cod === cod);
+            return ust.attributes.asignacion;
+        }
     }
 
     const handlePrint = () => {
@@ -76,11 +203,12 @@ export default function ReceiptPayment() {
     const rif = odb.get("rif");
     const razonSocial = odb.get("name");
     const phone = odb.get("phone_number_mobile");
+    const UST = odb.get("codigoUnidadEstadal");
 
     useEffect(() => {
         createListConcepts();
         getUserData(rif);
-        selectBanco(formDataPayment.banco)
+        selectBanco(formDataPayment.banco_id)
     },[]);
 
     return (
@@ -117,7 +245,7 @@ export default function ReceiptPayment() {
                     </label>
                     <div className="form-control">
                         <span>
-                            XXXXXX XXXX XXXX
+                            { selectUST(UST) }
                         </span>
                     </div>
                 </Col>

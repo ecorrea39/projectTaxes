@@ -3,7 +3,17 @@ import css from './checkbox.module.css'
 import {getIn} from "formik";
 
 export default function Checkbox (props) {
-    const { field, form: { touched, errors }, label, handleCheck, formik, ...rest } = props;
+    const { field, form: { touched, errors, handleChange }, label, formik, isChecked, modulo, permiso, extraOnChange, ...rest } = props;
+    field.onChange = e => {
+        handleChange(e)
+        // onChange personalizado
+        if (typeof extraOnChange !== 'undefined') {
+            props.extraOnChange(e,modulo,permiso);
+        }
+    }
+    if(isChecked) {
+        field.checked = true
+    }
     return (
         <label className={css.container}>
             <input 

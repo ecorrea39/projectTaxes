@@ -6,6 +6,7 @@ import  styles from './styles.module.css';
 import TaxesContext from "../../context/taxes/taxesContext";
 import Checkbox from "../Forms/BaseCheckbox";
 import css from '../Forms/checkbox.module.css';
+import BaseInputMonto from "../Forms/BaseInputMonto";
 
 export const InputsTaxes = ({listDeclaraciones,formik, calcularCreditoFiscal}) => {
 
@@ -30,7 +31,6 @@ export const InputsTaxes = ({listDeclaraciones,formik, calcularCreditoFiscal}) =
             tributos.splice(indice, 1);
             formik.setFieldValue("tributos", tributos);
         }
-        // calcularCreditoFiscal(formik.values.monto);
     }
     
     return (
@@ -45,9 +45,9 @@ export const InputsTaxes = ({listDeclaraciones,formik, calcularCreditoFiscal}) =
                     <Accordion defaultActiveKey="0">
                     {
                         listDeclaraciones.map((element,index)=>(
-                            <Row>
+                            <Row key={index} >
                                 <Col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
-                                    <Card key={index}>
+                                    <Card>
                                         <Card.Header className="pl-3 pr-3 pt-2">
                                             <label className={css.container}>
                                                 <input 
@@ -121,8 +121,8 @@ export const InputsTaxes = ({listDeclaraciones,formik, calcularCreditoFiscal}) =
                     <Field
                         id="monto-tributo"
                         name="montoTributo"
-                        component={BaseInput}
-                        maxLength="10"
+                        component={BaseInputMonto}
+                        maxLength="20"
                         disabled
                     />
                 </Col>
@@ -132,9 +132,9 @@ export const InputsTaxes = ({listDeclaraciones,formik, calcularCreditoFiscal}) =
                     </label>
                     <Field
                         id="intereses"
-                        name="intereses"
-                        component={BaseInput}
-                        maxLength="10"
+                        name="montoIntereses"
+                        component={BaseInputMonto}
+                        maxLength="20"
                         disabled
                     />
                 </Col>
@@ -144,10 +144,23 @@ export const InputsTaxes = ({listDeclaraciones,formik, calcularCreditoFiscal}) =
                     </label>
                     <Field
                         id="multa"
-                        name="multa"
-                        component={BaseInput}
-                        maxLength="10"
+                        name="montoMulta"
+                        component={BaseInputMonto}
+                        maxLength="20"
                         disabled
+                    />
+                </Col>
+            </Row>
+            <Row className="mt-4 mb-4">
+                <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
+                    <label htmlFor="monto-tributo" className="font-weight-bold">
+                        Monto a pagar
+                    </label>
+                    <Field
+                        id="monto"
+                        name="montoPagar"
+                        component={BaseInputMonto}
+                        maxLength="20"
                     />
                 </Col>
             </Row>

@@ -20,7 +20,15 @@ import { initialValuesTablesCol1,
          initialValuesTablesCol9,
          initialValuesTablesCol10,
          initialValuesTablesCol11,
-         initialValuesTablesCol12 } from "./initialValues";
+         initialValuesTablesCol12,
+         initialValuesTablesCol13,
+         initialValuesTablesCol14,
+         initialValuesTablesCol15,
+         initialValuesTablesCol16,
+         initialValuesTablesCol17,
+         initialValuesTablesCol18,
+         initialValuesTablesCol19,
+         initialValuesTablesCol20 } from "./initialValues";
 
 import { SchemaTablesCol1,
          SchemaTablesCol2,
@@ -33,7 +41,15 @@ import { SchemaTablesCol1,
          SchemaTablesCol9,
          SchemaTablesCol10,
          SchemaTablesCol11,
-         SchemaTablesCol12 } from "./validateSchemas";
+         SchemaTablesCol12,
+         SchemaTablesCol13,
+         SchemaTablesCol14,
+         SchemaTablesCol15,
+         SchemaTablesCol16,
+         SchemaTablesCol17,
+         SchemaTablesCol18,
+         SchemaTablesCol19,
+         SchemaTablesCol20 } from "./validateSchemas";
 
 import { BaseFormik } from "./baseFormik";
 import { BaseFormikBancosRecaudadores } from "./baseFormikBancosRecaudadores";
@@ -47,6 +63,14 @@ import { BaseFormikMotivoSancion } from './baseFormikMotivoSancion';
 import { BaseFormikDiasFestivos } from "./baseFormikDiasFestivos";
 import { BaseFormikTasaIntereses } from './baseFormikTasaIntereses';
 import { BaseFormikTipoDocumento } from './baseFormikTipoDocumento';
+import { BaseFormikTipoContribuyente } from './baseFormikTipoContribuyente';
+import { BaseFormikCuentasContables } from './baseFormikCuentasContables';
+import { BaseFormikFirmasAutorizadas } from './baseFormikFirmasAutorizadas';
+import { BaseFormikEstados } from './baseFormikEstados';
+import { BaseFormikMunicipios } from './baseFormikMunicipios';
+import { BaseFormikParroquias } from './baseFormikParroquias';
+import { BaseFormikCiudades } from './baseFormikCiudades';
+import { BaseFormikUnidadEstadalTributos }  from './baseFormikUnidadEstadalTributos';
 
 function ModalMasterTables(props) {
 
@@ -149,6 +173,46 @@ function ModalMasterTables(props) {
         case "tipo-documentos":
             initialValuesTables = initialValuesTablesCol12;
             schemaTables = SchemaTablesCol12;
+            break;
+
+        case "tipo-contribuyente":
+            initialValuesTables = initialValuesTablesCol13;
+            schemaTables = SchemaTablesCol13;
+            break;
+
+        case "cuentas-contables":
+            initialValuesTables = initialValuesTablesCol14;
+            schemaTables = SchemaTablesCol14;
+            break;
+
+        case "firmas-autorizadas":
+            initialValuesTables = initialValuesTablesCol15;
+            schemaTables = SchemaTablesCol15;
+            break;
+
+        case "estados":
+            initialValuesTables = initialValuesTablesCol16;
+            schemaTables = SchemaTablesCol16;
+            break;
+
+        case "municipios":
+            initialValuesTables = initialValuesTablesCol17;
+            schemaTables = SchemaTablesCol17;
+            break;
+
+        case "parroquias":
+            initialValuesTables = initialValuesTablesCol18;
+            schemaTables = SchemaTablesCol18;
+            break;
+
+        case "ciudades":
+            initialValuesTables = initialValuesTablesCol19;
+            schemaTables = SchemaTablesCol19;
+            break;
+
+        case "unidad-estadal-tributos":
+            initialValuesTables = initialValuesTablesCol20;
+            schemaTables = SchemaTablesCol20;
             break;
 
         default:
@@ -264,6 +328,62 @@ function ModalMasterTables(props) {
                                         {
                                             props.columnas === 'col-12' &&
                                             <BaseFormikTipoDocumento
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-13' &&
+                                            <BaseFormikTipoContribuyente
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-14' &&
+                                            <BaseFormikCuentasContables
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-15' &&
+                                            <BaseFormikFirmasAutorizadas
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-16' &&
+                                            <BaseFormikEstados
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-17' &&
+                                            <BaseFormikMunicipios
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-18' &&
+                                            <BaseFormikParroquias
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-19' &&
+                                            <BaseFormikCiudades
+                                                formik={formik}
+                                                props={props}
+                                            />
+                                        }
+                                        {
+                                            props.columnas === 'col-20' &&
+                                            <BaseFormikUnidadEstadalTributos
                                                 formik={formik}
                                                 props={props}
                                             />

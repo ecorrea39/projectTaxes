@@ -8,6 +8,7 @@ export const TaxesState = ({ children }) => {
 
     const [stepTaxes, setStepTaxes ] = useState(1);
     const [bancos, setBancos] = useState([]);
+    const [usts, setUSTs] = useState([]);
     const [conceptos, setConceptos] = useState([
         {clave: "01", id: "1", name: "Aporte patronal 2%"},
         {clave: "02", id: "2", name: "Aporte de los trabajadores 0,5%"},
@@ -26,41 +27,27 @@ export const TaxesState = ({ children }) => {
     const [trimestres, setTrimestres] = useState([]);
     const [formatoFechaFutura, setFormatoFechaFutura] = useState();    
     const [formDataPayment, setFormDataPayment] = useState({});
+    const [formSummary, setFormSummary] = useState({});
     const [formDataDeclaration, setFormDataDeclaration] = useState({
-        /*declaraciones: [
+        declaraciones: [
             {
-                ano_declaracion: "2021",
+                ano_declaracion: "2020",
                 concepto_pago: "1",
                 estatus: "1",
-                fecha_declaracion: "2021-10-22",
+                fecha_declaracion: "2020-04-13",
                 fecha_emision: "0001-01-01",
                 monto_intereses: "0",
                 monto_multa: "0",
-                monto_pagado: "100",
-                monto_tributo: 50,
+                monto_pagado: "1875",
+                monto_tributo: 37.5,
                 ntrabajadores: "25",
                 ntrabajadores_liquidados: "0",
                 sustitutiva: "1",
                 terms: true,
                 trimestre: "1"
-            },
-            {
-                ano_declaracion: "2020",
-                concepto_pago: "2",
-                estatus: "1",
-                fecha_declaracion: "2021-10-22",
-                fecha_emision: "2021-10-01",
-                monto_intereses: "0",
-                monto_multa: "0",
-                monto_pagado: "2000",
-                monto_tributo: 50,
-                ntrabajadores: "25",
-                ntrabajadores_liquidados: "120",
-                sustitutiva: "1",
-                terms: true,
-                trimestre: "2"
             }
-        ]*/
+        ],
+        termsG: true
     });
     const [userData, setUserData] = useState({});
     const [historico, setHistorico] = useState([]);
@@ -68,13 +55,17 @@ export const TaxesState = ({ children }) => {
     const [historicoFilter, setHistoricoFilter] = useState([]);
     const [declaracionSustitutiva, setDeclaracionSustitutiva] = useState(false);
     const [declaracionSeleccionada, setDeclaracionSeleccionada] = useState([]);
-    const [totalTributoDeclarado, setTotalTributoDeclarado] = useState(0);
-    const [declaracionesRealizadas, setDeclaracionesRealizadas] = useState([]);
+    const [totalTributoDeclarado, setTotalTributoDeclarado] = useState();
+    const [declaracionesRealizadas, setDeclaracionesRealizadas] = useState([{
+        attributes: {id_tributo: 2},
+        typw: "tributeDeclaration"
+    }]);
     const [selConcepto, setSelConcepto] = useState([]);
     const estatus = ['eliminada', 'creada', 'definitiva', 'pagada' ];
     const nrif = odb.get('rif');
     const [modalidadesPagos, setModalidadPagos] = useState([]);
     const [linkRecibo, setLinkRecibo] = useState("");
+    const [codigoUnico, setCondigoUnico] = useState("");
 
     const [actaReparo, setActaR] = useState({
         numActa: "",
@@ -94,8 +85,7 @@ export const TaxesState = ({ children }) => {
     const [debForm, setDebForm] = useState({
         numResolucionForm: "",
         fechaResolucionForm: "",
-        montoMultaResolucionForm: "",
-
+        montoMultaResolucionForm: ""
     });
     const [debMat, setDebMat] = useState({
         numResolucionMat: "",
@@ -108,7 +98,7 @@ export const TaxesState = ({ children }) => {
         numGiroConvenioPago: "",
         fechaVencConvenio: "",
         montoConvenio: "",
-        montoInteresesConvenio: "",
+        montoInteresesConvenio: ""
     });
     const [cheq, setCheq] = useState({
         numCheque: "",
@@ -136,7 +126,19 @@ export const TaxesState = ({ children }) => {
         getHistoricoDeclaraciones();
         getFechaFutura();
         formatearfecha(new Date(), 'YMD');
+        getUST();
     },[]);
+
+    const getUST = async () => {
+
+        try {
+            const respuesta = await clientAxios.get('/unidad_estadal/');
+            setUSTs(respuesta.data.data)
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
 
     const getBancos = async () => {
 
@@ -270,6 +272,7 @@ export const TaxesState = ({ children }) => {
                     }
                 )
             })
+            histo.sort(fieldSorter(['concepto_pago','ano_declaracion', 'trimestre']));
             setHistorico(histo);
             setHistoricoOriginal(histo);
 
@@ -278,6 +281,12 @@ export const TaxesState = ({ children }) => {
         }
 
     }
+
+    const fieldSorter = (fields) => (a, b) => fields.map(o => {
+        let dir = 1;
+        if (o[0] === '-') { dir = -1; o=o.substring(1); }
+        return a[o] > b[o] ? dir : a[o] < b[o] ? -(dir) : 0;
+    }).reduce((p, n) => p ? p : n, 0);
 
     const getFechaFutura = () => {
         const fecha = new Date();
@@ -305,11 +314,15 @@ export const TaxesState = ({ children }) => {
     function formatNumber(number) {
         return new Intl.NumberFormat("ES-ES", {
             style: "currency",
-            currency: "VEF"
+            currency: "VED"
         }).format(number)
     }
 
-    const sustituirDeclaracion = (seleccion, i, props) => {
+    const sustituirDeclaracion = (i, props) => {
+
+        const seleccion = i;
+
+        console.log('sel -- ', seleccion)
 
         try {
             if (seleccion.estatus === 2 || seleccion.estatus === 3 ) {
@@ -344,11 +357,13 @@ export const TaxesState = ({ children }) => {
         }
     }
 
+
     const validateAmount = (montoConcepto, monto) => {
         if(montoConcepto + totalTributoDeclarado > monto) {
             Swal.fire({
                 icon: 'error',
-                title: 'Verifique que los montos de los conceptos no superen al monto del pago.',
+                title: "Pago de tributos",
+                text: 'Verifique que los montos de los conceptos no superen al monto del pago.',
                 showConfirmButton: false,
                 timer: 3000
             })
@@ -362,6 +377,7 @@ export const TaxesState = ({ children }) => {
             requestConfig.data.type = "savePaymentDec";
             requestConfig.data.id = "j333333332"; // -> SI CAMBIO ESTE RIF FALLA LA PETICION
             requestConfig.data.attributes = formData;
+            console.log(requestConfig)
             const respuesta = await clientAxios.post('/payment_declaration/', requestConfig);
             setLinkRecibo(process.env.REACT_APP_API_URL+"reports/recibos_pago/"+respuesta.data.data.id);
             setStepTaxes(stepTaxes+1);
@@ -474,6 +490,36 @@ export const TaxesState = ({ children }) => {
         }
     }
 
+    const revisarDeclaracion = (valores, i) => {
+
+        let con = valores[i].concepto_pago;
+        let ano = valores[i].ano_declaracion;
+        let tri = valores[i].trimestre;
+
+        try {
+            let buscarHistorico = [];
+            let buscarActual = [];
+
+            if(con !== '' && ano !=='' && tri !='') {
+                buscarActual = valores.filter(x => Number(x.concepto_pago) === Number(con) && Number(x.ano_declaracion) === Number(ano) && Number(x.trimestre) === Number(tri));
+                buscarHistorico = historico.filter(x => Number(x.concepto_pago) === Number(con) && Number(x.ano_declaracion) === Number(ano) && Number(x.trimestre) === Number(tri));
+
+                if( buscarActual.length > 1 || buscarHistorico.length  ) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Declaración de tributos',
+                        text: "Periodo para declarar ya existe!",
+                        button: "Ok",
+                        timer: 2000
+                    });
+                    valores[i].trimestre = "";
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const showSelConcepto = (a) => {
 
         let arreglo = a;
@@ -492,45 +538,62 @@ export const TaxesState = ({ children }) => {
         conceptos,
         anos,
         trimestres,
-        setStepTaxes,
-        submitPayment,
-        submitDeclaration,
-        formDataPayment,
-        setFormDataDeclaration,
-        formDataDeclaration,
-        userData,
-        setFormDataPayment,
-        getUserData,
         formatoFechaFutura,
         historico,
         estatus,
-        formatearfecha,
-        formatNumber,
+        formDataPayment,
+        formSummary,
+        formDataDeclaration,
+        userData,
         nrif,
         declaracionSeleccionada,
         declaracionSustitutiva,
-        sustituirDeclaracion,
         totalTributoDeclarado,
-        setTotalTributoDeclarado,
-        setActaR, actaReparo,
-        reAdmin, setReAdmin,
-        reCul, setReCul,
-        debForm, setDebForm,
-        debMat, setDebMat,
-        creditoFiscal, setCreditoFiscal,
-        conv, setConv,
-        cheq, setCheq,
-        multa, setMulta,
-        intereses, setIntereses,
-        filtarHistorico,
         selConcepto,
-        showSelConcepto,
         modalidadesPagos,
-        setModalidadPagos,
         linkRecibo,
-        setLinkRecibo,
         declaracionesRealizadas,
-        setDeclaracionesRealizadas
+        actaReparo,
+        reAdmin,
+        reCul,
+        debForm,
+        debMat,
+        creditoFiscal,
+        conv,
+        cheq,
+        multa,
+        intereses,
+        codigoUnico,
+        usts,
+        setUSTs,
+        setCondigoUnico,
+        setFormSummary,
+        setFormDataDeclaration,
+        submitPayment,
+        submitDeclaration,
+        setFormDataPayment,
+        getUserData,
+        setStepTaxes,
+        formatearfecha,
+        formatNumber,
+        sustituirDeclaracion,
+        setTotalTributoDeclarado,
+        setActaR,
+        setReAdmin,
+        setReCul,
+        setDebForm,
+        setDebMat,
+        setCreditoFiscal,
+        setConv,
+        setCheq,
+        setMulta,
+        setIntereses,
+        filtarHistorico,
+        showSelConcepto,
+        setModalidadPagos,
+        setLinkRecibo,
+        setDeclaracionesRealizadas,
+        revisarDeclaracion
     }
 
     return (

@@ -13,6 +13,7 @@ export function AsideMenu({disableScroll}) {
   const authCtx = useContext(AuthContext);
   const userGroup = authCtx.userGroup;
   const userType = authCtx.userType;
+  const urlDash = authCtx.urlDash;
   const uiService = useHtmlClassService();
 
   const layoutProps = useMemo(() => {
@@ -39,7 +40,7 @@ export function AsideMenu({disableScroll}) {
 
           {/*begin::1 Level*/}
           <li className={`menu-item`} aria-haspopup="true">
-            <NavLink className="menu-link" to="/dashboard">
+            <NavLink className="menu-link" to={urlDash}>
               <span className="svg-icon menu-icon">
                 <SVG src={toAbsoluteUrl("/media/svg/icons/Design/Layers.svg")} />
               </span>

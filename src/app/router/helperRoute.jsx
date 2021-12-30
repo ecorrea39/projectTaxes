@@ -8,6 +8,12 @@ const UserDatosPage = lazy(() =>
 const MapaPage = lazy(() =>
   import("../modules/Mapa/Mapa")
 );
+// const QueryBuilderPage = lazy(() =>
+//   import("../modules/QueryBuilder/QueryBuilder")
+// );
+const QueryListPage = lazy(() =>
+  import("../modules/QueryList/QueryList")
+);
 const FondosDeComercioPage = lazy(() =>
   import("../modules/FondoDeComercio/FondoDeComercio")
 );
@@ -35,8 +41,14 @@ const AccountStatusPage = lazy(() =>
 const GroupsPage = lazy(() =>
   import ("../pages/panelAdmin/groups")
 );
+const UsersPage = lazy(() =>
+  import ("../pages/panelAdmin/users")
+);
 const PnaPage = lazy(() =>
     import ("../pages/pna")
+);
+const FusionarEmpresasPage = lazy(() =>
+    import ("../pages/fusionarEmpresas")
 );
 
 /**
@@ -46,9 +58,9 @@ const PnaPage = lazy(() =>
  * @name: Nombre de la ruta.
  * @component E componente que llamara esa ruta.
  */
-export const PathListContribuyente = [
+ export const PathList = [
   {
-    path: "/dashboard",
+    path: ["/","/dashboard", "/panel"],
     groups: ["contribuyentes","parciales","administradores"],
     name: "Inicio",
     component: DashboardPage
@@ -97,7 +109,7 @@ export const PathListContribuyente = [
   },
   {
     path: "/user-datos",
-    groups: ["contribuyentes", "parciales"],
+    groups: ["contribuyentes", "parciales", "administradores"],
     name: "Modificar perfil",
     component: UserDatosPage
   },
@@ -112,21 +124,18 @@ export const PathListContribuyente = [
     groups: ["contribuyentes", "parciales"],
     name: "Cambiar clave",
     component: UserDatosPage
-  }
-];
-
-export const PathListFuncional = [
-  {
-    path: "/panel",
-    groups: ["administradores"],
-    name: "Panel Dashboard",
-    component: DashboardPage
   },
   {
-    path: "/panel/grupos",
+    path: "/panel/grupos/:url?/:grupo_id?",
     groups: ["administradores"],
     name: "Grupos usuarios",
     component: GroupsPage
+  },
+  {
+    path: "/panel/usuarios/:url?",
+    groups: ["administradores"],
+    name: "Usuarios",
+    component: UsersPage
   },
   {
     path: "/tablas/:tabla",
@@ -140,11 +149,29 @@ export const PathListFuncional = [
     name: "Mapa",
     component: MapaPage
   },
+  // {
+  //   path: "/query-builder",
+  //   groups: ["administradores"],
+  //   name: "Definir Consulta",
+  //   component: QueryBuilderPage
+  // },
+  {
+    path: "/query-list",
+    groups: ["administradores"],
+    name: "Consultas Dinámicas",
+    component: QueryListPage
+  },
   {
     path: "/pna_certificado",
     groups: ["administradores"],
     name: "PNA Certificados",
     component: PnaPage
+  },
+  {
+    path: "/fusionar_empresas",
+    groups: ["administradores"],
+    name: "Fusionar Entidades de Trabajo",
+    component: FusionarEmpresasPage
   }
 ];
 
@@ -163,10 +190,22 @@ export const navFuncional = [
     icon: "",
     childrens: [
       {
-        title: "Grupos",
-        url: "/panel/grupos",
+        title: "Grupos y Permisos",
+        url: "/panel/grupos/",
         icon: "",
         slug: "panel-grupos",
+      },
+      {
+        title: "Usuarios",
+        url: "/panel/usuarios/",
+        icon: "",
+        slug: "panel-usuarios",
+      },
+      {
+        title: "Consultar Empresa",
+        url: "/user-datos",
+        icon: "",
+        slug: "modificar-perfil",
       }
     ]
   },
@@ -249,7 +288,7 @@ export const navFuncional = [
         slug: "tablas-motivo-sancion"
       },
       {
-        title: "Días Hábiles",
+        title: "Días Inhábiles",
         url: "/tablas/dias-festivos",
         icon: "",
         slug: "tablas-dias-festivos"
@@ -289,6 +328,54 @@ export const navFuncional = [
         url: "/tablas/tipo-documentos",
         icon: "",
         slug: "tablas-tipo-documentos"
+      },
+      {
+        title: "Tipos de Contribuyentes",
+        url: "/tablas/tipo-contribuyente",
+        icon: "",
+        slug: "tablas-tipo-contribuyente"
+      },
+      {
+        title: "Cuentas Contables",
+        url: "/tablas/cuentas-contables",
+        icon: "",
+        slug: "tablas-cuentas-contables"
+      },
+      {
+        title: "Firmas Autorizadas",
+        url: "/tablas/firmas-autorizadas",
+        icon: "",
+        slug: "tablas-firmas-autorizadas"
+      },
+      {
+        title: "Estados",
+        url: "/tablas/estados",
+        icon: "",
+        slug: "tablas-estados"
+      },
+      {
+        title: "Municipios",
+        url: "/tablas/municipios",
+        icon: "",
+        slug: "tablas-municipios"
+      },
+      {
+        title: "Parroquías",
+        url: "/tablas/parroquias",
+        icon: "",
+        slug: "tablas-parroquias"
+      },
+      {
+        title: "Ciudades",
+        url: "/tablas/ciudades",
+        icon: "",
+        slug: "tablas-ciudades"
+      },
+      {
+        title: "Unidad Estadal de Tributos",
+        url: "/tablas/unidad-estadal-tributos",
+        icon: "",
+        slug: "tablas-unidad-estadal-tributos"
       }
     ]
   },
@@ -303,6 +390,12 @@ export const navFuncional = [
         url: "/mapa",
         icon: "",
         slug: "mapa",
+      },
+      {
+        title: "Consultas Dinámicas",
+        url: "/query-list",
+        icon: "",
+        slug: "query-list",
       }
     ]
   },
@@ -319,6 +412,20 @@ export const navFuncional = [
         slug: "pna-certificado",
       }
     ]
+  },
+  {
+    titleSection: "Entidades de Trabajo",
+    title: "Entidades de Trabajo",
+    groups: ["administradores"],
+    icon: "",
+    childrens: [
+      {
+        title: "Fusionar Entidades de Trabajo",
+        url: "/fusionar_empresas",
+        icon: "",
+        slug: "fusionar-empresas",
+      }
+    ]
   }
 ];
 
@@ -329,19 +436,19 @@ export const navContribuyentes = [
     icon: "",
     childrens: [
       {
-        title: "Declaración y Reporte de pago",
-        url: "/tributos",
-        icon: "",
-        slug: "tributos",
-      },
-      {
-        title: "Entidad de trabajo",
+        title: "Entidad de Trabajo",
         url: "/user-datos",
         icon: "",
         slug: "entidad-de-trabajo",
       },
       {
-        title: "Estado de cuenta",
+        title: "Declaración y Reporte de Pago",
+        url: "/tributos",
+        icon: "",
+        slug: "tributos",
+      },
+      {
+        title: "Estado de Cuenta",
         url: "/estado-cuentas",
         icon: "",
         slug: "estado-cuentas",
@@ -365,13 +472,13 @@ export const navContribuyentes = [
     groups: ["contribuyentes"],
     childrens: [
       {
-        title: "Comprobante de inscripción",
+        title: "Comprobante de Inscripción",
         url: "/reportes/comprobante-de-inscripcion",
         icon: "",
         slug: "comprobante-de-inscripción",
       },
       {
-        title: "Certificado de solvencia",
+        title: "Certificado de Solvencia",
         url: "/reportes/certificado-solvencia",
         icon: "",
         slug: "certificado-de-solvencia",
@@ -379,27 +486,22 @@ export const navContribuyentes = [
     ]
   },
   {
-    title: "Perfil del contribuyente",
+    title: "Perfil del Contribuyente",
     groups: ["contribuyentes", "parciales"],
     childrens: [
       {
-        title: "Modificar perfil",
+        title: "Modificar Perfil",
         url: "/user-datos",
         icon: "",
         slug: "modificar-perfil",
-      },
-      {
-        title: "user-profile",
-        url: "/user-profile",
-        icon: "",
-        slug: "user-profile",
-      },
-      {
-        title: "Cambiar clave",
-        url: "/user-datos",
-        icon: "",
-        slug: "cambiar-clave",
-      },
+      }
+      // ,
+      // {
+      //   title: "Cambiar Clave",
+      //   url: "/user-datos",
+      //   icon: "",
+      //   slug: "cambiar-clave",
+      // },
     ]
   },
   {
@@ -409,9 +511,9 @@ export const navContribuyentes = [
   }
 ];
 
-export const PublicRoute = ({component, isAuth, ...options}) => {
+export const PublicRoute = ({component, urlDash, isAuth, ...options}) => {
   if (!isAuth) return <Route {...options} component={component} />
-  return <Redirect to="/dashboard" />
+  return <Redirect to={urlDash} />
 }
 
 export const PrivateRoute = ({component,isAuth, ...options}) => {

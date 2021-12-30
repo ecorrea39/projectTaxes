@@ -3,21 +3,22 @@ import { getIn } from 'formik';
 
 export default function BaseInput (props) {
 
-    const { field, form: { touched, errors, handleChange }, extraOnChange, ...rest } = props
+    const { field, form: { touched, errors, handleChange }, extraOnChange, myClass, type, ...rest } = props
     field.onChange = e => {
         handleChange(e)
         // onChange personalizado
         if (typeof extraOnChange !== 'undefined') {
-            props.extraOnChange(e.target.value,e.target.name);
+            props.extraOnChange(e.target.value,e.target.name,e);
         }
     }
 
     return (
         <>
             <input 
-                type="text"
+                type={type ? type : "text"}
                 className={
                     `form-control
+                    ${myClass}
                     ${getIn(touched, field.name) && getIn(errors, field.name) && 'is-invalid'}
                 `}
                 {...field}

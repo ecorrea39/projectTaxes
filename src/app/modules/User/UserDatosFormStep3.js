@@ -1,10 +1,22 @@
 import React, {useEffect, useState, useRef, useContext} from "react";
-import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
+import {Button, Card, Col, Container, Form, Row, Spinner} from "react-bootstrap";
 import {FormattedMessage, useIntl} from "react-intl";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import GeneralContext from "../../store/general-context";
+import Swal from "sweetalert2";
+
+const token = localStorage.getItem('authToken');
+const mail = localStorage.getItem('mail');
+
+const axiosConfig = {
+  headers: {
+    Accept: 'application/vnd.api+json',
+    'Content-Type': 'application/vnd.api+json',
+    Authorization: `Bearer ${token}`
+  }
+};
 
 const listaCodCelular = () => {
   const array = [
@@ -72,46 +84,21 @@ const listaCodCelular = () => {
   return array.sort((a, b) => a.name < b.name ? -1 : +(a.name > b.name));
 };
 
-const listaSector = () => {
-  const array = [
-    { "id": "1", "name": "Barrio" },
-    { "id": "2", "name": "Caserio" },
-    { "id": "3", "name": "Conjunto Residencial" },
-    { "id": "4", "name": "Sector" },
-    { "id": "5", "name": "Urbanización" },
-    { "id": "6", "name": "Zona" }
-  ];
-  return array.sort((a,b) => a.name < b.name ? -1 : +(a.name > b.name));
-};
-
-const listaVialidad = () => {
-  const array = [
-    { "id": "1", "name": "Calle" },
-    { "id": "2", "name": "Avenida" },
-    { "id": "3", "name": "Vereda" },
-    { "id": "4", "name": "Carretera" },
-    { "id": "5", "name": "Esquina" },
-    { "id": "6", "name": "Carrera" }
-  ];
-  return array.sort((a,b) => a.name < b.name ? -1 : +(a.name > b.name));
-};
-
-const listaEdificacion = () => {
-  const array = [
-    { "id": "1", "name": "Casa" },
-    { "id": "2", "name": "Centro Comercial" },
-    { "id": "3", "name": "Edificio" },
-    { "id": "4", "name": "Quinta" },
-    { "id": "5", "name": "Local" }
-  ];
-  return array.sort((a,b) => a.name < b.name ? -1 : +(a.name > b.name));
-};
 
 const textLabelColor = {
   'color': '#5A5EFF',
 };
 
+const formulario = {
+  'padding': '0',
+  'width:': '100%'
+}
+
 const UserDatosFormStep3 = (props) => {
+
+  const [sectores, setSectores] = useState([]);
+  const [vialidades, setVialidades] = useState([]);
+  const [edificaciones, setEdificaciones] = useState([]);
 
   const generalCtx = useContext(GeneralContext);
 
@@ -122,14 +109,16 @@ const UserDatosFormStep3 = (props) => {
     parroquia: "",
     ciudad: "",
     sector:"",
+    sector_texto:"",
     vialidad:"",
+    vialidad_texto:"",
     edificacion:"",
     local:"",
     codigo_telefono_compania1:"",
     numero_telefono_compania1:"",
     codigo_telefono_compania2:"",
     numero_telefono_compania2:"",
-    correo_empresa:""
+    correo_empresa: mail
   });
 
   const estadoRef = useRef();
@@ -150,11 +139,11 @@ const UserDatosFormStep3 = (props) => {
   const [ciudadesTotales, setCiudadesTotales] = useState([]);
   const [ciudades, setCiudades] = useState([]);
   const [siguiente, setSiguiente] = useState(false);
+  const [spinner, setSpinner] = useState(false);
 
   const intl = useIntl();
   const API_URL = `${process.env.REACT_APP_API_URL}`;
 
-  const token = localStorage.getItem('authToken');
   const rif = localStorage.getItem('rif');
 
   const axiosConfig = {
@@ -167,21 +156,26 @@ const UserDatosFormStep3 = (props) => {
 
   useEffect(() => {
 
+    listaSector();
+    listaVialidad();
+    listaEdificacion();
+
     cargaDeEstados().then((resolvedValueEstados) => {
-      console.log("resolvedValueEstados", resolvedValueEstados);
+      //console.log("resolvedValueEstados", resolvedValueEstados);
 
       cargaDeMunicipios().then((resolvedValueMunicipios) => {
-        console.log("resolvedValueMunicipios", resolvedValueMunicipios);
+        //console.log("resolvedValueMunicipios", resolvedValueMunicipios);
 
         cargaDeParroquias().then((resolvedValueParroquias) => {
-          console.log("resolvedValueParroquias", resolvedValueParroquias);
+          //console.log("resolvedValueParroquias", resolvedValueParroquias);
 
           cargaDeCiudades().then((resolvedValueCiudades) => {
-            console.log("resolvedValueCiudades", resolvedValueCiudades);
+            //console.log("resolvedValueCiudades", resolvedValueCiudades);
 
+            setSpinner(true);
             axios.get(`${API_URL}user_geographic_data/fondoporid/${generalCtx.theIdUserInformacionProfile}/`, axiosConfig)
               .then(function (res) {
-                console.log("get_user_company::", res);
+                //console.log("get_user_company::", res);
 
                 if (res.data.data != null) {
 
@@ -192,14 +186,16 @@ const UserDatosFormStep3 = (props) => {
                     "parroquia": res.data.data.attributes.parroquia != null ? res.data.data.attributes.parroquia : "",
                     "ciudad": res.data.data.attributes.ciudad != null ? res.data.data.attributes.ciudad : "",
                     "sector": res.data.data.attributes.sector != null ? res.data.data.attributes.sector : "",
+                    "sector_texto": res.data.data.attributes.sector_texto != null ? res.data.data.attributes.sector_texto : "",
                     "vialidad": res.data.data.attributes.vialidad != null ? res.data.data.attributes.vialidad : "",
+                    "vialidad_texto": res.data.data.attributes.vialidad_texto != null ? res.data.data.attributes.vialidad_texto : "",
                     "edificacion": res.data.data.attributes.edificacion != null ? res.data.data.attributes.edificacion : "",
                     "local": res.data.data.attributes.local != null ? res.data.data.attributes.local : "",
                     "codigo_telefono_compania1": res.data.data.attributes.codigo_telefono_compania1 != null ? res.data.data.attributes.codigo_telefono_compania1 : "",
                     "numero_telefono_compania1": res.data.data.attributes.numero_telefono_compania1 != null ? res.data.data.attributes.numero_telefono_compania1 : "",
                     "codigo_telefono_compania2": res.data.data.attributes.codigo_telefono_compania2 != null ? res.data.data.attributes.codigo_telefono_compania2 : "",
                     "numero_telefono_compania2": res.data.data.attributes.numero_telefono_compania2 != null ? res.data.data.attributes.numero_telefono_compania2 : "",
-                    "correo_empresa": res.data.data.attributes.correo_empresa != null ? res.data.data.attributes.correo_empresa : ""
+                    "correo_empresa": res.data.data.attributes.correo_empresa != null ? res.data.data.attributes.correo_empresa : mail
                   };
 
                   setInitialValues(initialValuesJson);
@@ -213,6 +209,9 @@ const UserDatosFormStep3 = (props) => {
               console.log("errGetUserCompany", err);
               alert("Error buscando datos geograficos de la empresa del usuario")
               disableLoading();
+            })
+            .finally(() => {
+              setSpinner(false);
             });
 
           }, (error) => {
@@ -237,18 +236,94 @@ const UserDatosFormStep3 = (props) => {
 
   }, []);
 
+  const listaSector = async () => {
+
+    try {
+
+      const respuesta = await axios.get(`${API_URL}sectores/`, axiosConfig)
+
+      let arreglo = [];
+      let lista = [];
+      arreglo = respuesta.data.data;
+      arreglo.map((x, i) => {
+        lista.push(
+            {
+              "id": arreglo[i].id,
+              "name": arreglo[i].attributes.name
+            }
+        )
+      });
+      setSectores(lista);
+
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+  const listaVialidad = async () => {
+
+    try {
+
+      const respuesta = await axios.get(`${API_URL}vialidades/`, axiosConfig)
+
+      let arreglo = [];
+      let lista = [];
+      arreglo = respuesta.data.data;
+      arreglo.map((x, i) => {
+        lista.push(
+            {
+              "id": arreglo[i].id,
+              "name": arreglo[i].attributes.name
+            }
+        )
+      });
+      setVialidades(lista);
+
+    } catch (error) {
+      console.log(error)
+    }
+
+  };
+
+  const listaEdificacion = async () => { //loanpas
+    try {
+
+      const respuesta = await axios.get(`${API_URL}edificaciones/`, axiosConfig)
+
+      let arreglo = [];
+      let lista = [];
+      arreglo = respuesta.data.data;
+      arreglo.map((x, i) => {
+        lista.push(
+            {
+              "id": arreglo[i].id,
+              "name": arreglo[i].attributes.name
+            }
+        )
+      });
+      setEdificaciones(lista);
+
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
   const cargaDeEstados = () => {
 
     let p = new Promise(function (resolve, reject) {
       enableLoading();
 
+      setSpinner(true);
       axios.get(`${API_URL}geographic_data_estados/`, axiosConfig)
         .then(function (res) {
-          console.log("resFormStep3_datos_geograficos_estados", res);
+          //console.log("resFormStep3_datos_geograficos_estados", res);
 
           const arrayData = Array.from(res.data.data);
 
-          let estadosArray = arrayData.map(elemData => {
+          let estadosArray = [];
+
+          arrayData.forEach(function(elemData) {
+
             let id = elemData.attributes.cod_estado;
             let elemDataName = elemData.attributes.descripcion;
 
@@ -257,7 +332,7 @@ const UserDatosFormStep3 = (props) => {
               "name": elemDataName
             };
 
-            return rObj;
+            estadosArray.push(rObj);
           });
 
           estadosArray.sort((a, b) => a.name < b.name ? -1 : 1);
@@ -272,6 +347,9 @@ const UserDatosFormStep3 = (props) => {
         disableLoading();
 
         reject(new Error('Error al consultar los datos de los estados'));
+      })
+      .finally(() => {
+        setSpinner(false);
       });
     })
 
@@ -283,13 +361,17 @@ const UserDatosFormStep3 = (props) => {
     let p = new Promise(function (resolve, reject) {
       enableLoading();
 
+      setSpinner(true);
       axios.get(`${API_URL}geographic_data_municipios/`, axiosConfig)
         .then(function (res) {
-          console.log("resFormStep3_datos_geograficos_municipios", res);
+          //console.log("resFormStep3_datos_geograficos_municipios", res);
 
           const arrayData = Array.from(res.data.data);
 
-          let municipiosArray = arrayData.map(elemData => {
+          let municipiosArray = [];
+
+          arrayData.forEach(function(elemData) {
+
             let id = elemData.attributes.cod_municipio;
             let elemDataName = elemData.attributes.descripcion;
             let relacion = elemData.attributes.cod_municipio + '-' + elemData.attributes.id_estado;
@@ -300,7 +382,7 @@ const UserDatosFormStep3 = (props) => {
               "relacion": relacion
             };
 
-            return rObj;
+            municipiosArray.push(rObj);
           });
 
           municipiosArray.sort((a, b) => a.name < b.name ? -1 : 1);
@@ -316,6 +398,9 @@ const UserDatosFormStep3 = (props) => {
         disableLoading();
 
         reject(new Error('Error al consultar los datos de los municipios'));
+      })
+      .finally(() => {
+        setSpinner(false);
       });
     })
 
@@ -327,13 +412,17 @@ const UserDatosFormStep3 = (props) => {
     let p = new Promise(function (resolve, reject) {
       enableLoading();
 
+      setSpinner(true);
       axios.get(`${API_URL}geographic_data_parroquias/`, axiosConfig)
         .then(function (res) {
-          console.log("resFormStep3_datos_geograficos_parroquias", res);
+          //console.log("resFormStep3_datos_geograficos_parroquias", res);
 
           const arrayData = Array.from(res.data.data);
 
-          let parroquiasArray = arrayData.map(elemData => {
+          let parroquiasArray = [];
+
+          arrayData.forEach(function(elemData) {
+
             let id = elemData.id;
             let elemDataName = elemData.attributes.descripcion;
             let relacion = elemData.id + '-' + elemData.attributes.id_municipio;
@@ -344,7 +433,7 @@ const UserDatosFormStep3 = (props) => {
               "relacion": relacion
             };
 
-            return rObj;
+            parroquiasArray.push(rObj);
           });
 
           parroquiasArray.sort((a, b) => a.name < b.name ? -1 : 1);
@@ -360,6 +449,9 @@ const UserDatosFormStep3 = (props) => {
         disableLoading();
 
         reject(new Error('Error al consultar los datos de las Parroquias'));
+      })
+      .finally(() => {
+        setSpinner(false);
       });
     })
 
@@ -371,13 +463,17 @@ const UserDatosFormStep3 = (props) => {
     let p = new Promise(function (resolve, reject) {
       enableLoading();
 
+      setSpinner(true);
       axios.get(`${API_URL}geographic_data_ciudades`, axiosConfig)
         .then(function (res) {
-          console.log("resFormStep3_datos_geograficos_ciudades", res);
+          //console.log("resFormStep3_datos_geograficos_ciudades", res);
 
           const arrayData = Array.from(res.data.data);
 
-          let ciudadesArray = arrayData.map(elemData => {
+          let ciudadesArray = [];
+
+          arrayData.forEach(function(elemData) {
+
             let id = elemData.id;
             let elemDataName = elemData.attributes.descripcion;
             let relacion = elemData.attributes.id_estado;
@@ -388,7 +484,7 @@ const UserDatosFormStep3 = (props) => {
               "relacion": relacion
             };
 
-            return rObj;
+            ciudadesArray.push(rObj);
           });
 
           ciudadesArray.sort((a, b) => a.name < b.name ? -1 : 1);
@@ -404,15 +500,15 @@ const UserDatosFormStep3 = (props) => {
         disableLoading();
 
         reject(new Error('Error al consultar los datos de las Ciudades'));
+      })
+      .finally(() => {
+        setSpinner(false);
       });
     })
 
     return p;
   };
 
-  const sectores = listaSector();
-  const vialidades = listaVialidad();
-  const edificaciones = listaEdificacion();
   const codigosCelulares = listaCodCelular();
 
   const customHandleChangeNumeroDeTelefono1 = (event) => {
@@ -601,7 +697,39 @@ const UserDatosFormStep3 = (props) => {
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
         })
       ),
+    sector_texto: Yup.string()
+      .min(1,
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.MIN_LENGTH",
+        }, {min: 1})
+      )
+      .max(25,
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.MAX_LENGTH",
+        }, {max: 50})
+      )
+      .required(
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.REQUIRED_FIELD",
+        })
+      ),
     vialidad: Yup.string()
+      .required(
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.REQUIRED_FIELD",
+        })
+      ),
+    vialidad_texto: Yup.string()
+      .min(1,
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.MIN_LENGTH",
+        }, {min: 1})
+      )
+      .max(25,
+        intl.formatMessage({
+          id: "AUTH.VALIDATION.MAX_LENGTH",
+        }, {max: 50})
+      )
       .required(
         intl.formatMessage({
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
@@ -678,12 +806,12 @@ const UserDatosFormStep3 = (props) => {
       setSubmitting(true);
       enableLoading();
 
-      console.log("values", formik.values);
+      //console.log("values", formik.values);
 
       const rif = localStorage.getItem('rif');
 
-      console.log("rif", rif);
-      console.log("authToken", token);
+      //console.log("rif", rif);
+      //console.log("authToken", token);
 
       let jsonAttributes = formik.values;
 
@@ -698,6 +826,7 @@ const UserDatosFormStep3 = (props) => {
         }
       };
 
+      setSpinner(true);
       axios.post(`${API_URL}user_geographic_data/`, data, axiosConfig)
         .then(function (res) {
 
@@ -717,7 +846,9 @@ const UserDatosFormStep3 = (props) => {
             parroquia: parroquiaC,
             ciudad: formik.values.ciudad,
             sector: sectorC,
+            sector_texto: formik.values.sector_texto,
             vialidad: vialidadC,
+            vialidad_texto: formik.values.vialidad_texto,
             edificacion: edificacionC,
             local: formik.values.local,
             codigo_telefono_compania1: codigo_telefono_compania1C,
@@ -730,7 +861,7 @@ const UserDatosFormStep3 = (props) => {
           setSubmitting(false);
           disableLoading();
 
-          console.log("resFormStep3", res);
+          //console.log("resFormStep3", res);
 
           if (siguiente) {
             setSiguiente(false);
@@ -743,6 +874,9 @@ const UserDatosFormStep3 = (props) => {
         disableLoading();
 
         alert("Error al guardar los Datos Geograficos");
+      })
+      .finally(() => {
+        setSpinner(false);
       });
     },
   });
@@ -752,6 +886,7 @@ const UserDatosFormStep3 = (props) => {
       <Card.Body>
         <Card.Title>
           Datos Geográficos
+          {spinner && <Spinner animation="border" variant="danger" />}
         </Card.Title>
         <Card.Body>
           <form
@@ -761,14 +896,14 @@ const UserDatosFormStep3 = (props) => {
             <Container>
               <Row>
                 <Col md={12}>
-                  <Form.Group as={Col} controlId="domicilio_fiscal">
+                  <Form.Group as={Col} style={formulario} controlId="domicilio_fiscal">
                     <Form.Label style={textLabelColor}>Domicilio Fiscal</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Domicilio Fiscal"
+                    <Form.Control size="md" type="text" placeholder="Domicilio Fiscal"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.domicilio_fiscal}
                                   maxLength="100"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.domicilio_fiscal && formik.errors.domicilio_fiscal ? (
@@ -784,14 +919,14 @@ const UserDatosFormStep3 = (props) => {
 
               <Row>
                 <Col md={4}>
-                  <Form.Group controlId="estado">
+                  <Form.Group controlId="estado" style={formulario}>
                     <Form.Label style={textLabelColor}>Estado</Form.Label>
                     <Form.Control as="select"
                                   onChange={handleChangeFiltrarMunicipios}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.estado}
                                   ref={estadoRef}
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     >
                       <option key="0" value="">Seleccione el Estado</option>
 
@@ -810,14 +945,14 @@ const UserDatosFormStep3 = (props) => {
                 </Col>
 
                 <Col md={4}>
-                  <Form.Group controlId="municipio">
+                  <Form.Group controlId="municipio" style={formulario}>
                     <Form.Label style={textLabelColor}>Municipio</Form.Label>
                     <Form.Control as="select"
                                   onChange={handleChangeFiltrarParroquias}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.municipio}
                                   ref={municipioRef}
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     >
                       <option key="0" relacion="" value="">Seleccione el Municipio</option>
 
@@ -836,14 +971,14 @@ const UserDatosFormStep3 = (props) => {
                 </Col>
 
                 <Col md={4}>
-                  <Form.Group controlId="parroquia">
+                  <Form.Group controlId="parroquia" style={formulario}>
                     <Form.Label style={textLabelColor}>Parroquia</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.parroquia}
                                   ref={parroquiaRef}
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     >
                       <option key="0" relacion="" value="">Seleccione el Parroquia</option>
 
@@ -866,16 +1001,16 @@ const UserDatosFormStep3 = (props) => {
 
               <Row>
                 <Col md={4}>
-                  <Form.Group controlId="ciudad">
+                  <Form.Group controlId="ciudad" style={formulario}>
                     <Form.Label style={textLabelColor}>Ciudad</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
-                                  value={formik.values.municipio}
+                                  value={formik.values.ciudad}
                                   ref={municipioRef}
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     >
-                      <option key="0" relacion="" value="">Seleccione la Ciudadad</option>
+                      <option key="0" relacion="" value="">Seleccione la Ciudad</option>
 
                       {ciudades.map((elemento) =>
                         <option key={elemento.id} relacion={elemento.relacion} value={elemento.id}>{elemento.name}</option>
@@ -892,14 +1027,14 @@ const UserDatosFormStep3 = (props) => {
                 </Col>
 
                 <Col md={4}>
-                  <Form.Group controlId="sector">
+                  <Form.Group controlId="sector" style={formulario}>
                     <Form.Label style={textLabelColor}>Sector</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.sector}
                                   ref={sectorRef}
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     >
                       <option key="0" value="">Seleccione el Sector</option>
 
@@ -918,14 +1053,38 @@ const UserDatosFormStep3 = (props) => {
                 </Col>
 
                 <Col md={4}>
-                  <Form.Group controlId="vialidad">
+                  <Form.Group as={Col} controlId="sector_texto" style={formulario}>
+                    <Form.Label style={textLabelColor}>Sector (descripción)</Form.Label>
+                    <Form.Control size="md" type="text" placeholder="sector (descripción)"
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  value={formik.values.sector_texto}
+                                  maxLength="20"
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
+                    />
+
+                    {formik.touched.sector_texto && formik.errors.sector_texto ? (
+                      <div className="fv-plugins-message-container">
+                        <div className="fv-help-block">{formik.errors.sector_texto}</div>
+                      </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
+
+              </Row>
+
+              <br />
+
+              <Row>
+                <Col md={3}>
+                  <Form.Group controlId="vialidad" style={formulario}>
                     <Form.Label style={textLabelColor}>Vialidad</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.vialidad}
                                   ref={vialidadRef}
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     >
                       <option key="0" value="">Seleccione la Vialidad</option>
 
@@ -942,20 +1101,35 @@ const UserDatosFormStep3 = (props) => {
                     ) : null}
                   </Form.Group>
                 </Col>
-              </Row>
 
-              <br />
+                <Col md={3}>
+                  <Form.Group as={Col} controlId="vialidad_texto" style={formulario}>
+                    <Form.Label style={textLabelColor}>Vialidad (descripción)</Form.Label>
+                    <Form.Control size="md" type="text" placeholder="vialidad (descripción)"
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  value={formik.values.vialidad_texto}
+                                  maxLength="20"
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
+                    />
 
-              <Row>
-                <Col md={6}>
-                  <Form.Group controlId="edificacion">
+                    {formik.touched.vialidad_texto && formik.errors.vialidad_texto ? (
+                      <div className="fv-plugins-message-container">
+                        <div className="fv-help-block">{formik.errors.vialidad_texto}</div>
+                      </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
+
+                <Col md={3}>
+                  <Form.Group controlId="edificacion" style={formulario}>
                     <Form.Label style={textLabelColor}>Edificación</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.edificacion}
                                   ref={edificacionRef}
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     >
                       <option key="0" value="">Seleccione la Edificación</option>
 
@@ -973,15 +1147,15 @@ const UserDatosFormStep3 = (props) => {
                   </Form.Group>
                 </Col>
 
-                <Col md={6}>
-                  <Form.Group as={Col} controlId="local">
-                    <Form.Label style={textLabelColor}>Local</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Local"
+                <Col md={3}>
+                  <Form.Group as={Col} controlId="local" style={formulario}>
+                    <Form.Label style={textLabelColor}>Nomenclatura</Form.Label>
+                    <Form.Control size="md" type="text" placeholder="Nomenclatura"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.local}
                                   maxLength="20"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.local && formik.errors.local ? (
@@ -997,7 +1171,7 @@ const UserDatosFormStep3 = (props) => {
 
               <Row>
                 <Col md={2}>
-                  <Form.Group controlId="codigo_telefono_compania1">
+                  <Form.Group controlId="codigo_telefono_compania1" style={formulario}>
                     <Form.Label style={textLabelColor}>Código de área</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
@@ -1022,9 +1196,9 @@ const UserDatosFormStep3 = (props) => {
                 </Col>
 
                 <Col md={4}>
-                  <Form.Group as={Col} controlId="numero_telefono_compania1">
+                  <Form.Group as={Col} controlId="numero_telefono_compania1" style={formulario}>
                     <Form.Label style={textLabelColor}>Número de Teléfono 1</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Telefono 1"
+                    <Form.Control size="md" type="text" placeholder="Telefono 1"
                                   onChange={customHandleChangeNumeroDeTelefono1}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.numero_telefono_compania1}
@@ -1040,7 +1214,7 @@ const UserDatosFormStep3 = (props) => {
                 </Col>
 
                 <Col md={2}>
-                  <Form.Group controlId="codigo_telefono_compania2">
+                  <Form.Group controlId="codigo_telefono_compania2" style={formulario}>
                     <Form.Label style={textLabelColor}>Código de área</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
@@ -1065,9 +1239,9 @@ const UserDatosFormStep3 = (props) => {
                 </Col>
 
                 <Col md={4}>
-                  <Form.Group as={Col} controlId="numero_telefono_compania2">
+                  <Form.Group as={Col} controlId="numero_telefono_compania2" style={formulario}>
                     <Form.Label style={textLabelColor}>Número de Teléfono 2</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Telefono 2"
+                    <Form.Control size="md" type="text" placeholder="Telefono 2"
                                   onChange={customHandleChangeNumeroDeTelefono2}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.numero_telefono_compania2}
@@ -1087,9 +1261,9 @@ const UserDatosFormStep3 = (props) => {
 
               <Row>
                 <Col md={12}>
-                  <Form.Group as={Col} controlId="correo_empresa">
+                  <Form.Group as={Col} controlId="correo_empresa" style={formulario}>
                     <Form.Label style={textLabelColor}>Correo electrónico</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Correo Electrónico"
+                    <Form.Control size="md" type="text" placeholder="Correo Electrónico"
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.correo_empresa}
@@ -1131,6 +1305,7 @@ const UserDatosFormStep3 = (props) => {
                   <Button variant="secondary" size="lg" block
                           type="button"
                           onClick={submitSiguiente}
+                          className="btn btn-info font-size-sm w-100"
                           disabled={
                             formik.isSubmitting ||
                             !formik.isValid
@@ -1138,6 +1313,7 @@ const UserDatosFormStep3 = (props) => {
                   >
                     Siguiente
                   </Button>
+                  {spinner && <Spinner animation="border" variant="danger" />}
                 </Col>
               </Row>
             </Container>

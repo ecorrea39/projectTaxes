@@ -1,0 +1,26 @@
+.card-title  {
+    font-size: 20px;
+    color: black;
+}
+
+.add-btn {
+    position: fixed;
+    top: 18%;
+    right: 6%;
+    border-radius: 100%;
+    box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+}
+
+.play-btn {
+    transform: scale(1.5);
+}
+
+.data-table {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-content: center;
+    margin-top: 48px;
+    border-radius: 5px;
+    min-height: 200px;
+}

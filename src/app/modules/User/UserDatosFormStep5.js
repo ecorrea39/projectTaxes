@@ -1,5 +1,5 @@
 import React, {useContext, useState} from "react";
-import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
+import {Button, Card, Col, Container, Form, Row, Spinner} from "react-bootstrap";
 import {useIntl} from "react-intl";
 import axios from "axios";
 import GeneralContext from "../../store/general-context";
@@ -8,6 +8,7 @@ import {useHistory} from "react-router-dom";
 const UserDatosFormStep5 = (props) => {
 
   const [loading, setLoading] = useState(false);
+  const [spinner, setSpinner] = useState(false);
 
   const generalCtx = useContext(GeneralContext);
 
@@ -38,8 +39,8 @@ const UserDatosFormStep5 = (props) => {
 
     const rif = localStorage.getItem('rif');
 
-    console.log("rif", rif);
-    console.log("authToken", token);
+    //console.log("rif", rif);
+    //console.log("authToken", token);
 
     let jsonAttributes = {};
 
@@ -54,10 +55,11 @@ const UserDatosFormStep5 = (props) => {
       }
     };
 
+    setSpinner(true);
     axios.post(`${API_URL}profile_summary/`, data, axiosConfig)
       .then(function (res) {
 
-        console.log("resFormStep5", res);
+        //console.log("resFormStep5", res);
 
         // alert('Guardado exitosamente');
 
@@ -101,6 +103,9 @@ const UserDatosFormStep5 = (props) => {
       disableLoading();
 
       alert("Error en consulta de finalización");
+    })
+    .finally(() => {
+      setSpinner(false);
     });
   }
 
@@ -117,6 +122,7 @@ const UserDatosFormStep5 = (props) => {
       <Card.Body>
         <Card.Title>
           Ficha de Registro
+          {spinner && <Spinner animation="border" variant="danger" />}
         </Card.Title>
         <Card.Body>
           <Container>
@@ -331,11 +337,31 @@ const UserDatosFormStep5 = (props) => {
 
             <Row>
               <Col md={4}>
+                <b>Sector Txxto</b>
+              </Col>
+
+              <Col md={8}>
+                {props.resumenFichaRegistro.sector_texto}
+              </Col>
+            </Row>
+
+            <Row>
+              <Col md={4}>
                 <b>Vialidad</b>
               </Col>
 
               <Col md={8}>
                 {props.resumenFichaRegistro.vialidad}
+              </Col>
+            </Row>
+
+            <Row>
+              <Col md={4}>
+                <b>Vialidad</b>
+              </Col>
+
+              <Col md={8}>
+                {props.resumenFichaRegistro.vialidad_texto}
               </Col>
             </Row>
 
@@ -402,7 +428,7 @@ const UserDatosFormStep5 = (props) => {
               </Col>
 
               <Col md={8}>
-                {props.resumenFichaRegistro.cedula_representante_legal1}
+                {props.resumenFichaRegistro.cedulaLetra1}{props.resumenFichaRegistro.cedula_representante_legal1}
               </Col>
             </Row>
 
@@ -464,7 +490,7 @@ const UserDatosFormStep5 = (props) => {
               </Col>
 
               <Col md={8}>
-                {props.resumenFichaRegistro.cedula_representante_legal2}
+                {props.resumenFichaRegistro.cedulaLetra2}{props.resumenFichaRegistro.cedula_representante_legal2}
               </Col>
             </Row>
 
@@ -526,7 +552,7 @@ const UserDatosFormStep5 = (props) => {
               </Col>
 
               <Col md={8}>
-                {props.resumenFichaRegistro.cedula_representante_legal3}
+                {props.resumenFichaRegistro.cedulaLetra3}{props.resumenFichaRegistro.cedula_representante_legal3}
               </Col>
             </Row>
 
@@ -599,6 +625,7 @@ const UserDatosFormStep5 = (props) => {
                 >
                   Finalizar
                 </Button>
+                {spinner && <Spinner animation="border" variant="danger" />}
               </Col>
             </Row>
           </Container>

@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useState, useEffect} from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import UserDatosHeader from "./UserDatosHeader";
 import UserDatosFormStep1 from "./UserDatosFormStep1";
@@ -6,13 +6,22 @@ import UserDatosFormStep2 from "./UserDatosFormStep2";
 import UserDatosFormStep3 from "./UserDatosFormStep3";
 import UserDatosFormStep4 from "./UserDatosFormStep4";
 import UserDatosFormStep5 from "./UserDatosFormStep5";
+import axios from "axios";
 
 
 const UserDatos = (props) => {
 
+  useEffect(() => {
+
+    const rif = localStorage.getItem('rif');
+    localStorage.setItem('rifToSearch', rif);
+
+  }, []);
+
   const [step, setStep] = useState(1);
   const [registrado, setRegistrado] = useState(false);
   const [actaEdicion, setActaEdicion] = useState(false);
+  const [adminEdicion, setAdminEdicion] = useState(false);
   const [valoresParaFichaDeRegistro, setValoresParaFichaDeRegistro] = useState({
     tipo: "",
     razon_social: "",
@@ -34,7 +43,9 @@ const UserDatos = (props) => {
     parroquia: "",
     ciudad: "",
     sector:"",
+    sector_texto:"",
     vialidad:"",
+    vialidad_texto:"",
     edificacion:"",
     local:"",
     codigo_telefono_compania1:"",
@@ -42,6 +53,7 @@ const UserDatos = (props) => {
     codigo_telefono_compania2:"",
     numero_telefono_compania2:"",
     correo_empresa:"",
+    cedulaLetra1:"",
     cedula_representante_legal1: "",
     nombre_representante_legal1: "",
     apellido_representante_legal1: "",
@@ -49,6 +61,7 @@ const UserDatos = (props) => {
     telefono_representante_legal1: "",
     correo_electronico_representante_legal1: "",
     cargo_representante_legal1: "",
+    cedulaLetra2:"",
     cedula_representante_legal2: "",
     nombre_representante_legal2: "",
     apellido_representante_legal2: "",
@@ -56,6 +69,7 @@ const UserDatos = (props) => {
     telefono_representante_legal2: "",
     correo_electronico_representante_legal2: "",
     cargo_representante_legal2: "",
+    cedulaLetra3:"",
     cedula_representante_legal3: "",
     nombre_representante_legal3: "",
     apellido_representante_legal3: "",
@@ -73,13 +87,17 @@ const UserDatos = (props) => {
     setActaEdicion(valor);
   }
 
+  const cambiarAdminEdicion = (valor) => {
+    setAdminEdicion(valor);
+  }
+
   const cambiarStep = (paso) => {
     setStep(paso);
   }
 
   const cambiarResumenFichaRegistro1 = (objeto) => {
 
-    console.log("objeto::::", objeto);
+    //console.log("objeto::::", objeto);
 
     setValoresParaFichaDeRegistro((prevState) => {
       return {
@@ -98,7 +116,7 @@ const UserDatos = (props) => {
 
   const cambiarResumenFichaRegistro2 = (objeto) => {
 
-    console.log("objeto::::", objeto);
+    //console.log("objeto::::", objeto);
 
     setValoresParaFichaDeRegistro((prevState) => {
       return {
@@ -115,7 +133,7 @@ const UserDatos = (props) => {
 
   const cambiarResumenFichaRegistro3 = (objeto) => {
 
-    console.log("objeto::::", objeto);
+    //console.log("objeto::::", objeto);
 
     setValoresParaFichaDeRegistro((prevState) => {
       return {
@@ -126,7 +144,9 @@ const UserDatos = (props) => {
         parroquia: objeto.parroquia,
         ciudad: objeto.ciudad,
         sector: objeto.sector,
+        sector_texto: objeto.sector_texto,
         vialidad: objeto.vialidad,
+        vialidad_texto: objeto.vialidad_texto,
         edificacion: objeto.edificacion,
         local: objeto.local,
         codigo_telefono_compania1: objeto.codigo_telefono_compania1,
@@ -140,11 +160,10 @@ const UserDatos = (props) => {
 
   const cambiarResumenFichaRegistro4 = (objeto) => {
 
-    console.log("objeto::::", objeto);
-
     setValoresParaFichaDeRegistro((prevState) => {
       return {
         ...prevState,
+        cedulaLetra1: objeto.cedulaLetra1,
         cedula_representante_legal1: objeto.cedula_representante_legal1,
         nombre_representante_legal1: objeto.nombre_representante_legal1,
         apellido_representante_legal1: objeto.apellido_representante_legal1,
@@ -152,6 +171,7 @@ const UserDatos = (props) => {
         telefono_representante_legal1: objeto.telefono_representante_legal1,
         correo_electronico_representante_legal1: objeto.correo_electronico_representante_legal1,
         cargo_representante_legal1: objeto.cargo_representante_legal1,
+        cedulaLetra2: objeto.cedulaLetra2,
         cedula_representante_legal2: objeto.cedula_representante_legal2,
         nombre_representante_legal2: objeto.nombre_representante_legal2,
         apellido_representante_legal2: objeto.apellido_representante_legal2,
@@ -159,6 +179,7 @@ const UserDatos = (props) => {
         telefono_representante_legal2: objeto.telefono_representante_legal2,
         correo_electronico_representante_legal2: objeto.correo_electronico_representante_legal2,
         cargo_representante_legal2: objeto.cargo_representante_legal2,
+        cedulaLetra3: objeto.cedulaLetra3,
         cedula_representante_legal3: objeto.cedula_representante_legal3,
         nombre_representante_legal3: objeto.nombre_representante_legal3,
         apellido_representante_legal3: objeto.apellido_representante_legal3,
@@ -182,8 +203,10 @@ const UserDatos = (props) => {
         cambiarResumenFicha={cambiarResumenFichaRegistro1}
         cambiarRegistrado={cambiarRegistrado}
         cambiarActaEdicion={cambiarActaEdicion}
+        cambiarAdminEdicion={cambiarAdminEdicion}
         registradoValor={registrado}
-        actaEdicion={actaEdicion} />
+        actaEdicion={actaEdicion}
+        adminEdicion={adminEdicion} />
       }
 
       { step===2 && <UserDatosFormStep2
@@ -192,8 +215,10 @@ const UserDatos = (props) => {
         cambiarResumenFicha={cambiarResumenFichaRegistro2}
         cambiarRegistrado={cambiarRegistrado}
         cambiarActaEdicion={cambiarActaEdicion}
+        cambiarAdminEdicion={cambiarAdminEdicion}
         registradoValor={registrado}
-        actaEdicion={actaEdicion} />
+        actaEdicion={actaEdicion}
+        adminEdicion={adminEdicion} />
       }
 
       { step===3 && <UserDatosFormStep3
@@ -202,8 +227,10 @@ const UserDatos = (props) => {
         cambiarResumenFicha={cambiarResumenFichaRegistro3}
         cambiarRegistrado={cambiarRegistrado}
         cambiarActaEdicion={cambiarActaEdicion}
+        cambiarAdminEdicion={cambiarAdminEdicion}
         registradoValor={registrado}
-        actaEdicion={actaEdicion} />
+        actaEdicion={actaEdicion}
+        adminEdicion={adminEdicion} />
       }
 
       { step===4 && <UserDatosFormStep4
@@ -212,8 +239,10 @@ const UserDatos = (props) => {
         cambiarResumenFicha={cambiarResumenFichaRegistro4}
         cambiarRegistrado={cambiarRegistrado}
         cambiarActaEdicion={cambiarActaEdicion}
+        cambiarAdminEdicion={cambiarAdminEdicion}
         registradoValor={registrado}
-        actaEdicion={actaEdicion} />
+        actaEdicion={actaEdicion}
+        adminEdicion={adminEdicion} />
       }
 
       { step===5 && <UserDatosFormStep5

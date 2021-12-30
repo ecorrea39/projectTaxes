@@ -12,7 +12,7 @@ import Search from '@material-ui/icons/Search';
 
 function MasterTables({tabla, titulo}) {
 
-    const { deleteMasterTables, trimestres, formasPago, cuentasRecaudadoras, estatus, bancos, claseEmpresa, motores, actividadesEconomicas, conceptos, registrosMercantiles, medidaValor, motivoSancion, diasFestivos, tasaIntereses, sectores, vialidades, locales, edificaciones, tipoDocumento, obtenerValores, filtrarElementos } = useContext(MasterTablesContext);
+    const { deleteMasterTables, trimestres, formasPago, cuentasRecaudadoras, estatus, bancos, claseEmpresa, motores, actividadesEconomicas, conceptos, registrosMercantiles, medidaValor, motivoSancion, diasFestivos, tasaIntereses, sectores, vialidades, locales, edificaciones, tipoDocumento, tipoContribuyente, cuentasContables, firmasAutorizadas, estados, municipios, parroquias, ciudades, unidadEstadal, obtenerValores, filtrarElementos } = useContext(MasterTablesContext);
     const styleCard = { borderRadius: "5px", boxShadow: "0 4px 15px 0 rgba(0, 0, 0, 0.15)", padding: "20px 35px 20px 35px"}
     const [isSwitchOn, setIsSwitchOn] = useState(false);
     const styleBtn = { borderRadius: '100%'}
@@ -578,6 +578,420 @@ function MasterTables({tabla, titulo}) {
         }
     ];
 
+    const columnas13 = [
+        {
+            name: "ID",
+            selector: row => Number(row.id),
+            sortable: true,
+            maxWidth: "50px"
+        },
+        {
+            name: "Tipo",
+            selector: row => row.name,
+            sortable: true,
+            maxWidth: "100px"
+        },
+        {
+            name: "Descripción",
+            selector: row => row.descripcion,
+            sortable: true,
+            maxWidth: "650px"
+        },
+        {
+            name: "Acciones",
+            button: true,
+            cell: row => (
+                <>
+                    <a title="modificar" onClick={() => { setShow(true); setAccion('Modificar'); obtenerValores(row)}}
+                       style={styleBtn} className="btn btn-icon btn-hover-light btn-sm mx-3">
+                        <span className="svg-icon svg-icon-md svg-icon-info">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}/>
+                        </span>
+                    </a>
+
+                    <a title="eliminar" style={styleBtn} onClick={() => deleteMasterTables(tabla, titulo, row)}
+                       className="btn btn-icon btn-hover-light btn-sm">
+                        <span className="svg-icon svg-icon-md svg-icon-danger">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")}/>
+                        </span>
+                    </a>
+                </>
+            )
+        }
+    ];
+
+    const columnas14 = [
+        {
+            name: "ID",
+            selector: row => Number(row.id),
+            sortable: true,
+            maxWidth: "50px"
+        },
+        {
+            name: "Concepto",
+            selector: row => row.concepto,
+            sortable: true,
+            maxWidth: "250px"
+        },
+        {
+            name: "Código Cuenta",
+            selector: row => row.codigo_cuenta,
+            sortable: true,
+            maxWidth: "140px"
+        },
+        {
+            name: "Naturaleza",
+            selector: row => row.naturaleza_cuenta,
+            sortable: true,
+            maxWidth: "100px"
+        },
+        {
+            name: "Grupo",
+            selector: row => row.grupo,
+            sortable: true,
+            maxWidth: "80px"
+        },
+        {
+            name: "Sub-Grupo",
+            selector: row => row.sub_grupo,
+            sortable: true,
+            maxWidth: "100px"
+        },
+        {
+            name: "Auxiliar",
+            selector: row => row.auxiliar,
+            sortable: true,
+            maxWidth: "100px"
+        },
+        {
+            name: "Acciones",
+            button: true,
+            cell: row => (
+                <>
+                    <a title="modificar" onClick={() => { setShow(true); setAccion('Modificar'); obtenerValores(row)}}
+                       style={styleBtn} className="btn btn-icon btn-hover-light btn-sm mx-3">
+                        <span className="svg-icon svg-icon-md svg-icon-info">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}/>
+                        </span>
+                    </a>
+
+                    <a title="eliminar" style={styleBtn} onClick={() => deleteMasterTables(tabla, titulo, row)}
+                       className="btn btn-icon btn-hover-light btn-sm">
+                        <span className="svg-icon svg-icon-md svg-icon-danger">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")}/>
+                        </span>
+                    </a>
+                </>
+            )
+        }
+    ];
+
+    const columnas15 = [
+        {
+            name: "ID",
+            selector: row => Number(row.id),
+            sortable: true,
+            maxWidth: "50px"
+        },
+        {
+            name: "Reporte",
+            selector: row => row.documento,
+            sortable: true,
+            maxWidth: "200px"
+        },
+        {
+            name: "Responsable",
+            selector: row => row.nombre,
+            sortable: true,
+            maxWidth: "125px"
+        },
+        {
+            name: "Cargo",
+            selector: row => row.cargo,
+            sortable: true,
+            maxWidth: "125px"
+        },
+        {
+            name: "Gaceta",
+            selector: row => row.ngaceta,
+            sortable: true,
+            maxWidth: "100px"
+        },
+        {
+            name: "Fecha gaceta",
+            selector: row => row.fecha_gaceta,
+            sortable: true,
+            maxWidth: "125px"
+        },
+        {
+            name: "Orden adm.",
+            selector: row => row.orden_administrativa === 'null' ? '' : row.orden_administrativa,
+            sortable: true,
+            maxWidth: "100px"
+        },
+        {
+            name: "Acciones",
+            button: true,
+            cell: row => (
+                <>
+                    <a title="modificar" onClick={() => { setShow(true); setAccion('Modificar'); obtenerValores(row)}}
+                       style={styleBtn} className="btn btn-icon btn-hover-light btn-sm mx-3">
+                        <span className="svg-icon svg-icon-md svg-icon-info">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}/>
+                        </span>
+                    </a>
+
+                    <a title="eliminar" style={styleBtn} onClick={() => deleteMasterTables(tabla, titulo, row)}
+                       className="btn btn-icon btn-hover-light btn-sm">
+                        <span className="svg-icon svg-icon-md svg-icon-danger">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")}/>
+                        </span>
+                    </a>
+                </>
+            )
+        }
+    ];
+
+    const columnas16 = [
+        {
+            name: "ID",
+            selector: row => Number(row.id),
+            sortable: true,
+            maxWidth: "50px"
+        },
+        {
+            name: "Código",
+            selector: row => row.cod_estado,
+            sortable: true,
+            maxWidth: "50px"
+        },
+        {
+            name: "Estado",
+            selector: row => row.descripcion,
+            sortable: true,
+            maxWidth: "180px"
+        },
+        {
+            name: "Región",
+            selector: row => row.region,
+            sortable: true,
+            maxWidth: "180px"
+        },
+        {
+            name: "Redi",
+            selector: row => row.redi,
+            sortable: true,
+            maxWidth: "180px"
+        },
+        {
+            name: "Unidad Estadal",
+            selector: row => row.unidad_estadal,
+            sortable: true,
+            maxWidth: "125px"
+        },
+        {
+            name: "Acciones",
+            button: true,
+            cell: row => (
+                <>
+                    <a title="modificar" onClick={() => { setShow(true); setAccion('Modificar'); obtenerValores(row)}}
+                       style={styleBtn} className="btn btn-icon btn-hover-light btn-sm">
+                        <span className="svg-icon svg-icon-md svg-icon-info">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}/>
+                        </span>
+                    </a>
+
+                    <a title="eliminar" style={styleBtn} onClick={() => deleteMasterTables(tabla, titulo, row)}
+                       className="btn btn-icon btn-hover-light btn-sm">
+                        <span className="svg-icon svg-icon-md svg-icon-danger">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")}/>
+                        </span>
+                    </a>
+                </>
+            )
+        }
+    ];
+
+    const columnas17 = [
+        {
+            name: "ID",
+            selector: row => Number(row.id),
+            sortable: true,
+            maxWidth: "50px"
+        },
+        {
+            name: "Estado",
+            selector: row => row.estado,
+            sortable: true,
+            maxWidth: "300px"
+        },
+        {
+            name: "Código",
+            selector: row => row.cod_municipio,
+            sortable: true,
+            maxWidth: "50px"
+        },
+        {
+            name: "Municipio",
+            selector: row => row.descripcion,
+            sortable: true,
+            maxWidth: "300px"
+        },
+        {
+            name: "Acciones",
+            button: true,
+            cell: row => (
+                <>
+                    <a title="modificar" onClick={() => { setShow(true); setAccion('Modificar'); obtenerValores(row)}}
+                       style={styleBtn} className="btn btn-icon btn-hover-light btn-sm">
+                        <span className="svg-icon svg-icon-md svg-icon-info">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}/>
+                        </span>
+                    </a>
+
+                    <a title="eliminar" style={styleBtn} onClick={() => deleteMasterTables(tabla, titulo, row)}
+                       className="btn btn-icon btn-hover-light btn-sm">
+                        <span className="svg-icon svg-icon-md svg-icon-danger">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")}/>
+                        </span>
+                    </a>
+                </>
+            )
+        }
+    ];
+
+    const columnas18 = [
+        {
+            name: "ID",
+            selector: row => Number(row.id),
+            sortable: true,
+            maxWidth: "50px"
+        },
+        {
+            name: "Municipio",
+            selector: row => row.municipio,
+            sortable: true,
+            maxWidth: "300px"
+        },
+        {
+            name: "Parroquía",
+            selector: row => row.descripcion,
+            sortable: true,
+            maxWidth: "300px"
+        },
+        {
+            name: "Acciones",
+            button: true,
+            cell: row => (
+                <>
+                    <a title="modificar" onClick={() => { setShow(true); setAccion('Modificar'); obtenerValores(row)}}
+                       style={styleBtn} className="btn btn-icon btn-hover-light btn-sm">
+                        <span className="svg-icon svg-icon-md svg-icon-info">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}/>
+                        </span>
+                    </a>
+
+                    <a title="eliminar" style={styleBtn} onClick={() => deleteMasterTables(tabla, titulo, row)}
+                       className="btn btn-icon btn-hover-light btn-sm">
+                        <span className="svg-icon svg-icon-md svg-icon-danger">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")}/>
+                        </span>
+                    </a>
+                </>
+            )
+        }
+    ];
+
+    const columnas19 = [
+        {
+            name: "ID",
+            selector: row => Number(row.id),
+            sortable: true,
+            maxWidth: "50px"
+        },
+        {
+            name: "Estado",
+            selector: row => row.estado,
+            sortable: true,
+            maxWidth: "250px"
+        },
+        {
+            name: "Municipio",
+            selector: row => row.municipio,
+            sortable: true,
+            maxWidth: "250px"
+        },
+        {
+            name: "Ciudad",
+            selector: row => row.descripcion,
+            sortable: true,
+            maxWidth: "250px"
+        },
+        {
+            name: "Acciones",
+            button: true,
+            cell: row => (
+                <>
+                    <a title="modificar" onClick={() => { setShow(true); setAccion('Modificar'); obtenerValores(row)}}
+                       style={styleBtn} className="btn btn-icon btn-hover-light btn-sm">
+                        <span className="svg-icon svg-icon-md svg-icon-info">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}/>
+                        </span>
+                    </a>
+
+                    <a title="eliminar" style={styleBtn} onClick={() => deleteMasterTables(tabla, titulo, row)}
+                       className="btn btn-icon btn-hover-light btn-sm">
+                        <span className="svg-icon svg-icon-md svg-icon-danger">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")}/>
+                        </span>
+                    </a>
+                </>
+            )
+        }
+    ];
+
+    const columnas20 = [
+        {
+            name: "ID",
+            selector: row => Number(row.id),
+            sortable: true,
+            maxWidth: "50px"
+        },
+        {
+            name: "Código",
+            selector: row => row.cod,
+            sortable: true,
+            maxWidth: "100px"
+        },
+        {
+            name: "Unidad",
+            selector: row => row.asignacion,
+            sortable: true,
+            maxWidth: "450px"
+        },
+        {
+            name: "Acciones",
+            button: true,
+            cell: row => (
+                <>
+                    <a title="modificar" onClick={() => { setShow(true); setAccion('Modificar'); obtenerValores(row)}}
+                       style={styleBtn} className="btn btn-icon btn-hover-light btn-sm">
+                        <span className="svg-icon svg-icon-md svg-icon-info">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}/>
+                        </span>
+                    </a>
+
+                    <a title="eliminar" style={styleBtn} onClick={() => deleteMasterTables(tabla, titulo, row)}
+                       className="btn btn-icon btn-hover-light btn-sm">
+                        <span className="svg-icon svg-icon-md svg-icon-danger">
+                            <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")}/>
+                        </span>
+                    </a>
+                </>
+            )
+        }
+    ];
+
     switch (tabla) {
         case "trimestre":
             titulo = titulo;
@@ -710,6 +1124,62 @@ function MasterTables({tabla, titulo}) {
             data = tipoDocumento;
             columnas = "col-12";
             colTab = columnas12;
+            break;
+
+        case "tipo-contribuyente":
+            titulo = titulo;
+            data = tipoContribuyente;
+            columnas = "col-13";
+            colTab = columnas13;
+            break;
+
+        case "cuentas-contables":
+            titulo = titulo;
+            data = cuentasContables;
+            columnas = "col-14";
+            colTab = columnas14;
+            break;
+
+        case "firmas-autorizadas":
+            titulo = titulo;
+            data = firmasAutorizadas;
+            columnas = "col-15";
+            colTab = columnas15;
+            break;
+
+        case "estados":
+            titulo = titulo;
+            data = estados;
+            columnas = "col-16";
+            colTab = columnas16;
+            break;
+
+        case "municipios":
+            titulo = titulo;
+            data = municipios;
+            columnas = "col-17";
+            colTab = columnas17;
+            break;
+
+        case "parroquias":
+            titulo = titulo;
+            data = parroquias;
+            columnas = "col-18";
+            colTab = columnas18;
+            break;
+
+        case "ciudades":
+            titulo = titulo;
+            data = ciudades;
+            columnas = "col-19";
+            colTab = columnas19;
+            break;
+
+        case "unidad-estadal-tributos":
+            titulo = titulo;
+            data = unidadEstadal;
+            columnas = "col-20";
+            colTab = columnas20;
             break;
 
         default:

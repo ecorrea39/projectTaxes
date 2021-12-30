@@ -59,7 +59,7 @@ function MasterTablesModule() {
             break;
 
         case "dias-festivos":
-            title = "Días Hábiles";
+            title = "Días Inhábiles";
             break;
 
         case "tasa-intereses":
@@ -86,6 +86,38 @@ function MasterTablesModule() {
             title = "Tipo de Documentos";
             break;
 
+        case "tipo-contribuyente":
+            title = "Tipo de Contribuyentes";
+            break;
+
+        case "cuentas-contables":
+            title = "Cuentas Contables";
+            break;
+
+        case "firmas-autorizadas":
+            title = "Firmas Autorizadas";
+            break;
+
+        case "estados":
+            title = "Estados";
+            break;
+
+        case "municipios":
+            title = "Municipios";
+            break;
+
+        case "parroquias":
+            title = "Parroquías";
+            break;
+
+        case "ciudades":
+            title = "Ciudades";
+            break;
+
+        case "unidad-estadal-tributos":
+            title = "Unidad Estadal de Tributos";
+            break;
+
         default:
             break;
     }
@@ -96,7 +128,7 @@ function MasterTablesModule() {
                 <div className={`card card-custom card-stretch gutter-b`}>
                     {/* Header */}
                     <div className="border-0 pl-10 pt-10">
-                        <TitleFormMasterTables title={title}/>
+                        <TitleFormMasterTables title={title} />
                     </div>
                     {/* Body */}
                     <div className="card-body d-flex flex-column">

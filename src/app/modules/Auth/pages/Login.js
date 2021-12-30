@@ -1,11 +1,11 @@
-import React, {useState, Fragment, useContext} from "react";
+import React, {useState, Fragment, useContext, useRef} from "react";
 import {Link} from "react-router-dom";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import {connect} from "react-redux";
 import {FormattedMessage, injectIntl} from "react-intl";
 import * as auth from "../_redux/authRedux";
-import {Form, Col, Row, Button} from "react-bootstrap";
+import {Form, Col, Row, Button, Modal} from "react-bootstrap";
 import AuthContext from "../../../store/auth-context";
 import axios from "axios";
 import Util from "../../../helpers/Util";
@@ -21,15 +21,21 @@ const initialValues = {
 //   password: "inces123."
 // };
 
-const styleCenter = { "display":"flex", "justifyContent":"center", "alignItem":"center" }
+const styleCenter = {"display": "flex", "justifyContent": "center", "alignItem": "center"}
 
 function Login(props) {
   const {intl} = props;
   const [loading, setLoading] = useState(false);
+  const [showCodigoModal, setShowCodigoModal] = useState(false);
 
   const authCtx = useContext(AuthContext);
 
   const API_URL = `${process.env.REACT_APP_API_URL}`;
+
+  let setStatusFunction;
+  let setSubmittingFunction;
+
+  const codigoValidacion = useRef();
 
   const customHandleChange = (event) => {
     const value = event.currentTarget.value;
@@ -42,6 +48,82 @@ function Login(props) {
         formik.setFieldValue('user', value);
       }
     }
+  }
+
+  const handleCloseModalCodigo = () => {
+    setShowCodigoModal(false);
+  }
+
+  const handleAceptarModalCodigo = () => {
+
+    const codigoValidacionC = codigoValidacion.current.value;
+
+    const axiosConfig = {
+      headers: {
+        Accept: 'application/vnd.api+json',
+        Authorization: `Basic ${btoa(`${formik.values.tipo + formik.values.user}:${formik.values.password}:${codigoValidacionC}`)}`
+      }
+    };
+
+    if (codigoValidacionC.trim() != "") {
+      axios.get(`${API_URL}users/authentication/`, axiosConfig).then((res) => {
+
+        disableLoading();
+
+        // setSubmittingFunction(false);
+
+        const attr = res.data.data.attributes;
+        const data = res.data.data;
+
+        localStorage.setItem('authToken', attr.authorization.token);
+        localStorage.setItem('expires_in', attr.authorization.expires_in);
+        localStorage.setItem('rif', data.id);
+        localStorage.setItem('name', attr.name);
+        localStorage.setItem('surname', attr.surname);
+        localStorage.setItem('mail', attr.mail);
+        localStorage.setItem('phone_number_mobile', attr.phone_number_mobile);
+        localStorage.setItem('groups', attr.groups);
+        localStorage.setItem('codigoUnidadEstadal', attr.codigoUnidadEstadal);
+
+        authCtx.login(attr.authorization.token);
+
+      }).catch((err) => {
+        console.log("errorEnConsulta", err);
+
+        disableLoading();
+        // setSubmittingFunction(false);
+
+        if (err.response !== undefined && err.response !== null) {
+          let txt = '';
+          switch (err.response.status) {
+            case 401:
+              txt = 'Credenciales inválidas';
+              break;
+            // case 424:
+            //   txt = 'Desafío captcha usado. Por favor resuélvalo nuevamente';
+            //   setTimeout(() => {
+            //     window.location.href = '/signin';
+            //   }, 3000);
+            //   break;
+            default:
+              txt = 'Error al registrar usuario';
+          }
+
+          // setStatusFunction(txt);
+          alert('Credenciales inválidas');
+        } else {
+          alert('Error de comunicación en el proceso de Inicio de Sesión');
+        }
+      })
+        .finally(() => {
+          setShowCodigoModal(false);
+        });
+
+    } else {
+      alert("Debe introducir un código");
+    }
+
+
   }
 
   const LoginSchema = Yup.object().shape({
@@ -114,52 +196,33 @@ function Login(props) {
         }
       };
 
-      axios.get(`${API_URL}users/authentication/`, axiosConfig).then((res) => {
+      setStatusFunction = setStatus;
+      setSubmittingFunction = setSubmitting;
 
-        disableLoading();
-        setSubmitting(false);
-
-        const attr = res.data.data.attributes;
-        const data = res.data.data;
-
-        localStorage.setItem('authToken', attr.authorization.token);
-        localStorage.setItem('expires_in', attr.authorization.expires_in);
-        localStorage.setItem('rif', data.id);
-        localStorage.setItem('name', attr.name);
-        localStorage.setItem('surname', attr.surname);
-        localStorage.setItem('mail', attr.mail);
-        localStorage.setItem('phone_number_mobile', attr.phone_number_mobile);
-        localStorage.setItem('groups', attr.groups);
-
-        authCtx.login(attr.authorization.token);
-        window.location.href = '/';
-
-      }).catch((err) => {
-        console.log("errorEnConsulta", err);
-
-        disableLoading();
-        setSubmitting(false);
-
-        if (err.response !== undefined && err.response !== null) {
-          let txt = '';
-          switch (err.response.status) {
-            case 401:
-              txt = 'Credenciales inválidas';
-              break;
-            // case 424:
-            //   txt = 'Desafío captcha usado. Por favor resuélvalo nuevamente';
-            //   setTimeout(() => {
-            //     window.location.href = '/signin';
-            //   }, 3000);
-            //   break;
-            default:
-              txt = 'Error al registrar usuario';
+      const data = {
+        jsonapi: {version: '1.0'},
+        data: {
+          type: 'newUser',
+          id: values.tipo + values.user,
+          attributes: {
+            uid: values.tipo + values.user
           }
-
-          setStatus(txt);
-        } else {
-          alert('Error de comunicación en el proceso de Inicio de Sesión');
         }
+      };
+
+      axios.post(`${API_URL}users/2StepAuthentication/`, data, axiosConfig).then(function (res) {
+
+        disableLoading();
+        setSubmitting(false);
+
+        setShowCodigoModal(true);
+      }).catch((err) => {
+        console.log("err", err);
+
+        disableLoading();
+        setSubmitting(false);
+
+        alert('Error de comunicación en el proceso de Autenticación de 2 pasos');
       });
     },
   });
@@ -182,17 +245,17 @@ function Login(props) {
         onSubmit={formik.handleSubmit}
         className="form fv-plugins-bootstrap fv-plugins-framework"
       >
-        { formik.status ? (
-            <div className="mb-10 alert alert-custom alert-light-danger alert-dismissible">
-              <div className="alert-text font-weight-bold">{formik.status}</div>
-            </div>
-          ) : (<Fragment/>)
+        {formik.status ? (
+          <div className="mb-10 alert alert-custom alert-light-danger alert-dismissible">
+            <div className="alert-text font-weight-bold">{formik.status}</div>
+          </div>
+        ) : (<Fragment/>)
         }
 
         <div className="form-group fv-plugins-icon-container">
           <Row>
             <Col md={3}>
-              <Form.Group controlId="tipo" className="p-0" >
+              <Form.Group controlId="tipo" className="p-0">
                 {/*<Form.Label>State</Form.Label>*/}
                 <Form.Control as="select"
                               onChange={formik.handleChange}
@@ -257,11 +320,11 @@ function Login(props) {
 
         <div className="form-group fv-plugins-icon-container" style={styleCenter}>
           <button
-              id="kt_login_signin_submit"
-              type="submit"
-              disabled={formik.isSubmitting}
-              className={`btn btn-primary size-lg font-weight-bold`}
-              style={{"width": "100%"}}
+            id="kt_login_signin_submit"
+            type="submit"
+            disabled={formik.isSubmitting}
+            className={`btn btn-primary size-lg font-weight-bold`}
+            style={{"width": "100%"}}
           >
             <span><FormattedMessage id="AUTH.LOGIN.SIGNIN"/></span>
             {loading && <span className="ml-3 spinner spinner-white"></span>}
@@ -270,17 +333,17 @@ function Login(props) {
 
         <div className="form-group d-flex flex-wrap" style={styleCenter}>
               <span className="font-weight-bold text-dark-50">
-                <FormattedMessage id="AUTH.LOGIN.ASK" />
+                <FormattedMessage id="AUTH.LOGIN.ASK"/>
               </span>
           <Link to="/auth/registration" className="font-weight-bold ml-2" id="kt_login_signup">
-            <FormattedMessage id="AUTH.LOGIN.SIGNUP" />
+            <FormattedMessage id="AUTH.LOGIN.SIGNUP"/>
           </Link>
         </div>
         <div className="form-group d-flex flex-wrap" style={styleCenter}>
           <Link
-              to="/auth/forgot-password"
-              className="text-dark-50 text-hover-primary my-3 mr-2"
-              id="kt_login_forgot"
+            to="/auth/forgot-password"
+            className="text-dark-50 text-hover-primary my-3 mr-2"
+            id="kt_login_forgot"
           >
             <FormattedMessage id="AUTH.GENERAL.FORGOT_BUTTON"/>
           </Link>
@@ -288,6 +351,46 @@ function Login(props) {
 
       </form>
       {/*end::Form*/}
+
+      <Modal show={showCodigoModal} onHide={handleCloseModalCodigo}>
+        <Modal.Header closeButton>
+          <Modal.Title>Introduzca el código enviado a su correo</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+
+          <Row>
+            <Col md={12}>
+              {/* begin: codigo */}
+              <div className="form-group fv-plugins-icon-container">
+                <input
+                  placeholder="ingrese el código enviado a su correo."
+                  type="text"
+                  className={`form-control form-control-solid h-auto `}
+                  name="user"
+                  maxLength="9"
+                  ref={codigoValidacion}
+                />
+              </div>
+              {/* end: codigo */}
+            </Col>
+          </Row>
+
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary"
+                  onClick={handleCloseModalCodigo}
+          >
+            Cerrar
+          </Button>
+          <Button variant="secondary"
+                  onClick={handleAceptarModalCodigo}
+          >
+            Aceptar
+          </Button>
+
+        </Modal.Footer>
+      </Modal>
+
     </div>
   );
 }

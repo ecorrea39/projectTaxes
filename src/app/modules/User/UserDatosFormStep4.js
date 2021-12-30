@@ -1,10 +1,11 @@
 import React, {useEffect, useState, useRef, useContext} from "react";
-import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
+import {Button, Card, Col, Container, Form, Row, Spinner} from "react-bootstrap";
 import {FormattedMessage, useIntl} from "react-intl";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import GeneralContext from "../../store/general-context";
+import Swal from "sweetalert2";
 
 const listaCodCelular = () => {
   const array = [
@@ -76,14 +77,21 @@ const textLabelColor = {
   'color': '#5A5EFF',
 };
 
+const formulario = {
+  'padding': '0',
+  'width:': '100%'
+};
+
 const UserDatosFormStep4 = (props) => {
 
   const [loading, setLoading] = useState(false);
   const [siguiente, setSiguiente] = useState(false);
+  const [spinner, setSpinner] = useState(false);
 
   const generalCtx = useContext(GeneralContext);
 
   const [initialValues, setInitialValues] = useState({
+    cedulaLetra1: "",
     cedula_representante_legal1: "",
     nombre_representante_legal1: "",
     apellido_representante_legal1: "",
@@ -91,6 +99,7 @@ const UserDatosFormStep4 = (props) => {
     telefono_representante_legal1: "",
     correo_electronico_representante_legal1: "",
     cargo_representante_legal1: "",
+    cedulaLetra2: "",
     cedula_representante_legal2: "",
     nombre_representante_legal2: "",
     apellido_representante_legal2: "",
@@ -98,6 +107,7 @@ const UserDatosFormStep4 = (props) => {
     telefono_representante_legal2: "",
     correo_electronico_representante_legal2: "",
     cargo_representante_legal2: "",
+    cedulaLetra3: "",
     cedula_representante_legal3: "",
     nombre_representante_legal3: "",
     apellido_representante_legal3: "",
@@ -127,13 +137,15 @@ const UserDatosFormStep4 = (props) => {
 
   useEffect(() => {
 
+    setSpinner(true);
     axios.get(`${API_URL}user_manager_data/fondoporid/${generalCtx.theIdUserInformacionProfile}/`, axiosConfig)
       .then(function (res) {
-        console.log("get_user_company::", res);
+        //console.log("get_user_company::", res);
 
         if (res.data.data != null) {
 
           let initialValuesJson = {
+            "cedulaLetra1": res.data.data.attributes.cedulaLetra1 != null ? res.data.data.attributes.cedulaLetra1 : "",
             "cedula_representante_legal1": res.data.data.attributes.cedula_representante_legal1 != null ? res.data.data.attributes.cedula_representante_legal1 : "",
             "nombre_representante_legal1": res.data.data.attributes.nombre_representante_legal1 != null ? res.data.data.attributes.nombre_representante_legal1 : "",
             "apellido_representante_legal1": res.data.data.attributes.apellido_representante_legal1 != null ? res.data.data.attributes.apellido_representante_legal1 : "",
@@ -141,6 +153,7 @@ const UserDatosFormStep4 = (props) => {
             "telefono_representante_legal1": res.data.data.attributes.telefono_representante_legal1 != null ? res.data.data.attributes.telefono_representante_legal1 : "",
             "correo_electronico_representante_legal1": res.data.data.attributes.correo_electronico_representante_legal1 != null ? res.data.data.attributes.correo_electronico_representante_legal1 : "",
             "cargo_representante_legal1": res.data.data.attributes.cargo_representante_legal1 != null ? res.data.data.attributes.cargo_representante_legal1 : "",
+            "cedulaLetra2": res.data.data.attributes.cedulaLetra2 != null ? res.data.data.attributes.cedulaLetra2 : "",
             "cedula_representante_legal2": res.data.data.attributes.cedula_representante_legal2 != null ? res.data.data.attributes.cedula_representante_legal2 : "",
             "nombre_representante_legal2": res.data.data.attributes.nombre_representante_legal2 != null ? res.data.data.attributes.nombre_representante_legal2 : "",
             "apellido_representante_legal2": res.data.data.attributes.apellido_representante_legal2 != null ? res.data.data.attributes.apellido_representante_legal2 : "",
@@ -148,6 +161,7 @@ const UserDatosFormStep4 = (props) => {
             "telefono_representante_legal2": res.data.data.attributes.telefono_representante_legal2 != null ? res.data.data.attributes.telefono_representante_legal2 : "",
             "correo_electronico_representante_legal2": res.data.data.attributes.correo_electronico_representante_legal2 != null ? res.data.data.attributes.correo_electronico_representante_legal2 : "",
             "cargo_representante_legal2": res.data.data.attributes.cargo_representante_legal2 != null ? res.data.data.attributes.cargo_representante_legal2 : "",
+            "cedulaLetra3": res.data.data.attributes.cedulaLetra3 != null ? res.data.data.attributes.cedulaLetra3 : "",
             "cedula_representante_legal3": res.data.data.attributes.cedula_representante_legal3 != null ? res.data.data.attributes.cedula_representante_legal3 : "",
             "nombre_representante_legal3": res.data.data.attributes.nombre_representante_legal3 != null ? res.data.data.attributes.nombre_representante_legal3 : "",
             "apellido_representante_legal3": res.data.data.attributes.apellido_representante_legal3 != null ? res.data.data.attributes.apellido_representante_legal3 : "",
@@ -159,17 +173,33 @@ const UserDatosFormStep4 = (props) => {
 
           setInitialValues(initialValuesJson);
         } else {
-          alert("No existe información alguna registrada del usuario");
+          //alert("No existe información alguna registrada del usuario");
+          Swal.fire({
+            title: "Registro de Contribuyente",
+            text: "No existe información registrada del contribuyente!",
+            icon: "error",
+            button: "Ok",
+          });
         }
 
         disableLoading();
       }).catch((err) => {
 
       console.log("errGetUserCompany", err);
-      alert("Error buscando datos de los representantes legales de la empresa del usuario");
+      //alert("Error buscando datos de los representantes legales de la empresa del usuario");
+      Swal.fire({
+        title: "Registro de Contribuyente",
+        text: "Error buscando datos de los representantes legales del contribuyente!",
+        icon: "error",
+        button: "Ok",
+      });
+
       disableLoading();
 
-    });
+    })
+      .finally(() => {
+        setSpinner(false);
+      });
 
   }, []);
 
@@ -264,6 +294,9 @@ const UserDatosFormStep4 = (props) => {
 
   const LoginSchema = Yup.object().shape({
 
+    cedulaLetra1: Yup.string(),
+    cedulaLetra2: Yup.string(),
+    cedulaLetra3: Yup.string(),
     cedula_representante_legal1: Yup
       .number().positive(
         intl.formatMessage({
@@ -291,24 +324,7 @@ const UserDatosFormStep4 = (props) => {
         intl.formatMessage({
           id: "AUTH.VALIDATION.RANGELEN",
         }, {min: 1, max: 8})
-        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 8)))
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 8))),
     cedula_representante_legal3: Yup
       .number().positive(
         intl.formatMessage({
@@ -319,24 +335,7 @@ const UserDatosFormStep4 = (props) => {
         intl.formatMessage({
           id: "AUTH.VALIDATION.RANGELEN",
         }, {min: 1, max: 8})
-        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 8)))
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 8))),
     nombre_representante_legal1: Yup.string()
       .min(1,
         intl.formatMessage({
@@ -364,24 +363,7 @@ const UserDatosFormStep4 = (props) => {
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
         }, {max: 30})
-      )
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+      ),
     nombre_representante_legal3: Yup.string()
       .min(1,
         intl.formatMessage({
@@ -392,24 +374,7 @@ const UserDatosFormStep4 = (props) => {
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
         }, {max: 30})
-      )
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+      ),
     apellido_representante_legal1: Yup.string()
       .min(1,
         intl.formatMessage({
@@ -437,24 +402,7 @@ const UserDatosFormStep4 = (props) => {
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
         }, {max: 30})
-      )
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+      ),
     apellido_representante_legal3: Yup.string()
       .min(1,
         intl.formatMessage({
@@ -465,66 +413,15 @@ const UserDatosFormStep4 = (props) => {
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
         }, {max: 30})
-      )
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+      ),
     codigo_de_area_representante_legal1: Yup.string()
       .required(
         intl.formatMessage({
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
         })
       ),
-    codigo_de_area_representante_legal2: Yup.string()
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
-    codigo_de_area_representante_legal3: Yup.string()
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+    codigo_de_area_representante_legal2: Yup.string(),
+    codigo_de_area_representante_legal3: Yup.string(),
     telefono_representante_legal1: Yup
       .number().positive(
         intl.formatMessage({
@@ -552,24 +449,7 @@ const UserDatosFormStep4 = (props) => {
         intl.formatMessage({
           id: "AUTH.VALIDATION.RANGELEN",
         }, {min: 1, max: 7})
-        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 7)))
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 7))),
     telefono_representante_legal3: Yup
       .number().positive(
         intl.formatMessage({
@@ -580,24 +460,7 @@ const UserDatosFormStep4 = (props) => {
         intl.formatMessage({
           id: "AUTH.VALIDATION.RANGELEN",
         }, {min: 1, max: 7})
-        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 7)))
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+        , val => !val || (val && (val.toString().length >= 1 && val.toString().length <= 7))),
     correo_electronico_representante_legal1: Yup.string()
       .email(
         intl.formatMessage({
@@ -635,24 +498,7 @@ const UserDatosFormStep4 = (props) => {
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
         }, {max: 80})
-      )
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+      ),
     correo_electronico_representante_legal3: Yup.string()
       .email(
         intl.formatMessage({
@@ -668,24 +514,7 @@ const UserDatosFormStep4 = (props) => {
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
         }, {max: 80})
-      )
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+      ),
     cargo_representante_legal1: Yup.string()
       .min(1,
         intl.formatMessage({
@@ -713,24 +542,7 @@ const UserDatosFormStep4 = (props) => {
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
         }, {max: 30})
-      )
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+      ),
     cargo_representante_legal3: Yup.string()
       .min(1,
         intl.formatMessage({
@@ -741,24 +553,7 @@ const UserDatosFormStep4 = (props) => {
         intl.formatMessage({
           id: "AUTH.VALIDATION.MAX_LENGTH",
         }, {max: 30})
-      )
-      .test('j-g-c-los-representantes-legales-2-y-3-son-obligatorios', 'Campo requerido para tipos J, G o C', function(value) {
-        const tipoIdentificacionConst = rif.substring(0, 1);
-
-        console.log("tipoIdentificacionConst", tipoIdentificacionConst);
-        console.log("validacion::::", ['j', 'g', 'c'].includes(tipoIdentificacionConst));
-        console.log("value::::", value);
-        if (['j', 'g', 'c'].includes(tipoIdentificacionConst)) {
-
-          if (value == '' || typeof value === 'undefined') {
-            return false;
-          } else {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }),
+      ),
   });
 
   const enableLoading = () => {
@@ -778,12 +573,12 @@ const UserDatosFormStep4 = (props) => {
       setSubmitting(true);
       enableLoading();
 
-      console.log("values", formik.values);
+      //("values", formik.values);
 
       const rif = localStorage.getItem('rif');
 
-      console.log("rif", rif);
-      console.log("authToken", token);
+      //console.log("rif", rif);
+      //console.log("authToken", token);
 
       let jsonAttributes = formik.values;
 
@@ -798,6 +593,7 @@ const UserDatosFormStep4 = (props) => {
         }
       };
 
+      setSpinner(true);
       axios.post(`${API_URL}user_manager_data/`, data, axiosConfig)
         .then(function (res) {
 
@@ -806,6 +602,7 @@ const UserDatosFormStep4 = (props) => {
           const codigo_de_area_representante_legal3C = codigo_de_area_representante_legal3Ref.current.options[codigo_de_area_representante_legal3Ref.current.selectedIndex].text;
 
           props.cambiarResumenFicha({
+            cedulaLetra1: formik.values.cedulaLetra1,
             cedula_representante_legal1: formik.values.cedula_representante_legal1,
             nombre_representante_legal1: formik.values.nombre_representante_legal1,
             apellido_representante_legal1: formik.values.apellido_representante_legal1,
@@ -813,6 +610,7 @@ const UserDatosFormStep4 = (props) => {
             telefono_representante_legal1: formik.values.telefono_representante_legal1,
             correo_electronico_representante_legal1: formik.values.correo_electronico_representante_legal1,
             cargo_representante_legal1: formik.values.cargo_representante_legal1,
+            cedulaLetra2: formik.values.cedulaLetra2,
             cedula_representante_legal2: formik.values.cedula_representante_legal2,
             nombre_representante_legal2: formik.values.nombre_representante_legal2,
             apellido_representante_legal2: formik.values.apellido_representante_legal2,
@@ -820,6 +618,7 @@ const UserDatosFormStep4 = (props) => {
             telefono_representante_legal2: formik.values.telefono_representante_legal2,
             correo_electronico_representante_legal2: formik.values.correo_electronico_representante_legal2,
             cargo_representante_legal2: formik.values.cargo_representante_legal2,
+            cedulaLetra3: formik.values.cedulaLetra3,
             cedula_representante_legal3: formik.values.cedula_representante_legal3,
             nombre_representante_legal3: formik.values.nombre_representante_legal3,
             apellido_representante_legal3: formik.values.apellido_representante_legal3,
@@ -832,7 +631,7 @@ const UserDatosFormStep4 = (props) => {
           setSubmitting(false);
           disableLoading();
 
-          console.log("resFormStep4", res);
+          //console.log("resFormStep4", res);
 
           if (siguiente) {
             setSiguiente(false);
@@ -844,8 +643,18 @@ const UserDatosFormStep4 = (props) => {
         setSubmitting(false);
         disableLoading();
 
-        alert("Error al guardar los Datos de los Representantes Legales");
-      });
+        //alert("Error al guardar los Datos de los Representantes Legales");
+        Swal.fire({
+          title: "Registro de Contribuyente",
+          text: "Error al guardar los Datos de los Representantes Legales!",
+          icon: "error",
+          button: "Ok",
+        });
+
+      })
+        .finally(() => {
+          setSpinner(false);
+        });
     },
   });
 
@@ -854,6 +663,7 @@ const UserDatosFormStep4 = (props) => {
       <Card.Body>
         <Card.Title>
           Datos del Representante Legal
+          {spinner && <Spinner animation="border" variant="danger"/>}
         </Card.Title>
         <Card.Body>
           <form
@@ -868,14 +678,35 @@ const UserDatosFormStep4 = (props) => {
 
               <Row>
                 <Col md={2}>
-                  <Form.Group as={Col} controlId="cedula_representante_legal1">
+                  <Form.Group as={Col} style={formulario} controlId="cedulaLetra1">
+                    <Form.Label style={textLabelColor}>Documento</Form.Label>
+
+                    <Form.Control as="select"
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  value={formik.values.cedulaLetra1}>
+                      <option value="">...</option>
+                      <option value="v">V</option>
+                      <option value="e">E</option>
+                      <option value="p">P</option>
+                    </Form.Control>
+
+                    {formik.touched.cedulaLetra1 && formik.errors.cedulaLetra1 ? (
+                        <div className="fv-plugins-message-container">
+                          <div className="fv-help-block">{formik.errors.cedulaLetra1}</div>
+                        </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
+                <Col md={2}>
+                  <Form.Group as={Col} style={formulario} controlId="cedula_representante_legal1">
                     <Form.Label style={textLabelColor}>Cédula</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Número Del Cédula"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={customHandleChangeCedulaRepresentanteLegal1}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.cedula_representante_legal1}
                                   maxLength="8"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.cedula_representante_legal1 && formik.errors.cedula_representante_legal1 ? (
@@ -886,15 +717,15 @@ const UserDatosFormStep4 = (props) => {
                   </Form.Group>
                 </Col>
 
-                <Col md={5}>
-                  <Form.Group as={Col} controlId="nombre_representante_legal1">
+                <Col md={4}>
+                  <Form.Group as={Col} style={formulario} controlId="nombre_representante_legal1">
                     <Form.Label style={textLabelColor}>Nombre</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Nombre del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.nombre_representante_legal1}
                                   maxLength="30"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.nombre_representante_legal1 && formik.errors.nombre_representante_legal1 ? (
@@ -905,15 +736,15 @@ const UserDatosFormStep4 = (props) => {
                   </Form.Group>
                 </Col>
 
-                <Col md={5}>
-                  <Form.Group as={Col} controlId="apellido_representante_legal1">
+                <Col md={4}>
+                  <Form.Group as={Col} style={formulario} controlId="apellido_representante_legal1">
                     <Form.Label style={textLabelColor}>Apellido</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Apellido del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.apellido_representante_legal1}
                                   maxLength="30"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.apellido_representante_legal1 && formik.errors.apellido_representante_legal1 ? (
@@ -929,7 +760,7 @@ const UserDatosFormStep4 = (props) => {
 
               <Row>
                 <Col md={2}>
-                  <Form.Group controlId="codigo_de_area_representante_legal1">
+                  <Form.Group style={formulario} controlId="codigo_de_area_representante_legal1">
                     <Form.Label style={textLabelColor}>Código de área</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
@@ -937,7 +768,7 @@ const UserDatosFormStep4 = (props) => {
                                   value={formik.values.codigo_de_area_representante_legal1}
                                   ref={codigo_de_area_representante_legal1Ref}
                     >
-                      <option key="0" value="">Seleccione el Código de Area</option>
+                      <option key="0" value=""></option>
 
                       {codigosCelulares.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
@@ -954,9 +785,9 @@ const UserDatosFormStep4 = (props) => {
                 </Col>
 
                 <Col md={3}>
-                  <Form.Group as={Col} controlId="telefono_representante_legal1">
+                  <Form.Group as={Col} style={formulario} controlId="telefono_representante_legal1">
                     <Form.Label style={textLabelColor}>Número de Teléfono</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Telefono del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={customHandleChangeTelefonoRepresentanteLegal1}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.telefono_representante_legal1}
@@ -972,9 +803,9 @@ const UserDatosFormStep4 = (props) => {
                 </Col>
 
                 <Col md={4}>
-                  <Form.Group as={Col} controlId="correo_electronico_representante_legal1">
+                  <Form.Group as={Col} style={formulario} controlId="correo_electronico_representante_legal1">
                     <Form.Label style={textLabelColor}>Correo Electrónico</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Correo Electrónico"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.correo_electronico_representante_legal1}
@@ -990,14 +821,14 @@ const UserDatosFormStep4 = (props) => {
                 </Col>
 
                 <Col md={3}>
-                  <Form.Group as={Col} controlId="cargo_representante_legal1">
+                  <Form.Group as={Col} style={formulario} controlId="cargo_representante_legal1">
                     <Form.Label style={textLabelColor}>Cargo</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Cargo del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.cargo_representante_legal1}
                                   maxLength="30"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.cargo_representante_legal1 && formik.errors.cargo_representante_legal1 ? (
@@ -1017,14 +848,35 @@ const UserDatosFormStep4 = (props) => {
 
               <Row>
                 <Col md={2}>
-                  <Form.Group as={Col} controlId="cedula_representante_legal2">
+                  <Form.Group as={Col} style={formulario} controlId="cedulaLetra2">
+                    <Form.Label style={textLabelColor}>Documento</Form.Label>
+                    {/*<Form.Label>State</Form.Label>*/}
+                    <Form.Control as="select" >
+
+                      <option value="">...</option>
+                      <option value="v">V</option>
+                      <option value="e">E</option>
+                      <option value="p">P</option>
+
+                    </Form.Control>
+
+                    {formik.touched.cedulaLetra2 && formik.errors.cedulaLetra2 ? (
+                        <div className="fv-plugins-message-container">
+                          <div className="fv-help-block">{formik.errors.cedulaLetra2}</div>
+                        </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
+
+                <Col md={2}>
+                  <Form.Group as={Col} style={formulario} controlId="cedula_representante_legal2">
                     <Form.Label style={textLabelColor}>Cédula</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Número Del Cédula"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={customHandleChangeCedulaRepresentanteLegal2}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.cedula_representante_legal2}
                                   maxLength="8"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.cedula_representante_legal2 && formik.errors.cedula_representante_legal2 ? (
@@ -1035,15 +887,15 @@ const UserDatosFormStep4 = (props) => {
                   </Form.Group>
                 </Col>
 
-                <Col md={5}>
-                  <Form.Group as={Col} controlId="nombre_representante_legal2">
+                <Col md={4}>
+                  <Form.Group as={Col} style={formulario} controlId="nombre_representante_legal2">
                     <Form.Label style={textLabelColor}>Nombre</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Nombre del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.nombre_representante_legal2}
                                   maxLength="30"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.nombre_representante_legal2 && formik.errors.nombre_representante_legal2 ? (
@@ -1054,15 +906,15 @@ const UserDatosFormStep4 = (props) => {
                   </Form.Group>
                 </Col>
 
-                <Col md={5}>
-                  <Form.Group as={Col} controlId="apellido_representante_legal2">
+                <Col md={4}>
+                  <Form.Group as={Col} style={formulario} controlId="apellido_representante_legal2">
                     <Form.Label style={textLabelColor}>Apellido</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Apellido del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.apellido_representante_legal2}
                                   maxLength="30"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.apellido_representante_legal2 && formik.errors.apellido_representante_legal2 ? (
@@ -1078,7 +930,7 @@ const UserDatosFormStep4 = (props) => {
 
               <Row>
                 <Col md={2}>
-                  <Form.Group controlId="codigo_de_area_representante_legal2">
+                  <Form.Group style={formulario} controlId="codigo_de_area_representante_legal2">
                     <Form.Label style={textLabelColor}>Código de área</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
@@ -1086,7 +938,7 @@ const UserDatosFormStep4 = (props) => {
                                   value={formik.values.codigo_de_area_representante_legal2}
                                   ref={codigo_de_area_representante_legal2Ref}
                     >
-                      <option key="0" value="">Seleccione el Código de Area</option>
+                      <option key="0" value=""></option>
 
                       {codigosCelulares.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
@@ -1103,9 +955,9 @@ const UserDatosFormStep4 = (props) => {
                 </Col>
 
                 <Col md={3}>
-                  <Form.Group as={Col} controlId="telefono_representante_legal2">
+                  <Form.Group as={Col} style={formulario} controlId="telefono_representante_legal2">
                     <Form.Label style={textLabelColor}>Número de Teléfono</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Teléfono del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={customHandleChangeTelefonoRepresentanteLegal2}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.telefono_representante_legal2}
@@ -1121,9 +973,9 @@ const UserDatosFormStep4 = (props) => {
                 </Col>
 
                 <Col md={4}>
-                  <Form.Group as={Col} controlId="correo_electronico_representante_legal2">
+                  <Form.Group as={Col} style={formulario} controlId="correo_electronico_representante_legal2">
                     <Form.Label style={textLabelColor}>Correo Electrónico</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Correo Electrónico"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.correo_electronico_representante_legal2}
@@ -1139,14 +991,14 @@ const UserDatosFormStep4 = (props) => {
                 </Col>
 
                 <Col md={3}>
-                  <Form.Group as={Col} controlId="cargo_representante_legal2">
+                  <Form.Group as={Col} style={formulario} controlId="cargo_representante_legal2">
                     <Form.Label style={textLabelColor}>Cargo</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Cargo del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.cargo_representante_legal2}
                                   maxLength="30"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.cargo_representante_legal2 && formik.errors.cargo_representante_legal2 ? (
@@ -1166,14 +1018,34 @@ const UserDatosFormStep4 = (props) => {
 
               <Row>
                 <Col md={2}>
-                  <Form.Group as={Col} controlId="cedula_representante_legal3">
+                  <Form.Group as={Col} style={formulario} controlId="cedulaLetra3">
+                    <Form.Label style={textLabelColor}>Documento</Form.Label>
+
+                    <Form.Control as="select" >
+                      <option value="">...</option>
+                      <option value="v">V</option>
+                      <option value="e">E</option>
+                      <option value="p">P</option>
+
+                    </Form.Control>
+
+                    {formik.touched.cedulaLetra3 && formik.errors.cedulaLetra3 ? (
+                        <div className="fv-plugins-message-container">
+                          <div className="fv-help-block">{formik.errors.cedulaLetra3}</div>
+                        </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
+
+                <Col md={2}>
+                  <Form.Group as={Col} style={formulario} controlId="cedula_representante_legal3">
                     <Form.Label style={textLabelColor}>Cédula</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Número Del Cédula"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={customHandleChangeCedulaRepresentanteLegal3}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.cedula_representante_legal3}
                                   maxLength="8"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.cedula_representante_legal3 && formik.errors.cedula_representante_legal3 ? (
@@ -1184,15 +1056,15 @@ const UserDatosFormStep4 = (props) => {
                   </Form.Group>
                 </Col>
 
-                <Col md={5}>
-                  <Form.Group as={Col} controlId="nombre_representante_legal3">
+                <Col md={4}>
+                  <Form.Group as={Col} style={formulario} controlId="nombre_representante_legal3">
                     <Form.Label style={textLabelColor}>Nombre</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Nombre del Representante Legal 3"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.nombre_representante_legal3}
                                   maxLength="30"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.nombre_representante_legal3 && formik.errors.nombre_representante_legal3 ? (
@@ -1203,15 +1075,15 @@ const UserDatosFormStep4 = (props) => {
                   </Form.Group>
                 </Col>
 
-                <Col md={5}>
-                  <Form.Group as={Col} controlId="apellido_representante_legal3">
+                <Col md={4}>
+                  <Form.Group as={Col} style={formulario} controlId="apellido_representante_legal3">
                     <Form.Label style={textLabelColor}>Apellido</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Apellido del Representante Legal 3"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.apellido_representante_legal3}
                                   maxLength="30"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.apellido_representante_legal3 && formik.errors.apellido_representante_legal3 ? (
@@ -1227,7 +1099,7 @@ const UserDatosFormStep4 = (props) => {
 
               <Row>
                 <Col md={2}>
-                  <Form.Group controlId="codigo_de_area_representante_legal3">
+                  <Form.Group style={formulario} controlId="codigo_de_area_representante_legal3">
                     <Form.Label style={textLabelColor}>Código de área</Form.Label>
                     <Form.Control as="select"
                                   onChange={formik.handleChange}
@@ -1235,7 +1107,7 @@ const UserDatosFormStep4 = (props) => {
                                   value={formik.values.codigo_de_area_representante_legal3}
                                   ref={codigo_de_area_representante_legal3Ref}
                     >
-                      <option key="0" value="">Seleccione el Código de Area</option>
+                      <option key="0" value=""></option>
 
                       {codigosCelulares.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
@@ -1252,9 +1124,9 @@ const UserDatosFormStep4 = (props) => {
                 </Col>
 
                 <Col md={3}>
-                  <Form.Group as={Col} controlId="telefono_representante_legal3">
+                  <Form.Group as={Col} style={formulario} controlId="telefono_representante_legal3">
                     <Form.Label style={textLabelColor}>Número de Teléfono</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Teléfono del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={customHandleChangeTelefonoRepresentanteLegal3}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.telefono_representante_legal3}
@@ -1270,9 +1142,9 @@ const UserDatosFormStep4 = (props) => {
                 </Col>
 
                 <Col md={4}>
-                  <Form.Group as={Col} controlId="correo_electronico_representante_legal3">
+                  <Form.Group as={Col} style={formulario} controlId="correo_electronico_representante_legal3">
                     <Form.Label style={textLabelColor}>Correo Electrónico</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Correo Electrónico"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.correo_electronico_representante_legal3}
@@ -1288,14 +1160,14 @@ const UserDatosFormStep4 = (props) => {
                 </Col>
 
                 <Col md={3}>
-                  <Form.Group as={Col} controlId="cargo_representante_legal3">
+                  <Form.Group as={Col} style={formulario} controlId="cargo_representante_legal3">
                     <Form.Label style={textLabelColor}>Cargo</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Cargo del Representante Legal 3"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.cargo_representante_legal3}
                                   maxLength="30"
-                                  disabled={props.registradoValor ? "disabled" : ""}
+                                  disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}
                     />
 
                     {formik.touched.cargo_representante_legal3 && formik.errors.cargo_representante_legal3 ? (
@@ -1333,13 +1205,11 @@ const UserDatosFormStep4 = (props) => {
                   <Button variant="secondary" size="lg" block
                           type="button"
                           onClick={submitSiguiente}
-                          disabled={
-                            formik.isSubmitting ||
-                            !formik.isValid
-                          }
-                  >
+                          className="btn btn-info font-size-sm w-100"
+                          disabled={ formik.isSubmitting || !formik.isValid }>
                     Siguiente
                   </Button>
+                  {spinner && <Spinner animation="border" variant="danger"/>}
                 </Col>
               </Row>
             </Container>
