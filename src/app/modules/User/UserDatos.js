@@ -53,6 +53,7 @@ const UserDatos = (props) => {
     codigo_telefono_compania2:"",
     numero_telefono_compania2:"",
     correo_empresa:"",
+    cedulaLetra1:"",
     cedula_representante_legal1: "",
     nombre_representante_legal1: "",
     apellido_representante_legal1: "",
@@ -60,6 +61,7 @@ const UserDatos = (props) => {
     telefono_representante_legal1: "",
     correo_electronico_representante_legal1: "",
     cargo_representante_legal1: "",
+    cedulaLetra2:"",
     cedula_representante_legal2: "",
     nombre_representante_legal2: "",
     apellido_representante_legal2: "",
@@ -67,6 +69,7 @@ const UserDatos = (props) => {
     telefono_representante_legal2: "",
     correo_electronico_representante_legal2: "",
     cargo_representante_legal2: "",
+    cedulaLetra3:"",
     cedula_representante_legal3: "",
     nombre_representante_legal3: "",
     apellido_representante_legal3: "",
@@ -94,7 +97,7 @@ const UserDatos = (props) => {
 
   const cambiarResumenFichaRegistro1 = (objeto) => {
 
-    console.log("objeto::::", objeto);
+    //console.log("objeto::::", objeto);
 
     setValoresParaFichaDeRegistro((prevState) => {
       return {
@@ -113,7 +116,7 @@ const UserDatos = (props) => {
 
   const cambiarResumenFichaRegistro2 = (objeto) => {
 
-    console.log("objeto::::", objeto);
+    //console.log("objeto::::", objeto);
 
     setValoresParaFichaDeRegistro((prevState) => {
       return {
@@ -130,7 +133,7 @@ const UserDatos = (props) => {
 
   const cambiarResumenFichaRegistro3 = (objeto) => {
 
-    console.log("objeto::::", objeto);
+    //console.log("objeto::::", objeto);
 
     setValoresParaFichaDeRegistro((prevState) => {
       return {
@@ -157,11 +160,10 @@ const UserDatos = (props) => {
 
   const cambiarResumenFichaRegistro4 = (objeto) => {
 
-    console.log("objeto::::", objeto);
-
     setValoresParaFichaDeRegistro((prevState) => {
       return {
         ...prevState,
+        cedulaLetra1: objeto.cedulaLetra1,
         cedula_representante_legal1: objeto.cedula_representante_legal1,
         nombre_representante_legal1: objeto.nombre_representante_legal1,
         apellido_representante_legal1: objeto.apellido_representante_legal1,
@@ -169,6 +171,7 @@ const UserDatos = (props) => {
         telefono_representante_legal1: objeto.telefono_representante_legal1,
         correo_electronico_representante_legal1: objeto.correo_electronico_representante_legal1,
         cargo_representante_legal1: objeto.cargo_representante_legal1,
+        cedulaLetra2: objeto.cedulaLetra2,
         cedula_representante_legal2: objeto.cedula_representante_legal2,
         nombre_representante_legal2: objeto.nombre_representante_legal2,
         apellido_representante_legal2: objeto.apellido_representante_legal2,
@@ -176,6 +179,7 @@ const UserDatos = (props) => {
         telefono_representante_legal2: objeto.telefono_representante_legal2,
         correo_electronico_representante_legal2: objeto.correo_electronico_representante_legal2,
         cargo_representante_legal2: objeto.cargo_representante_legal2,
+        cedulaLetra3: objeto.cedulaLetra3,
         cedula_representante_legal3: objeto.cedula_representante_legal3,
         nombre_representante_legal3: objeto.nombre_representante_legal3,
         apellido_representante_legal3: objeto.apellido_representante_legal3,

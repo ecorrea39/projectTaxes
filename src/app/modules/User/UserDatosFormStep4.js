@@ -5,6 +5,7 @@ import {useFormik} from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import GeneralContext from "../../store/general-context";
+import Swal from "sweetalert2";
 
 const listaCodCelular = () => {
   const array = [
@@ -90,6 +91,7 @@ const UserDatosFormStep4 = (props) => {
   const generalCtx = useContext(GeneralContext);
 
   const [initialValues, setInitialValues] = useState({
+    cedulaLetra1: "",
     cedula_representante_legal1: "",
     nombre_representante_legal1: "",
     apellido_representante_legal1: "",
@@ -97,6 +99,7 @@ const UserDatosFormStep4 = (props) => {
     telefono_representante_legal1: "",
     correo_electronico_representante_legal1: "",
     cargo_representante_legal1: "",
+    cedulaLetra2: "",
     cedula_representante_legal2: "",
     nombre_representante_legal2: "",
     apellido_representante_legal2: "",
@@ -104,6 +107,7 @@ const UserDatosFormStep4 = (props) => {
     telefono_representante_legal2: "",
     correo_electronico_representante_legal2: "",
     cargo_representante_legal2: "",
+    cedulaLetra3: "",
     cedula_representante_legal3: "",
     nombre_representante_legal3: "",
     apellido_representante_legal3: "",
@@ -136,11 +140,12 @@ const UserDatosFormStep4 = (props) => {
     setSpinner(true);
     axios.get(`${API_URL}user_manager_data/fondoporid/${generalCtx.theIdUserInformacionProfile}/`, axiosConfig)
       .then(function (res) {
-        console.log("get_user_company::", res);
+        //console.log("get_user_company::", res);
 
         if (res.data.data != null) {
 
           let initialValuesJson = {
+            "cedulaLetra1": res.data.data.attributes.cedulaLetra1 != null ? res.data.data.attributes.cedulaLetra1 : "",
             "cedula_representante_legal1": res.data.data.attributes.cedula_representante_legal1 != null ? res.data.data.attributes.cedula_representante_legal1 : "",
             "nombre_representante_legal1": res.data.data.attributes.nombre_representante_legal1 != null ? res.data.data.attributes.nombre_representante_legal1 : "",
             "apellido_representante_legal1": res.data.data.attributes.apellido_representante_legal1 != null ? res.data.data.attributes.apellido_representante_legal1 : "",
@@ -148,6 +153,7 @@ const UserDatosFormStep4 = (props) => {
             "telefono_representante_legal1": res.data.data.attributes.telefono_representante_legal1 != null ? res.data.data.attributes.telefono_representante_legal1 : "",
             "correo_electronico_representante_legal1": res.data.data.attributes.correo_electronico_representante_legal1 != null ? res.data.data.attributes.correo_electronico_representante_legal1 : "",
             "cargo_representante_legal1": res.data.data.attributes.cargo_representante_legal1 != null ? res.data.data.attributes.cargo_representante_legal1 : "",
+            "cedulaLetra2": res.data.data.attributes.cedulaLetra2 != null ? res.data.data.attributes.cedulaLetra2 : "",
             "cedula_representante_legal2": res.data.data.attributes.cedula_representante_legal2 != null ? res.data.data.attributes.cedula_representante_legal2 : "",
             "nombre_representante_legal2": res.data.data.attributes.nombre_representante_legal2 != null ? res.data.data.attributes.nombre_representante_legal2 : "",
             "apellido_representante_legal2": res.data.data.attributes.apellido_representante_legal2 != null ? res.data.data.attributes.apellido_representante_legal2 : "",
@@ -155,6 +161,7 @@ const UserDatosFormStep4 = (props) => {
             "telefono_representante_legal2": res.data.data.attributes.telefono_representante_legal2 != null ? res.data.data.attributes.telefono_representante_legal2 : "",
             "correo_electronico_representante_legal2": res.data.data.attributes.correo_electronico_representante_legal2 != null ? res.data.data.attributes.correo_electronico_representante_legal2 : "",
             "cargo_representante_legal2": res.data.data.attributes.cargo_representante_legal2 != null ? res.data.data.attributes.cargo_representante_legal2 : "",
+            "cedulaLetra3": res.data.data.attributes.cedulaLetra3 != null ? res.data.data.attributes.cedulaLetra3 : "",
             "cedula_representante_legal3": res.data.data.attributes.cedula_representante_legal3 != null ? res.data.data.attributes.cedula_representante_legal3 : "",
             "nombre_representante_legal3": res.data.data.attributes.nombre_representante_legal3 != null ? res.data.data.attributes.nombre_representante_legal3 : "",
             "apellido_representante_legal3": res.data.data.attributes.apellido_representante_legal3 != null ? res.data.data.attributes.apellido_representante_legal3 : "",
@@ -166,14 +173,27 @@ const UserDatosFormStep4 = (props) => {
 
           setInitialValues(initialValuesJson);
         } else {
-          alert("No existe información alguna registrada del usuario");
+          //alert("No existe información alguna registrada del usuario");
+          Swal.fire({
+            title: "Registro de Contribuyente",
+            text: "No existe información registrada del contribuyente!",
+            icon: "error",
+            button: "Ok",
+          });
         }
 
         disableLoading();
       }).catch((err) => {
 
       console.log("errGetUserCompany", err);
-      alert("Error buscando datos de los representantes legales de la empresa del usuario");
+      //alert("Error buscando datos de los representantes legales de la empresa del usuario");
+      Swal.fire({
+        title: "Registro de Contribuyente",
+        text: "Error buscando datos de los representantes legales del contribuyente!",
+        icon: "error",
+        button: "Ok",
+      });
+
       disableLoading();
 
     })
@@ -274,6 +294,9 @@ const UserDatosFormStep4 = (props) => {
 
   const LoginSchema = Yup.object().shape({
 
+    cedulaLetra1: Yup.string(),
+    cedulaLetra2: Yup.string(),
+    cedulaLetra3: Yup.string(),
     cedula_representante_legal1: Yup
       .number().positive(
         intl.formatMessage({
@@ -550,12 +573,12 @@ const UserDatosFormStep4 = (props) => {
       setSubmitting(true);
       enableLoading();
 
-      console.log("values", formik.values);
+      //("values", formik.values);
 
       const rif = localStorage.getItem('rif');
 
-      console.log("rif", rif);
-      console.log("authToken", token);
+      //console.log("rif", rif);
+      //console.log("authToken", token);
 
       let jsonAttributes = formik.values;
 
@@ -579,6 +602,7 @@ const UserDatosFormStep4 = (props) => {
           const codigo_de_area_representante_legal3C = codigo_de_area_representante_legal3Ref.current.options[codigo_de_area_representante_legal3Ref.current.selectedIndex].text;
 
           props.cambiarResumenFicha({
+            cedulaLetra1: formik.values.cedulaLetra1,
             cedula_representante_legal1: formik.values.cedula_representante_legal1,
             nombre_representante_legal1: formik.values.nombre_representante_legal1,
             apellido_representante_legal1: formik.values.apellido_representante_legal1,
@@ -586,6 +610,7 @@ const UserDatosFormStep4 = (props) => {
             telefono_representante_legal1: formik.values.telefono_representante_legal1,
             correo_electronico_representante_legal1: formik.values.correo_electronico_representante_legal1,
             cargo_representante_legal1: formik.values.cargo_representante_legal1,
+            cedulaLetra2: formik.values.cedulaLetra2,
             cedula_representante_legal2: formik.values.cedula_representante_legal2,
             nombre_representante_legal2: formik.values.nombre_representante_legal2,
             apellido_representante_legal2: formik.values.apellido_representante_legal2,
@@ -593,6 +618,7 @@ const UserDatosFormStep4 = (props) => {
             telefono_representante_legal2: formik.values.telefono_representante_legal2,
             correo_electronico_representante_legal2: formik.values.correo_electronico_representante_legal2,
             cargo_representante_legal2: formik.values.cargo_representante_legal2,
+            cedulaLetra3: formik.values.cedulaLetra3,
             cedula_representante_legal3: formik.values.cedula_representante_legal3,
             nombre_representante_legal3: formik.values.nombre_representante_legal3,
             apellido_representante_legal3: formik.values.apellido_representante_legal3,
@@ -605,7 +631,7 @@ const UserDatosFormStep4 = (props) => {
           setSubmitting(false);
           disableLoading();
 
-          console.log("resFormStep4", res);
+          //console.log("resFormStep4", res);
 
           if (siguiente) {
             setSiguiente(false);
@@ -617,7 +643,14 @@ const UserDatosFormStep4 = (props) => {
         setSubmitting(false);
         disableLoading();
 
-        alert("Error al guardar los Datos de los Representantes Legales");
+        //alert("Error al guardar los Datos de los Representantes Legales");
+        Swal.fire({
+          title: "Registro de Contribuyente",
+          text: "Error al guardar los Datos de los Representantes Legales!",
+          icon: "error",
+          button: "Ok",
+        });
+
       })
         .finally(() => {
           setSpinner(false);
@@ -645,9 +678,30 @@ const UserDatosFormStep4 = (props) => {
 
               <Row>
                 <Col md={2}>
+                  <Form.Group as={Col} style={formulario} controlId="cedulaLetra1">
+                    <Form.Label style={textLabelColor}>Documento</Form.Label>
+
+                    <Form.Control as="select"
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  value={formik.values.cedulaLetra1}>
+                      <option value="">...</option>
+                      <option value="v">V</option>
+                      <option value="e">E</option>
+                      <option value="p">P</option>
+                    </Form.Control>
+
+                    {formik.touched.cedulaLetra1 && formik.errors.cedulaLetra1 ? (
+                        <div className="fv-plugins-message-container">
+                          <div className="fv-help-block">{formik.errors.cedulaLetra1}</div>
+                        </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
+                <Col md={2}>
                   <Form.Group as={Col} style={formulario} controlId="cedula_representante_legal1">
                     <Form.Label style={textLabelColor}>Cédula</Form.Label>
-                    <Form.Control size="md" type="text" placeholder="Número Del Cédula"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={customHandleChangeCedulaRepresentanteLegal1}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.cedula_representante_legal1}
@@ -663,10 +717,10 @@ const UserDatosFormStep4 = (props) => {
                   </Form.Group>
                 </Col>
 
-                <Col md={5}>
+                <Col md={4}>
                   <Form.Group as={Col} style={formulario} controlId="nombre_representante_legal1">
                     <Form.Label style={textLabelColor}>Nombre</Form.Label>
-                    <Form.Control size="md" type="text" placeholder="Nombre del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.nombre_representante_legal1}
@@ -682,10 +736,10 @@ const UserDatosFormStep4 = (props) => {
                   </Form.Group>
                 </Col>
 
-                <Col md={5}>
+                <Col md={4}>
                   <Form.Group as={Col} style={formulario} controlId="apellido_representante_legal1">
                     <Form.Label style={textLabelColor}>Apellido</Form.Label>
-                    <Form.Control size="md" type="text" placeholder="Apellido del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.apellido_representante_legal1}
@@ -733,7 +787,7 @@ const UserDatosFormStep4 = (props) => {
                 <Col md={3}>
                   <Form.Group as={Col} style={formulario} controlId="telefono_representante_legal1">
                     <Form.Label style={textLabelColor}>Número de Teléfono</Form.Label>
-                    <Form.Control size="md" type="text" placeholder="Telefono del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={customHandleChangeTelefonoRepresentanteLegal1}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.telefono_representante_legal1}
@@ -751,7 +805,7 @@ const UserDatosFormStep4 = (props) => {
                 <Col md={4}>
                   <Form.Group as={Col} style={formulario} controlId="correo_electronico_representante_legal1">
                     <Form.Label style={textLabelColor}>Correo Electrónico</Form.Label>
-                    <Form.Control size="md" type="text" placeholder="Correo Electrónico"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.correo_electronico_representante_legal1}
@@ -769,7 +823,7 @@ const UserDatosFormStep4 = (props) => {
                 <Col md={3}>
                   <Form.Group as={Col} style={formulario} controlId="cargo_representante_legal1">
                     <Form.Label style={textLabelColor}>Cargo</Form.Label>
-                    <Form.Control size="md" type="text" placeholder="Cargo del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.cargo_representante_legal1}
@@ -794,9 +848,30 @@ const UserDatosFormStep4 = (props) => {
 
               <Row>
                 <Col md={2}>
+                  <Form.Group as={Col} style={formulario} controlId="cedulaLetra2">
+                    <Form.Label style={textLabelColor}>Documento</Form.Label>
+                    {/*<Form.Label>State</Form.Label>*/}
+                    <Form.Control as="select" >
+
+                      <option value="">...</option>
+                      <option value="v">V</option>
+                      <option value="e">E</option>
+                      <option value="p">P</option>
+
+                    </Form.Control>
+
+                    {formik.touched.cedulaLetra2 && formik.errors.cedulaLetra2 ? (
+                        <div className="fv-plugins-message-container">
+                          <div className="fv-help-block">{formik.errors.cedulaLetra2}</div>
+                        </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
+
+                <Col md={2}>
                   <Form.Group as={Col} style={formulario} controlId="cedula_representante_legal2">
                     <Form.Label style={textLabelColor}>Cédula</Form.Label>
-                    <Form.Control size="md" type="text" placeholder="Número Del Cédula"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={customHandleChangeCedulaRepresentanteLegal2}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.cedula_representante_legal2}
@@ -812,10 +887,10 @@ const UserDatosFormStep4 = (props) => {
                   </Form.Group>
                 </Col>
 
-                <Col md={5}>
+                <Col md={4}>
                   <Form.Group as={Col} style={formulario} controlId="nombre_representante_legal2">
                     <Form.Label style={textLabelColor}>Nombre</Form.Label>
-                    <Form.Control size="md" type="text" placeholder="Nombre del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.nombre_representante_legal2}
@@ -831,10 +906,10 @@ const UserDatosFormStep4 = (props) => {
                   </Form.Group>
                 </Col>
 
-                <Col md={5}>
+                <Col md={4}>
                   <Form.Group as={Col} style={formulario} controlId="apellido_representante_legal2">
                     <Form.Label style={textLabelColor}>Apellido</Form.Label>
-                    <Form.Control size="md" type="text" placeholder="Apellido del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.apellido_representante_legal2}
@@ -882,7 +957,7 @@ const UserDatosFormStep4 = (props) => {
                 <Col md={3}>
                   <Form.Group as={Col} style={formulario} controlId="telefono_representante_legal2">
                     <Form.Label style={textLabelColor}>Número de Teléfono</Form.Label>
-                    <Form.Control size="md" type="text" placeholder="Teléfono del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={customHandleChangeTelefonoRepresentanteLegal2}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.telefono_representante_legal2}
@@ -900,7 +975,7 @@ const UserDatosFormStep4 = (props) => {
                 <Col md={4}>
                   <Form.Group as={Col} style={formulario} controlId="correo_electronico_representante_legal2">
                     <Form.Label style={textLabelColor}>Correo Electrónico</Form.Label>
-                    <Form.Control size="md" type="text" placeholder="Correo Electrónico"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.correo_electronico_representante_legal2}
@@ -918,7 +993,7 @@ const UserDatosFormStep4 = (props) => {
                 <Col md={3}>
                   <Form.Group as={Col} style={formulario} controlId="cargo_representante_legal2">
                     <Form.Label style={textLabelColor}>Cargo</Form.Label>
-                    <Form.Control size="md" type="text" placeholder="Cargo del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.cargo_representante_legal2}
@@ -943,9 +1018,29 @@ const UserDatosFormStep4 = (props) => {
 
               <Row>
                 <Col md={2}>
+                  <Form.Group as={Col} style={formulario} controlId="cedulaLetra3">
+                    <Form.Label style={textLabelColor}>Documento</Form.Label>
+
+                    <Form.Control as="select" >
+                      <option value="">...</option>
+                      <option value="v">V</option>
+                      <option value="e">E</option>
+                      <option value="p">P</option>
+
+                    </Form.Control>
+
+                    {formik.touched.cedulaLetra3 && formik.errors.cedulaLetra3 ? (
+                        <div className="fv-plugins-message-container">
+                          <div className="fv-help-block">{formik.errors.cedulaLetra3}</div>
+                        </div>
+                    ) : null}
+                  </Form.Group>
+                </Col>
+
+                <Col md={2}>
                   <Form.Group as={Col} style={formulario} controlId="cedula_representante_legal3">
                     <Form.Label style={textLabelColor}>Cédula</Form.Label>
-                    <Form.Control size="md" type="text" placeholder="Número Del Cédula"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={customHandleChangeCedulaRepresentanteLegal3}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.cedula_representante_legal3}
@@ -961,10 +1056,10 @@ const UserDatosFormStep4 = (props) => {
                   </Form.Group>
                 </Col>
 
-                <Col md={5}>
+                <Col md={4}>
                   <Form.Group as={Col} style={formulario} controlId="nombre_representante_legal3">
                     <Form.Label style={textLabelColor}>Nombre</Form.Label>
-                    <Form.Control size="md" type="text" placeholder="Nombre del Representante Legal 3"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.nombre_representante_legal3}
@@ -980,10 +1075,10 @@ const UserDatosFormStep4 = (props) => {
                   </Form.Group>
                 </Col>
 
-                <Col md={5}>
+                <Col md={4}>
                   <Form.Group as={Col} style={formulario} controlId="apellido_representante_legal3">
                     <Form.Label style={textLabelColor}>Apellido</Form.Label>
-                    <Form.Control size="md" type="text" placeholder="Apellido del Representante Legal 3"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.apellido_representante_legal3}
@@ -1031,7 +1126,7 @@ const UserDatosFormStep4 = (props) => {
                 <Col md={3}>
                   <Form.Group as={Col} style={formulario} controlId="telefono_representante_legal3">
                     <Form.Label style={textLabelColor}>Número de Teléfono</Form.Label>
-                    <Form.Control size="md" type="text" placeholder="Teléfono del Representante Legal 1"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={customHandleChangeTelefonoRepresentanteLegal3}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.telefono_representante_legal3}
@@ -1049,7 +1144,7 @@ const UserDatosFormStep4 = (props) => {
                 <Col md={4}>
                   <Form.Group as={Col} style={formulario} controlId="correo_electronico_representante_legal3">
                     <Form.Label style={textLabelColor}>Correo Electrónico</Form.Label>
-                    <Form.Control size="md" type="text" placeholder="Correo Electrónico"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.correo_electronico_representante_legal3}
@@ -1067,7 +1162,7 @@ const UserDatosFormStep4 = (props) => {
                 <Col md={3}>
                   <Form.Group as={Col} style={formulario} controlId="cargo_representante_legal3">
                     <Form.Label style={textLabelColor}>Cargo</Form.Label>
-                    <Form.Control size="md" type="text" placeholder="Cargo del Representante Legal 3"
+                    <Form.Control size="md" type="text" placeholder=""
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.cargo_representante_legal3}
@@ -1110,11 +1205,8 @@ const UserDatosFormStep4 = (props) => {
                   <Button variant="secondary" size="lg" block
                           type="button"
                           onClick={submitSiguiente}
-                          disabled={
-                            formik.isSubmitting ||
-                            !formik.isValid
-                          }
-                  >
+                          className="btn btn-info font-size-sm w-100"
+                          disabled={ formik.isSubmitting || !formik.isValid }>
                     Siguiente
                   </Button>
                   {spinner && <Spinner animation="border" variant="danger"/>}
