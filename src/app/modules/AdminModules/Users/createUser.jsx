@@ -10,7 +10,7 @@ export const CreateUser = (props) => {
 
     let history = useHistory();
     const { action } = props;
-    const { addNewUser, updateUser } = useContext(UsersContext);
+    const { addNewUser, updateUser, userSlct } = useContext(UsersContext);
 
     const handleSubmit = async (values, actions) => {
         if(action == "add") {
@@ -24,6 +24,7 @@ export const CreateUser = (props) => {
                 icon: 'success'
             });
         } else {
+            values.id_user = userSlct.id;
             await updateUser(values);
         }
 

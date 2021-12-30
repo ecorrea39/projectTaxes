@@ -2,6 +2,7 @@ import React, { useEffect, useState} from 'react';
 import {clientAxios, requestConfig } from '../../config/configAxios';
 import UsersContext from './usersContext';
 import Swal from "sweetalert2";
+import odb from '../../helpers/odb';
 
 export const UsersState = ({ children }) => {
 
@@ -123,9 +124,11 @@ export const UsersState = ({ children }) => {
     const updateUser = async (formData) => {
         console.log(formData)
         try {
-            requestConfig.data.type = "updateuSERp";
+            requestConfig.data.type = "saveAccessControl";
             requestConfig.data.attributes = formData;
-            // const respuesta = await clientAxios.get('/cuentas_banco/');
+            requestConfig.id = formData.id_user;
+            const respuesta = await clientAxios.put('/access_control/users/grupos');
+            requestConfig.id = odb.get('rif');
         } catch (error) {
             console.log(error)
         }

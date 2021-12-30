@@ -15,9 +15,12 @@ export const initialValues = {
     correo: "",
     unid_estatal_tributo: "",
     cargo: "",
+    departamento: "",
     contrasenia: "",
-    telefono: "",
-    cod_area: "0412",
+    numero_telefono: "",
+    cod_telefono: "0412",
+    id_user: "",
+    id_auth: ""
 }
 
 export const validationSchema = Yup.object().shape({
@@ -55,10 +58,10 @@ export const validationSchema = Yup.object().shape({
         .required('- Campo obligatorio -'),
     cargo: Yup.string()
         .required('- Campo obligatorio -'),
-    telefono: Yup.string()
+    numero_telefono: Yup.string()
         .matches(regexPhoneNumber, '- Telefono inválido. -')
         .required('- Campo obligatorio -'),
-    cod_area: Yup.string()
+    cod_telefono: Yup.string()
         .required('- Campo obligatorio -'),
     fecha_creacion: Yup.string()
 });

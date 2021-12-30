@@ -45,7 +45,29 @@ export const BaseFormik = ({props,formik,history}) => {
 
     useEffect(()=>{
         if(action == "update") {
-            formik.setValues(userSlct);
+            if(userSlct) {
+                let data = {
+                    nombre: userSlct.attributes.name,
+                    apellido: userSlct.attributes.surname,
+                    usuario: userSlct.attributes.uid,
+                    status: userSlct.attributes.status,
+                    user_id: userSlct.id,
+                    correo: userSlct.attributes.mail,
+                    grupo:  userSlct.attributes["user_grupos_usuarios.grupo_id"],
+
+                    unid_estatal_tributo: "",
+                    cargo: "",
+                    departamento: "",
+                    contrasenia: "",
+                    numero_telefono: "",
+                    cod_telefono: "",
+                    cargo: "",
+                    id_auth: "",
+                }
+                formik.setValues(data);
+            } else {
+                history.push("/panel/usuarios/");
+            }
         } else {
             formik.resetForm();
         }
@@ -113,7 +135,7 @@ export const BaseFormik = ({props,formik,history}) => {
                     <Field
                         type="select"
                         id="cod-tlfn-usuario"
-                        name="cod_area"
+                        name="cod_telefono"
                         component={BaseSelect}
                         myClass={styles.inputCodigoTlf}
                     >
@@ -125,7 +147,7 @@ export const BaseFormik = ({props,formik,history}) => {
                     </Field>
                     <Field
                         id="telefono-usuario"
-                        name="telefono"
+                        name="numero_telefono"
                         placeholder="Ej: Administrator"
                         component={BaseInput}
                         maxLength="50"
