@@ -19,7 +19,7 @@ export const initialValues = {
     contrasenia: "",
     numero_telefono: "",
     cod_telefono: "0412",
-    id_user: "",
+    user_id: "",
     id_auth: ""
 }
 
