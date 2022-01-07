@@ -55,25 +55,25 @@ function FusionarEmpresas({titulo}) {
         },
         {
             name: "R.I.F. Entidad Fusionada",
-            selector: row => row.uidfusionada,
+            selector: row => row.nriffusionada,
             sortable: true,
             width: "200px"
         },
         {
             name: "Entidad Fusionada",
-            selector: row => row.name,
+            selector: row => row.namefusionada,
             sortable: true,
             maxWidth: "350px"
         },
         {
             name: "R.I.F. Entidad que Absorbe",
-            selector: row => row.uidadsorbe,
+            selector: row => row.nrifabsorbe,
             sortable: true,
             width: "200px"
         },
         {
             name: "Entidad que Absorbe",
-            selector: row => row.name,
+            selector: row => row.nameabsorbe,
             sortable: true,
             maxWidth: "350px"
         }
