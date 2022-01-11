@@ -35,6 +35,7 @@ export const BaseFormik = ({formik, props}) => {
                     />
                 </Col>
             </Row>
+            {/* 
             <Row className="mt-4 mb-8">
                 <Col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
                     <label htmlFor="name_fusionar" className="font-weight-bold">Entidad de Trabajo</label>
@@ -45,7 +46,7 @@ export const BaseFormik = ({formik, props}) => {
                         disabled
                     />
                 </Col>
-            </Row>
+            </Row>*/}
             <h5 className="mt-4 mb-4">Datos de Entidad de Trabajo que Absorbe</h5>
             <Row className="mt-4 mb-8">
                 <Col xs="12" sm="3" md="3" lg="3" xl="3" xxl="3">
@@ -70,6 +71,7 @@ export const BaseFormik = ({formik, props}) => {
                     />
                 </Col>
             </Row>
+            {/*
             <Row className="mt-4 mb-8">
                 <Col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
                     <label htmlFor="name_absorve" className="font-weight-bold">Entidad de Trabajo</label>
@@ -80,7 +82,7 @@ export const BaseFormik = ({formik, props}) => {
                         disabled
                     />
                 </Col>
-            </Row>
+            </Row>*/}
         </>
     )
 }

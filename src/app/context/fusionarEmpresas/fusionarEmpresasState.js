@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { clientAxios, requestConfig } from '../../config/configAxios';
 import FusionarEmpresasContext from './fusionarEmpresasContext';
-import odb from './../../helpers/odb';
 import Swal from "sweetalert2";
 
 export const FusionarEmpresasState = ({ children }) => {
 
-    const [fusionarEmpresas, setFusionarEmpresas] = useState([]);
-    const [registroSeleccionado, setRegistroSeleccionado] = useState({});
-    const [formDataPna, setFormDataPna] = useState({});
+    const [fusionarEmpresas, setFusionarEmpresas] = useState([]);        
 
     let dataAux = [];
 
@@ -27,8 +24,10 @@ export const FusionarEmpresasState = ({ children }) => {
                 lista.push(
                     {
                         "id": arreglo[i].id,
-                        "uidfusionada": arreglo[i].attributes.uidfusionada,
-                        "uidadsorbe": arreglo[i].attributes.uidadsorbe
+                        "nrifabsorbe": arreglo[i].attributes['uidadsorbe_user.uid'],
+                        "nameabsorbe": arreglo[i].attributes['uidadsorbe_user.name'],
+                        "nriffusionada": arreglo[i].attributes['uidfusionada_user.uid'],
+                        "namefusionada": arreglo[i].attributes['uidfusionada_user.name']
                     }
                 )
             });

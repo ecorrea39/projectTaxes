@@ -17,6 +17,7 @@ function Resumen({className}) {
     const [totalCreditoFisAprob, setTotalCreditoFisAprob] = useState();
 
     const nrif = localStorage.getItem('rif');
+    const grupos = localStorage.getItem('groups');
 
     useEffect(() => {
         getResumen()
@@ -32,14 +33,16 @@ function Resumen({className}) {
     const getResumen = async () => {
 
         try {
-            const respuesta = await clientAxios.get(`/balance/${nrif}`);
 
-            (respuesta.data.data[0] !== null) ? setTotalDeudaTrim(respuesta.data.data[0].attributes.total): setTotalDeudaTrim(0);
-            (respuesta.data.data[1] !== null) ? setTotalDeudaCxP(respuesta.data.data[1].attributes.total): setTotalDeudaCxP(0);
-            (respuesta.data.data[2] !== null) ? setTotalPagos(respuesta.data.data[2].attributes.total): setTotalPagos(0);
-            (respuesta.data.data[3] !== null) ? setTotalCreditoFisTemp(respuesta.data.data[3].attributes.total): setTotalCreditoFisTemp(0);
-            (respuesta.data.data[4] !== null) ? setTotalCreditoFisAprob(respuesta.data.data[4].attributes.total): setTotalCreditoFisAprob(0);
-
+            if (grupos === 'contribuyentes')  {
+                const respuesta = await clientAxios.get(`/balance/${nrif}`);
+                (respuesta.data.data[0] !== null) ? setTotalDeudaTrim(respuesta.data.data[0].attributes.total): setTotalDeudaTrim(0);
+                (respuesta.data.data[1] !== null) ? setTotalDeudaCxP(respuesta.data.data[1].attributes.total): setTotalDeudaCxP(0);
+                (respuesta.data.data[2] !== null) ? setTotalPagos(respuesta.data.data[2].attributes.total): setTotalPagos(0);
+                (respuesta.data.data[3] !== null) ? setTotalCreditoFisTemp(respuesta.data.data[3].attributes.total): setTotalCreditoFisTemp(0);
+                (respuesta.data.data[4] !== null) ? setTotalCreditoFisAprob(respuesta.data.data[4].attributes.total): setTotalCreditoFisAprob(0);
+    
+            }
         } catch (error) {
             console.log(error)
         }
