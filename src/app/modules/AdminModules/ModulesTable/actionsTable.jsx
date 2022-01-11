@@ -11,7 +11,7 @@ import PrintIcon from '@material-ui/icons/Print';
 
 export const ActionsTable = ({
     row, actions, baseUrl,
-    handleActionsRow, handlePermissions, handleAlertNotice, handlePrintInfo}) => {
+    handleDetails, handlePermissions, handleAlertNotice, handlePrintInfo}) => {
 
     let statusAction = row.attributes.status ? "Activar" : "Desactivar";
   
@@ -21,7 +21,7 @@ export const ActionsTable = ({
                 { action == "details" && 
                 <Tooltip title="Ver detalles" arrow placement="top">
                     <NavLink className="btn btn-icon btn-hover-light btn-sm"
-                            onClick={() => handleActionsRow(row)}
+                            onClick={() => handleDetails(row,"detalles")}
                             to={baseUrl+"detalles"}>
                         <FindInPageOutlinedIcon style={{color:"#ba000d"}} />
                     </NavLink>
@@ -30,7 +30,7 @@ export const ActionsTable = ({
                 { action == "update" && 
                 <Tooltip title="Modificar" arrow placement="top">
                     <NavLink className="btn btn-icon btn-hover-light btn-sm"
-                            onClick={() => handleActionsRow(row)}
+                            onClick={() => handleDetails(row,"modificar")}
                             to={baseUrl+"modificar"}>
                         <ListAltOutlinedIcon style={{color:"#0091ea"}} />
                     </NavLink>
@@ -40,8 +40,8 @@ export const ActionsTable = ({
                 <Tooltip title={statusAction} arrow placement="top">
                     <a onClick={() => handleAlertNotice(statusAction,row) }
                         className="btn btn-icon btn-hover-light btn-sm" >
-                        { row.attributes.status == "0" && <CheckBoxOutlineBlankOutlinedIcon style={{color:"#62727b"}} /> }
-                        { row.attributes.status == "1" && <CheckBoxOutlinedIcon style={{color:"#64dd17"}} /> }
+                        { row.attributes.status == "0" && <CheckBoxOutlinedIcon style={{color:"#64dd17"}} /> }
+                        { row.attributes.status == "1" && <CheckBoxOutlineBlankOutlinedIcon style={{color:"#62727b"}} />}
                         { row.attributes.status == "2" && <BlockIcon style={{color:"#b71c1c"}} /> }
                     </a>
                 </Tooltip> }

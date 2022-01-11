@@ -4,15 +4,21 @@ import { MyDataTable } from "../ModulesTable/MyDataTable";
 import { ActionsTable } from "../ModulesTable/actionsTable";
 import Swal from "sweetalert2";
 import { SearchTable } from "../ModulesTable/searchTable";
+import { useHistory } from "react-router-dom";
 
 export const UserGroupsTable = ({url}) => {
 
-    const { loadingTable, setGroupSlct, userGroupsList, updateStatus, statusList } = useContext(GroupsContext);
+    const { getGroupDetails,setGroupSlct, loadingTable, userGroupsList, updateStatus, statusList } = useContext(GroupsContext);
 
     const [dataFilter, setDataFilter] = useState(userGroupsList);
 
-    const actionsRow = (row) => {
+    let history = useHistory();
+
+    const actionsDetails = async (row,url) => {
         setGroupSlct(row);
+        // deshabilitado por un bug en el formulario
+        //await getGroupDetails(row.id);
+        //history.push(`/panel/grupos/${url}`);
     }
 
     const selectStatus = (id) => {
@@ -80,7 +86,7 @@ export const UserGroupsTable = ({url}) => {
             cell: row => (
                 <ActionsTable
                     row={row}
-                    handleActionsRow={actionsRow}
+                    handleDetails={actionsDetails}
                     handleAlertNotice={alertNotice}
                     baseUrl={"/panel/grupos/"}
                     actions={["update","status"]}
@@ -109,7 +115,6 @@ export const UserGroupsTable = ({url}) => {
             <SearchTable handleOnchange={fiterData} />
 
             <MyDataTable
-                actionsRow={actionsRow}
                 columns={columns}
                 data={dataFilter}
                 loadingTable={loadingTable}

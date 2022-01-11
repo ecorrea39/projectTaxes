@@ -97,13 +97,15 @@ export const ListTaxes = ({listDeclaraciones,formik, calcularMontosTotates}) => 
                                                     </Col>
                                                     <Col xs="12" sm="6" md="4" lg="4" xl="4" xxl="4" className="mb-6">
                                                         <label className="font-weight-bold">
-                                                            Multa %
+                                                            Multa % 
                                                         </label>
-                                                        <div className={styles.inputDisabled}>
-                                                            {
-                                                                element.multa
-                                                            }
-                                                        </div>
+                                                        <Field
+                                                            name="multa"
+                                                            component={BaseInputMonto}
+                                                            maxLength="20"
+                                                            value={ element.multa }
+                                                            disabled
+                                                        />
                                                     </Col>
                                                 </Row>
                                             </Card.Body>

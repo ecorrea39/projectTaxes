@@ -53,16 +53,17 @@ export const BaseFormik = ({props,formik,history}) => {
                     status: userSlct.attributes.status,
                     user_id: userSlct.id,
                     correo: userSlct.attributes.mail,
-                    grupo:  userSlct.attributes["user_grupos_usuarios.grupo_id"],
-
+                    grupo:  [userSlct.attributes.permisos[0].grupo_id],
+                    cedula: "",
                     unid_estatal_tributo: "",
-                    cargo: "",
-                    departamento: "",
+                    id_auth: userSlct.attributes.id_auth,
+                    cargo: userSlct.attributes.cargo,
+                    departamento: userSlct.attributes.departamento,
                     contrasenia: "",
-                    numero_telefono: "",
-                    cod_telefono: "",
-                    cargo: "",
-                    id_auth: "",
+                    numero_telefono: userSlct.attributes.numero_telefono,
+                    codigo_telefono: userSlct.attributes.codigo_telefono,
+                    unid_estatal_tributo: userSlct.attributes.id_auth,
+                    fecha_de_registro: userSlct.attributes.fecha_de_registro
                 }
                 formik.setValues(data);
             } else {
@@ -135,7 +136,7 @@ export const BaseFormik = ({props,formik,history}) => {
                     <Field
                         type="select"
                         id="cod-tlfn-usuario"
-                        name="cod_telefono"
+                        name="codigo_telefono"
                         component={BaseSelect}
                         myClass={styles.inputCodigoTlf}
                     >
@@ -143,7 +144,7 @@ export const BaseFormik = ({props,formik,history}) => {
                         <option value="0414">0414</option>
                         <option value="0424">0424</option>
                         <option value="0416">0416</option>
-                        <option value="0426">0416</option>
+                        <option value="0426">0426</option>
                     </Field>
                     <Field
                         id="telefono-usuario"
@@ -165,6 +166,7 @@ export const BaseFormik = ({props,formik,history}) => {
                         placeholder="Ej: ejemplo@gmail.com"
                         component={BaseInput}
                         maxLength="70"
+                        disabled={action == "update"}
                     />
                 </Col>
                 <Col xs="12" sm="12" md="4" lg="4" xl="4" xxl="4" className="mb-6">
@@ -247,7 +249,10 @@ export const BaseFormik = ({props,formik,history}) => {
                         : <VisibilityIcon className={styles.iconShowPass} onClick={()=>setShowPass(true)} />
                     }
                     <small id="passHelp" className={styles.generatePass} onClick={()=>generatePasswordRand(8,"alf")}>
-                       Genere una contraseña temporal AQUÍ.
+                        {  action == "update" ?
+                            "Genere una nueva contraseña AQUÍ." :
+                            "Genere una contraseña temporal AQUÍ."
+                        }
                     </small>
                 </Col>
             </Row>

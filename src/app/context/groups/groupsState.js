@@ -61,10 +61,13 @@ export const GroupsState = ({ children }) => {
         getUserGroups();
         getModulos();
     },[]);
-
+    useEffect(()=>{
+        console.log("hola")
+    },[groupSlct]);
 
     // Metodo para crear los permisos en el formulario
     const getFormPermisos = (data) => {
+        console.log(data)
         let arrayPermission = [];
         data.forEach(element => {
             let objectPermisson = {
@@ -98,10 +101,14 @@ export const GroupsState = ({ children }) => {
         setPermissions(array);
     }
 
-    const getGrupoInfo = async (grupoId) => {
+    const getGroupDetails = async (id) => {
         try {
-            const respuesta = await clientAxios.get(`/access_control/${grupoId}`);
+            let arrayData = [];
+            const respuesta = await clientAxios.get(`/access_control/${id}`);
+            console.log( [ respuesta.data.data ])
             setGroupSlct(respuesta.data.data);
+            //let data  = getDataPermisos( [ respuesta.data.data ], "d" );
+            //console.log(data)
         } catch (error) {
             console.log(error)
         }
@@ -118,7 +125,8 @@ export const GroupsState = ({ children }) => {
         }
     }
 
-    const getDataPermisos = (data) => {
+    const getDataPermisos = (data,d) => {
+        console.log(data,d)
         let arrayPermission = [];
         data.forEach(element => {
             let objectGrupo = {
@@ -150,7 +158,8 @@ export const GroupsState = ({ children }) => {
             arrayPermission.push(objectGrupo);
 
         });
-        setUserGroupsList(arrayPermission);
+        return arrayPermission;
+        // setUserGroupsList(arrayPermission);
     }
 
     const getUserGroups = async () => {
@@ -158,8 +167,9 @@ export const GroupsState = ({ children }) => {
         try {
             setLoadingTable(true);
             const respuesta = await clientAxios.get('/access_control/');
-            getDataPermisos(respuesta.data.data);
-            // setUserGroupsList(respuesta.data.data);
+            console.log(respuesta.data.data)
+            let data = await getDataPermisos(respuesta.data.data,"A");
+            setUserGroupsList(data);
             setLoadingTable(false);
         } catch (error) {
             setLoadingTable(false);
@@ -227,7 +237,8 @@ export const GroupsState = ({ children }) => {
         updateGroup,
         updateStatus,
         setGroupSlct,
-        getGrupoInfo
+        getGroupDetails,
+        getDataPermisos
     }
 
     return (

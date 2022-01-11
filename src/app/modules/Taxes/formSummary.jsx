@@ -18,9 +18,9 @@ function FormSummary() {
         intereses: 0,
         multa: 0,
         tributos: 0,
-        montoPagar: 0,
+        montoPagar: 0, // monto en el input
         conceptos: 0,
-        totalPagar: 0,
+        totalPagar: 0, // monto total de los tributos
     });
 
     const [filterConcepts, setFilterConcepts] = useState([]);
@@ -28,17 +28,19 @@ function FormSummary() {
 
     // Asignacion inicial de los montos
     const asignarMontos = () => {
+
         let montoIntereses = detallesDeclaraciones.totales.intereses;
         let montoTributo = detallesDeclaraciones.totales.tributos;
         let montoConceptos = detallesDeclaraciones.totales.conceptos;
         let montoAPagar = 0 + detallesDeclaraciones.totales.montoPagar + montoConceptos;
+        let montoMulta =  detallesDeclaraciones.totales.multas;
         
         setTotales({
             intereses: montoIntereses,
             tributos: montoTributo,
             montoPagar: montoAPagar,
             conceptos: montoConceptos,
-            multa: 0,
+            multa: montoMulta,
             totalPagar: montoAPagar
         });
         return;
@@ -179,7 +181,6 @@ function FormSummary() {
         //setTotales(newTotales);
         setDetDeclaraciones(newDetailsTaxes);
         setContinueForm(total > 0);
-        console.log(values)
 
         //console.log(parseFloat( formatearMontosII(values.montoPagar.toLocaleString('es')) ) )
         //console.log(values.montoPagar.toLocaleString('es'))
@@ -229,16 +230,19 @@ function FormSummary() {
             }
         };
         let result = await declaracionesRealizadas.map( async (element,index) => {
-            let totalesDec = await calcularIntereses(element);
+            let totalIntereses = await calcularIntereses(element);
+            let totalMulta = await calcularMultas(element);
+            let montoTributo = parseFloat( element.attributes.data.monto_tributo );
+            let totalTributo = parseFloat( montoTributo ) + parseFloat( totalIntereses ) + parseFloat( totalMulta )
             
             let detalles = {
                 ano_declaracion: element.attributes.data.ano_declaracion,
                 conceptoId: element.attributes.data.concepto_pago,
                 fecha_declaracion: element.attributes.data.fecha_declaracion,
-                intereses: parseFloat( totalesDec.intereses ),
-                multa: element.attributes.data.monto_multa,
-                monto: parseFloat( element.attributes.data.monto_tributo ),
-                totalTributo: parseFloat( totalesDec.totalTributo ) + parseFloat( totalesDec.intereses ),
+                intereses: parseFloat( totalIntereses ),
+                multa: parseFloat( totalMulta ),
+                monto: parseFloat( montoTributo ),
+                totalTributo: parseFloat( totalTributo ).toFixed(2),
                 trimestre: element.attributes.data.trimestre,
                 name: "",
                 idTributo: element.attributes.data.id,
@@ -247,8 +251,10 @@ function FormSummary() {
             }
             array.declaraciones.push(detalles);
             array.totales.intereses += detalles.intereses;
+            array.totales.multas += detalles.multa;
             array.totales.tributos += parseFloat( detalles.monto );
-            array.totales.montoPagar += parseFloat( detalles.monto ) + detalles.intereses;
+            array.totales.montoPagar += parseFloat(detalles.totalTributo);
+            array.totales.totalPagar += parseFloat(detalles.totalTributo);
         });
         setDetDeclaraciones(array);
         return result;
@@ -333,10 +339,28 @@ function FormSummary() {
         let tasaDeIntereses = calcularTasa();
         let montoDeIntereses = calcularMontoIntereses(diasDeMora,tasaDeIntereses,declaracion.attributes.data.monto_tributo);
        
-        return { 
-                intereses: parseFloat(montoDeIntereses).toFixed(2),
-                totalTributo: parseFloat(declaracion.attributes.data.monto_tributo).toFixed(2)
-            }        
+        return parseFloat(montoDeIntereses).toFixed(2)    
+    }
+
+    const calcularMultas = (declaracion) => {
+
+        /**
+         * Formula para calcular la sancion por dias de retraso (monto de multa)
+         * 0.28% por dia de retraso
+         * porcentaje maximo debe ser 100%
+         */
+        
+        let diasDeMora = calcularDias( declaracion );
+        let porcentajeAcumulado = diasDeMora * 0.28 ;
+        let totalTributo = parseFloat(declaracion.attributes.data.monto_tributo);
+        let sancion = porcentajeAcumulado * totalTributo / 100;
+
+        console.log(diasDeMora)
+        console.log(porcentajeAcumulado)
+        console.log(totalTributo)
+        console.log( parseFloat(sancion).toFixed(2) )
+
+        return  parseFloat(sancion).toFixed(2);
     }
 
     useEffect(()=>{

@@ -121,12 +121,13 @@ export const BaseFormikSummary = ({conceptos,formik,listDeclaraciones, setTotale
             if( tributos.indexOf(idTributo) > -1 ) {
                 newTotales.tributos += parseFloat( dec.monto );
                 newTotales.intereses += parseFloat( dec.intereses );
+                newTotales.multa += parseFloat( dec.multa );
             }
 
         });
 
-        newTotales.montoPagar = newTotales.tributos + newTotales.intereses;
-        newTotales.totalPagar = newTotales.tributos + newTotales.intereses;
+        newTotales.montoPagar = newTotales.tributos + newTotales.intereses + newTotales.multa;
+        newTotales.totalPagar = newTotales.tributos + newTotales.intereses + newTotales.multa;
         setTotales(newTotales);
     }
 
@@ -158,6 +159,7 @@ export const BaseFormikSummary = ({conceptos,formik,listDeclaraciones, setTotale
 
     useEffect(()=>{
         formik.setFieldValue("montoIntereses", totales.intereses);
+        formik.setFieldValue("montoMulta", totales.multa);
         formik.setFieldValue("montoTributo", totales.tributos);
         formik.setFieldValue("montoPagar", totales.montoPagar);
     },[totales]);

@@ -34,6 +34,7 @@ export const Permissions = (props) => {
     }
 
     const handleChangeUP = (e, modulo, permiso) => {
+        console.log(e, modulo, permiso)
         let isChecked = e.target.checked;
         let namePermission = permiso;
         let IDmodulo = modulo.modulo_id;
@@ -47,7 +48,7 @@ export const Permissions = (props) => {
         let UPpermisos = listPermisos.find( m => m.modulo_id == IDmodulo );
         console.log(UPpermisos)
         // Cambio el valor del permiso
-        UPpermisos[namePermission] = isChecked;
+        UPpermisos[namePermission] = !modulo[namePermission];
         // Elimino el objeto completo
         // selected.splice(findModulo,1);
         // Asigno el nuevo objeto modificado

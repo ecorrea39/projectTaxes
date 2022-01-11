@@ -4,13 +4,16 @@ import Swal from "sweetalert2";
 import { MyDataTable } from "../ModulesTable/MyDataTable";
 import { ActionsTable } from "../ModulesTable/actionsTable";
 import { SearchTable } from "../ModulesTable/searchTable";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 export const UserTable = () => {
 
-    const { setUserSlct, usersList, statusList, groupsList, loadingTable, updateUserStatus, linkPrintInfoUser } = useContext(UsersContext);
+    const { getUserDetails, usersList, statusList, selectGroup,
+        loadingTable, updateUserStatus, linkPrintInfoUser } = useContext(UsersContext);
     
     const [dataFilter, setDataFilter] = useState(usersList);
+
+    let history = useHistory();
 
     const fiterData = (filterText) => {
         if(filterText != "") {
@@ -25,22 +28,14 @@ export const UserTable = () => {
         }
     }
 
-    const actionsRow = (row) => {
-        setUserSlct(row);
+    const actionsDetails = async (row,url) => {
+       await getUserDetails(row.id);
+       history.push(`/panel/usuarios/${url}`);
     }
 
     const selectStatus = (id) => {
         let status = statusList.find(element => element.status == id );
         return status.name;
-    }
-
-    const selectGroup = (id) => {
-        if(id != "") {
-            let group = groupsList.find(element => element.id == id );
-            if (group) return group.name;
-            return "S/G"
-        }
-        return "S/G"
     }
 
     const alertNotice = (action,row) => {
@@ -124,7 +119,7 @@ export const UserTable = () => {
             cell: row => (
                 <ActionsTable
                     row={row}
-                    handleActionsRow={actionsRow}
+                    handleDetails={actionsDetails}
                     handleAlertNotice={alertNotice}
                     handlePrintInfo={printInfo}
                     baseUrl={"/panel/usuarios/"}
@@ -143,7 +138,6 @@ export const UserTable = () => {
             <SearchTable handleOnchange={fiterData} />
 
             <MyDataTable
-                actionsRow={actionsRow}
                 columns={columns}
                 data={dataFilter}
                 loadingTable={loadingTable}

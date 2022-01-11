@@ -88,7 +88,7 @@ export const TaxesState = ({ children }) => {
                     monto_intereses: "0.00",
                     monto_multa: "0.00",
                     monto_pagado: "2500.00",
-                    monto_tributo: "50.00",
+                    monto_tributo: "50.15",
                     ntrabajadores: 25,
                     ntrabajadores_liquidados: 0,
                     sustitutiva: 1,
@@ -126,7 +126,7 @@ export const TaxesState = ({ children }) => {
                 },
                 typw: "tributeDeclaration"
             }
-        }   */         
+        }    */
     ]);
     const [selConcepto, setSelConcepto] = useState([]);
     const estatus = ['eliminada', 'creada', 'definitiva', 'pagada' ];

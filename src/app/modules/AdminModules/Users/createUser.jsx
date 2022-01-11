@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import UsersContext from "../../../context/users/usersContext";
 import { BaseFormik } from "./baseFormik";
-import { initialValues, validationSchema } from "./schemaFormik";
+import { initialValues, validationSchema, validationSchemaUP } from "./schemaFormik";
 
 export const CreateUser = (props) => {
 
@@ -13,18 +13,18 @@ export const CreateUser = (props) => {
     const { addNewUser, updateUser, userSlct } = useContext(UsersContext);
 
     const handleSubmit = async (values, actions) => {
+        console.log(values)
         if(action == "add") {
-            values.telefono = values.cod_area+"-"+values.telefono;
-            console.log(values)
+           
             await addNewUser(values);
             Swal.fire({
                 title: `Operación exitosa`,
-                text: `El usuario ${values.nombre + " " + values.apellido} fue creado con exito.`,
+                text: `El usuario ${values.nombre + " " + values.apellido} fue registrado con exito.`,
                 button: "Ok",
                 icon: 'success'
             });
         } else {
-            values.id_user = userSlct.id;
+
             await updateUser(values);
         }
 
@@ -37,12 +37,15 @@ export const CreateUser = (props) => {
     return (
         <Formik
             initialValues={ initialValues }
-            validationSchema={ validationSchema }
+            validationSchema={ action == "add" ? validationSchema : validationSchemaUP }
             onSubmit={handleSubmit}
         >
             {
                 formik => (
-                    <BaseFormik props={props} formik={formik} history={history} />
+                    <BaseFormik
+                        props={props}
+                        formik={formik}
+                        history={history} />
                 )
             }
         </Formik>
