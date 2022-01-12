@@ -7,7 +7,7 @@ import { ShowPermissions } from "../ModulesTable/showPermissions";
 
 export const DetailsUser = () => {
 
-    const { userSlct } = useContext(UsersContext);
+    const { userSlct, selectGroup, selectUST } = useContext(UsersContext);
 
     const Content = () => {
 
@@ -19,7 +19,7 @@ export const DetailsUser = () => {
                         C.I:
                     </label> 
                     <span className={styles.spanDetail}>
-                       V22.532.021 
+                        
                     </span>
                 </Col>
                 <Col xs="12" sm="12" md="2" lg="3" xl="3" xxl="3">
@@ -27,7 +27,7 @@ export const DetailsUser = () => {
                         Nombre y Apellido:
                     </label> 
                     <span className={styles.spanDetail}>
-                        {userSlct.attributes.name + " " + userSlct.attributes.surname}
+                        { userSlct.attributes.name + " " + userSlct.attributes.surname }
                     </span>
                 </Col>
                 <Col xs="12" sm="12" md="2" lg="3" xl="3" xxl="3">
@@ -35,7 +35,7 @@ export const DetailsUser = () => {
                         Num. Teléfono:
                     </label> 
                     <span className={styles.spanDetail}>
-                       0414-9151254
+                        { userSlct.attributes.codigo_telefono + "-" + userSlct.attributes.numero_telefono }
                     </span>
                 </Col>
                 <Col xs="12" sm="12" md="2" lg="3" xl="3" xxl="3">
@@ -43,7 +43,7 @@ export const DetailsUser = () => {
                         Correo:
                     </label> 
                     <span className={styles.spanDetail}>
-                        {userSlct.attributes.mail}
+                        { userSlct.attributes.mail }
                     </span>
                 </Col>
             </Row>
@@ -53,7 +53,7 @@ export const DetailsUser = () => {
                         Cargo:
                     </label> 
                     <span className={styles.spanDetail}>
-                        El Jefe
+                        { userSlct.attributes.cargo }
                     </span>
                 </Col>
                 <Col xs="12" sm="12" md="2" lg="3" xl="3" xxl="3">
@@ -61,7 +61,7 @@ export const DetailsUser = () => {
                         Nombre de usuario:
                     </label> 
                     <span className={styles.spanDetail}>
-                       {userSlct.attributes.uid}
+                       { userSlct.attributes.uid }
                     </span>
                 </Col>
                 <Col xs="12" sm="12" md="2" lg="3" xl="3" xxl="3">
@@ -69,7 +69,7 @@ export const DetailsUser = () => {
                         Grupo asignado:
                     </label> 
                     <span className={styles.spanDetail}>
-                        Finanza
+                        { selectGroup( userSlct.attributes.permisos[0].grupo_id ) }
                     </span>
                 </Col>
                 <Col xs="12" sm="12" md="2" lg="3" xl="3" xxl="3">
@@ -77,7 +77,7 @@ export const DetailsUser = () => {
                         Unidad estatal de tributos:
                     </label> 
                     <span className={styles.spanDetail}>
-                        Apure
+                        { selectUST(userSlct.attributes.id_auth) }
                     </span>
                 </Col>
             </Row>
@@ -87,7 +87,7 @@ export const DetailsUser = () => {
                        Fecha de registro:
                     </label> 
                     <span className={styles.spanDetail}>
-                       02/11/2021
+                        { userSlct.attributes.fecha_de_registro }
                     </span>
                 </Col>
             </Row>

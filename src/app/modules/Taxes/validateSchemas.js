@@ -4,15 +4,15 @@ import { regexNumber } from '../../helpers';
 export const SchemaSummary = Yup.object().shape({
     montoPagar: Yup.string()
         .required('- Campo obligatorio -')
-        .max(10, 'Debe ingresar un máximo de 10 digitos'),
+        .max(20, 'Debe ingresar un máximo de 10 digitos'),
     montoTributo: Yup.string()
         .required('- Campo obligatorio -')
-        .max(10, 'Debe ingresar un máximo de 10 digitos'),
+        .max(20, 'Debe ingresar un máximo de 10 digitos'),
     intereses: Yup.string()
-        .max(10, 'Debe ingresar un máximo de 10 digitos')
+        .max(20, 'Debe ingresar un máximo de 10 digitos')
         .matches(regexNumber, '- Solo se permiten numeros -'),
     multa: Yup.string()
-        .max(10, 'Debe ingresar un maximo de 10 digistos')
+        .max(20, 'Debe ingresar un maximo de 10 digistos')
         .matches(regexNumber, '- Solo se permiten numeros -')
 });
 
@@ -28,7 +28,7 @@ export const SchemaPayment = Yup.object().shape({
         .required('- Campo obligatorio -'),
     monto: Yup.string()
         .required('- Campo obligatorio -')
-        .max(10, 'Debe ingresar un máximo de 10 digitos'),
+        .max(20, 'Debe ingresar un máximo de 10 digitos'),
     //totalTributos: Yup.string()
         //.required('- Campo obligatorio -')
         //.max(10, 'Debe ingresar un máximo de 10 digitos'),

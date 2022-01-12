@@ -18,10 +18,46 @@ export const initialValues = {
     departamento: "",
     contrasenia: "",
     numero_telefono: "",
-    cod_telefono: "0412",
+    codigo_telefono: "0412",
     user_id: "",
     id_auth: ""
 }
+
+export const validationSchemaUP = Yup.object().shape({
+    cedula: Yup.string()
+        .required('- Campo obligatorio -')
+        .min(6, '- La cédula debe tener al menos 6 carácteres. -')
+        .max(9, '- La cédula debe tener máximo de 9 carácteres. -')
+        .matches(regexCI, '- Cédula inválida. -'),
+    nombre: Yup.string()
+        .required('- Campo obligatorio -')
+        .min(3, '- El nombre debe tener al menos 3 carácteres. -')
+        .max(50, '- El nombre debe tener máximo de 50 carácteres. -')
+        .matches(regexName, '- Nombre inválido. -'),
+    apellido: Yup.string()
+        .required('- Campo obligatorio -')
+        .min(3, '- El apellido debe tener al menos 3 carácteres. -')
+        .max(50, '- El apellido debe tener máximo de 50 carácteres. -')
+        .matches(regexName, '- Apellido inválido. -'),
+    usuario: Yup.string()
+        .required('- Campo obligatorio -')
+        .min(3, '- El usuario debe tener al menos 3 carácteres. -')
+        .max(50, '- El usuario debe tener máximo de 50 carácteres. -')
+        .matches(textoAndNumber, '- Usuario inválido. -'),
+    status: Yup.string()
+        .required('- Campo obligatorio -'),
+    grupo: Yup.string()
+        .required('- Campo obligatorio -'),
+    unid_estatal_tributo: Yup.string()
+        .required('- Campo obligatorio -'),
+    cargo: Yup.string()
+        .required('- Campo obligatorio -'),
+    numero_telefono: Yup.string()
+        .matches(regexPhoneNumber, '- Telefono inválido. -')
+        .required('- Campo obligatorio -'),
+        codigo_telefono: Yup.string()
+        .required('- Campo obligatorio -')
+});
 
 export const validationSchema = Yup.object().shape({
     cedula: Yup.string()
@@ -61,7 +97,6 @@ export const validationSchema = Yup.object().shape({
     numero_telefono: Yup.string()
         .matches(regexPhoneNumber, '- Telefono inválido. -')
         .required('- Campo obligatorio -'),
-    cod_telefono: Yup.string()
-        .required('- Campo obligatorio -'),
-    fecha_creacion: Yup.string()
+        codigo_telefono: Yup.string()
+        .required('- Campo obligatorio -')
 });

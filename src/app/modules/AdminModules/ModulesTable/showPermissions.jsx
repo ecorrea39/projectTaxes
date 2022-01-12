@@ -8,7 +8,7 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 export const ShowPermissions = (props) => {
 
     const { permissions } = props;
-    
+    console.log(permissions)
     const TablePermisoList = () => {
         return (
             <Table striped bordered hover size="sm">

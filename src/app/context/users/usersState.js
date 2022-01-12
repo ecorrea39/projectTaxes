@@ -56,6 +56,24 @@ export const UsersState = ({ children }) => {
         setUsersList(arrayUser);
     }
 
+    const selectGroup = (id) => {
+        if(id != "") {
+            let group = groupsList.find(element => element.id == id );
+            if (group) return group.name;
+            return "S/G"
+        }
+        return "S/G"
+    }
+
+    const selectUST = (id) => {
+        if(id != "") {
+            let ust = unidadesEstatales.find(element => element.id == id );
+            if (ust) return ust.attributes.asignacion;
+            return "S/G"
+        }
+        return "S/G"
+    }
+
     const getUsers = async () => {
         
         try {
@@ -64,6 +82,7 @@ export const UsersState = ({ children }) => {
             //setUserDataList(respuesta.data.data);
             setUsersList(respuesta.data.data);
             setLoadingTable(false);
+            return;
         } catch (error) {
             setLoadingTable(false);
             console.log(error)
@@ -126,9 +145,17 @@ export const UsersState = ({ children }) => {
         try {
             requestConfig.data.type = "saveAccessControl";
             requestConfig.data.attributes = formData;
-            requestConfig.id = formData.id_user;
-            const respuesta = await clientAxios.put('/access_control/users/grupos');
+            requestConfig.data.id = formData.user_id;
+            const respuesta = await clientAxios.put('/access_control/users/grupos', requestConfig);
             requestConfig.id = odb.get('rif');
+            Swal.fire({
+                title: `Operación exitosa`,
+                text: `El usuario ${formData.usuario} fue modificado con éxito.`,
+                button: "Ok",
+                icon: 'success'
+            });
+            getUsers();
+            return;
         } catch (error) {
             console.log(error)
         }
@@ -139,7 +166,7 @@ export const UsersState = ({ children }) => {
             requestConfig.data.type = "updateUser";
             requestConfig.data.attributes = {status: formData.status};
             console.log(requestConfig)
-            const respuesta = await clientAxios.patch(`/access_control/${formData.id_user}`, requestConfig);
+            const respuesta = await clientAxios.patch(`/access_control/users/grupos/${formData.id_user}`, requestConfig);
             Swal.fire({
                 title: `Operación exitosa`,
                 text: `El usuario ${formData.name} fue actualizado con éxito.`,
@@ -147,6 +174,16 @@ export const UsersState = ({ children }) => {
                 icon: 'success'
             });
             getUsers();
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const getUserDetails = async (id) => {
+        try {
+            const respuesta = await clientAxios.get(`/access_control/users/grupos/${id}`);
+            setUserSlct(respuesta.data.data);
+            return;
         } catch (error) {
             console.log(error)
         }
@@ -167,8 +204,10 @@ export const UsersState = ({ children }) => {
         setUserSlct,
         addNewUser,
         updateUser,
-        updateUserStatus
-        
+        updateUserStatus,
+        getUserDetails,
+        selectGroup,
+        selectUST
     }
 
     return (
