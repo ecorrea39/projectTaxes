@@ -33,14 +33,10 @@ const UserDatosFormStep5 = (props) => {
   }
 
   const finalizarRegistro = () => {
-    console.log("Finalizar");
 
     enableLoading();
 
     const rif = localStorage.getItem('rif');
-
-    //console.log("rif", rif);
-    //console.log("authToken", token);
 
     let jsonAttributes = {};
 
@@ -58,10 +54,6 @@ const UserDatosFormStep5 = (props) => {
     setSpinner(true);
     axios.post(`${API_URL}profile_summary/`, data, axiosConfig)
       .then(function (res) {
-
-        //console.log("resFormStep5", res);
-
-        // alert('Guardado exitosamente');
 
         // window.open(API_URL + 'reports/comprobante_inscripcion/' + generalCtx.theIdUserInformacionProfile,'_blank');
 
@@ -98,14 +90,13 @@ const UserDatosFormStep5 = (props) => {
 
 
       }).catch((err) => {
+        console.log("errUserDatosFormStep5", err);
+        disableLoading();
 
-      console.log("errUserDatosFormStep5", err);
-      disableLoading();
-
-      alert("Error en consulta de finalización");
-    })
-    .finally(() => {
-      setSpinner(false);
+        alert("Error en consulta de finalización");
+      })
+      .finally(() => {
+        setSpinner(false);
     });
   }
 

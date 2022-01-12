@@ -50,7 +50,8 @@ function Registration(props) {
     if (value === '') {
       formik.setFieldValue('user', value);
     } else {
-      const regex = /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/;
+      //const regex = /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/;
+      const regex = /^(0*[0-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[0-9][0-9]*)$/;
       if (regex.test(value.toString())) {
         formik.setFieldValue('user', value);
       }

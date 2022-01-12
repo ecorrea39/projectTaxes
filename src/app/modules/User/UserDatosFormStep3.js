@@ -285,7 +285,7 @@ const UserDatosFormStep3 = (props) => {
 
   };
 
-  const listaEdificacion = async () => { //loanpas
+  const listaEdificacion = async () => { 
     try {
 
       const respuesta = await axios.get(`${API_URL}edificaciones/`, axiosConfig)
@@ -316,7 +316,6 @@ const UserDatosFormStep3 = (props) => {
       setSpinner(true);
       axios.get(`${API_URL}geographic_data_estados/`, axiosConfig)
         .then(function (res) {
-          //console.log("resFormStep3_datos_geograficos_estados", res);
 
           const arrayData = Array.from(res.data.data);
 
@@ -538,8 +537,6 @@ const UserDatosFormStep3 = (props) => {
   }
 
   const handleChangeFiltrarMunicipios = (event) => {
-
-    console.log("event.target.value", event.target.value);
 
     formik.values.estado = event.target.value;
 
@@ -1267,6 +1264,7 @@ const UserDatosFormStep3 = (props) => {
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
                                   value={formik.values.correo_empresa}
+                                  disabled={"true"}
                                   maxLength="80"
                     />
 

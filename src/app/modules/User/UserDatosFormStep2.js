@@ -246,8 +246,6 @@ const UserDatosFormStep2 = (props) => {
 
   const handleChangeFiltrarOficinas = (event) => {
 
-    //console.log("event.target.value", event.target.value);
-
     formik.values.oficina = "";
 
     //Filtrar Oficinas
@@ -369,12 +367,7 @@ const UserDatosFormStep2 = (props) => {
       setSubmitting(true);
       enableLoading();
 
-      //console.log("values", formik.values);
-
       const rif = localStorage.getItem('rif');
-
-      //console.log("rif", rif);
-      //console.log("authToken", token);
 
       let jsonAttributes = formik.values;
 
@@ -407,22 +400,19 @@ const UserDatosFormStep2 = (props) => {
           setSubmitting(false);
           disableLoading();
 
-          //console.log("resFormStep2", res);
-
           if (siguiente) {
             setSiguiente(false);
             props.cambiarFormularioActual(3);
           }
         }).catch((err) => {
+          console.log("errUserDatosFormStep2", err);
+          setSubmitting(false);
+          disableLoading();
 
-        console.log("errUserDatosFormStep2", err);
-        setSubmitting(false);
-        disableLoading();
-
-        alert("Error al guardar los Datos Mercantiles");
-      })
-      .finally(() => {
-        setSpinner(false);
+          alert("Error al guardar los Datos Mercantiles");
+        })
+        .finally(() => {
+          setSpinner(false);
       });
     },
   });
@@ -445,15 +435,12 @@ const UserDatosFormStep2 = (props) => {
                 <Col md={4}>
                   <Form.Group controlId="estado" style={formulario}>
                     <Form.Label style={textLabelColor}>Estado</Form.Label>
-                    <Form.Control as="select"
-                                  onChange={handleChangeFiltrarOficinas}
-                    >
+                    <Form.Control as="select" onChange={handleChangeFiltrarOficinas}
+                      disabled={props.registradoValor && !props.actaEdicion && !props.adminEdicion ? "disabled" : ""}>
                       <option key="0" value="">Seleccione el Estado</option>
-
                       {estados.map((elemento) =>
                         <option key={elemento.id} value={elemento.id}>{elemento.name}</option>
                       )}
-
                     </Form.Control>
                   </Form.Group>
                 </Col>

@@ -561,9 +561,9 @@ export const TaxesState = ({ children }) => {
         let con = valores[i].concepto_pago;
         let ano = valores[i].ano_declaracion;
         let tri = valores[i].trimestre;
+
         let fecha_actual = new Date();
         let ano_actual = fecha_actual.getFullYear(); 
-
         let fecha_final_tri1 = new Date(ano_actual,3,31);
         let fecha_final_tri2 = new Date(ano_actual,6,30);
         let fecha_final_tri3 = new Date(ano_actual,9,30);
@@ -576,7 +576,7 @@ export const TaxesState = ({ children }) => {
 
             if(con !== '' && ano !=='' && tri !=='') {
 
-                if(Number(ano) === Number(ano_actual)) {
+                if(Number(ano) >= Number(ano_actual)) {
                     let mostrar_mensaje = false
                    
                     if(Number(tri) === 1) {                        
@@ -603,14 +603,13 @@ export const TaxesState = ({ children }) => {
                         }
                     }
 
-
                     if(mostrar_mensaje) {
                         Swal.fire({
                             icon: 'info',
                             title: 'Declaración de tributos',
-                            text: "Periodo seleccionada para declarar no habilitado!",
+                            text: "Periodo seleccionado para declarar no habilitado!",
                             button: "Ok",
-                            timer: 2000
+                            timer: 2500
                         });
                         valores[i].trimestre = "";        
                     }
