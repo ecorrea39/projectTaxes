@@ -57,6 +57,7 @@ export const initialValuesTablesCol9 = {
 
 export const initialValuesTablesCol10 = {
     ano: "",
+    mes: "",
     fecha: ""
 }
 

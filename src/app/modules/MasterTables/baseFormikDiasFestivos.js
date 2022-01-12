@@ -1,13 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Field } from "formik";
-import { Button, Col, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import BaseInput from "../Forms/BaseInputs";
 import BaseSelect from "../Forms/BaseSelect";
 import MasterTablesContext from "../../context/masterTables/masterTablesContext";
 
 export const BaseFormikDiasFestivos = ({formik, props, anos}) => {
 
-    const { registroSeleccionado, validarDescripcion } = useContext(MasterTablesContext);
+    const { registroSeleccionado } = useContext(MasterTablesContext);
 
     useEffect(() => {
         if(props.accion === 'Modificar') {

@@ -34,7 +34,7 @@ export const MasterTablesState = ({ children }) => {
     const [cuentasContables, setCuentasContables] = useState([]);
     const [firmasAutorizadas, setFirmasAutorizadas] = useState([]);
     const [unidadEstadal, setUnidadEstadal] = useState([]);
-    const [formDataTables, setFormDataTables] = useState({});
+    //const [formDataTables, setFormDataTables] = useState({});
     const [registroSeleccionado, setRegistroSeleccionado] = useState({});
 
     const listReportes = ["Certificado de Solvencia","Resolución de incumplimiento de deberes formales"];
@@ -520,12 +520,13 @@ export const MasterTablesState = ({ children }) => {
                     {
                         "id": arreglo[i].id,
                         "ano": arreglo[i].attributes.ano,
+                        "mes": arreglo[i].attributes.mes,
                         "fecha": formatearfecha(new Date(arreglo[i].attributes.fecha), 'DMY'),
                         "fecha_original": arreglo[i].attributes.fecha
                     }
                 )
             });
-            lista.sort(fieldSorter(['ano', 'fecha']));
+            lista.sort(fieldSorter(['ano','mes','fecha']));
             setDiasFestivos(lista);
 
         } catch (error) {
@@ -1947,7 +1948,7 @@ export const MasterTablesState = ({ children }) => {
         listRegiones,
         listRedi,
         submitMasterTables,
-        setFormDataTables,
+        //setFormDataTables,
         deleteMasterTables,
         registroSeleccionado,
         obtenerValores,

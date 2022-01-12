@@ -440,7 +440,13 @@ function MasterTables({tabla, titulo}) {
             name: "Año",
             selector: row => Number(row.ano),
             sortable: true,
-            maxWidth: "350px"
+            maxWidth: "150px"
+        },
+        {
+            name: "Mes",
+            selector: row => Number(row.mes),
+            sortable: true,
+            maxWidth: "150px"
         },
         {
             name: "Día festivo",

@@ -68,7 +68,7 @@ export const TaxesState = ({ children }) => {
     const [userData, setUserData] = useState({});
     const [historico, setHistorico] = useState([]);
     const [historicoOriginal, setHistoricoOriginal] = useState([]);
-    const [historicoFilter, setHistoricoFilter] = useState([]);
+    //const [historicoFilter, setHistoricoFilter] = useState([]);
     const [declaracionSustitutiva, setDeclaracionSustitutiva] = useState(false);
     const [declaracionSeleccionada, setDeclaracionSeleccionada] = useState([]);
     const [totalTributoDeclarado, setTotalTributoDeclarado] = useState();
@@ -390,8 +390,6 @@ export const TaxesState = ({ children }) => {
 
         const seleccion = i;
 
-        console.log('sel -- ', seleccion)
-
         try {
             if (seleccion.estatus === 2 || seleccion.estatus === 3 ) {
                 Swal.fire({
@@ -432,7 +430,7 @@ export const TaxesState = ({ children }) => {
                 icon: 'error',
                 title: "Pago de tributos",
                 text: 'Verifique que los montos de los conceptos no superen al monto del pago.',
-                showConfirmButton: false,
+                showConfirmButton: true,
                 timer: 3000
             })
             return;
@@ -563,12 +561,62 @@ export const TaxesState = ({ children }) => {
         let con = valores[i].concepto_pago;
         let ano = valores[i].ano_declaracion;
         let tri = valores[i].trimestre;
+        let fecha_actual = new Date();
+        let ano_actual = fecha_actual.getFullYear(); 
+
+        let fecha_final_tri1 = new Date(ano_actual,3,31);
+        let fecha_final_tri2 = new Date(ano_actual,6,30);
+        let fecha_final_tri3 = new Date(ano_actual,9,30);
+        let fecha_final_tri4 = new Date(ano_actual,12,31);
 
         try {
+
             let buscarHistorico = [];
             let buscarActual = [];
 
-            if(con !== '' && ano !=='' && tri !='') {
+            if(con !== '' && ano !=='' && tri !=='') {
+
+                if(Number(ano) === Number(ano_actual)) {
+                    let mostrar_mensaje = false
+                   
+                    if(Number(tri) === 1) {                        
+                        if(Date.parse(ano_actual) <= Date.parse(fecha_final_tri1)) {
+                            mostrar_mensaje = true;
+                        }
+                    }
+
+                    if(Number(tri) === 2) {                        
+                        if(Date.parse(ano_actual) <= Date.parse(fecha_final_tri2)) {
+                            mostrar_mensaje = true;
+                        }
+                    }
+
+                    if(Number(tri) === 3) {                        
+                        if(Date.parse(ano_actual) <= Date.parse(fecha_final_tri3)) {
+                            mostrar_mensaje = true;
+                        }
+                    }
+
+                    if(Number(tri) === 4) {                        
+                        if(Date.parse(ano_actual) <= Date.parse(fecha_final_tri4)) {
+                            mostrar_mensaje = true;
+                        }
+                    }
+
+
+                    if(mostrar_mensaje) {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Declaración de tributos',
+                            text: "Periodo seleccionada para declarar no habilitado!",
+                            button: "Ok",
+                            timer: 2000
+                        });
+                        valores[i].trimestre = "";        
+                    }
+
+                }
+    
                 buscarActual = valores.filter(x => Number(x.concepto_pago) === Number(con) && Number(x.ano_declaracion) === Number(ano) && Number(x.trimestre) === Number(tri));
                 buscarHistorico = historico.filter(x => Number(x.concepto_pago) === Number(con) && Number(x.ano_declaracion) === Number(ano) && Number(x.trimestre) === Number(tri));
 
